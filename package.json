@@ -3,22 +3,34 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "init_husky": "husky install",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "check": "prettier --check .",
+    "format": "prettier --write .",
+    "lint": "eslint --color",
+    "lint_staged": "lint-staged --config lint-staged.js"
   },
   "dependencies": {
-    "react": "latest",
-    "react-dom": "latest",
-    "next": "latest"
+    "next": "13.4.4",
+    "react": "^18.0.2",
+    "react-dom": "^18.0.2"
   },
   "devDependencies": {
-    "typescript": "latest",
-    "@types/react": "latest",
-    "@types/node": "latest",
-    "@types/react-dom": "latest",
-    "eslint": "latest",
-    "eslint-config-next": "latest"
+    "@types/node": "^12.20.55",
+    "@types/react": "^18.0.2",
+    "@types/react-dom": "^18.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "eslint": "^8.32.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
+    "prettier": "^2.8.8",
+    "prisma": "^5.3.1",
+    "ts-node": "^10.9.1",
+    "tsc-files": "^1.1.4",
+    "typescript": "5.0.4"
   }
 }

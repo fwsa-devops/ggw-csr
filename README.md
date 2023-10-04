@@ -1,1 +1,1 @@
-# CSR Event management application
+# CSR Event Management Application

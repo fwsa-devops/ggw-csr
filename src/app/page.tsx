@@ -1,4 +1,3 @@
-import { GetStaticProps } from 'next';
 import prisma from '@/lib/prisma';
 
 export default async function Home() {

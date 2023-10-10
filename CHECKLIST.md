@@ -3,14 +3,14 @@
 ### - App setup
 
 - [x] Create next app w/ tailwind + shadcn
-- [ ] Deploy it to Vercel from Github.
-- [ ] Setup a google app and setup credentials
-- [ ] Setup Prisma w/ planetscale
+- [x] Deploy it to Vercel from Github.
+- [x] Setup a google app and setup credentials
+- [x] Setup Prisma w/ planetscale
 
 ### - Authentication
 
-- [ ] Login and Logout w/ Next Auth
+- [x] Login and Logout w/ Next Auth
 
 ### - Portal
 
-- [ ] List activities from the DB
+- [x] List activities from the DB

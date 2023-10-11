@@ -1,28 +1,32 @@
+import EventsComponent from '@/components/events';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import prisma from '@/lib/prisma';
 
 export default async function Home() {
   const data = await getData();
 
-  console.log('p', data?.props?.activites);
+  // console.log('data', data?.props?.activities);
 
   return (
-    <main className="flex flex-col items-center justify-between min-h-screen p-24">
-      <div className="flex flex-col items-center justify-center">
-        <pre style={{ maxWidth: '100vw' }}>
-          <code>{JSON.stringify(data?.props?.activites, null, 2)}</code>
-        </pre>
-      </div>
+    <main className="flex flex-col items-center justify-between min-h-screen ">
+      <section className="text-gray-600 body-font overflow-hidden">
+        <EventsComponent activities={data.props.activities} />
+      </section>
     </main>
   );
 }
 
 async function getData() {
-  const activites = await prisma.activity.findMany({
+  const activities = await prisma.activity.findMany({
     where: { published: true },
     include: {
       events: {
         include: {
-          leaders: {},
+          leaders: {
+            include: {
+              user: {},
+            },
+          },
           users: {},
         },
       },
@@ -31,8 +35,12 @@ async function getData() {
       },
     },
   });
+
+  const users = await prisma.user.findMany();
+  console.log('users', users);
+
   return {
-    props: { activites },
+    props: { activities },
     revalidate: 10,
   };
 }

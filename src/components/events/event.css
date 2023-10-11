@@ -1,0 +1,12 @@
+.participants {
+  border-left: 1px solid black;
+  height: 10rem;
+}
+
+.event-container {
+  height: 600px;
+  column-gap: 20px;
+}
+.event-container > * {
+  height: 100%;
+}

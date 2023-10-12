@@ -1,12 +1,29 @@
 .participants {
-  border-left: 1px solid black;
   height: 10rem;
+  position: relative;
 }
 
 .event-container {
-  height: 600px;
   column-gap: 20px;
 }
-.event-container > * {
-  height: 100%;
+
+@media (min-width: 768px) {
+  .participants::before {
+    content: '';
+    height: 100%;
+    width: 2px;
+    border-bottom: solid 480px #9b9b9b;
+    position: absolute;
+    left: 0;
+    top: 26%;
+    z-index: 1;
+  }
+}
+@media (max-width: 550px) {
+  .event-container {
+    flex-wrap: wrap;
+  }
+  .participants {
+    margin-top: 10%;
+  }
 }

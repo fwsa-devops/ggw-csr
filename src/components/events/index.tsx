@@ -27,13 +27,17 @@ const EventsComponent = (props: EventsComponentProps) => {
         leaders: any[];
       }) => {
         return (
-          <div className="container px-5 mx-auto my-10 bg-grey" key={evnt.id}>
-            <div className="mx-auto flex event-container">
+          <div
+            className="container w-100 h-auto px-5 mx-auto my-10 bg-grey"
+            key={evnt.id}
+          >
+            <div className="mx-auto flex event-container md:flex-nowrap md:h-600">
               <img
                 alt="ecommerce"
-                className="lg:w-1/3 w-full lg:h-auto h-64 object-cover object-center rounded"
+                className="lg:w-1/3 w-full lg:h-100 object-cover object-center rounded"
                 src={activity.cover || ''}
               />
+
               <div className="lg:w-1/3 w-full mt-6 lg:mt-0">
                 <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
                   {activity.name}
@@ -171,7 +175,8 @@ const EventsComponent = (props: EventsComponentProps) => {
                 </div>
               </div>
               {/* <div className="inline-block h-[250px] min-h-[1em] w-1 self-stretch bg-black opacity-100"></div> */}
-              <div className="participants pl-5 lg:w-1/3 w-full">
+
+              <div className="participants pl-5 lg:w-1/3 w-full ">
                 <h2 className="text-2xl font-bold text-center">
                   Voices of the event
                 </h2>

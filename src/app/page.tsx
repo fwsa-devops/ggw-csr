@@ -9,7 +9,7 @@ export default async function Home() {
 
   return (
     <main className="flex flex-col items-center justify-between min-h-screen ">
-      <section className="text-gray-600 body-font overflow-hidden">
+      <section className="text-gray-600 body-font w-full overflow-hidden">
         <EventsComponent activities={data.props.activities} />
       </section>
     </main>

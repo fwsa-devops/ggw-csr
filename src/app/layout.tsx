@@ -27,7 +27,7 @@ export default async function RootLayout({
           <main className="main">
             <div className="responsive-wrapper">
               <div className="main-header">
-                <h1>Upcoming Events</h1>
+                <h1>Upcoming Events...</h1>
               </div>
               {children}
             </div>

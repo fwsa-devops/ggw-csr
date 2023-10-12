@@ -39,7 +39,7 @@ const EventsComponent = (props: EventsComponentProps) => {
               />
 
               <div className="lg:w-1/3 w-full mt-6 lg:mt-0">
-                <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
+                <h1 className="text-gray-900 text-2xl title-font font-medium mb-1">
                   {activity.name}
                 </h1>
                 <h2 className="text-sm title-font text-gray-500 tracking-widest">
@@ -177,7 +177,7 @@ const EventsComponent = (props: EventsComponentProps) => {
               {/* <div className="inline-block h-[250px] min-h-[1em] w-1 self-stretch bg-black opacity-100"></div> */}
 
               <div className="participants pl-5 lg:w-1/3 w-full ">
-                <h2 className="text-2xl font-bold text-center">
+                <h2 className="text-gray-900 text-2xl title-font font-medium mb-1 text-center">
                   Voices of the event
                 </h2>
                 {evnt.leaders.map((leader) => (

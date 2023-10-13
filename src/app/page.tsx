@@ -24,10 +24,10 @@ async function getData() {
         include: {
           leaders: {
             include: {
-              user: {},
+              user: true,
             },
           },
-          users: {},
+          users: true,
         },
       },
       author: {

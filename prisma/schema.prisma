@@ -21,11 +21,19 @@ model Activity {
   endTime     DateTime?
   place       String?
 
+  status ActivityState? @default(DRAFT)
+
   events Event[]
 
   authorId String?        @unique
   author   User?          @relation(fields: [authorId], references: [id])
   tags     ActivityTags[]
+}
+
+enum ActivityState {
+  OPEN
+  DRAFT
+  CLOSED
 }
 
 model Event {
@@ -38,7 +46,8 @@ model Event {
   published   Boolean       @default(false)
   startTime   DateTime?
   endTime     DateTime?
-  count       Int
+
+  count Int @default(0)
 
   authorId String?
   author   User?   @relation(fields: [authorId], references: [id])

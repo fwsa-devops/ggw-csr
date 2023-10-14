@@ -28,8 +28,6 @@ export const getServerSideProps = async (context) => {
 const EventsComponent = (props: any) => {
   let { activities } = props;
 
-  console.log('activities', activities);
-
   // const { data: session } = useSession();
 
   const session = {
@@ -47,8 +45,6 @@ const EventsComponent = (props: any) => {
   };
 
   const convertToReadableDate = (isoDate) => {
-    console.log('isoDate', isoDate, typeof isoDate);
-
     const options: any = {
       weekday: 'long',
       month: 'long',
@@ -57,8 +53,6 @@ const EventsComponent = (props: any) => {
     };
     const date = new Date(isoDate);
     const formattedDate = date.toLocaleString(undefined, options);
-    console.log('formattedDate', formattedDate);
-
     return formattedDate ?? 'None';
   };
 
@@ -81,7 +75,7 @@ const EventsComponent = (props: any) => {
           email: session.user.email || '',
         },
       });
-      console.log('user', user, 'session', session);
+      // console.log('user', user, 'session', session);
       return !user;
     }
   };
@@ -97,8 +91,6 @@ const EventsComponent = (props: any) => {
     // need to add toaster
     isAlreadyJoined();
   };
-
-  // console.log('activities', activities);
 
   return activities?.map((activity: any) => {
     return (

@@ -1,48 +1,18 @@
-import EventsComponent from '@/components/events';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import prisma from '@/lib/prisma';
+import EventsComponent from '@/pages/events';
+import { getAllActivities, serializeActivities } from '@/pages/events/utils';
+import 'tailwindcss/tailwind.css';
 
 export default async function Home() {
-  const data = await getData();
-
-  // console.log('data', data?.props?.activities);
+  let activities = await getAllActivities();
+  activities = serializeActivities(activities);
 
   return (
     <main className="flex flex-col items-center justify-between min-h-screen ">
       <section className="text-gray-600 body-font w-full overflow-hidden">
-        <EventsComponent activities={data.props.activities} />
+        <EventsComponent activities={activities} />
       </section>
     </main>
   );
-}
-
-async function getData() {
-  const activities = await prisma.activity.findMany({
-    where: { published: true },
-    include: {
-      events: {
-        include: {
-          leaders: {
-            include: {
-              user: true,
-            },
-          },
-          users: true,
-        },
-      },
-      author: {
-        select: { name: true },
-      },
-    },
-  });
-
-  const users = await prisma.user.findMany();
-  console.log('users', users);
-
-  return {
-    props: { activities },
-    revalidate: 10,
-  };
 }
 
 type ActivityProps = any;

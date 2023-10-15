@@ -234,12 +234,6 @@ const ActiveEvents = (props) => {
                     </button>
                   </div>
                 </div>
-                {/* <Avatar>
-                        {leader?.user?.image && (
-                            <AvatarImage src={leader?.user?.image} />
-                        )}
-                        <AvatarFallback>CN</AvatarFallback>
-                        </Avatar> */}
               </>
             ))}
           </div>

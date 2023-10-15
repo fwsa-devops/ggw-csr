@@ -85,12 +85,12 @@ const PastActivities = (props) => {
                   alt="blog"
                 />
                 <div className="p-6">
-                  <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
-                    Tags{' '}
-                  </h2>
                   <h1 className="title-font text-lg font-medium text-gray-900 mb-3">
                     Title
                   </h1>
+                  <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
+                    Tags{' '}
+                  </h2>
                   <p className="leading-relaxed mb-3">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Laudantium reiciendis vel neque deleniti atque facere

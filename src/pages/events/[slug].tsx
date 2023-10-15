@@ -7,6 +7,7 @@ import { serializeActivities } from '@/components/events/utils';
 import 'tailwindcss/tailwind.css';
 import React from 'react';
 import ProgressBar from '@/components/ui/progress-bar';
+import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
 
 export const getServerSideProps = async (context) => {
   const { slug } = context.query;
@@ -86,6 +87,12 @@ const EventDetail = (props) => {
                   src="https://dummyimage.com/104x104"
                   className="w-12 h-12 rounded-full flex-shrink-0 object-cover object-center"
                 />
+                <Avatar>
+                  {/* {leader?.user?.image && ( */}
+                  <AvatarImage src={'https://dummyimage.com/104x104'} />
+                  {/* )} */}
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
                 <span className="flex-grow flex flex-col pl-4">
                   <span className="title-font font-medium text-gray-900">
                     Holden Caulfield

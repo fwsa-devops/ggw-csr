@@ -19,15 +19,20 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession();
 
+  // console.log('Root component');
+
   return (
     <html lang="en">
+      <head>
+        <title>CSR Events Portal</title>
+      </head>
       <SessionProvider session={session}>
         <body className={inter.className}>
           <Header />
           <main className="main">
             <div className="responsive-wrapper">
               <div className="main-header">
-                <h1>Upcoming Events</h1>
+                <h1>Upcoming Events...</h1>
               </div>
               {children}
             </div>

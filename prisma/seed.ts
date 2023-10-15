@@ -54,7 +54,7 @@ async function main() {
   const mukesh = await prisma.user.create({
     data: { email: 'mukesh.swamy@freshworks.com' },
   });
-  console.log({ mukesh, hasan });
+  // console.log({ mukesh, hasan });
 }
 main()
   .then(async () => {

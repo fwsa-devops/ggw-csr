@@ -1,40 +1,28 @@
-import prisma from '@/lib/prisma';
+import EventsComponent from '@/pages/events';
+import {
+  getAllActivities,
+  getPastActivities,
+  serializeActivities,
+} from '@/components/events/utils';
+import 'tailwindcss/tailwind.css';
 
 export default async function Home() {
-  const data = await getData();
+  let activities = await getAllActivities();
+  activities = serializeActivities(activities);
 
-  console.log('p', data?.props?.activites);
+  let pastActivities = await getPastActivities();
+  pastActivities = serializeActivities(pastActivities);
 
   return (
-    <main className="flex flex-col items-center justify-between min-h-screen p-24">
-      <div className="flex flex-col items-center justify-center">
-        <pre style={{ maxWidth: '100vw' }}>
-          <code>{JSON.stringify(data?.props?.activites, null, 2)}</code>
-        </pre>
-      </div>
+    <main className="flex flex-col items-center justify-between min-h-screen ">
+      <section className="text-gray-600 body-font w-full overflow-hidden">
+        <EventsComponent
+          activities={activities}
+          pastActivities={pastActivities}
+        />
+      </section>
     </main>
   );
-}
-
-async function getData() {
-  const activites = await prisma.activity.findMany({
-    where: { published: true },
-    include: {
-      events: {
-        include: {
-          leaders: {},
-          users: {},
-        },
-      },
-      author: {
-        select: { name: true },
-      },
-    },
-  });
-  return {
-    props: { activites },
-    revalidate: 10,
-  };
 }
 
 type ActivityProps = any;

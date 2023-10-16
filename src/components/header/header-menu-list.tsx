@@ -12,20 +12,20 @@ export function MainNav({
       {...props}
     >
       <Link
-        href="/news"
-        className="text-md font-medium transition-colors hover:text-primary"
+        href="/"
+        className="font-medium transition-colors text-md text-muted-foreground hover:text-primary"
       >
         News
       </Link>
       <Link
-        href="/leaderboard"
-        className="text-md font-medium text-muted-foreground transition-colors hover:text-primary"
+        href="/"
+        className="font-medium transition-colors text-md text-muted-foreground hover:text-primary"
       >
         Leaderboard
       </Link>
       <Link
-        href="/teams"
-        className="text-md font-medium text-muted-foreground transition-colors hover:text-primary"
+        href="/"
+        className="font-medium transition-colors text-md text-muted-foreground hover:text-primary"
       >
         Teams
       </Link>

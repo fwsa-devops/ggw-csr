@@ -23,7 +23,7 @@ export function UserNav() {
   }
   return (
     <>
-      <a onClick={() => signIn('google')} className="button cursor-pointer">
+      <a onClick={() => signIn('google')} className="cursor-pointer button">
         <span>Sign in</span>
       </a>
     </>
@@ -34,10 +34,12 @@ function AuthButton({ user }: { user: any }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
+        <Button variant="ghost" className="relative w-8 h-8 rounded-full">
+          <Avatar className="w-8 h-8">
             <AvatarImage src={user.image} alt={user.name} />
-            <AvatarFallback>{user.image.substring(0, 2)}</AvatarFallback>
+            <AvatarFallback delayMs={500}>
+              {(user?.name || user?.email).toUpperCase().substring(0, 2)}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

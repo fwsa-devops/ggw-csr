@@ -14,6 +14,14 @@
 ### - Portal
 
 - [x] List activities from the DB
-- [ ] List activities page
-- [ ] List events page
-- [ ] User joining action
+- [x] List activities page
+- [x] List events page
+- [x] User joining + findOrCreate user
+- [x] User leaving action
+- [ ] More activity information - Requirement from Shyam
+- [ ] Show past activities
+- [ ] Show tags from API
+
+### - User Profile
+
+- [ ] Manage users social and profile information

@@ -17,7 +17,7 @@ export default async function handle(req, res) {
     where: { email: session?.user?.email || '' },
   });
 
-  if (!user) {
+  if (!(user && user.email)) {
     return res.status(401).json({ error: 'Not authorized' });
   }
 

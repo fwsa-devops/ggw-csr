@@ -55,6 +55,8 @@ const EventsComponent = (props: any) => {
     }
   };
 
+  // try passing the name, email & image from child component
+  // to this component & create user
   const joinEvent = () => {
     prisma.user.create({
       data: {

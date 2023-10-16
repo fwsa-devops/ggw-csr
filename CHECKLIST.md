@@ -14,6 +14,6 @@
 ### - Portal
 
 - [x] List activities from the DB
-- [ ] List activities page
+- [x] List activities page
 - [ ] List events page
 - [ ] User joining action

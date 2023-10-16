@@ -8,15 +8,16 @@ import { useState } from 'react';
 import { Progress } from '../ui/progress';
 import ListUsers from '../event/list-users';
 import { Separator } from '@/components/ui/separator';
+import React from 'react';
 
 const EventJoinButton = ({ event, extended }) => {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [eventUsers, setEventUsers] = useState(event.users);
 
-  const hasJoined = eventUsers.find(
-    (user) => user.userId === session?.user?.email,
-  );
+  const hasJoined = React.useMemo(() => {
+    return eventUsers.find((user) => user.userId === session?.user?.email);
+  }, [session]);
 
   const toggleJoin = async () => {
     setIsLoading(true);

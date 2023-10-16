@@ -23,7 +23,7 @@ const EventPage = (props) => {
             <p>{activity?.place}</p>
           </div>
           <h2 className="mt-2 mb-4 text-sm tracking-widest text-gray-400 title-font">
-            #CSR #Helping
+            {activity?.tags?.tag?.name || '#CSR #Helping'}
           </h2>
 
           <p className="leading-relaxed">{activity.description}</p>

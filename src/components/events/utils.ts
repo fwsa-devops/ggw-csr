@@ -136,6 +136,11 @@ export const getActivity = async (activityId: string) => {
       author: {
         select: { name: true },
       },
+      tags: {
+        include: {
+          tag: true
+        }
+      }
     },
   });
   return activity;

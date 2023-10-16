@@ -62,10 +62,10 @@ model Event {
 model EventUser {
   id String @id @default(cuid())
 
-  eventId String?
-  event   Event?  @relation(fields: [eventId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  userId  String?
-  user    User?   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId  String
+  user    User   @relation(fields: [userId], references: [email], onUpdate: Cascade, onDelete: Cascade)
 
   assignedAt DateTime @default(now())
   assignedBy String?

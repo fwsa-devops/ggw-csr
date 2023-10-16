@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { MainNav } from './header-menu-list';
 import { UserNav } from './user-nav';
 
@@ -6,13 +7,13 @@ const Header = () => {
     <header className="header">
       <div className="header-content responsive-wrapper">
         <div className="header-logo">
-          <a href="#">
+          <Link href="/">
             <code className="text-2xl font-bold">VOLUNTEER</code>
-          </a>
+          </Link>
         </div>
         <div className="header-navigation">
           <MainNav />
-          <div className="header-navigation-actions gap-4">
+          <div className="gap-4 header-navigation-actions">
             <UserNav />
           </div>
         </div>

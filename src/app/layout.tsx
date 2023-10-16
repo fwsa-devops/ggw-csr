@@ -30,12 +30,7 @@ export default async function RootLayout({
         <body className={inter.className}>
           <Header />
           <main className="main">
-            <div className="responsive-wrapper">
-              <div className="main-header">
-                <h1>Upcoming Events...</h1>
-              </div>
-              {children}
-            </div>
+            <div className="responsive-wrapper">{children}</div>
           </main>
         </body>
       </SessionProvider>

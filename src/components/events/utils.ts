@@ -119,8 +119,22 @@ export const getActivity = async (activityId: string) => {
     include: {
       events: {
         include: {
-          users: true,
+          leaders: {
+            include: {
+              user: true,
+            },
+          },
+          users: {
+            include: {
+              user: {
+                select: { email: true, name: true, image: true },
+              },
+            },
+          },
         },
+      },
+      author: {
+        select: { name: true },
       },
     },
   });

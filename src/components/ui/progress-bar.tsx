@@ -5,7 +5,11 @@ const ProgressBar = (props: any) => {
   const { value } = props;
 
   return (
-    <Progress.Root className="ProgressRoot" value={value}>
+    <Progress.Root
+      style={{ width: 'auto' }}
+      className="ProgressRoot"
+      value={value}
+    >
       <Progress.Indicator
         className="ProgressIndicator"
         style={{

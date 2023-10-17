@@ -9,6 +9,7 @@ import { LaptopIcon, TimerIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import EventJoinButton from './event-join-button';
 import { Separator } from '../ui/separator';
+import { isUserPartOfActivity } from './utils';
 
 const ActiveEvents = (props) => {
   const { activities } = props;
@@ -40,7 +41,7 @@ const ActiveEvents = (props) => {
               <p className="text-sm">{activity?.place}</p>
             </div>
             <h2 className="mb-1 text-sm tracking-widest text-gray-400 title-font">
-              #CSR #Helping
+              {activity?.tags?.tag?.name || '#CSR #Helping'}
             </h2>
 
             <p className="leading-relaxed">
@@ -97,7 +98,7 @@ const ActiveEvents = (props) => {
                         hrs
                       </div>
                     </div>
-                    <EventJoinButton extended={false} event={event} />
+                    <EventJoinButton  extended={false} event={event} />
                   </div>
                 </Link>
               </>

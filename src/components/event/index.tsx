@@ -4,6 +4,7 @@ import { convertToReadableDate, shortenDate } from '../events/utils';
 import { BuildingIcon, LaptopIcon, MapPinIcon, TimerIcon } from 'lucide-react';
 import EventJoinButton from '../events/event-join-button';
 import ListUsers from './list-users';
+// import { isUserPartOfActivity } from './utils';
 
 const EventPage = (props) => {
   const { activity } = props;

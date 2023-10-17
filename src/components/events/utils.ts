@@ -80,12 +80,17 @@ export const getAllActivities = async () => {
           users: true,
         },
       },
+      tags: {
+        include: {
+          tag: true,
+        },
+      },
       author: {
         select: { name: true },
       },
     },
   });
-  //   console.log('activities', activities);
+  console.log('activities', activities);
 
   return activities;
 };
@@ -138,9 +143,9 @@ export const getActivity = async (activityId: string) => {
       },
       tags: {
         include: {
-          tag: true
-        }
-      }
+          tag: true,
+        },
+      },
     },
   });
   return activity;
@@ -174,4 +179,20 @@ export const shortenDate = (isoDate) => {
   const date = new Date(isoDate);
   const formattedDate = date.toLocaleString(undefined, options);
   return formattedDate ?? 'None';
+};
+
+export const isUserPartOfActivity = async (userEmail, activityId) => {
+  const events = await prisma.event.findMany({
+    where: {
+      activityId: activityId,
+    },
+    include: {
+      users: true,
+    },
+  });
+  const isJoined = events.filter((event) => {
+    const eventUsers = event.users;
+    return eventUsers.some((eventUser) => eventUser.userId === userEmail);
+  });
+  return Boolean(isJoined);
 };

@@ -20,9 +20,8 @@
 - [x] User leaving action
 - [ ] More activity information - Requirement from Shyam
 - [ ] Show past activities
-- [ ] Show tags from API
 - [ ] Need to add responsiveness
-
+- [ ] Add toaster
 
 ### - User Profile
 

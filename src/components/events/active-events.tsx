@@ -11,6 +11,7 @@ import {
   getAllActivitiesFromDB,
   getAllTags,
 } from './utils';
+import { DateRange } from 'react-day-picker';
 import { LaptopIcon, TimerIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import EventJoinButton from './event-join-button';
@@ -19,6 +20,7 @@ import { useSession } from 'next-auth/react';
 import { DatePickerWithRange } from '../ui/date-range-picker';
 import { DropdownMenuCheckboxes } from '../ui/dropdown/checkbox-dd';
 import { EVENT_LOCATIONS } from '../../../constants';
+import { addDays } from 'date-fns';
 
 const ActiveEvents = (props) => {
   const { activities } = props;
@@ -38,36 +40,12 @@ const ActiveEvents = (props) => {
     setTags(tags);
   };
 
-  const onDateChange = async (value) => {
-    setLoading(true);
-    setActivities(await getFilteredActivities(value, 'TIME'));
-    setLoading(false);
-  };
-
   const onLocationChange = async (item, value) => {
     setLoading(true);
     const updatedLocations = locations.map((obj) =>
       obj.id === item.id ? { ...item, checked: value } : obj,
     );
     setLocations(updatedLocations);
-    const selectedLocations: any[] = updatedLocations.filter(
-      (location) => location.checked,
-    );
-    const selectedLocationNames = selectedLocations.map(
-      (location) => location.name,
-    );
-
-    if (selectedLocationNames.length > 0) {
-      setActivities(
-        await getFilteredActivities(
-          { locations: selectedLocationNames },
-          'LOCATION',
-        ),
-      );
-    } else {
-      const newActivities = await getAllActivitiesFromDB();
-      setActivities(newActivities);
-    }
     setLoading(false);
   };
 
@@ -77,27 +55,65 @@ const ActiveEvents = (props) => {
       obj.id === item.id ? { ...item, checked: value } : obj,
     );
     setTags(updatedTags);
-    const selectedTags: any[] = updatedTags.filter((tag) => tag.checked);
-    const selectedTagNames = selectedTags.map((tag) => tag.name);
-
-    if (selectedTagNames.length > 0) {
-      setActivities(
-        await getFilteredActivities({ tagNames: selectedTagNames }, 'TAG'),
-      );
-    } else {
-      const newActivities = await getAllActivitiesFromDB();
-      setActivities(newActivities);
-    }
     setLoading(false);
   };
 
   const clearFilters = async () => {
     setActivities(await getAllActivitiesFromDB());
+    const updatedTags = tags.map((tag) => ({ ...tag, checked: false }));
+    setTags(updatedTags);
+    const updatedLocations = locations.map((location) => ({
+      ...location,
+      checked: false,
+    }));
+    setLocations(updatedLocations);
+    setDate({
+      from: new Date(),
+      to: addDays(new Date(), 10),
+    });
   };
 
-  // const isUserAlreadyJoinedAnEvent = async (activity) => {
-  //   return await isUserPartOfActivity(session?.user?.email, activity.id);
-  // };
+  const getFilters = () => {
+    const selectedTags: any[] = tags.filter((tag) => tag.checked);
+    const selectedTagNames = selectedTags.map((tag) => tag.name);
+    const selectedLocations: any[] = locations.filter(
+      (location) => location.checked,
+    );
+    const selectedLocationNames = selectedLocations.map(
+      (location) => location.name,
+    );
+
+    const filters = {
+      date,
+    };
+    if (selectedTagNames.length > 0) {
+      filters['tagNames'] = selectedTagNames;
+    }
+    if (selectedLocationNames.length > 0) {
+      filters['locations'] = selectedLocationNames;
+    }
+    return filters;
+  };
+
+  const applyFilter = async () => {
+    setLoading(true);
+    const filters = getFilters();
+    if (filters) {
+      setActivities(await getFilteredActivities(filters));
+    } else {
+      setActivities(await getAllActivitiesFromDB());
+    }
+    setLoading(false);
+  };
+
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 10),
+  });
+
+  const isUserAlreadyJoinedAnEvent = async (activity) => {
+    return await isUserPartOfActivity(session?.user?.email, activity.id);
+  };
 
   return (
     <>
@@ -116,8 +132,20 @@ const ActiveEvents = (props) => {
           label={'Locations'}
           title={'Filter by Location'}
         />
-        <DatePickerWithRange disabled={isLoading} onUpdate={onDateChange} />
-        <Button disabled={isLoading} onClick={clearFilters}>
+        <DatePickerWithRange
+          date={date}
+          setDate={setDate}
+          disabled={isLoading}
+          onUpdate={() => {}}
+        />
+        <Button disabled={isLoading} onClick={applyFilter}>
+          Apply filters
+        </Button>
+        <Button
+          variant={'secondary'}
+          disabled={isLoading}
+          onClick={clearFilters}
+        >
           Clear filters
         </Button>
       </div>
@@ -211,9 +239,9 @@ const ActiveEvents = (props) => {
                           <EventJoinButton
                             extended={false}
                             event={event}
-                            // alreadyJoinedActivity={
-                            //   !isUserAlreadyJoinedAnEvent(activity)
-                            // }
+                            alreadyJoinedActivity={
+                              !isUserAlreadyJoinedAnEvent(activity)
+                            }
                           />
                         </div>
                       </Link>

@@ -14,13 +14,8 @@ export const deleteEvent = async (eventId: number) => {
   return json;
 };
 
-export const getActivitiesBasedOnFilters = async (
-  filters: any,
-  filterBy: string,
-) => {
-  const searchParams = new URLSearchParams(`filterBy=${filterBy}`);
-
-  const response = await fetch(`/api/activities/filter?${searchParams}`, {
+export const getActivitiesBasedOnFilters = async (filters: any) => {
+  const response = await fetch(`/api/activities/filter`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -49,4 +44,4 @@ export const getAllTagsFromDB = async () => {
   });
   const json = await tags.json();
   return json;
-}
+};

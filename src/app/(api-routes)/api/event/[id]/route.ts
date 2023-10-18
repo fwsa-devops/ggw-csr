@@ -1,11 +1,9 @@
 import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
 
 // GET /api/event/[id]
 // get user event -
-export default async function GET(req: Request) {
-  // const { eventId } = req.body;
+export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const eventId = searchParams.get('id');
 

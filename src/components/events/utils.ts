@@ -163,32 +163,23 @@ export const shortenDate = (isoDate) => {
 };
 
 export const isUserPartOfActivity = async (userEmail, activityId) => {
-  const events = await prisma.event.findMany({
-    where: {
-      activityId: activityId,
-    },
-    include: {
-      users: true,
-    },
-  });
-  const isJoined = events.filter((event) => {
-    const eventUsers = event.users;
-    return eventUsers.some((eventUser) => eventUser.userId === userEmail);
-  });
-  return Boolean(isJoined);
+  return false;
 };
 
-export const getFilteredActivities = async (filters, filterType) => {
-  const filteredActivities = await getActivitiesBasedOnFilters(
-    filters,
-    filterType,
-  );
+export const getFilteredActivities = async (filters) => {
+  const filteredActivities = await getActivitiesBasedOnFilters(filters);
   return filteredActivities;
 };
 
 export const getAllTags = async () => {
   const tags = await getAllTagsFromDB();
   return tags;
+};
+
+export const addPropertyIfValueExists = (obj, propertyName, value) => {
+  if (value && (Array.isArray(value) ? value.length > 0 : true)) {
+    obj[propertyName] = value;
+  }
 };
 
 // Manual SQL queries on nested models

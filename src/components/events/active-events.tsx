@@ -40,73 +40,70 @@ const ActiveEvents = (props) => {
     setTags(tags);
   };
 
-  const onDateChange = async (value) => {
-    setLoading(true);
-    setActivities(await getFilteredActivities(value, 'TIME'));
-    setLoading(false);
-  };
-
   const onLocationChange = async (item, value) => {
     setLoading(true);
-    setTags((tags) => tags.map((tag) => ({ ...tag, checked: false })));
     const updatedLocations = locations.map((obj) =>
       obj.id === item.id ? { ...item, checked: value } : obj,
     );
+    setLocations(updatedLocations);
+    setLoading(false);
+  };
+
+  const onTagsChange = async (item, value) => {
+    setLoading(true);
+    const updatedTags = tags.map((obj) =>
+      obj.id === item.id ? { ...item, checked: value } : obj,
+    );
+    setTags(updatedTags);
+    setLoading(false);
+  };
+
+  const clearFilters = async () => {
+    setActivities(await getAllActivitiesFromDB());
+    const updatedTags = tags.map((tag) => ({ ...tag, checked: false }));
+    setTags(updatedTags);
+    const updatedLocations = locations.map((location) => ({
+      ...location,
+      checked: false,
+    }));
+    setLocations(updatedLocations);
     setDate({
       from: new Date(),
       to: addDays(new Date(), 10),
     });
-    setLocations(updatedLocations);
-    const selectedLocations: any[] = updatedLocations.filter(
+  };
+
+  const getFilters = () => {
+    const selectedTags: any[] = tags.filter((tag) => tag.checked);
+    const selectedTagNames = selectedTags.map((tag) => tag.name);
+    const selectedLocations: any[] = locations.filter(
       (location) => location.checked,
     );
     const selectedLocationNames = selectedLocations.map(
       (location) => location.name,
     );
 
-    if (selectedLocationNames.length > 0) {
-      setActivities(
-        await getFilteredActivities(
-          { locations: selectedLocationNames },
-          'LOCATION',
-        ),
-      );
-    } else {
-      const newActivities = await getAllActivitiesFromDB();
-      setActivities(newActivities);
-    }
-    setLoading(false);
-  };
-
-  const onTagsChange = async (item, value) => {
-    setLoading(true);
-    setLocations((locations) =>
-      locations.map((location) => ({ ...location, checked: false })),
-    );
-    setDate({
-      from: new Date(),
-      to: addDays(new Date(), 10),
-    });
-    const updatedTags = tags.map((obj) =>
-      obj.id === item.id ? { ...item, checked: value } : obj,
-    );
-    setTags(updatedTags);
-    const selectedTags: any[] = updatedTags.filter((tag) => tag.checked);
-    const selectedTagNames = selectedTags.map((tag) => tag.name);
-
+    const filters = {
+      date,
+    };
     if (selectedTagNames.length > 0) {
-      setActivities(
-        await getFilteredActivities({ tagNames: selectedTagNames }, 'TAG'),
-      );
-    } else {
-      const newActivities = await getAllActivitiesFromDB();
-      setActivities(newActivities);
+      filters['tagNames'] = selectedTagNames;
     }
-    setLoading(false);
+    if (selectedLocationNames.length > 0) {
+      filters['locations'] = selectedLocationNames;
+    }
+    return filters;
   };
 
-  const clearFilters = async () => {
-    setActivities(await getAllActivitiesFromDB());
+  const applyFilter = async () => {
+    setLoading(true);
+    const filters = getFilters();
+    if (filters) {
+      setActivities(await getFilteredActivities(filters));
+    } else {
+      setActivities(await getAllActivitiesFromDB());
+    }
+    setLoading(false);
   };
 
   const [date, setDate] = React.useState<DateRange | undefined>({
@@ -114,9 +111,9 @@ const ActiveEvents = (props) => {
     to: addDays(new Date(), 10),
   });
 
-  // const isUserAlreadyJoinedAnEvent = async (activity) => {
-  //   return await isUserPartOfActivity(session?.user?.email, activity.id);
-  // };
+  const isUserAlreadyJoinedAnEvent = async (activity) => {
+    return await isUserPartOfActivity(session?.user?.email, activity.id);
+  };
 
   return (
     <>
@@ -139,9 +136,16 @@ const ActiveEvents = (props) => {
           date={date}
           setDate={setDate}
           disabled={isLoading}
-          onUpdate={onDateChange}
+          onUpdate={() => {}}
         />
-        <Button disabled={isLoading} onClick={clearFilters}>
+        <Button disabled={isLoading} onClick={applyFilter}>
+          Apply filters
+        </Button>
+        <Button
+          variant={'secondary'}
+          disabled={isLoading}
+          onClick={clearFilters}
+        >
           Clear filters
         </Button>
       </div>
@@ -235,9 +239,9 @@ const ActiveEvents = (props) => {
                           <EventJoinButton
                             extended={false}
                             event={event}
-                            // alreadyJoinedActivity={
-                            //   !isUserAlreadyJoinedAnEvent(activity)
-                            // }
+                            alreadyJoinedActivity={
+                              !isUserAlreadyJoinedAnEvent(activity)
+                            }
                           />
                         </div>
                       </Link>

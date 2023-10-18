@@ -2,14 +2,16 @@ import prisma from '@/lib/prisma';
 import { getSession } from 'next-auth/react';
 
 // GET /api/event/[id]/join
-export default async function handle(req, res) {
-  // const { eventId } = req.body;
-  const eventId = req.query.id;
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const eventId = searchParams.get('id');
 
-  const session = await getSession({ req });
+  const session = await getSession();
 
   if (session?.user?.email === undefined) {
-    return res.status(401).json({ error: 'Not authorized' });
+    return new Response('Not authorized session', {
+      status: 401,
+    });
   }
 
   console.log('session', session);
@@ -25,7 +27,9 @@ export default async function handle(req, res) {
   });
 
   if (!(user && user.email)) {
-    return res.status(401).json({ error: 'Not authorized' });
+    return new Response('Not authorized', {
+      status: 401,
+    });
   }
 
   if (req.method === 'DELETE') {
@@ -36,7 +40,7 @@ export default async function handle(req, res) {
       },
     });
 
-    return res.json(result);
+    return Response.json(result);
   }
 
   const result = await prisma.eventUser.create({
@@ -46,5 +50,5 @@ export default async function handle(req, res) {
     },
   });
 
-  res.json(result);
+  return Response.json(result);
 }

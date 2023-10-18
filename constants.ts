@@ -10,4 +10,33 @@ export const EVENT_LOCATIONS = [{
     id: 2,
     name: 'Banglore',
     checked: false
-}]
+},
+{
+    id: 3,
+    name: 'Online',
+    checked: false
+},
+]
+
+export const INCLUDE_ALL_ACTIVITIES_DATA = {
+    include: {
+      events: {
+        include: {
+          leaders: {
+            include: {
+              user: true,
+            },
+          },
+          users: true,
+        },
+      },
+      tags: {
+        include: {
+          tag: true,
+        },
+      },
+      author: {
+        select: { name: true },
+      },
+    },
+  }

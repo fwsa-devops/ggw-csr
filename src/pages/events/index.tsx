@@ -2,7 +2,7 @@ import './event.css';
 import 'tailwindcss/tailwind.css';
 import {
   serializeActivities,
-  getAllActivities,
+  getAllActivitiesFromDB,
   getPastActivities,
 } from '../../components/events/utils';
 import ActiveEvents from '@/components/events/active-events';
@@ -13,8 +13,8 @@ type EventsComponentProps = {
 };
 
 export const getServerSideProps = async (context) => {
-  const activities = await getAllActivities();
-  console.log('activities server side', activities);
+  const activities = await getAllActivitiesFromDB();
+  // console.log('activities server side', activities);
   const serializedActivities = serializeActivities(activities);
 
   let pastActivities = await getPastActivities();

@@ -16,10 +16,12 @@ import {
 
 type DatePickerType = {
   onUpdate: (value) => void;
+  disabled?: boolean;
 };
 export function DatePickerWithRange({
   className,
   onUpdate,
+  disabled = false,
 }: React.HTMLAttributes<HTMLDivElement> & DatePickerType) {
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: new Date(),
@@ -31,6 +33,7 @@ export function DatePickerWithRange({
       <Popover>
         <PopoverTrigger asChild>
           <Button
+            disabled={disabled}
             id="date"
             variant={'outline'}
             className={cn(

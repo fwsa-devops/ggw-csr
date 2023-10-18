@@ -1,5 +1,10 @@
 import prisma from '@/lib/prisma';
 import { EVENT_DESCRIPTION_TEXT_LENGTH } from '../../../constants';
+import {
+  getActivitiesBasedOnFilters,
+  getAllActivities,
+  getAllTagsFromDB,
+} from './utils/api';
 
 // Transform the Date objects to serializable format
 export const serializeActivities = (object) => {
@@ -66,32 +71,8 @@ export const serializeActivities = (object) => {
   }
 };
 
-export const getAllActivities = async () => {
-  const activities = await prisma.activity.findMany({
-    where: { published: true },
-    include: {
-      events: {
-        include: {
-          leaders: {
-            include: {
-              user: true,
-            },
-          },
-          users: true,
-        },
-      },
-      tags: {
-        include: {
-          tag: true,
-        },
-      },
-      author: {
-        select: { name: true },
-      },
-    },
-  });
-  console.log('activities', activities);
-
+export const getAllActivitiesFromDB = async () => {
+  const activities = await getAllActivities();
   return activities;
 };
 
@@ -197,27 +178,17 @@ export const isUserPartOfActivity = async (userEmail, activityId) => {
   return Boolean(isJoined);
 };
 
-export const getFilteredActivitiesBasedOnTime = async (filters) => {
-  const activities = await prisma.activity.findMany({
-    where: {
-      startTime: {
-        gte: filters.from,
-      },
-      endTime: {
-        lte: filters.to,
-      },
-    },
-  });
-  console.log('activities getFilteredActivitiesBasedOnTime', activities);
+export const getFilteredActivities = async (filters, filterType) => {
+  const filteredActivities = await getActivitiesBasedOnFilters(
+    filters,
+    filterType,
+  );
+  return filteredActivities;
 };
 
-export const getFilteredActivitiesBasedOnLocation = async (location) => {
-  const activities = await prisma.activity.findMany({
-    where: {
-      place: location,
-    },
-  });
-  console.log('activities getFilteredActivitiesBasedOnLocation', activities);
+export const getAllTags = async () => {
+  const tags = await getAllTagsFromDB();
+  return tags;
 };
 
 // Manual SQL queries on nested models

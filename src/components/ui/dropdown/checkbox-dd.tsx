@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { DropdownMenuCheckboxItemProps } from '@radix-ui/react-dropdown-menu';
-
+import { ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -16,12 +16,16 @@ import {
 type Checked = DropdownMenuCheckboxItemProps['checked'];
 
 export function DropdownMenuCheckboxes(props) {
-  const { onChange, items, label, title } = props;
+  const { onChange, items, label, title, disabled } = props;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">{title}</Button>
+        <Button variant="outline"
+        disabled={disabled}>
+          {title}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
@@ -32,6 +36,7 @@ export function DropdownMenuCheckboxes(props) {
             onCheckedChange={(value) => {
               onChange(item, value);
             }}
+            className="cursor-pointer"
           >
             {item.name}
           </DropdownMenuCheckboxItem>

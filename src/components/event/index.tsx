@@ -12,15 +12,19 @@ import EventJoinButton from '../events/event-join-button';
 import ListUsers from './list-users';
 import { useSession } from 'next-auth/react';
 
-const EventPage = async (props) => {
+const EventPage = (props) => {
   const { activity } = props;
   const { data: session } = useSession();
 
   // try passing this also as a prop
-  const isUserAlreadyPartOfActivity: boolean = await isUserPartOfActivity(
-    session?.user?.email,
-    activity.id,
-  );
+  // const isUserAlreadyPartOfActivity: boolean = await isUserPartOfActivity(
+  //   session?.user?.email,
+  //   activity.id,
+  // );
+
+  const isUserAlreadyJoinedAnEvent = async () => {
+    return await isUserPartOfActivity(session?.user?.email, activity.id);
+  };
 
   return (
     <div
@@ -118,7 +122,7 @@ const EventPage = async (props) => {
             <EventJoinButton
               extended
               event={event}
-              alreadyJoinedActivity={isUserAlreadyPartOfActivity}
+              // alreadyJoinedActivity={isUserAlreadyJoinedAnEvent()}
             />
           </div>
         ))}

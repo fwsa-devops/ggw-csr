@@ -80,12 +80,17 @@ export const getAllActivities = async () => {
           users: true,
         },
       },
+      tags: {
+        include: {
+          tag: true,
+        },
+      },
       author: {
         select: { name: true },
       },
     },
   });
-  //   console.log('activities', activities);
+  console.log('activities', activities);
 
   return activities;
 };
@@ -136,6 +141,11 @@ export const getActivity = async (activityId: string) => {
       author: {
         select: { name: true },
       },
+      tags: {
+        include: {
+          tag: true,
+        },
+      },
     },
   });
   return activity;
@@ -170,3 +180,50 @@ export const shortenDate = (isoDate) => {
   const formattedDate = date.toLocaleString(undefined, options);
   return formattedDate ?? 'None';
 };
+
+export const isUserPartOfActivity = async (userEmail, activityId) => {
+  const events = await prisma.event.findMany({
+    where: {
+      activityId: activityId,
+    },
+    include: {
+      users: true,
+    },
+  });
+  const isJoined = events.filter((event) => {
+    const eventUsers = event.users;
+    return eventUsers.some((eventUser) => eventUser.userId === userEmail);
+  });
+  return Boolean(isJoined);
+};
+
+export const getFilteredActivitiesBasedOnTime = async (filters) => {
+  const activities = await prisma.activity.findMany({
+    where: {
+      startTime: {
+        gte: filters.from,
+      },
+      endTime: {
+        lte: filters.to,
+      },
+    },
+  });
+  console.log('activities getFilteredActivitiesBasedOnTime', activities);
+};
+
+export const getFilteredActivitiesBasedOnLocation = async (location) => {
+  const activities = await prisma.activity.findMany({
+    where: {
+      place: location,
+    },
+  });
+  console.log('activities getFilteredActivitiesBasedOnLocation', activities);
+};
+
+// Manual SQL queries on nested models
+// const result = await prisma.$queryRaw`
+//   SELECT *
+//   FROM eventUser
+//   JOIN user ON eventUser.userId = user.id
+//   WHERE user.email = ${userEmail}
+// `;

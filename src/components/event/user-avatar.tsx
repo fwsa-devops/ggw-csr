@@ -7,7 +7,7 @@ const UserAvatar = ({ user }) => {
   const u = user?.user || user;
 
   return (
-    <div>
+    <div className="cursor-pointer">
       <HoverCard.Root>
         <HoverCard.Trigger asChild>
           <Avatar key={u.id}>

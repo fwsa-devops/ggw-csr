@@ -1,7 +1,5 @@
 import './event.css';
 import 'tailwindcss/tailwind.css';
-import prisma from '@/lib/prisma';
-import { useSession } from 'next-auth/react';
 import {
   serializeActivities,
   getAllActivities,
@@ -16,7 +14,7 @@ type EventsComponentProps = {
 
 export const getServerSideProps = async (context) => {
   const activities = await getAllActivities();
-  // console.log('activities', activities);
+  console.log('activities server side', activities);
   const serializedActivities = serializeActivities(activities);
 
   let pastActivities = await getPastActivities();
@@ -33,46 +31,10 @@ export const getServerSideProps = async (context) => {
 const EventsComponent = (props: any) => {
   let { activities, pastActivities } = props;
 
-  // const { data: session } = useSession();
-
-  const session = {
-    user: {
-      email: 'mohammed.hasan@freshworks.com',
-      name: 'Hasan',
-      image: 'dummy',
-    },
-  };
-
-  const isAlreadyJoined = () => {
-    if (session?.user) {
-      const user = prisma.user.findUnique({
-        where: {
-          email: session.user.email || '',
-        },
-      });
-      // console.log('user', user, 'session', session);
-      return !user;
-    }
-  };
-
-  // try passing the name, email & image from child component
-  // to this component & create user
-  const joinEvent = () => {
-    prisma.user.create({
-      data: {
-        name: session?.user?.name,
-        email: session?.user?.email,
-        image: session?.user?.image,
-      },
-    });
-    // need to add toaster
-    isAlreadyJoined();
-  };
-
   return (
     <>
-      <ActiveEvents activities={activities} />
-      <PastActivities pastActivities={pastActivities} />
+      {/* <ActiveEvents activities={activities} /> */}
+      {/* <PastActivities pastActivities={pastActivities} /> */}
     </>
   );
 };

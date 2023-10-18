@@ -1,6 +1,7 @@
 import ActiveEvents from '@/components/events/active-events';
 import {
   getAllActivities,
+  getFilteredActivitiesBasedOnTime,
   getPastActivities,
   serializeActivities,
 } from '@/components/events/utils';
@@ -11,7 +12,19 @@ export default async function Home() {
 
   // let pastActivities = await getPastActivities();
   // pastActivities = serializeActivities(pastActivities);
+  console.log('activities state', activities);
 
+  const onDateChange = async (value) => {
+    console.log('value', value);
+    return getFilteredActivitiesBasedOnTime(value);
+  };
+  console.log(
+    'filtered events',
+    await onDateChange({
+      from: '2023-10-13T16:51:54.704Z',
+      to: '2023-10-15T18:30:00.000Z',
+    }),
+  );
   return (
     <>
       <div className="mt-8 main-header ">

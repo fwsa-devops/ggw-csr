@@ -21,8 +21,7 @@ export function DropdownMenuCheckboxes(props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline"
-        disabled={disabled}>
+        <Button variant="outline" disabled={disabled}>
           {title}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -30,7 +29,7 @@ export function DropdownMenuCheckboxes(props) {
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {items.map((item, idx) => (
+        {(items || []).map((item, idx) => (
           <DropdownMenuCheckboxItem
             checked={item.checked}
             onCheckedChange={(value) => {

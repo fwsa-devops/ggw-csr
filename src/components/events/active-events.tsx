@@ -11,6 +11,7 @@ import {
   getAllActivitiesFromDB,
   getAllTags,
 } from './utils';
+import { DateRange } from 'react-day-picker';
 import { LaptopIcon, TimerIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import EventJoinButton from './event-join-button';
@@ -19,6 +20,7 @@ import { useSession } from 'next-auth/react';
 import { DatePickerWithRange } from '../ui/date-range-picker';
 import { DropdownMenuCheckboxes } from '../ui/dropdown/checkbox-dd';
 import { EVENT_LOCATIONS } from '../../../constants';
+import { addDays } from 'date-fns';
 
 const ActiveEvents = (props) => {
   const { activities } = props;
@@ -46,9 +48,14 @@ const ActiveEvents = (props) => {
 
   const onLocationChange = async (item, value) => {
     setLoading(true);
+    setTags((tags) => tags.map((tag) => ({ ...tag, checked: false })));
     const updatedLocations = locations.map((obj) =>
       obj.id === item.id ? { ...item, checked: value } : obj,
     );
+    setDate({
+      from: new Date(),
+      to: addDays(new Date(), 10),
+    });
     setLocations(updatedLocations);
     const selectedLocations: any[] = updatedLocations.filter(
       (location) => location.checked,
@@ -73,6 +80,13 @@ const ActiveEvents = (props) => {
 
   const onTagsChange = async (item, value) => {
     setLoading(true);
+    setLocations((locations) =>
+      locations.map((location) => ({ ...location, checked: false })),
+    );
+    setDate({
+      from: new Date(),
+      to: addDays(new Date(), 10),
+    });
     const updatedTags = tags.map((obj) =>
       obj.id === item.id ? { ...item, checked: value } : obj,
     );
@@ -95,6 +109,11 @@ const ActiveEvents = (props) => {
     setActivities(await getAllActivitiesFromDB());
   };
 
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 10),
+  });
+
   // const isUserAlreadyJoinedAnEvent = async (activity) => {
   //   return await isUserPartOfActivity(session?.user?.email, activity.id);
   // };
@@ -116,7 +135,12 @@ const ActiveEvents = (props) => {
           label={'Locations'}
           title={'Filter by Location'}
         />
-        <DatePickerWithRange disabled={isLoading} onUpdate={onDateChange} />
+        <DatePickerWithRange
+          date={date}
+          setDate={setDate}
+          disabled={isLoading}
+          onUpdate={onDateChange}
+        />
         <Button disabled={isLoading} onClick={clearFilters}>
           Clear filters
         </Button>

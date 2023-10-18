@@ -12,6 +12,8 @@ export default async function handle(req, res) {
     return res.status(401).json({ error: 'Not authorized' });
   }
 
+  console.log('session', session);
+
   const user = await prisma.user.upsert({
     where: { email: session?.user?.email || '' },
     update: {},

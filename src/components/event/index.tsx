@@ -15,16 +15,18 @@ import { useSession } from 'next-auth/react';
 const EventPage = (props) => {
   const { activity } = props;
   const { data: session } = useSession();
+  const [alreadyJoinedActivity, setAlreadyJoinedActivity] =
+    React.useState(false);
 
-  // try passing this also as a prop
-  // const isUserAlreadyPartOfActivity: boolean = await isUserPartOfActivity(
-  //   session?.user?.email,
-  //   activity.id,
-  // );
+  React.useEffect(() => {
+    const checkUserAlreadyRegistered = async () => {
+      const result = await isUserPartOfActivity(session?.user?.email, activity);
+      console.log('result', result);
+      setAlreadyJoinedActivity(result);
+    };
 
-  const isUserAlreadyJoinedAnEvent = async () => {
-    return await isUserPartOfActivity(session?.user?.email, activity.id);
-  };
+    checkUserAlreadyRegistered();
+  }, [activity]);
 
   return (
     <div
@@ -60,14 +62,11 @@ const EventPage = (props) => {
             </div>
           </div>
         </div>
-
-        <Link className="flex lg:w-1/2 " href={`/events/${activity.id}`}>
-          <img
-            alt="ecommerce"
-            className="object-cover object-center w-full rounded"
-            src={activity.cover || ''}
-          />
-        </Link>
+        <img
+          alt="ecommerce"
+          className="object-cover object-center w-full rounded"
+          src={activity.cover || ''}
+        />
       </div>
 
       <div className="mt-12">
@@ -122,7 +121,7 @@ const EventPage = (props) => {
             <EventJoinButton
               extended
               event={event}
-              // alreadyJoinedActivity={isUserAlreadyJoinedAnEvent()}
+              alreadyJoinedActivity={alreadyJoinedActivity}
             />
           </div>
         ))}

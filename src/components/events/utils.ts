@@ -196,3 +196,34 @@ export const isUserPartOfActivity = async (userEmail, activityId) => {
   });
   return Boolean(isJoined);
 };
+
+export const getFilteredActivitiesBasedOnTime = async (filters) => {
+  const activities = await prisma.activity.findMany({
+    where: {
+      startTime: {
+        gte: filters.from,
+      },
+      endTime: {
+        lte: filters.to,
+      },
+    },
+  });
+  console.log('activities getFilteredActivitiesBasedOnTime', activities);
+};
+
+export const getFilteredActivitiesBasedOnLocation = async (location) => {
+  const activities = await prisma.activity.findMany({
+    where: {
+      place: location,
+    },
+  });
+  console.log('activities getFilteredActivitiesBasedOnLocation', activities);
+};
+
+// Manual SQL queries on nested models
+// const result = await prisma.$queryRaw`
+//   SELECT *
+//   FROM eventUser
+//   JOIN user ON eventUser.userId = user.id
+//   WHERE user.email = ${userEmail}
+// `;

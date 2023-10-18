@@ -14,7 +14,7 @@ type EventsComponentProps = {
 
 export const getServerSideProps = async (context) => {
   const activities = await getAllActivities();
-  // console.log('activities', activities);
+  console.log('activities server side', activities);
   const serializedActivities = serializeActivities(activities);
 
   let pastActivities = await getPastActivities();
@@ -33,8 +33,8 @@ const EventsComponent = (props: any) => {
 
   return (
     <>
-      <ActiveEvents activities={activities} />
-      <PastActivities pastActivities={pastActivities} />
+      {/* <ActiveEvents activities={activities} /> */}
+      {/* <PastActivities pastActivities={pastActivities} /> */}
     </>
   );
 };

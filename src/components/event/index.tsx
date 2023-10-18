@@ -1,13 +1,26 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
-import { convertToReadableDate, shortenDate } from '../events/utils';
+import {
+  convertToReadableDate,
+  isUserPartOfActivity,
+  shortenDate,
+} from '../events/utils';
 import { BuildingIcon, LaptopIcon, MapPinIcon, TimerIcon } from 'lucide-react';
 import EventJoinButton from '../events/event-join-button';
 import ListUsers from './list-users';
-// import { isUserPartOfActivity } from './utils';
+import { useSession } from 'next-auth/react';
 
-const EventPage = (props) => {
+const EventPage = async (props) => {
   const { activity } = props;
+  const { data: session } = useSession();
+
+  // try passing this also as a prop
+  const isUserAlreadyPartOfActivity: boolean = await isUserPartOfActivity(
+    session?.user?.email,
+    activity.id,
+  );
 
   return (
     <div
@@ -102,7 +115,11 @@ const EventPage = (props) => {
               </div>
             </div>
 
-            <EventJoinButton extended event={event} />
+            <EventJoinButton
+              extended
+              event={event}
+              alreadyJoinedActivity={isUserAlreadyPartOfActivity}
+            />
           </div>
         ))}
       </div>

@@ -15,6 +15,7 @@ const EventJoinButton = ({
   extended,
   alreadyJoinedActivity = false,
 }) => {
+  console.log('alreadyJoinedActivity', alreadyJoinedActivity);
   const { data: session } = useSession();
 
   const [isLoading, setIsLoading] = useState(false);

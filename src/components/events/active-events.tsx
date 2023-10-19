@@ -11,7 +11,7 @@ import {
   getAllTags,
 } from './utils';
 import { DateRange } from 'react-day-picker';
-import { LaptopIcon, TimerIcon } from 'lucide-react';
+import { MapPin, TimerIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import EventJoinButton from './event-join-button';
 import { Separator } from '../ui/separator';
@@ -168,12 +168,16 @@ const ActiveEvents = (props) => {
                   <h1 className="mb-1 text-xl font-semibold text-gray-700 title-font">
                     {activity.name}
                   </h1>
-                  <div className="flex gap-2 mb-2 text-gray-700 location align-center">
-                    <LaptopIcon size="18" />
+                  <div className="flex gap-2 mb-2 text-gray-700 location items-center">
+                    <MapPin size="18" />
                     <p className="text-sm">{activity?.place}</p>
                   </div>
                   <h2 className="mb-1 text-sm tracking-widest text-gray-400 title-font">
-                    {activity?.tags?.tag?.name || '#CSR #Helping'}
+                    {activity?.tags.length > 0
+                      ? activity?.tags
+                          .map((tag) => `#${tag?.tag?.name}`)
+                          .join(', ')
+                      : 'No tags available'}
                   </h2>
 
                   <p className="leading-relaxed">

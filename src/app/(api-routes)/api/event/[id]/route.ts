@@ -27,7 +27,7 @@ export async function GET(req: Request) {
 
   const result = await prisma.eventUser.create({
     data: {
-      eventId,
+      eventId: eventId || '',
       userId: user.email,
     },
   });

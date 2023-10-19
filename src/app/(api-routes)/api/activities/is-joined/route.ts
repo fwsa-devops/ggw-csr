@@ -1,19 +1,15 @@
 import prisma from '@/lib/prisma';
+import { getServerSession } from 'next-auth';
 
 // GET /api/activities/is-joined
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const activityId = searchParams.get('activityId');
+  const session = await getServerSession();
 
-  // get user email from session
-
-  const user = await prisma.user.findUnique({
+  const eventUsers = await prisma.eventUser.findMany({
     where: {
-      email: '',
-    },
-    include: {
-      activites: true,
+      userId: session?.user?.email || '',
     },
   });
-  return Response.json(user?.activites && user?.activites.length > 0);
+
+  return Response.json(eventUsers && eventUsers.length > 0);
 }

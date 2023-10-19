@@ -6,7 +6,6 @@ import {
   convertToReadableDate,
   getActivityDescription,
   shortenDate,
-  isUserPartOfActivity,
   getFilteredActivities,
   getAllActivitiesFromDB,
   getAllTags,
@@ -111,10 +110,6 @@ const ActiveEvents = (props) => {
     to: addDays(new Date(), 10),
   });
 
-  const isUserAlreadyJoinedAnEvent = async (activity) => {
-    return await isUserPartOfActivity(session?.user?.email, activity.id);
-  };
-
   return (
     <>
       <div className="flex justify-end gap-2">
@@ -159,7 +154,7 @@ const ActiveEvents = (props) => {
               <div className="flex gap-6 p-4 mx-auto event-container md:flex-nowrap md:h-600">
                 <Link
                   className="flex lg:w-1/3 lg:h-100 max-h-72"
-                  href={`/${activity.id}`}
+                  href={`/activities/${activity.id}`}
                 >
                   <img
                     alt="ecommerce"
@@ -198,7 +193,7 @@ const ActiveEvents = (props) => {
                     </div>
                   </div>
                   <div className="flex">
-                    <Link href={`/${activity.id}`}>
+                    <Link href={`/activities/${activity.id}`}>
                       <Button size="sm" variant="outline">
                         Learn more
                       </Button>
@@ -213,9 +208,9 @@ const ActiveEvents = (props) => {
                     Events
                   </h2>
                   {activity.events.map((event: any) => (
-                    <>
+                    <React.Fragment key={event.id}>
                       <Separator className="mb-4 mt-46" />
-                      <Link href={`/${activity.id}`}>
+                      <Link href={`/activities/${activity.id}`}>
                         <div className="join-event">
                           <div className="flex justify-between my-2 text-sm text-gray-700 event-timings align-center">
                             {' '}
@@ -237,15 +232,12 @@ const ActiveEvents = (props) => {
                             </div>
                           </div>
                           <EventJoinButton
-                            extended={false}
                             event={event}
-                            alreadyJoinedActivity={
-                              !isUserAlreadyJoinedAnEvent(activity)
-                            }
+                            alreadyJoinedActivity={true}
                           />
                         </div>
                       </Link>
-                    </>
+                    </React.Fragment>
                   ))}
                 </div>
               </div>

@@ -45,3 +45,14 @@ export const getAllTagsFromDB = async () => {
   const json = await tags.json();
   return json;
 };
+
+export const checkUserAlreadyRegistered = async () => {
+  const response = await fetch(
+    `http://localhost:3000/api/activities/is-joined`,
+    {
+      method: 'GET',
+    },
+  );
+  const json = await response.json();
+  return json;
+};

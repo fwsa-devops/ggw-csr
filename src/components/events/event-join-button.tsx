@@ -12,10 +12,15 @@ import React from 'react';
 
 const EventJoinButton = ({
   event,
-  extended,
+  extended = false,
   alreadyJoinedActivity = false,
+  onJoin,
+}: {
+  event: any;
+  extended?: boolean;
+  alreadyJoinedActivity?: boolean;
+  onJoin?: () => void;
 }) => {
-  console.log('alreadyJoinedActivity', alreadyJoinedActivity);
   const { data: session } = useSession();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +42,7 @@ const EventJoinButton = ({
       const updatedEventUser = await joinEvent(event.id);
       setEventUsers([...eventUsers, updatedEventUser]);
     }
+    onJoin?.();
     setIsLoading(false);
   };
 

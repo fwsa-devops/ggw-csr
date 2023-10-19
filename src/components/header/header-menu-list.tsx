@@ -15,13 +15,13 @@ export function MainNav({
       )}
       {...props}
     >
-      <Link
+      {/* <Link
         href="/"
         className="font-medium transition-colors text-md text-muted-foreground hover:text-primary"
       >
-        News
-      </Link>
-      <Link
+        Events
+      </Link> */}
+      {/* <Link
         href="/"
         className="font-medium transition-colors text-md text-muted-foreground hover:text-primary"
       >
@@ -32,7 +32,7 @@ export function MainNav({
         className="font-medium transition-colors text-md text-muted-foreground hover:text-primary"
       >
         Teams
-      </Link>
+      </Link> */}
       {/* <div className="ml-auto" style={{ marginLeft: 'auto' }}>
       </div> */}
     </nav>

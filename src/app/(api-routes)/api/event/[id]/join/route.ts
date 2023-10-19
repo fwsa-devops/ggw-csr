@@ -7,7 +7,10 @@ export async function GET(req: Request, context: { params }) {
 
   const session = await getServerSession();
 
-  if (session?.user?.email === undefined) {
+  if (
+    session?.user?.email === undefined ||
+    session?.user?.email?.indexOf('@freshworks.com') === -1
+  ) {
     return new Response('Not authorized session', {
       status: 401,
     });

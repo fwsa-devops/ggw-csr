@@ -14,10 +14,6 @@ export default async function Home() {
 
   return (
     <>
-      <div className="mt-8 main-header ">
-        <h1 className="text-xl">Upcoming Events</h1>
-      </div>
-
       <main className="flex flex-col items-center justify-between min-h-screen ">
         <section className="w-full text-gray-600 body-font">
           <ActiveEvents activities={activities} />

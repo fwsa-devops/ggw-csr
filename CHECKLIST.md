@@ -18,17 +18,20 @@
 - [x] List events page
 - [x] User joining + findOrCreate user
 - [x] User leaving action
-- [ ] More activity information - Requirement from Shyam
+- [x] Show tags from API
+- [x] Filter by location, themes and date range
+- [x] Allow only Freshworks email ids
+- [x] Disable join button if user is already joined one event
+- [x] Hide navigation
+- [ ] More activity information
+- [ ] Add a hero section on the landing page
+- [ ] Allow users to add event photos, videos and feedback
 - [ ] Show past activities
+
+### - Good to haves
+
 - [ ] Need to add responsiveness
 - [ ] Add toaster
-- [ ] Show tags from API
-- [ ] Filter by location, themes and date range
-- [ ] Allow only Freshworks email ids
-- [ ] Disable join button if user is already joined one event
-- [ ] Hide navigation
-- [ ] Allow users to add event photos, videos and feedback
-- [ ] Add a hero section on the landing page
 
 ### - User Profile
 

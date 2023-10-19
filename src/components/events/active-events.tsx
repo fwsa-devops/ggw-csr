@@ -102,44 +102,48 @@ const ActiveEvents = (props) => {
     setLoading(false);
   };
 
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(),
-    to: addDays(new Date(), 10),
-  });
+  const [date, setDate] = React.useState<DateRange | undefined>();
 
   return (
     <>
-      <div className="flex justify-end gap-2">
-        <DropdownMenuCheckboxes
-          onChange={onTagsChange}
-          disabled={isLoading}
-          items={tags}
-          label={'Tags'}
-          title={'Filter by Themes'}
-        />
-        <DropdownMenuCheckboxes
-          onChange={onLocationChange}
-          disabled={isLoading}
-          items={locations}
-          label={'Locations'}
-          title={'Filter by Location'}
-        />
-        <DatePickerWithRange
-          date={date}
-          setDate={setDate}
-          disabled={isLoading}
-          onUpdate={() => {}}
-        />
-        <Button disabled={isLoading} onClick={applyFilter}>
-          Apply filters
-        </Button>
-        <Button
-          variant={'secondary'}
-          disabled={isLoading}
-          onClick={clearFilters}
-        >
-          Clear filters
-        </Button>
+      <div className="flex justify-between gap-2 mt-12">
+        <div className="main-header">
+          <h1 className="text-xl">Upcoming Events</h1>
+        </div>
+        <div className="flex justify-end flex-1 gap-3">
+          <DropdownMenuCheckboxes
+            onChange={onTagsChange}
+            disabled={isLoading}
+            items={tags}
+            key="tags"
+            label={'Tags'}
+            title={'Filter by Themes'}
+          />
+          <DropdownMenuCheckboxes
+            onChange={onLocationChange}
+            disabled={isLoading}
+            items={locations}
+            key="location"
+            label={'Locations'}
+            title={'Filter by Location'}
+          />
+          <DatePickerWithRange
+            date={date}
+            setDate={setDate}
+            disabled={isLoading}
+            onUpdate={() => {}}
+          />
+          <Button disabled={isLoading} onClick={applyFilter}>
+            Apply filters
+          </Button>
+          <Button
+            variant={'secondary'}
+            disabled={isLoading}
+            onClick={clearFilters}
+          >
+            Clear filters
+          </Button>
+        </div>
       </div>
       {actvties.length ? (
         actvties?.map((activity: any) => {
@@ -242,7 +246,7 @@ const ActiveEvents = (props) => {
           );
         })
       ) : (
-        <h2 className="container h-auto mx-auto my-10 flex justify-center text-2xl">
+        <h2 className="container flex justify-center h-auto mx-auto my-10 text-2xl">
           No Activities with applied filters...
         </h2>
       )}

@@ -18,12 +18,15 @@ type Checked = DropdownMenuCheckboxItemProps['checked'];
 export function DropdownMenuCheckboxes(props) {
   const { onChange, items, label, title, disabled } = props;
 
+  const checkedItems = items.filter((item) => item.checked);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" disabled={disabled}>
-          {title}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          {checkedItems.length > 0
+            ? checkedItems.map((checked) => checked.name).join(', ')
+            : title}
+          <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">

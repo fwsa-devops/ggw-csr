@@ -30,7 +30,7 @@ const EventPage = (props) => {
       key={activity.id}
     >
       <div className="flex mx-auto event-container md:flex-nowrap md:h-600 lg:gap-8">
-        <div className="w-full mt-6 lg:w-1/2 lg:mt-0">
+        <div className="w-full mt-6 lg:mt-0 lg:w-1/2">
           <h1 className="mb-4 text-2xl font-semibold text-gray-700 title-font">
             {activity.name}
           </h1>
@@ -58,11 +58,13 @@ const EventPage = (props) => {
             </div>
           </div>
         </div>
-        <img
-          alt="ecommerce"
-          className="object-cover object-center w-full rounded"
-          src={activity.cover || ''}
-        />
+        <div className=" lg:w-1/2">
+          <img
+            alt="ecommerce"
+            className="object-cover object-center w-full rounded"
+            src={activity.cover || ''}
+          />
+        </div>
       </div>
 
       <div className="mt-12">

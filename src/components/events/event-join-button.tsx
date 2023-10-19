@@ -9,6 +9,8 @@ import { Progress } from '../ui/progress';
 import ListUsers from '../event/list-users';
 import { Separator } from '@/components/ui/separator';
 import React from 'react';
+import { useToast } from '@/components/ui/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 
 const EventJoinButton = ({
   event,
@@ -22,25 +24,47 @@ const EventJoinButton = ({
   onJoin?: () => void;
 }) => {
   const { data: session } = useSession();
+  const { toast } = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
   const [eventUsers, setEventUsers] = useState(event.users);
 
-  const hasJoined = React.useMemo(() => {
-    return eventUsers.find((user) => user.userId === session?.user?.email);
-  }, [session, eventUsers]);
+  const hasJoined = eventUsers.find(
+    (user) => user.userId === session?.user?.email,
+  );
 
   const toggleJoin = async () => {
     setIsLoading(true);
     if (hasJoined) {
       const deletedEventUser = await deleteEvent(event.id);
-      if (deletedEventUser.count === 1)
+      if (deletedEventUser.count === 1) {
         setEventUsers(
           eventUsers.filter((user) => user.userId !== session?.user?.email),
         );
+        toast({
+          title: 'Successfully Unjoined event',
+          description: event.name,
+          // action: (
+          //   <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
+          // ),
+        });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Error Unjoining event',
+          description: event.name,
+          // action: (
+          //   <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
+          // ),
+        });
+      }
     } else {
       const updatedEventUser = await joinEvent(event.id);
       setEventUsers([...eventUsers, updatedEventUser]);
+      toast({
+        title: 'Successfully Joined event',
+        description: event.name,
+      });
     }
     onJoin?.();
     setIsLoading(false);

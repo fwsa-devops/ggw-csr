@@ -14,7 +14,7 @@
 ### - Portal
 
 - [x] List activities from the DB
-- [x] List activities pag
+- [x] List activities page
 - [x] List events page
 - [x] User joining + findOrCreate user
 - [x] User leaving action
@@ -22,6 +22,13 @@
 - [ ] Show past activities
 - [ ] Need to add responsiveness
 - [ ] Add toaster
+- [ ] Show tags from API
+- [ ] Filter by location, themes and date range
+- [ ] Allow only Freshworks email ids
+- [ ] Disable join button if user is already joined one event
+- [ ] Hide navigation
+- [ ] Allow users to add event photos, videos and feedback
+- [ ] Add a hero section on the landing page
 
 ### - User Profile
 

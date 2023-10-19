@@ -66,10 +66,7 @@ const ActiveEvents = (props) => {
       checked: false,
     }));
     setLocations(updatedLocations);
-    setDate({
-      from: new Date(),
-      to: addDays(new Date(), 10),
-    });
+    setDate(undefined);
   };
 
   const getFilters = () => {
@@ -118,7 +115,7 @@ const ActiveEvents = (props) => {
           disabled={isLoading}
           items={tags}
           label={'Tags'}
-          title={'Filter by tags'}
+          title={'Filter by Themes'}
         />
         <DropdownMenuCheckboxes
           onChange={onLocationChange}

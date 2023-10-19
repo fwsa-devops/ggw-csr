@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import { EVENT_DESCRIPTION_TEXT_LENGTH } from '../../../constants';
 import {
+  checkUserAlreadyRegistered,
   getActivitiesBasedOnFilters,
   getAllActivities,
   getAllTagsFromDB,
@@ -162,8 +163,9 @@ export const shortenDate = (isoDate) => {
   return formattedDate ?? 'None';
 };
 
-export const isUserPartOfActivity = async (userEmail, activityId) => {
-  return false;
+export const isUserPartOfActivity = async () => {
+  const result = await checkUserAlreadyRegistered();
+  return result;
 };
 
 export const getFilteredActivities = async (filters) => {

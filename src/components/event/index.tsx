@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import {
   convertToReadableDate,
   isUserPartOfActivity,
@@ -10,21 +9,18 @@ import {
 import { BuildingIcon, LaptopIcon, MapPinIcon, TimerIcon } from 'lucide-react';
 import EventJoinButton from '../events/event-join-button';
 import ListUsers from './list-users';
-import { useSession } from 'next-auth/react';
 
 const EventPage = (props) => {
   const { activity } = props;
-  const { data: session } = useSession();
   const [alreadyJoinedActivity, setAlreadyJoinedActivity] =
     React.useState(false);
 
-  React.useEffect(() => {
-    const checkUserAlreadyRegistered = async () => {
-      const result = await isUserPartOfActivity(session?.user?.email, activity);
-      console.log('result', result);
-      setAlreadyJoinedActivity(result);
-    };
+  const checkUserAlreadyRegistered = async () => {
+    const result = await isUserPartOfActivity();
+    setAlreadyJoinedActivity(result);
+  };
 
+  React.useEffect(() => {
     checkUserAlreadyRegistered();
   }, [activity]);
 
@@ -121,6 +117,9 @@ const EventPage = (props) => {
             <EventJoinButton
               extended
               event={event}
+              onJoin={() => {
+                checkUserAlreadyRegistered();
+              }}
               alreadyJoinedActivity={alreadyJoinedActivity}
             />
           </div>

@@ -23,8 +23,11 @@
 - [x] Allow only Freshworks email ids
 - [x] Disable join button if user is already joined one event
 - [x] Hide navigation
-- [ ] More activity information
+- [ ] Change title to "Global Giving Week"
+- [ ] Change "Upcoming Events" to "Events 2023"
+- [ ] Filter by "City" in Events instead of Activities 
 - [ ] Add a hero section on the landing page
+- [ ] Valid activity information
 - [ ] Allow users to add event photos, videos and feedback
 - [ ] Show past activities
 

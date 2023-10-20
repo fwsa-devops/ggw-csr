@@ -13,7 +13,7 @@ const UserAvatar = ({ user }) => {
           <Avatar key={u.id}>
             <AvatarImage src={u?.image} />
             <AvatarFallback>
-              {(u?.name || u?.email || u?.userId).toUpperCase().substring(0, 2)}
+              {(u?.name || u?.email || u?.user_id).toUpperCase().substring(0, 2)}
             </AvatarFallback>
           </Avatar>
         </HoverCard.Trigger>
@@ -28,7 +28,7 @@ const UserAvatar = ({ user }) => {
                 <Avatar style={{ width: '70px', height: '70px' }} key={u.id}>
                   <AvatarImage src={u?.image} />
                   <AvatarFallback>
-                    {(u?.name || u?.email || u?.userId)
+                    {(u?.name || u?.email || u?.user_id)
                       .toUpperCase()
                       .substring(0, 2)}
                   </AvatarFallback>

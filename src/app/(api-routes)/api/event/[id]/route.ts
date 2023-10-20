@@ -25,10 +25,10 @@ export async function GET(req: Request) {
     });
   }
 
-  const result = await prisma.eventUser.create({
+  const result = await prisma.volunteers.create({
     data: {
-      eventId: eventId || '',
-      userId: user.email,
+      event_id: eventId || '',
+      user_id: user.email,
     },
   });
 

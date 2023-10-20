@@ -11,7 +11,7 @@ import {
   getAllTags,
 } from './utils';
 import { DateRange } from 'react-day-picker';
-import { MapPin, TimerIcon } from 'lucide-react';
+import { CalendarRangeIcon, MapPin } from 'lucide-react';
 import { Button } from '../ui/button';
 import EventJoinButton from './event-join-button';
 import { Separator } from '../ui/separator';
@@ -33,7 +33,7 @@ const ActiveEvents = (props: {
   const { activities } = props;
 
   const [isLoading, setLoading] = React.useState<boolean>(false);
-  const [actvties, setActivities] = React.useState(activities);
+  const [activties, setActivities] = React.useState(activities);
   const [locations, setLocations] = React.useState([...EVENT_LOCATIONS]);
   const [tags, setTags] = React.useState<any>([]);
 
@@ -152,8 +152,8 @@ const ActiveEvents = (props: {
           </Button>
         </div>
       </div>
-      {actvties.length ? (
-        actvties?.map((activity) => {
+      {activties.length ? (
+        activties?.map((activity) => {
           return (
             <div
               className="container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground "
@@ -237,11 +237,14 @@ const ActiveEvents = (props: {
                               {shortenDate(event.endTime)}
                             </time> */}
                             <div className="flex items-center text-sm text-gray-700 event-duration gap-x-1">
-                              <TimerIcon size="18" />
-                              {((new Date(event.endTime) as any) -
-                                (new Date(event.startTime) as any)) /
-                                (1000 * 60 * 60)}{' '}
-                              hrs
+                              <CalendarRangeIcon size="18" />
+                              {
+                                event.is_dates_announced ?
+                                  ((new Date(event.endTime as any).getTime() as any) - (new Date(event.startTime as any).getTime() as any)) /
+                                  (1000 * 60 * 60) + "hrs"
+                                  :
+                                  (event.date_announcement_text)
+                              }
                             </div>
                           </div>
                           <EventJoinButton

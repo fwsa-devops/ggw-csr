@@ -10,13 +10,13 @@ export async function POST(req: Request) {
     take: 10,
     where: {
       AND: {
-        startTime: {
-          gte: filters.from,
-        },
-        endTime: {
-          lte: filters.to,
-        },
-        place: {
+        // startTime: {
+        //   gte: filters.from,
+        // },
+        // endTime: {
+        //   lte: filters.to,
+        // },
+        city: {
           in: filters.locations,
         },
         tags: {

@@ -59,12 +59,21 @@ const EventJoinButton = ({
         });
       }
     } else {
-      const updatedEventUser = await joinEvent(event.id);
-      setEventUsers([...eventUsers, updatedEventUser]);
-      toast({
-        title: 'Successfully Joined event',
-        description: event.name,
-      });
+      try {
+        const updatedEventUser = await joinEvent(event.id);
+        setEventUsers([...eventUsers, updatedEventUser]);
+        toast({
+          title: 'Successfully Joined event',
+          description: event.name,
+        });
+      } catch (error) {
+        console.error('exception', error);
+        toast({
+          variant: 'destructive',
+          title: 'Error Joining event',
+          description: 'Only Freshworks emails are allowed to join',
+        });
+      }
     }
     onJoin?.();
     setIsLoading(false);

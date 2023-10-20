@@ -5,15 +5,16 @@ import { INCLUDE_ALL_ACTIVITIES_DATA } from '../../../../../../constants';
 // return filtered activities
 export async function POST(req: Request) {
   const filters = await req.json();
+  const { date } = filters;
 
   const activities = await prisma.activity.findMany({
     where: {
       AND: {
         startTime: {
-          gte: filters.from,
+          gte: date.from,
         },
         endTime: {
-          lte: filters.to,
+          lte: date.to,
         },
         place: {
           in: filters.locations,

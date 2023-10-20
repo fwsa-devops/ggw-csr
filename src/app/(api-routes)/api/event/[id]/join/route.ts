@@ -9,7 +9,9 @@ export async function GET(req: Request, context: { params }) {
 
   if (
     session?.user?.email === undefined ||
-    session?.user?.email?.indexOf('@freshworks.com') === -1
+    !(
+      session?.user?.email && /^\S+@freshworks\.com$/.test(session?.user?.email)
+    )
   ) {
     return new Response('Not authorized session', {
       status: 401,

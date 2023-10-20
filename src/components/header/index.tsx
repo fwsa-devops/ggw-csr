@@ -8,7 +8,7 @@ const Header = () => {
       <div className="header-content responsive-wrapper">
         <div className="header-logo">
           <Link href="/">
-            <code className="text-2xl font-bold">VOLUNTEER</code>
+            <code className="text-2xl font-bold">Global Giving Week</code>
           </Link>
         </div>
         <div className="header-navigation">

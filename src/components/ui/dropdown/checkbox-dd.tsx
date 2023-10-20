@@ -34,6 +34,7 @@ export function DropdownMenuCheckboxes(props) {
         <DropdownMenuSeparator />
         {(items || []).map((item, idx) => (
           <DropdownMenuCheckboxItem
+            key={idx}
             checked={item.checked}
             onCheckedChange={(value) => {
               onChange(item, value);

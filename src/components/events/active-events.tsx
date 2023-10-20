@@ -15,15 +15,22 @@ import { MapPin, TimerIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import EventJoinButton from './event-join-button';
 import { Separator } from '../ui/separator';
-import { useSession } from 'next-auth/react';
 import { DatePickerWithRange } from '../ui/date-range-picker';
 import { DropdownMenuCheckboxes } from '../ui/dropdown/checkbox-dd';
 import { EVENT_LOCATIONS } from '../../../constants';
-import { addDays } from 'date-fns';
+import { Activity, ActivityTags, Event, EventLeader, Tag, User, Volunteers } from '@prisma/client';
 
-const ActiveEvents = (props) => {
+interface Activities extends Activity {
+  events: { volunteers: Volunteers[], leaders: EventLeader[] } & Event[],
+  tags: ({ tag: Tag } & ActivityTags)[],
+  author: { name: String }
+}
+
+
+const ActiveEvents = (props: {
+  activities: Activities[]
+}) => {
   const { activities } = props;
-  const { data: session } = useSession();
 
   const [isLoading, setLoading] = React.useState<boolean>(false);
   const [actvties, setActivities] = React.useState(activities);
@@ -108,7 +115,7 @@ const ActiveEvents = (props) => {
     <>
       <div className="flex justify-between gap-2 mt-12">
         <div className="main-header">
-          <h1 className="text-xl">Upcoming Events</h1>
+          <h1 className="text-xl">Events - 2023</h1>
         </div>
         <div className="flex justify-end flex-1 gap-3">
           <DropdownMenuCheckboxes
@@ -131,7 +138,7 @@ const ActiveEvents = (props) => {
             date={date}
             setDate={setDate}
             disabled={isLoading}
-            onUpdate={() => {}}
+            onUpdate={() => { }}
           />
           <Button disabled={isLoading} onClick={applyFilter}>
             Apply filters
@@ -146,7 +153,7 @@ const ActiveEvents = (props) => {
         </div>
       </div>
       {actvties.length ? (
-        actvties?.map((activity: any) => {
+        actvties?.map((activity) => {
           return (
             <div
               className="container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground "
@@ -170,13 +177,13 @@ const ActiveEvents = (props) => {
                   </h1>
                   <div className="flex gap-2 mb-2 text-gray-700 location items-center">
                     <MapPin size="18" />
-                    <p className="text-sm">{activity?.place}</p>
+                    <p className="text-sm">{activity?.city}</p>
                   </div>
                   <h2 className="mb-1 text-sm tracking-widest text-gray-400 title-font">
                     {activity?.tags.length > 0
                       ? activity?.tags
-                          .map((tag) => `#${tag?.tag?.name}`)
-                          .join(', ')
+                        .map((tag) => `#${tag?.tag.name}`)
+                        .join(', ')
                       : 'No tags available'}
                   </h2>
 
@@ -187,13 +194,14 @@ const ActiveEvents = (props) => {
                     <div className="flex flex-col gap-y-2">
                       <p>
                         <strong className="mr-3">Duration: </strong>
-                        <time
+                        {activity?.duration} minutes
+                        {/* <time
                           dateTime={convertToReadableDate(activity.startTime)}
                           suppressHydrationWarning
                         >
                           {convertToReadableDate(activity.startTime)} to{' '}
                           {convertToReadableDate(activity.endTime)}
-                        </time>
+                        </time> */}
                       </p>
                     </div>
                   </div>
@@ -219,7 +227,7 @@ const ActiveEvents = (props) => {
                         <div className="join-event">
                           <div className="flex justify-between my-2 text-sm text-gray-700 event-timings align-center">
                             {' '}
-                            <time
+                            {/* <time
                               dateTime={convertToReadableDate(
                                 activity.startTime,
                               )}
@@ -227,7 +235,7 @@ const ActiveEvents = (props) => {
                             >
                               {shortenDate(event.startTime)} to{' '}
                               {shortenDate(event.endTime)}
-                            </time>
+                            </time> */}
                             <div className="flex items-center text-sm text-gray-700 event-duration gap-x-1">
                               <TimerIcon size="18" />
                               {((new Date(event.endTime) as any) -

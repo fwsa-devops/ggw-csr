@@ -12,7 +12,7 @@ export const EVENT_LOCATIONS = [
   },
   {
     id: 2,
-    name: 'Banglore',
+    name: 'Bangalore',
     checked: false
   },
   {

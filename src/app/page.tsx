@@ -6,7 +6,7 @@ import {
 } from '@/components/events/utils';
 
 export default async function Home() {
-  let activities = await getAllActivitiesFromDB();
+  const activities = await getAllActivitiesFromDB();
   // activities = serializeActivities(activities);
 
   // let pastActivities = await getPastActivities();
@@ -22,3 +22,5 @@ export default async function Home() {
     </>
   );
 }
+
+export const revalidate = 30;

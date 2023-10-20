@@ -25,7 +25,7 @@ interface IActivity extends Activity {
 const EventPage = (props: { activity: IActivity }) => {
   const { activity } = props;
 
-  console.log("activity", activity)
+  // console.log("activity", activity)
 
   const [alreadyJoinedActivity, setAlreadyJoinedActivity] =
     React.useState(false);

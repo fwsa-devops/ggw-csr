@@ -28,6 +28,17 @@ export async function POST(req: Request) {
             },
           },
         },
+        events: {
+          some: {
+            is_dates_announced: true,
+            startTime: {
+              gte: filters.from,
+            },
+            endTime: {
+              lte: filters.to,
+            },
+          }
+        }
       },
     },
     ...INCLUDE_ALL_ACTIVITIES_DATA,

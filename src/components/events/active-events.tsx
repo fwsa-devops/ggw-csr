@@ -241,7 +241,7 @@ const ActiveEvents = (props: {
                               {
                                 event.is_dates_announced ?
                                   ((new Date(event.endTime as any).getTime() as any) - (new Date(event.startTime as any).getTime() as any)) /
-                                  (1000 * 60 * 60) + "hrs"
+                                  (1000 * 60 * 60) + " hrs"
                                   :
                                   (event.date_announcement_text)
                               }

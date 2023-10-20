@@ -80,7 +80,7 @@ const ActiveEvents = (props) => {
     );
 
     const filters = {
-      date,
+      ...date,
     };
     if (selectedTagNames.length > 0) {
       filters['tagNames'] = selectedTagNames;

@@ -1,11 +1,16 @@
 const { HOST_API_URL = '/' } = process.env;
 
 export const joinEvent = async (eventId: number) => {
-  const response = await fetch(`/api/event/${eventId}/join`, {
-    method: 'GET',
-  });
-  const json = await response.json();
-  return json;
+    const response = await fetch(`/api/event/${eventId}/join`, {
+      method: 'GET',
+    });
+    if(response.ok){
+    const json = await response.json();
+    return json;
+    }else{
+      throw new Error("Only freshworks emails allowed");
+    }
+
 };
 
 export const deleteEvent = async (eventId: number) => {

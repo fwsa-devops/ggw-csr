@@ -14,10 +14,9 @@ import { ToastAction } from '@/components/ui/toast';
 import { EventLeader, Volunteers, Event, User } from '@prisma/client';
 
 interface IEvent extends Event {
-  volunteers: ({ user: User } & Volunteers)[],
-  leaders: EventLeader[],
+  volunteers: ({ user: User } & Volunteers)[];
+  leaders: EventLeader[];
 }
-
 
 const EventJoinButton = ({
   event,
@@ -71,7 +70,6 @@ const EventJoinButton = ({
         setEventUsers([...eventUsers, updatedEventUser]);
         toast({
           title: 'Successfully Joined event',
-          // description: event.name,
         });
       } catch (error) {
         console.error('exception', error);
@@ -90,10 +88,11 @@ const EventJoinButton = ({
     <>
       {extended && <Separator className="mt-6 mb-4" />}
       <div
-        className={`flex justify-between my-4 event-details ${extended ? 'mt-8' : ''
-          }`}
+        className={`flex justify-between my-4 event-details flex-wrap md:flex-nowrap ${
+          extended ? 'mt-8' : ''
+        }`}
       >
-        <div className={extended ? 'w-[70%]' : 'w-[100%]'}>
+        <div className={extended ? 'md:w-[70%] w-full ' : 'md:w-[100%] w-full'}>
           <Progress value={eventUsers?.length} max={event?.max_volunteers} />
           <p className="mt-2 text-sm text-gray-700">
             {`${eventUsers?.length} / ${event?.max_volunteers}`} Joined
@@ -109,7 +108,7 @@ const EventJoinButton = ({
           ) : null}
         </div>
         {extended && (
-          <div className="w-[30%] flex justify-end">
+          <div className="md:w-[20%] w-full flex md:justify-end md:mt-0 mt-6">
             <Button
               size="sm"
               disabled={isLoading || (alreadyJoinedActivity && !hasJoined)}

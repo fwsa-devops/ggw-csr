@@ -133,11 +133,11 @@ const ActiveEvents = (props: { activities: Activities[] }) => {
 
   return (
     <>
-      <div className="flex justify-between gap-2 mt-12">
+      <div className="flex md:justify-between justify-start gap-2 mt-12 flex-wrap md:flex-nowrap">
         <div className="main-header">
           <h1 className="text-xl">Events - 2023</h1>
         </div>
-        <div className="flex justify-end flex-1 gap-3">
+        <div className="flex md:justify-end justify-start flex-1 gap-3 md:flex-nowrap flex-wrap">
           <DropdownMenuCheckboxes
             onChange={onTagsChange}
             disabled={isLoading}
@@ -179,7 +179,7 @@ const ActiveEvents = (props: { activities: Activities[] }) => {
               className="container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground "
               key={activity.id}
             >
-              <div className="flex gap-6 p-4 mx-auto event-container md:flex-nowrap md:h-600">
+              <div className="flex flex-wrap gap-6 p-4 mx-auto event-container md:flex-nowrap md:h-600">
                 <Link
                   className="flex lg:w-1/3 lg:h-100 max-h-72"
                   href={`/activities/${activity.id}`}

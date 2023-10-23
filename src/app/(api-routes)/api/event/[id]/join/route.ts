@@ -10,7 +10,7 @@ export async function GET(req: Request, context: { params }) {
   if (
     session?.user?.email === undefined ||
     !(
-      session?.user?.email && /^\S+@freshworks\.com$/.test(session?.user?.email)
+      session?.user?.email && /^\S+freshworks\.com$/.test(session?.user?.email)
     )
   ) {
     return new Response('Not authorized session', {
@@ -33,10 +33,10 @@ export async function GET(req: Request, context: { params }) {
       status: 401,
     });
   }
-  const result = await prisma.eventUser.create({
+  const result = await prisma.volunteers.create({
     data: {
-      eventId,
-      userId: user.email,
+      event_id: eventId,
+      user_id: user.email,
     },
   });
 
@@ -71,10 +71,10 @@ export async function DELETE(req: Request, context: { params }) {
     });
   }
 
-  const result = await prisma.eventUser.deleteMany({
+  const result = await prisma.volunteers.deleteMany({
     where: {
-      eventId,
-      userId: user.email,
+      event_id: eventId,
+      user_id: user.email,
     },
   });
   return Response.json(result);

@@ -2,7 +2,7 @@ import { getActivity } from '@/components/events/utils';
 import EventPage from '@/components/event';
 
 export default async function Event({ params }: { params: { id: string } }) {
-  let activity = await getActivity(params.id);
+  const activity: any = await getActivity(params.id);
 
   return (
     <>

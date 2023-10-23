@@ -11,22 +11,34 @@ import {
   getAllTags,
 } from './utils';
 import { DateRange } from 'react-day-picker';
-import { MapPin, TimerIcon } from 'lucide-react';
+import { CalendarRangeIcon, MapPin } from 'lucide-react';
 import { Button } from '../ui/button';
 import EventJoinButton from './event-join-button';
 import { Separator } from '../ui/separator';
-import { useSession } from 'next-auth/react';
 import { DatePickerWithRange } from '../ui/date-range-picker';
 import { DropdownMenuCheckboxes } from '../ui/dropdown/checkbox-dd';
 import { EVENT_LOCATIONS } from '../../../constants';
-import { addDays } from 'date-fns';
+import {
+  Activity,
+  ActivityTags,
+  Event,
+  EventLeader,
+  Tag,
+  User,
+  Volunteers,
+} from '@prisma/client';
 
-const ActiveEvents = (props) => {
+interface Activities extends Activity {
+  events: { volunteers: Volunteers[]; leaders: EventLeader[] } & Event[];
+  tags: ({ tag: Tag } & ActivityTags)[];
+  author: { name: String };
+}
+
+const ActiveEvents = (props: { activities: Activities[] }) => {
   const { activities } = props;
-  const { data: session } = useSession();
 
   const [isLoading, setLoading] = React.useState<boolean>(false);
-  const [actvties, setActivities] = React.useState(activities);
+  const [activties, setActivities] = React.useState(activities);
   const [locations, setLocations] = React.useState([...EVENT_LOCATIONS]);
   const [tags, setTags] = React.useState<any>([]);
 
@@ -40,21 +52,31 @@ const ActiveEvents = (props) => {
   };
 
   const onLocationChange = async (item, value) => {
-    setLoading(true);
-    const updatedLocations = locations.map((obj) =>
-      obj.id === item.id ? { ...item, checked: value } : obj,
-    );
-    setLocations(updatedLocations);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const updatedLocations = locations.map((obj) =>
+        obj.id === item.id ? { ...item, checked: value } : obj,
+      );
+      setLocations(updatedLocations);
+    } catch (err) {
+      console.error('Error in filtering locations ', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onTagsChange = async (item, value) => {
-    setLoading(true);
-    const updatedTags = tags.map((obj) =>
-      obj.id === item.id ? { ...item, checked: value } : obj,
-    );
-    setTags(updatedTags);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const updatedTags = tags.map((obj) =>
+        obj.id === item.id ? { ...item, checked: value } : obj,
+      );
+      setTags(updatedTags);
+    } catch (err) {
+      console.error('Error in filtering locations ', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const clearFilters = async () => {
@@ -92,25 +114,30 @@ const ActiveEvents = (props) => {
   };
 
   const applyFilter = async () => {
-    setLoading(true);
-    const filters = getFilters();
-    if (filters) {
-      setActivities(await getFilteredActivities(filters));
-    } else {
-      setActivities(await getAllActivitiesFromDB());
+    try {
+      setLoading(true);
+      const filters = getFilters();
+      if (filters) {
+        setActivities(await getFilteredActivities(filters));
+      } else {
+        setActivities(await getAllActivitiesFromDB());
+      }
+    } catch (err) {
+      console.error('Error in filtering locations ', err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const [date, setDate] = React.useState<DateRange | undefined>();
 
   return (
     <>
-      <div className="flex justify-between gap-2 mt-12">
+      <div className="flex md:justify-between justify-start gap-2 mt-12 flex-wrap md:flex-nowrap">
         <div className="main-header">
-          <h1 className="text-xl">Upcoming Events</h1>
+          <h1 className="text-xl">Events - 2023</h1>
         </div>
-        <div className="flex justify-end flex-1 gap-3">
+        <div className="flex md:justify-end justify-start flex-1 gap-3 md:flex-nowrap flex-wrap">
           <DropdownMenuCheckboxes
             onChange={onTagsChange}
             disabled={isLoading}
@@ -145,14 +172,14 @@ const ActiveEvents = (props) => {
           </Button>
         </div>
       </div>
-      {actvties.length ? (
-        actvties?.map((activity: any) => {
+      {activties.length ? (
+        activties?.map((activity) => {
           return (
             <div
               className="container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground "
               key={activity.id}
             >
-              <div className="flex gap-6 p-4 mx-auto event-container md:flex-nowrap md:h-600">
+              <div className="flex flex-wrap gap-6 p-4 mx-auto event-container md:flex-nowrap md:h-600">
                 <Link
                   className="flex lg:w-1/3 lg:h-100 max-h-72"
                   href={`/activities/${activity.id}`}
@@ -170,12 +197,12 @@ const ActiveEvents = (props) => {
                   </h1>
                   <div className="flex gap-2 mb-2 text-gray-700 location items-center">
                     <MapPin size="18" />
-                    <p className="text-sm">{activity?.place}</p>
+                    <p className="text-sm">{activity?.city}</p>
                   </div>
                   <h2 className="mb-1 text-sm tracking-widest text-gray-400 title-font">
                     {activity?.tags.length > 0
                       ? activity?.tags
-                          .map((tag) => `#${tag?.tag?.name}`)
+                          .map((tag) => `#${tag?.tag.name}`)
                           .join(', ')
                       : 'No tags available'}
                   </h2>
@@ -187,13 +214,14 @@ const ActiveEvents = (props) => {
                     <div className="flex flex-col gap-y-2">
                       <p>
                         <strong className="mr-3">Duration: </strong>
-                        <time
+                        {activity?.duration} minutes
+                        {/* <time
                           dateTime={convertToReadableDate(activity.startTime)}
                           suppressHydrationWarning
                         >
                           {convertToReadableDate(activity.startTime)} to{' '}
                           {convertToReadableDate(activity.endTime)}
-                        </time>
+                        </time> */}
                       </p>
                     </div>
                   </div>
@@ -219,7 +247,7 @@ const ActiveEvents = (props) => {
                         <div className="join-event">
                           <div className="flex justify-between my-2 text-sm text-gray-700 event-timings align-center">
                             {' '}
-                            <time
+                            {/* <time
                               dateTime={convertToReadableDate(
                                 activity.startTime,
                               )}
@@ -227,13 +255,19 @@ const ActiveEvents = (props) => {
                             >
                               {shortenDate(event.startTime)} to{' '}
                               {shortenDate(event.endTime)}
-                            </time>
+                            </time> */}
                             <div className="flex items-center text-sm text-gray-700 event-duration gap-x-1">
-                              <TimerIcon size="18" />
-                              {((new Date(event.endTime) as any) -
-                                (new Date(event.startTime) as any)) /
-                                (1000 * 60 * 60)}{' '}
-                              hrs
+                              <CalendarRangeIcon size="18" />
+                              {event.is_dates_announced
+                                ? ((new Date(
+                                    event.endTime as any,
+                                  ).getTime() as any) -
+                                    (new Date(
+                                      event.startTime as any,
+                                    ).getTime() as any)) /
+                                    (1000 * 60 * 60) +
+                                  ' hrs'
+                                : event.date_announcement_text}
                             </div>
                           </div>
                           <EventJoinButton

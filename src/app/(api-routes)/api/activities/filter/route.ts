@@ -10,13 +10,7 @@ export async function POST(req: Request) {
     take: 10,
     where: {
       AND: {
-        startTime: {
-          gte: filters.from,
-        },
-        endTime: {
-          lte: filters.to,
-        },
-        place: {
+        city: {
           in: filters.locations,
         },
         tags: {
@@ -28,6 +22,17 @@ export async function POST(req: Request) {
             },
           },
         },
+        events: {
+          some: {
+            is_dates_announced: true,
+            startTime: {
+              gte: filters.from,
+            },
+            endTime: {
+              lte: filters.to,
+            },
+          }
+        }
       },
     },
     ...INCLUDE_ALL_ACTIVITIES_DATA,

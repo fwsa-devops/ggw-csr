@@ -80,9 +80,9 @@ export const getAllActivitiesFromDB = async () => {
 export const getPastActivities = async () => {
   const pastActivities = await prisma.activity.findMany({
     where: {
-      endTime: {
-        lt: new Date(),
-      },
+      // endTime: {
+      //   lt: new Date(),
+      // },
     },
     include: {
       author: {
@@ -93,7 +93,7 @@ export const getPastActivities = async () => {
       },
     },
   });
-  // console.log('pastActivities', pastActivities);
+  console.log('pastActivities', pastActivities);
 
   return pastActivities;
 };
@@ -111,7 +111,7 @@ export const getActivity = async (activityId: string) => {
               user: true,
             },
           },
-          users: {
+          volunteers: {
             include: {
               user: {
                 select: { email: true, name: true, image: true },

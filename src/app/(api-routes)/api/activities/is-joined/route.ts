@@ -5,9 +5,9 @@ import { getServerSession } from 'next-auth';
 export async function GET(req: Request) {
   const session = await getServerSession();
 
-  const eventUsers = await prisma.eventUser.findMany({
+  const eventUsers = await prisma.volunteers.findMany({
     where: {
-      userId: session?.user?.email || '',
+      user_id: session?.user?.email || '',
     },
   });
 

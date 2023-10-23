@@ -25,7 +25,7 @@ interface IActivity extends Activity {
 const EventPage = (props: { activity: IActivity }) => {
   const { activity } = props;
 
-  // console.log("activity", activity)
+  console.log("activity", activity)
 
   const [alreadyJoinedActivity, setAlreadyJoinedActivity] =
     React.useState(false);
@@ -38,24 +38,6 @@ const EventPage = (props: { activity: IActivity }) => {
   React.useEffect(() => {
     checkUserAlreadyRegistered();
   }, [activity]);
-
-
-  const [description, setDescription] = React.useState("");
-
-  // useEffect(() => {
-
-  //   (() => {
-  //     const processedContent = remark()
-  //       .use(html)
-  //       .processSync(activity.description || "");
-  //     const htmlContent = processedContent.toString();
-
-  //     const res = String(htmlContent);
-  //     console.log(res)
-  //     setDescription(res);
-  //   })();
-
-  // }, [activity])
 
   return (
     <div
@@ -100,7 +82,9 @@ const EventPage = (props: { activity: IActivity }) => {
 
 
           {/* <p className="leading-relaxed" dangerouslySetInnerHTML={{ __html: description }} ></p> */}
-          <ReactMarkdown children={activity.description ?? ""} />
+          <ReactMarkdown >
+            {activity.description ?? ""}
+          </ReactMarkdown>
 
         </div>
         <div className=" lg:w-1/2">

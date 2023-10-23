@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header-content responsive-wrapper">
-        <div className="header-logo">
+        <div className="header-logo md:flex-wrap">
           <Link href="/">
             <code className="text-2xl font-bold">Global Giving Week</code>
           </Link>
@@ -17,10 +17,10 @@ const Header = () => {
             <UserNav />
           </div>
         </div>
-        <a href="#" className="button">
+        {/* <a href="#" className="button">
           <i className="ph-list-bold"></i>
           <span>Menu</span>
-        </a>
+        </a> */}
       </div>
     </header>
   );

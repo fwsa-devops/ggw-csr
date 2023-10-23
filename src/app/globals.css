@@ -180,7 +180,7 @@ img {
 
 @media (max-width: 1200px) {
   .header-navigation {
-    display: none;
+    /* display: none; */
   }
 }
 
@@ -304,6 +304,11 @@ img {
 @media (max-width: 550px) {
   .main-header h1 {
     margin-bottom: 1rem;
+  }
+
+  .toast-container > li {
+    width: 90vw;
+    margin: 10px;
   }
 }
 

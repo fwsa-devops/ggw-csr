@@ -7,7 +7,6 @@ const HomePage = () => {
 
   const [isLoaded, setLoaded] = useState(false);
 
-
   useEffect(() => {
     setLoaded(true)
   }, [isLoaded])

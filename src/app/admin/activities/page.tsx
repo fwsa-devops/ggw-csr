@@ -1,10 +1,29 @@
-
 import ActiveEvents from "@/components/events/active-events";
-import { getAllActivitiesFromDB } from "@/components/events/utils";
+import prisma from "@/lib/prisma";
+
 
 const Page = async () => {
 
-  const activities = await getAllActivitiesFromDB();
+  const activities: any = await prisma.activity.findMany({
+    include: {
+      events: {
+        include: {
+          leaders: {
+            include: {
+              user: true,
+            },
+          },
+          volunteers: true,
+        },
+      },
+      tags: {
+        include: {
+          tag: true,
+        },
+      },
+    },
+  });
+
   return (
     <>
       <main className="flex flex-col items-center justify-between min-h-screen ">

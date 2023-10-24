@@ -3,9 +3,10 @@
 import { BlockNoteEditor, PartialBlock } from "@blocknote/core";
 import { BlockNoteView, useBlockNote } from "@blocknote/react";
 import "@blocknote/core/style.css";
+import { useState } from "react";
 
 interface EditorProps {
-  onChange: (value: string) => void;
+  onChange: (value: any) => void;
   initialContent?: string;
   editable?: boolean
 }
@@ -16,16 +17,36 @@ export default function BlockNote({
   editable,
   initialContent
 }: EditorProps) {
+
+  const [content, useContent] = useState('')
+
   // Creates a new editor instance.
   const editor: BlockNoteEditor | null = useBlockNote({
     editable: editable,
     initialContent: initialContent ? JSON.parse(initialContent) as PartialBlock[] : undefined,
     onEditorContentChange: (editor) => {
-      onChange(JSON.stringify(editor.topLevelBlocks, null, 2))
+
+      // const saveBlocksAsMarkdown = async () => {
+      //   const markdown: string =
+      //     await editor.blocksToMarkdown(editor.topLevelBlocks);
+      //   useContent(markdown);
+      //   console.log(markdown);
+      // };
+      // saveBlocksAsMarkdown();
+
+      // const saveBlocksAsHTML = async () => {
+      //   const markdown: string =
+      //     await editor.blocksToHTML(editor.topLevelBlocks);
+      //   useContent(markdown);
+      //   console.log(markdown);
+      // };
+      // saveBlocksAsHTML();
+
+      onChange(editor);
     },
-    
+
   });
 
   // Renders the editor instance using a React component.
-  return <BlockNoteView editor={editor} />;
+  return <BlockNoteView editor={editor} theme={'light'} />;
 }

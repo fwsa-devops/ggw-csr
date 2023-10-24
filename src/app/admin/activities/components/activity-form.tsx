@@ -9,12 +9,13 @@ import { activityFormSchema } from '@/types';
 import { createNewActivity } from '@/components/events/utils/api';
 import { Activity, ActivityTags, Tag } from '@prisma/client';
 import { useSession } from 'next-auth/react';
-import { Editor } from '@/components/markdown-editor';
+import { Editor } from '@/components/editors/markdown-editor';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getAllTags } from '@/components/events/utils';
 import MultiSelect from '@/components/ui/dropdown/multi-select';
 import { useRouter } from 'next/navigation';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 
 interface IActivityForm extends Activity {
@@ -106,8 +107,6 @@ const ActivityForm = ({ initialData }: { initialData: IActivityForm | null }) =>
                       {...field} />
                   </FormControl>
                   <FormMessage />
-                  {/* <FormDescription>
-                </FormDescription> */}
                 </FormItem>
               </div>
 
@@ -128,8 +127,6 @@ const ActivityForm = ({ initialData }: { initialData: IActivityForm | null }) =>
                       {...field} />
                   </FormControl>
                   <FormMessage />
-                  {/* <FormDescription>
-                </FormDescription> */}
                 </FormItem>
               </div>
 
@@ -147,12 +144,6 @@ const ActivityForm = ({ initialData }: { initialData: IActivityForm | null }) =>
                   <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900" >  {field.name} </FormLabel>
                   <FormControl className='mt-2'>
 
-                    {/* <textarea
-                      className="block w-full rounded-md border-0 h-40 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      {...field}
-                    >
-                    </textarea> */}
-
                     <Editor
                       theme="snow"
                       {...field}
@@ -161,8 +152,6 @@ const ActivityForm = ({ initialData }: { initialData: IActivityForm | null }) =>
 
                   </FormControl>
                   <FormMessage />
-                  {/* <FormDescription>
-                </FormDescription> */}
                 </FormItem>
 
               </div>
@@ -184,8 +173,6 @@ const ActivityForm = ({ initialData }: { initialData: IActivityForm | null }) =>
                       {...field} />
                   </FormControl>
                   <FormMessage />
-                  {/* <FormDescription>
-              </FormDescription> */}
                 </FormItem>
               </div>
 
@@ -208,8 +195,6 @@ const ActivityForm = ({ initialData }: { initialData: IActivityForm | null }) =>
                       })} />
                   </FormControl>
                   <FormMessage />
-                  {/* <FormDescription>
-                </FormDescription> */}
                 </FormItem>
               </div>
 
@@ -232,8 +217,7 @@ const ActivityForm = ({ initialData }: { initialData: IActivityForm | null }) =>
                       {...field} />
                   </FormControl>
                   <FormMessage />
-                  {/* <FormDescription>
-                </FormDescription> */}
+
                 </FormItem>
               </div>
 
@@ -250,22 +234,15 @@ const ActivityForm = ({ initialData }: { initialData: IActivityForm | null }) =>
                   <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900"> {field.name} </FormLabel>
                   <FormControl className='mt-2'>
 
-                    {/* <select
-                      {...field}
-                      className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    >
-                      {tags.map(tag => (
-                        <option key={tag.name} value={tag.name}> {tag.name} </option>
-                      ))
-                      }
-                    </select> */}
-                    {tags.length > 0 &&
+                    {
+                      tags.length > 0 &&
                       < MultiSelect
                         ref={field.ref}
                         items={tags}
                         onChange={field.onChange}
                         value={field.value}
-                      />}
+                      />
+                    }
 
                   </FormControl>
                   <FormMessage />
@@ -276,10 +253,39 @@ const ActivityForm = ({ initialData }: { initialData: IActivityForm | null }) =>
             )} />
 
 
+          <FormField
+            control={form.control}
+            name='status'
+            render={({ field }) => (
+
+              <div className="mt-6">
+                <FormItem>
+                  <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900"> {field.name} </FormLabel>
+                  <FormControl className='mt-2'>
+
+                    <Select {...field} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="OPEN">OPEN</SelectItem>
+                        <SelectItem value="DRAFT">DRAFT</SelectItem>
+                        <SelectItem value="CLOSED">CLOSED</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                  </FormControl>
+                  <FormMessage />
+
+                </FormItem>
+              </div>
+
+            )} />
+
           <div className="w-full mt-6 flex justify-end">
 
             <Button
-              // disabled={form.formState.isSubmitting}
+              disabled={form.formState.isSubmitting}
               className="ml-auto "
               type="submit">
               Submit

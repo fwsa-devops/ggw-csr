@@ -28,13 +28,13 @@ import {
   Volunteers,
 } from '@prisma/client';
 
-interface Activities extends Activity {
+interface IActivities extends Activity {
   events: { volunteers: Volunteers[]; leaders: EventLeader[] } & Event[];
   tags: ({ tag: Tag } & ActivityTags)[];
   author: { name: String };
 }
 
-const ActiveEvents = (props: { activities: Activities[] }) => {
+const ActiveEvents = (props: { activities: IActivities[] }) => {
   const { activities } = props;
 
   const [isLoading, setLoading] = React.useState<boolean>(false);

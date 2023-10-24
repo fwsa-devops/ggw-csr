@@ -39,8 +39,8 @@ export const INCLUDE_ALL_ACTIVITIES_DATA: Partial<Prisma.ActivityDeleteArgs<Defa
         tag: true,
       },
     },
-    author: {
-      select: { name: true },
-    },
+    // author: {
+    //   select: { name: true },
+    // },
   },
 }

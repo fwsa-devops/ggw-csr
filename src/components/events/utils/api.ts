@@ -68,7 +68,39 @@ export const createNewActivity = async (data: unknown) => {
   const response = await fetch(`${HOST_API_URL}api/activities`, {
     method: 'POST',
     body: body,
+    headers: {
+      'Content-Type': 'application/json',
+    },
   })
   const json = await response.json();
   return json;
+}
+
+export const createHomepageContent = async (data: unknown) => {
+
+  const body = JSON.stringify(data);
+
+  const response = await fetch(`${HOST_API_URL}api/homepage`, {
+    method: 'POST',
+    body: body,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  const json = await response.json();
+  return json;
+}
+
+export const getHomepageContent = async () => {
+
+  const response = await fetch(`${HOST_API_URL}api/homepage`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  const json = response.json();
+  return json;
+
 }

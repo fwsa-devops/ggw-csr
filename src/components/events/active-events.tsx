@@ -30,7 +30,7 @@ import {
 import ActivityComponent from '../activity';
 import Loader from '../ui/loader';
 
-interface Activities extends Activity {
+export interface Activities extends Activity {
   events: { volunteers: Volunteers[]; leaders: EventLeader[] } & Event[];
   tags: ({ tag: Tag } & ActivityTags)[];
   author: { name: String };

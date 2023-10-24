@@ -48,12 +48,12 @@ async function main() {
   //   },
   // });
 
-  const hasan = await prisma.user.create({
-    data: { email: 'mohammed.hasan@freshworks.com' },
-  });
-  const mukesh = await prisma.user.create({
-    data: { email: 'mukesh.swamy@freshworks.com' },
-  });
+  // const hasan = await prisma.user.create({
+  //   data: { name: "Mohammed Hasan", email: 'mohammed.hasan@freshworks.com' },
+  // });
+  // const mukesh = await prisma.user.create({
+  //   data: { name: "Mukesh Swamy", email: 'mukesh.swamy@freshworks.com' },
+  // });
   // console.log({ mukesh, hasan });
 }
 main()

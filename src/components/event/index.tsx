@@ -9,6 +9,7 @@ import {
   CalendarRangeIcon,
   LaptopIcon,
   MapPinIcon,
+  PenIcon,
 } from 'lucide-react';
 import EventJoinButton from '../events/event-join-button';
 import ListUsers from './list-users';
@@ -21,8 +22,8 @@ import {
   User,
   Volunteers,
 } from '@prisma/client';
-import ReactMarkdown from 'react-markdown';
-import Markdown from 'react-markdown';
+import { Button } from '../ui/button';
+import Link from 'next/link';
 
 interface IActivity extends Activity {
   events: ({
@@ -50,100 +51,45 @@ const EventPage = (props: { activity: IActivity }) => {
     checkUserAlreadyRegistered();
   }, [activity]);
 
-  // const description = `# Markdown syntax guide
-
-  // ## Headers
-
-  // # This is a Heading h1
-  // ## This is a Heading h2
-  // ###### This is a Heading h6
-
-  // ## Emphasis
-
-  // *This text will be italic*
-  // _This will also be italic_
-
-  // **This text will be bold**
-  // __This will also be bold__
-
-  // _You **can** combine them_
-
-  // ## Lists
-
-  // ### Unordered
-
-  // * Item 1
-  // * Item 2
-  // * Item 2a
-  // * Item 2b
-
-  // ### Ordered
-
-  // 1. Item 1
-  // 2. Item 2
-  // 3. Item 3
-  //     1. Item 3a
-  //     2. Item 3b
-
-  // ## Images
-
-  // ![This is an alt text.](/image/sample.webp "This is a sample image.")
-
-  // ## Links
-
-  // You may be using [Markdown Live Preview](https://markdownlivepreview.com/).
-
-  // ## Blockquotes
-
-  // > Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
-  // >
-  // >> Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
-
-  // ## Tables
-
-  // | Left columns  | Right columns |
-  // | ------------- |:-------------:|
-  // | left foo      | right foo     |
-  // | left bar      | right bar     |
-  // | left baz      | right baz     |
-
-  // ## Blocks of code
-
-  // ## Inline code
-
-  // This web site is using
-  // `;
-
-  // useEffect(() => {
-
-  //   (() => {
-  //     const processedContent = remark()
-  //       .use(html)
-  //       .processSync(activity.description || "");
-  //     const htmlContent = processedContent.toString();
-
-  //     const res = String(htmlContent);
-  //     console.log(res)
-  //     setDescription(res);
-  //   })();
-
-  // }, [activity])
 
   return (
     <div
-      className="container h-auto px-0 mx-auto my-10 w-100 bg-grey"
+      className="container h-auto px-0 mx-auto mb-10 w-100 bg-grey"
       key={activity.id}
     >
-      <div className="flex flex-wrap mx-auto event-container md:flex-nowrap md:h-600 lg:gap-8">
-        <div className="w-full mt-6 lg:mt-0 lg:w-1/2 lg:order-1 order-2">
-          <h1 className="mb-4 text-2xl font-semibold text-gray-700 title-font">
-            {activity.name}
-          </h1>
+      <div className="flex flex-wrap flex-col mx-auto event-container md:flex-nowrap md:h-600 lg:gap-8">
+
+        <div className="order-1 lg:order-1 lg:w-full">
+          <img
+            alt="ecommerce"
+            className=" lg:aspect-video lg:max-h-[420px]  object-cover object-center w-full rounded"
+            src={activity.cover || ''}
+          />
+        </div>
+
+        <div className="w-full mt-12 lg:mt-6 lg:mx-auto lg:order-2 order-2 ">
+          <div className="flex justify-between">
+
+            <h1 className="mb-4 text-2xl font-semibold text-gray-700 title-font">
+              {activity.name}
+            </h1>
+
+            <Link href={`/admin/activities/${activity.id}/edit`} >
+              <Button
+                variant={'default'}
+              >
+                <PenIcon size={18} className='mr-3' />
+                Edit
+              </Button>
+            </Link>
+
+          </div>
+
           <div className="flex gap-2 mb-2 location align-center">
             <LaptopIcon />
             <p>{activity?.city}</p>
           </div>
-          <h2 className="mt-2 mb-4 text-sm tracking-widest text-gray-400 title-font">
+          <h2 className="mt-2 mb-3 text-sm tracking-widest text-gray-400 title-font">
             {activity?.tags.map((tag) => (
               <span key={tag.id} className="mr-2">
                 #{tag?.tag.name}
@@ -151,7 +97,7 @@ const EventPage = (props: { activity: IActivity }) => {
             ))}
           </h2>
 
-          <div className="flex items-center pb-5 mt-6 mb-0 text-md">
+          <div className="flex items-center pb-5 mt-3 mb-0 text-md">
             <div className="flex flex-col gap-y-2">
               <div className="flex">
                 <div className="mr-3 font-semibold">Duration: </div>
@@ -167,20 +113,14 @@ const EventPage = (props: { activity: IActivity }) => {
             </div>
           </div>
 
-          {/* <p
+          <div
             className="leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: activity.description }}
-          ></p> */}
-          <Markdown>{activity.description}</Markdown>
+            dangerouslySetInnerHTML={{ __html: activity.description ?? '' }}
+          ></div>
+          {/* <Markdown>{activity.description}</Markdown> */}
           {/* <ReactMarkdown children={activity.description ?? ''} /> */}
         </div>
-        <div className=" lg:w-1/2 lg:order-2 order-1">
-          <img
-            alt="ecommerce"
-            className="object-cover object-center w-full rounded"
-            src={activity.cover || ''}
-          />
-        </div>
+
       </div>
 
       <div className="mt-12">
@@ -217,9 +157,9 @@ const EventPage = (props: { activity: IActivity }) => {
 
                     {event.is_dates_announced
                       ? ((new Date(event.endTime as any).getTime() as any) -
-                          (new Date(event.startTime as any).getTime() as any)) /
-                          (1000 * 60 * 60) +
-                        'hrs'
+                        (new Date(event.startTime as any).getTime() as any)) /
+                      (1000 * 60 * 60) +
+                      'hrs'
                       : event.date_announcement_text}
                   </div>
                 </div>
@@ -247,7 +187,7 @@ const EventPage = (props: { activity: IActivity }) => {
           </div>
         ))}
       </div>
-    </div>
+    </div >
   );
 };
 

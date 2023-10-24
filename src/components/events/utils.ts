@@ -134,8 +134,8 @@ export const getActivity = async (activityId: string) => {
 };
 
 export const getActivityDescription = (activity) => {
-  return activity.description.length > EVENT_DESCRIPTION_TEXT_LENGTH
-    ? `${activity.description.slice(0, EVENT_DESCRIPTION_TEXT_LENGTH)}...`
+  return activity.summary.length > EVENT_DESCRIPTION_TEXT_LENGTH
+    ? `${activity.summary.slice(0, EVENT_DESCRIPTION_TEXT_LENGTH)}...`
     : activity.description;
 };
 

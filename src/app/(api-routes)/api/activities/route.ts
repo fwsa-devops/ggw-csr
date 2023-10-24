@@ -16,6 +16,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request, res: Response) {
 
+  console.log(req);
   const body: unknown = await req.json();
   console.log(body);
 
@@ -33,9 +34,49 @@ export async function POST(req: Request, res: Response) {
     })
   }
 
-  const response = await prisma.activity.create(
+  let response: any = null
+
+  if (formData.data.id) {
+    response = await prisma.activity.update(
+      {
+        where: {
+          id: formData.data.id
+        },
+        data: {
+          ...formData.data,
+          tags: {}
+        },
+      }
+    )
+  } else {
+    response = await prisma.activity.create(
+      {
+        data: {
+          ...formData.data,
+          tags: {}
+        },
+      }
+    )
+  }
+
+  if (response === null) {
+    return NextResponse.json(
+      { error: "Failed to UPSERT activity" }
+    )
+  }
+
+  // REMOVE old Tags
+  await prisma.activityTags.deleteMany({
+    where: {
+      activity_id: response.id
+    }
+  })
+
+  // REMOVE old Tags
+  await prisma.activityTags.createMany(
     {
-      data: formData.data,
+      skipDuplicates: true,
+      data: formData.data.tags.map(t => ({ tag_id: t, activity_id: response.id }))
     }
   )
 

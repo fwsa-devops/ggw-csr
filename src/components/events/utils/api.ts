@@ -63,9 +63,11 @@ export const checkUserAlreadyRegistered = async () => {
 
 
 export const createNewActivity = async (data: unknown) => {
+  const body = JSON.stringify(data);
+
   const response = await fetch(`${HOST_API_URL}api/activities`, {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: body,
   })
   const json = await response.json();
   return json;

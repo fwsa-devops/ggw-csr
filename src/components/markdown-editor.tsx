@@ -1,6 +1,5 @@
 'use client';
 
-import ReactQuill from 'react-quill';
 import * as React from 'react';
 import { forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -10,13 +9,18 @@ import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
 
+import dynamic from 'next/dynamic';
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+
+
 export const Editor = forwardRef<
   React.ElementRef<typeof ReactQuill>,
   React.ComponentPropsWithoutRef<typeof ReactQuill>
 >(({ className, ...props }, forwardedRef) => (
   <ReactQuill
     className={twMerge(className, inter.className)}
-    ref={forwardedRef}
+    // ref={forwardedRef}
     theme="snow"
     {...props}
   />

@@ -13,7 +13,6 @@ const DashboardPage = async () => {
       </div>
 
       <div>
-
         <Table>
           <TableCaption>list of All Activities.</TableCaption>
           <TableHeader>
@@ -27,7 +26,7 @@ const DashboardPage = async () => {
           <TableBody>
             {
               activities.map(activity => (
-                <TableRow>
+                <TableRow key={activity.id}>
                   <TableCell className="font-medium">{activity.id}</TableCell>
                   <TableCell>  {activity.name} </TableCell>
                   <TableCell>  {activity.summary} </TableCell>
@@ -52,3 +51,5 @@ const DashboardPage = async () => {
 }
 
 export default DashboardPage;
+
+export const revalidate = 10

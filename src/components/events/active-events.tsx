@@ -11,7 +11,7 @@ import {
   getAllTags,
 } from './utils';
 import { DateRange } from 'react-day-picker';
-import { CalendarRangeIcon, MapPin } from 'lucide-react';
+import { CalendarRangeIcon, MapPin, Eraser, PlusIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import EventJoinButton from './event-join-button';
 import { Separator } from '../ui/separator';
@@ -158,7 +158,7 @@ const ActiveEvents = (props: { activities: Activities[] }) => {
             date={date}
             setDate={setDate}
             disabled={isLoading}
-            onUpdate={() => {}}
+            onUpdate={() => { }}
           />
           <Button disabled={isLoading} onClick={applyFilter}>
             Apply filters
@@ -168,8 +168,20 @@ const ActiveEvents = (props: { activities: Activities[] }) => {
             disabled={isLoading}
             onClick={clearFilters}
           >
-            Clear filters
+            <Eraser size={18} />
           </Button>
+
+          <Button
+            variant={'default'}
+            disabled={isLoading}
+            onClick={clearFilters}
+          >
+            <Link href={`/admin/activities/new`} className='flex'>
+              <PlusIcon size={18} className='mr-2' />
+              New
+            </Link>
+          </Button>
+
         </div>
       </div>
       {activties.length ? (
@@ -202,8 +214,8 @@ const ActiveEvents = (props: { activities: Activities[] }) => {
                   <h2 className="mb-1 text-sm tracking-widest text-gray-400 title-font">
                     {activity?.tags.length > 0
                       ? activity?.tags
-                          .map((tag) => `#${tag?.tag.name}`)
-                          .join(', ')
+                        .map((tag) => `#${tag?.tag.name}`)
+                        .join(', ')
                       : 'No tags available'}
                   </h2>
 
@@ -260,13 +272,13 @@ const ActiveEvents = (props: { activities: Activities[] }) => {
                               <CalendarRangeIcon size="18" />
                               {event.is_dates_announced
                                 ? ((new Date(
-                                    event.endTime as any,
-                                  ).getTime() as any) -
-                                    (new Date(
-                                      event.startTime as any,
-                                    ).getTime() as any)) /
-                                    (1000 * 60 * 60) +
-                                  ' hrs'
+                                  event.endTime as any,
+                                ).getTime() as any) -
+                                  (new Date(
+                                    event.startTime as any,
+                                  ).getTime() as any)) /
+                                (1000 * 60 * 60) +
+                                ' hrs'
                                 : event.date_announcement_text}
                             </div>
                           </div>

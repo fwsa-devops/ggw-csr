@@ -10,5 +10,6 @@ export const activityFormSchema = z.object({
   duration: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
   // duration: z.string().optional(),
   author_id: z.string().optional(),
-  status: z.enum(["OPEN", "DRAFT", "CLOSED"])
+  status: z.enum(["OPEN", "DRAFT", "CLOSED"]),
+  tags: z.array(z.string())
 })

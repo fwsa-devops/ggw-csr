@@ -197,6 +197,7 @@ img {
 .header-navigation-actions {
   display: flex;
   align-items: center;
+  margin-left: auto;
 }
 .header-navigation-actions > .avatar {
   margin-left: 0.75rem;

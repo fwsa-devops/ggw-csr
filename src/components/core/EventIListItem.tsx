@@ -36,7 +36,7 @@ const EventListItem = ({
   event: IEvent;
   size: 'lg' | 'sm';
   isMember: boolean;
-  onJoin: () => void;
+  onJoin?: () => void;
 }) => {
   const { status, data } = useSession();
 
@@ -74,7 +74,7 @@ const EventListItem = ({
       toastObj.description = error.message;
     }
 
-    onJoin();
+    onJoin?.();
     toast(toastObj);
     setFalse();
   };

@@ -208,6 +208,7 @@ img {
 .header-navigation-actions {
   display: flex;
   align-items: center;
+  margin-left: auto;
 }
 
 .header-navigation-actions>.avatar {

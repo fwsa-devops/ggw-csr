@@ -80,9 +80,13 @@ export const getAllActivitiesFromDB = async () => {
 export const getPastActivities = async () => {
   const pastActivities = await prisma.activity.findMany({
     where: {
-      // endTime: {
-      //   lt: new Date(),
-      // },
+      events: {
+        some: {
+          endTime: {
+            lt: new Date(),
+          },
+        },
+      },
     },
     include: {
       author: {
@@ -91,10 +95,19 @@ export const getPastActivities = async () => {
       _count: {
         select: { events: true },
       },
+      events: {
+        include: {
+          volunteers: true,
+        },
+      },
+      tags: {
+        include: {
+          tag: true,
+        },
+      },
     },
   });
-  console.log('pastActivities', pastActivities);
-
+  // console.log('pastActivities', pastActivities);
   return pastActivities;
 };
 
@@ -134,9 +147,9 @@ export const getActivity = async (activityId: string) => {
 };
 
 export const getActivityDescription = (activity) => {
-  return activity.summary.length > EVENT_DESCRIPTION_TEXT_LENGTH
-    ? `${activity.summary.slice(0, EVENT_DESCRIPTION_TEXT_LENGTH)}...`
-    : activity.description;
+  return activity.summary?.length > EVENT_DESCRIPTION_TEXT_LENGTH
+    ? `${activity.summary?.slice(0, EVENT_DESCRIPTION_TEXT_LENGTH)}...`
+    : activity.summary;
 };
 
 export const convertToReadableDate = (isoDate) => {

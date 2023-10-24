@@ -1,20 +1,18 @@
 import { getHomepageContent } from '@/components/events/utils/api';
 import HomepageViewer from './components/viewer';
+import { useSsr } from 'usehooks-ts';
 
 export default async function Home() {
-
   const response = await getHomepageContent();
+  const { isBrowser } = useSsr();
 
   return (
     <>
       <main className="flex flex-col items-center justify-between min-h-screen ">
         <section className="w-full text-gray-600 body-font">
-
-          <HomepageViewer body={response.data.body} />
-
+          {!isBrowser && <HomepageViewer body={response.data.body} />}
         </section>
       </main>
-
     </>
   );
 }

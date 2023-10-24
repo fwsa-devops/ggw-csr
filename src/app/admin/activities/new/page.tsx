@@ -1,9 +1,7 @@
-import prisma from "@/lib/prisma";
-import ActivityForm from "../components/activity-form";
-
+import prisma from '@/lib/prisma';
+import ActivityForm from '../components/activity-form';
 
 export default async function ActivityPage() {
-
   return (
     <>
       <main className="flex flex-col items-center justify-between min-h-screen ">
@@ -15,8 +13,6 @@ export default async function ActivityPage() {
           </div>
         </section>
       </main>
-
     </>
-  )
-
+  );
 }

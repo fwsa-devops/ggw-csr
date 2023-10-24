@@ -1,31 +1,28 @@
-"use client"; // this registers <Editor> as a Client Component
+'use client'; // this registers <Editor> as a Client Component
 
-import { BlockNoteEditor, PartialBlock } from "@blocknote/core";
-import { BlockNoteView, useBlockNote } from "@blocknote/react";
-import "@blocknote/core/style.css";
-import { useState } from "react";
+import { BlockNoteEditor, PartialBlock } from '@blocknote/core';
+import { BlockNoteView, useBlockNote } from '@blocknote/react';
+import '@blocknote/core/style.css';
 
 interface EditorProps {
   onChange: (value: any) => void;
   initialContent?: string;
-  editable?: boolean
+  editable?: boolean;
 }
 
 // Our <Editor> component we can reuse later
 export default function BlockNote({
   onChange,
   editable,
-  initialContent
+  initialContent,
 }: EditorProps) {
-
-  const [content, useContent] = useState('')
-
   // Creates a new editor instance.
   const editor: BlockNoteEditor | null = useBlockNote({
     editable: editable,
-    initialContent: initialContent ? JSON.parse(initialContent) as PartialBlock[] : undefined,
+    initialContent: initialContent
+      ? (JSON.parse(initialContent) as PartialBlock[])
+      : undefined,
     onEditorContentChange: (editor) => {
-
       // const saveBlocksAsMarkdown = async () => {
       //   const markdown: string =
       //     await editor.blocksToMarkdown(editor.topLevelBlocks);
@@ -44,7 +41,6 @@ export default function BlockNote({
 
       onChange(editor);
     },
-
   });
 
   // Renders the editor instance using a React component.

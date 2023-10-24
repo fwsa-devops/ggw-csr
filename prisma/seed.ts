@@ -47,7 +47,6 @@ async function main() {
   //     },
   //   },
   // });
-
   // const hasan = await prisma.user.create({
   //   data: { name: "Mohammed Hasan", email: 'mohammed.hasan@freshworks.com' },
   // });

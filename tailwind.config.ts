@@ -76,7 +76,7 @@ const config: Config = {
     require('tailwindcss-animate'),
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-    require('@headlessui/tailwindcss')
+    require('@headlessui/tailwindcss'),
   ],
 };
 export default config;

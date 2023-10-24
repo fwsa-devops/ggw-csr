@@ -8,9 +8,8 @@ export const joinEvent = async (eventId: string) => {
     const json = await response.json();
     return json;
   } else {
-    throw new Error("Only freshworks emails allowed");
+    throw new Error('Only freshworks emails allowed');
   }
-
 };
 
 export const deleteEvent = async (eventId: string) => {
@@ -61,7 +60,6 @@ export const checkUserAlreadyRegistered = async () => {
   return json;
 };
 
-
 export const createNewActivity = async (data: unknown) => {
   const body = JSON.stringify(data);
 
@@ -71,13 +69,12 @@ export const createNewActivity = async (data: unknown) => {
     headers: {
       'Content-Type': 'application/json',
     },
-  })
+  });
   const json = await response.json();
   return json;
-}
+};
 
 export const createHomepageContent = async (data: unknown) => {
-
   const body = JSON.stringify(data);
 
   const response = await fetch(`${HOST_API_URL}api/homepage`, {
@@ -86,21 +83,19 @@ export const createHomepageContent = async (data: unknown) => {
     headers: {
       'Content-Type': 'application/json',
     },
-  })
+  });
   const json = await response.json();
   return json;
-}
+};
 
 export const getHomepageContent = async () => {
-
   const response = await fetch(`${HOST_API_URL}api/homepage`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
-  })
+  });
 
   const json = response.json();
   return json;
-
-}
+};

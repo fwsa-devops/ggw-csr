@@ -3,41 +3,26 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-  convertToReadableDate,
-  getActivityDescription,
-  shortenDate,
   getFilteredActivities,
   getAllActivitiesFromDB,
   getAllTags,
 } from './utils';
 import { DateRange } from 'react-day-picker';
-import { CalendarRangeIcon, MapPin, Eraser, PlusIcon } from 'lucide-react';
+import { Eraser, PlusIcon } from 'lucide-react';
 import { Button } from '../ui/button';
-import EventJoinButton from './event-join-button';
-import { Separator } from '../ui/separator';
 import { DatePickerWithRange } from '../ui/date-range-picker';
 import { DropdownMenuCheckboxes } from '../ui/dropdown/checkbox-dd';
 import { EVENT_LOCATIONS } from '../../../constants';
-import {
-  Activity,
-  ActivityTags,
-  Event,
-  EventLeader,
-  Tag,
-  User,
-  Volunteers,
-} from '@prisma/client';
-import ActivityComponent from '../activity';
+
 import Loader from '../ui/loader';
+import ActivityListItem from '../core/ActivityListItem';
+import { IActivity } from '@/types';
+import { useSession } from 'next-auth/react';
 
-export interface IActivities extends Activity {
-  events: { volunteers: Volunteers[]; leaders: EventLeader[] } & Event[];
-  tags: ({ tag: Tag } & ActivityTags)[];
-  author: { name: String };
-}
-
-const ActiveEvents = (props: { activities: IActivities[] }) => {
+const ActiveEvents = (props: { activities: IActivity[] }) => {
   const { activities } = props;
+
+  const { status } = useSession();
 
   const [isLoading, setLoading] = React.useState<boolean>(false);
   const [activties, setActivities] = React.useState(activities);
@@ -161,7 +146,7 @@ const ActiveEvents = (props: { activities: IActivities[] }) => {
             date={date}
             setDate={setDate}
             disabled={isLoading}
-            onUpdate={() => { }}
+            onUpdate={() => {}}
           />
 
           <div className="flex gap-3">
@@ -176,41 +161,40 @@ const ActiveEvents = (props: { activities: IActivities[] }) => {
               <Eraser size={18} />
             </Button>
 
-            <Button
-              variant={'default'}
-              disabled={isLoading}
-              onClick={clearFilters}
-            >
-              <Link href={`/admin/activities/new`} className='flex'>
-                <PlusIcon size={18} className='mr-2' />
-                New
-              </Link>
-            </Button>
-
-          </div>
-
-
-        </div >
-      </div >
-      {isLoading && <Loader />}
-      {
-        activties.length ? (
-          activties?.map((activity) => {
-            return (
-              <div
-                className={`container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground ${isLoading ? 'opacity-50' : ''
-                  }`}
-                key={activity.id}
+            {status === 'authenticated' && (
+              <Button
+                variant={'default'}
+                disabled={isLoading}
+                onClick={clearFilters}
               >
-                <ActivityComponent activity={activity} />
-              </div >
-            );
-          })
-        ) : (
-          <h2 className="container flex justify-center h-auto mx-auto my-10 text-2xl">
-            No Activities with applied filters...
-          </h2>
-        )}
+                <Link href={`/admin/activities/new`} className="flex">
+                  <PlusIcon size={18} className="mr-2" />
+                  New
+                </Link>
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+      {isLoading && <Loader />}
+      {activties.length ? (
+        activties?.map((activity) => {
+          return (
+            <div
+              className={`container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground ${
+                isLoading ? 'opacity-50' : ''
+              }`}
+              key={activity.id}
+            >
+              <ActivityListItem key={activity.id} activity={activity} />
+            </div>
+          );
+        })
+      ) : (
+        <h2 className="container flex justify-center h-auto mx-auto my-10 text-2xl">
+          No Activities with applied filters...
+        </h2>
+      )}
     </>
   );
 };

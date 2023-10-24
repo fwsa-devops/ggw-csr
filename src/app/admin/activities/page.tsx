@@ -1,9 +1,7 @@
-import ActiveEvents from "@/components/events/active-events";
-import prisma from "@/lib/prisma";
-
+import ActiveEvents from '@/components/events/active-events';
+import prisma from '@/lib/prisma';
 
 const Page = async () => {
-
   const activities: any = await prisma.activity.findMany({
     include: {
       events: {
@@ -32,7 +30,7 @@ const Page = async () => {
         </section>
       </main>
     </>
-  )
-}
+  );
+};
 
 export default Page;

@@ -6,8 +6,9 @@ import { getActivityDescription } from '../events/utils';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import EventListItem from '../core/EventIListItem';
+import { IActivity } from '@/types';
 
-const ActivityComponent = ({ activity }) => {
+const ActivityListItem = ({ activity }: { activity: IActivity }) => {
   return (
     <div className="flex flex-wrap gap-6 p-4 mx-auto event-container md:flex-nowrap md:h-600">
       <Link
@@ -17,25 +18,30 @@ const ActivityComponent = ({ activity }) => {
         <img
           alt="ecommerce"
           className="object-cover object-center w-full rounded"
-          src={activity.cover || ''}
+          src={activity.cover}
         />
       </Link>
 
       <div className="w-full mt-6 lg:w-1/3 lg:mt-0">
-        <h1 className="mb-1 text-xl font-semibold text-gray-700 title-font">
-          {activity.name}
-        </h1>
+        <Link href={`/activities/${activity.id}`}>
+          <h1 className="mb-2 text-xl font-semibold text-gray-700 title-font">
+            {activity.name}
+          </h1>
+        </Link>
+
         <div className="flex gap-2 mb-2 text-gray-700 location items-center">
           <MapPin size="18" />
           <p className="text-sm">{activity?.city}</p>
         </div>
+
         <h2 className="mb-1 text-sm tracking-widest text-gray-400 title-font">
-          {activity?.tags.length > 0
+          {activity.tags && activity?.tags?.length > 0
             ? activity?.tags.map((tag) => `#${tag?.tag.name}`).join(', ')
             : 'No tags available'}
         </h2>
 
         <p className="leading-relaxed">{getActivityDescription(activity)}</p>
+
         <div className="flex items-center pb-5 mt-2 mb-0 text-sm">
           <div className="flex flex-col gap-y-2">
             <p>
@@ -44,6 +50,7 @@ const ActivityComponent = ({ activity }) => {
             </p>
           </div>
         </div>
+
         <div className="flex">
           <Link href={`/activities/${activity.id}`}>
             <Button size="sm" variant="outline">
@@ -69,4 +76,4 @@ const ActivityComponent = ({ activity }) => {
   );
 };
 
-export default React.memo(ActivityComponent);
+export default React.memo(ActivityListItem);

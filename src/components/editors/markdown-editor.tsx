@@ -8,11 +8,9 @@ import { Inter } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'] });
 
-
 import dynamic from 'next/dynamic';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-
 
 export const Editor = forwardRef<
   React.ElementRef<typeof ReactQuill>,

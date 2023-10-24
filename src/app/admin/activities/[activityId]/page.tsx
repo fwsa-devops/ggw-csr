@@ -1,8 +1,12 @@
-import EventPage from "@/components/event";
-import { getActivity } from "@/components/events/utils";
+import EventPage from '@/components/event';
+import { getActivity } from '@/components/events/utils';
 
-export default async function Event({ params }: { params: { activityId: string } }) {
-  const activity: any = await getActivity(params.activityId)
+export default async function Event({
+  params,
+}: {
+  params: { activityId: string };
+}) {
+  const activity: any = await getActivity(params.activityId);
 
   return (
     <>
@@ -12,6 +16,5 @@ export default async function Event({ params }: { params: { activityId: string }
         </section>
       </main>
     </>
-  )
-
+  );
 }

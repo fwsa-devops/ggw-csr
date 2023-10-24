@@ -13,9 +13,7 @@ export async function GET(req: Request) {
   return Response.json(activities);
 }
 
-
 export async function POST(req: Request, res: Response) {
-
   console.log(req);
   const body: unknown = await req.json();
   console.log(body);
@@ -25,63 +23,55 @@ export async function POST(req: Request, res: Response) {
   let zodErrors = {};
 
   if (!formData.success) {
-    formData.error.issues.forEach(issue => {
-      zodErrors = { ...zodErrors, [issue.path[0]]: issue.message }
-    })
+    formData.error.issues.forEach((issue) => {
+      zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
+    });
 
     return NextResponse.json({
-      errors: zodErrors
-    })
+      errors: zodErrors,
+    });
   }
 
-  let response: any = null
+  let response: any = null;
 
   if (formData.data.id) {
-    response = await prisma.activity.update(
-      {
-        where: {
-          id: formData.data.id
-        },
-        data: {
-          ...formData.data,
-          tags: {}
-        },
-      }
-    )
+    response = await prisma.activity.update({
+      where: {
+        id: formData.data.id,
+      },
+      data: {
+        ...formData.data,
+        tags: {},
+      },
+    });
   } else {
-    response = await prisma.activity.create(
-      {
-        data: {
-          ...formData.data,
-          tags: {}
-        },
-      }
-    )
+    response = await prisma.activity.create({
+      data: {
+        ...formData.data,
+        tags: {},
+      },
+    });
   }
 
   if (response === null) {
-    return NextResponse.json(
-      { error: "Failed to UPSERT activity" }
-    )
+    return NextResponse.json({ error: 'Failed to UPSERT activity' });
   }
 
   // REMOVE old Tags
   await prisma.activityTags.deleteMany({
     where: {
-      activity_id: response.id
-    }
-  })
+      activity_id: response.id,
+    },
+  });
 
   // REMOVE old Tags
-  await prisma.activityTags.createMany(
-    {
-      skipDuplicates: true,
-      data: formData.data.tags.map(t => ({ tag_id: t, activity_id: response.id }))
-    }
-  )
+  await prisma.activityTags.createMany({
+    skipDuplicates: true,
+    data: formData.data.tags.map((t) => ({
+      tag_id: t,
+      activity_id: response.id,
+    })),
+  });
 
-  return NextResponse.json(
-    { success: true, data: response }
-  )
-
+  return NextResponse.json({ success: true, data: response });
 }

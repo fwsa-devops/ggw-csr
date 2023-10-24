@@ -307,7 +307,7 @@ img {
     margin-bottom: 1rem;
   }
 
-  .toast-container > li {
+  .toast-container>li {
     width: 90vw;
     margin: 10px;
   }
@@ -760,4 +760,16 @@ html::-webkit-scrollbar-thumb {
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+.tiptap.ProseMirror {
+  padding-inline: 0 !important;
+}
+
+@media screen and (min-width: 769px) {
+
+  .tiptap.ProseMirror {
+    padding-inline: 54px !important;
+  }
+
 }

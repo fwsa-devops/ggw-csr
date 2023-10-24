@@ -15,12 +15,12 @@ export function MainNav({
       )}
       {...props}
     >
-      {/* <Link
-        href="/"
+      <Link
+        href="/activities"
         className="font-medium transition-colors text-md text-muted-foreground hover:text-primary"
       >
-        Events
-      </Link> */}
+        Activities
+      </Link>
       {/* <Link
         href="/"
         className="font-medium transition-colors text-md text-muted-foreground hover:text-primary"

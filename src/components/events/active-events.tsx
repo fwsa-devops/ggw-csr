@@ -133,6 +133,7 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
             key="themes"
             label={'Themes'}
             title={'Filter by Themes'}
+            className="md:w-auto w-full justify-start"
           />
           <DropdownMenuCheckboxes
             onChange={onLocationChange}
@@ -141,12 +142,14 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
             key="location"
             label={'Locations'}
             title={'Filter by Location'}
+            className="md:w-auto w-full justify-start"
           />
           <DatePickerWithRange
             date={date}
             setDate={setDate}
             disabled={isLoading}
-            onUpdate={() => { }}
+            onUpdate={() => {}}
+            className="date-filter md:w-auto w-full"
           />
 
           <div className="flex gap-3">
@@ -157,6 +160,7 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
               variant={'secondary'}
               disabled={isLoading}
               onClick={clearFilters}
+              title={'Clear Filters'}
             >
               <FilterXIcon size={18} />
             </Button>
@@ -181,8 +185,9 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
         activties?.map((activity) => {
           return (
             <div
-              className={`container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground ${isLoading ? 'opacity-50' : ''
-                }`}
+              className={`container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground ${
+                isLoading ? 'opacity-50' : ''
+              }`}
               key={activity.id}
             >
               <ActivityListItem key={activity.id} activity={activity} />

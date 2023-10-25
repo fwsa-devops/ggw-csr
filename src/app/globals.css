@@ -315,6 +315,11 @@ img {
     width: 90vw;
     margin: 10px;
   }
+
+  .date-filter button{
+    width: 100% !important;
+  }
+
 }
 
 .search {

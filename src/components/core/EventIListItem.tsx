@@ -81,7 +81,7 @@ const EventListItem = ({
     <>
       <div
         className={cn(
-          'my-5 px-2 text-sm text-gray-700 event-timings align-center',
+          'my-5 text-sm text-gray-700 event-timings align-center',
           size === 'lg'
             ? 'p-6 py-4 mt-6 border border-b-2 shadow rounded-xl bg-card text-card-foreground join-event'
             : '',
@@ -91,24 +91,38 @@ const EventListItem = ({
           <div
             className={cn(
               'flex flex-row  flex-wrap ',
-              size === 'lg' ? 'lg:flex-nowrap items-center' : '',
+              size === 'lg' ? 'lg:flex-nowrap items-top' : '',
+              event.description ? ' items-top' : 'items-center'
             )}
           >
-            <div className="flex mr-4  mb-2">
-              <MapIcon size={18} className="mr-2" />
-              {event.city}
-            </div>
-
-            {size === 'lg' && (
+            <div className={cn(
+              'flex-row flex-wrap',
+              event.description ? 'flex ' : '',
+              size === 'sm' ? 'flex' : ''
+            )}>
               <div className="flex mr-4  mb-2">
-                <BuildingIcon size={18} className="mr-2" />
-                {event.location}
+                <MapIcon size={18} className="mr-2" />
+                {event.city}
               </div>
-            )}
 
-            <div className="flex mr-4 mb-2">
-              <CalendarRangeIcon size="18" className="mr-2" />
-              {is_dates_announced ? date + ' Hrs' : date_announcement_text}
+              {size === 'lg' && (
+                <div className="flex mr-4  mb-2">
+                  <BuildingIcon size={18} className="mr-2" />
+                  {event.location}
+                </div>
+              )}
+
+              <div className="flex mr-4 mb-2">
+                <CalendarRangeIcon size="18" className="mr-2" />
+                {is_dates_announced ? date + ' Hrs' : date_announcement_text}
+              </div>
+
+              {
+                (event.description && size === 'lg') &&
+                <div className='basis-full'>
+                  Description
+                </div>
+              }
             </div>
 
             {size === 'lg' && (
@@ -123,16 +137,20 @@ const EventListItem = ({
 
           {size === 'lg' && <Separator className="mt-6 mb-4" />}
 
-          <div className="flex justify-between items-start">
-            <div className={cn('flex-1', size === 'lg' ? 'mb-2' : '')}>
+          <div className="flex justify-between items-start font-medium">
+            <div className={cn('flex-1 ', size === 'lg' ? 'mb-2' : '')}>
               <Progress
-                value={event.volunteers.length}
-                max={event.max_volunteers}
+                value={(event.volunteers.length / event.max_volunteers) * 100}
                 className="my-2"
               />
-              <span>
+              <div>
                 {`${event.volunteers.length} / ${event?.max_volunteers}`} Joined
-              </span>
+                {size === 'lg' &&
+                  <span className='ml-2 text-gray-400'>
+                    ( Minimum {event.min_volunteers} Volunteers )
+                  </span>
+                }
+              </div>
             </div>
 
             {size === 'lg' && (

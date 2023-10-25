@@ -60,7 +60,7 @@ const ActivityListItem = ({ activity }: { activity: IActivity }) => {
         </div>
       </div>
 
-      <div className="w-full pl-5 participants lg:w-1/3 ">
+      <div className="w-full participants lg:pl-5 lg:w-1/3 ">
         <h2 className="pb-2 mb-2 text-xl font-medium text-gray-700 ">Events</h2>
 
         {activity.events.map((event: any) => (

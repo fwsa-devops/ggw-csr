@@ -5,7 +5,7 @@ import { BlockNoteView, useBlockNote } from '@blocknote/react';
 import '@blocknote/core/style.css';
 
 interface EditorProps {
-  onChange: (value: any) => void;
+  onChange?: (value: any) => void;
   initialContent?: string;
   editable?: boolean;
 }
@@ -39,7 +39,7 @@ export default function BlockNote({
       // };
       // saveBlocksAsHTML();
 
-      onChange(editor);
+      onChange?.(editor);
     },
   });
 

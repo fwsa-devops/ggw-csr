@@ -47,7 +47,6 @@ async function main() {
   //     },
   //   },
   // });
-
   // const hasan = await prisma.user.create({
   //   data: { name: "Mohammed Hasan", email: 'mohammed.hasan@freshworks.com' },
   // });
@@ -57,41 +56,38 @@ async function main() {
   // const surya = await prisma.user.create({
   //   data: { name: "Surya Umapathy", email: 'surya.umapathy@ctr.freshworks.com' },
   // });
-   const surya = await prisma.user.create({
-    data: { name: "Surya Umapathy", email: 'suryaumapathy2812@gmail.com' },
-  });
+  //  const surya = await prisma.user.create({
+  //   data: { name: "Surya Umapathy", email: 'suryaumapathy2812@gmail.com' },
+  // });
   // console.log({ mukesh, hasan, surya });
-
-
-  const activities = await prisma.activity.findMany(
-    {
-      "take": 100,
-      "skip": 0,
-      "select": {
-        "id": true,
-        "name": true,
-        "cover": true,
-        "description": true,
-        "summary": true,
-        "duration": true,
-        "city": true,
-        "status": true,
-        "author_id": true,
-        "author": true,
-        "events": {
-          "select": {
-            "id": true
-          }
-        },
-        "tags": {
-          "select": {
-            "id": true
-          }
-        }
-      }
-    });
-  console.log(activities);
-
+  // const activities = await prisma.activity.findMany(
+  //   {
+  //     "take": 100,
+  //     "skip": 0,
+  //     "select": {
+  //       "id": true,
+  //       "name": true,
+  //       "cover": true,
+  //       "description": true,
+  //       "summary": true,
+  //       "duration": true,
+  //       "city": true,
+  //       "status": true,
+  //       "author_id": true,
+  //       "author": true,
+  //       "events": {
+  //         "select": {
+  //           "id": true
+  //         }
+  //       },
+  //       "tags": {
+  //         "select": {
+  //           "id": true
+  //         }
+  //       }
+  //     }
+  //   });
+  // console.log(activities);
 }
 main()
   .then(async () => {

@@ -32,6 +32,8 @@ import { createActivity } from '@/components/actions/action';
 import { toast } from '@/components/ui/use-toast';
 import { EVENT_LOCATIONS } from '../../../../../constants';
 import { Listbox } from '@headlessui/react';
+import React from 'react';
+import Loader from '@/components/ui/loader';
 
 const ActivityForm = ({
   initialData,
@@ -39,6 +41,7 @@ const ActivityForm = ({
   initialData: IActivityForm | null;
 }) => {
   const { data: session, status } = useSession();
+  const [isLoading, setLoading] = React.useState<boolean>(false);
 
   if (!session?.user) {
     return <>Un-Authorized User</>;
@@ -68,7 +71,8 @@ const ActivityForm = ({
 
   const onSubmit = async (values: z.infer<typeof activityFormSchema>) => {
     try {
-      console.log(values);
+      setLoading(true);
+      // console.log(values);
       const response = await createActivity(values);
 
       if (response.errors) {
@@ -77,22 +81,24 @@ const ActivityForm = ({
       }
 
       toast({
-        title: (response.message),
-        variant: 'default'
-      })
+        title: response.message,
+        variant: 'default',
+      });
       form.reset();
       router.push(`/activities`);
     } catch (e: any) {
       console.error(e);
       toast({
-        title: (e.message as string),
-        variant: 'destructive'
-      })
+        title: e.message as string,
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <>
+    <div className={isLoading ? 'opacity-50' : ''}>
       <h2 className="text-base font-semibold leading-7 text-gray-900">
         Activity
       </h2>
@@ -100,8 +106,13 @@ const ActivityForm = ({
         This information will be displayed publicly.
       </p>
 
+      {isLoading && <Loader />}
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className={isLoading ? 'opacity-50' : ''}
+        >
           <FormField
             control={form.control}
             name="name"
@@ -191,13 +202,12 @@ const ActivityForm = ({
 
                     <MultiSelect
                       ref={field.ref}
-                      items={EVENT_LOCATIONS.map(l => l.name)}
+                      items={EVENT_LOCATIONS.map((l) => l.name)}
                       onChange={field.onChange}
                       value={field.value}
                       multiple={false}
-                      key={"location"}
+                      key={'location'}
                     />
-
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -273,7 +283,7 @@ const ActivityForm = ({
                         multiple={true}
                         onChange={field.onChange}
                         value={field.value}
-                        key={"tags"}
+                        key={'tags'}
                       />
                     )}
                   </FormControl>
@@ -322,7 +332,7 @@ const ActivityForm = ({
           </div>
         </form>
       </Form>
-    </>
+    </div>
   );
 };
 

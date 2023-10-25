@@ -82,7 +82,7 @@ export async function createActivity(formData: z.infer<typeof activityFormSchema
 
     return ({
       success: true,
-      message: 'Form Submitted Successfully',
+      message: data.data.id ? 'Activity updated successfully':  'Activity created successfully',
       data: response
     });
   } catch (error: unknown) {

@@ -33,7 +33,11 @@ export const INCLUDE_ALL_ACTIVITIES_DATA: Partial<
             user: true,
           },
         },
-        volunteers: true,
+        volunteers: {
+          include: {
+            user: true,
+          },
+        },
       },
     },
     tags: {

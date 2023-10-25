@@ -18,10 +18,10 @@ model Activity {
   description String        @db.Text // for storing RTE info
   summary     String        @db.Text // for storing short description in events list page
   duration    Int           @default(120)
-  city        String?
+  city        City?
   status      ActivityState @default(DRAFT)
   author_id   String
-  author      User          @relation(fields: [author_id], references: [id])
+  author      User          @relation(fields: [author_id], references: [email])
   // published   Boolean @default(false)
   // startTime   DateTime?
   // endTime     DateTime?
@@ -38,9 +38,14 @@ enum ActivityState {
   CLOSED
 }
 
+enum City {
+  Chennai
+  Bangalore
+}
+
 model Event {
   id                 String        @id @default(cuid())
-  city               String
+  city               City
   location           String
   leaders            EventLeader[]
   volunteers         Volunteers[]

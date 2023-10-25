@@ -1,10 +1,116 @@
 'use server'
 
 import prisma from "@/lib/prisma";
+import { activityFormSchema } from "@/types";
+import { Prisma } from "@prisma/client";
+import { DefaultArgs } from "@prisma/client/runtime/library";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
+import * as z from "zod";
 
-export async function joinEvent(eventId: string) {
+type ResponseType = {
+  success: boolean;
+  message: string;
+  errors?: Record<string, string>;
+  data?: any;
+};
+
+
+
+export async function createActivity(formData: z.infer<typeof activityFormSchema>): Promise<ResponseType> {
+
+  const data = activityFormSchema.safeParse(formData);
+  console.log(data);
+  try {
+    let zodErrors = {};
+
+    if (!data.success) {
+      data.error.issues.forEach((issue) => {
+        zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
+      });
+
+      throw ({
+        success: true,
+        message: data.error.message,
+        errors: zodErrors,
+      });
+    }
+
+    let response;
+
+    if (data.data.id) {
+      response = await prisma.activity.update({
+        where: {
+          id: data.data.id,
+        },
+        data: {
+          ...data.data,
+          tags: {},
+        },
+      });
+    } else {
+      response = await prisma.activity.create({
+        data: {
+          ...data.data,
+          tags: {},
+        },
+      });
+    }
+
+    if (response === null) {
+      throw ({ success: false, message: 'Failed to UPSERT activity' });
+    }
+
+    // REMOVE old Tags
+    await prisma.activityTags.deleteMany({
+      where: {
+        activity_id: response.id,
+      },
+    });
+
+    // REMOVE old Tags
+    await prisma.activityTags.createMany({
+      skipDuplicates: true,
+      data: data.data.tags.map((t) => ({
+        tag_id: t,
+        activity_id: response.id,
+      })),
+    });
+
+
+    revalidatePath(`/activities`)
+
+    return ({
+      success: true,
+      message: 'Form Submitted Successfully',
+      data: response
+    });
+  } catch (error: unknown) {
+    console.log(error);
+
+    if (typeof error === 'string') {
+      return {
+        success: false,
+        message: 'Failed to Submit Form',
+      }
+    } else {
+      return {
+        ...error as ResponseType
+      }
+    }
+  }
+
+
+
+}
+
+
+export async function updateActivity(activityId: string, formData: any) {
+
+}
+
+
+export async function joinEvent(eventId: string): Promise<ResponseType> {
   const session = await getServerSession();
 
   try {
@@ -38,18 +144,20 @@ export async function joinEvent(eventId: string) {
 
     revalidatePath(`/activities/${eventId}`, 'page');
     return {
+      success: true,
       message: 'Successfully Joined Event'
     }
 
   } catch (e: any) {
     console.log(e)
     return {
+      success: false,
       message: e
     }
   }
 }
 
-export async function unJoinEvent(eventId: string) {
+export async function unJoinEvent(eventId: string): Promise<ResponseType> {
   const session = await getServerSession();
 
   try {
@@ -81,11 +189,13 @@ export async function unJoinEvent(eventId: string) {
     revalidatePath(`/activities/${eventId}`, 'page')
 
     return {
+      success: true,
       message: 'Successfully Unjoined Event'
     }
   } catch (e: any) {
     console.log(e)
     return {
+      success: false,
       message: e
     }
   }

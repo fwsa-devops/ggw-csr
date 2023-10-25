@@ -13,8 +13,7 @@ import {
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { IActivityForm, activityFormSchema } from '@/types';
-import { createNewActivity } from '@/components/events/utils/api';
-import { Activity, ActivityTags, Tag } from '@prisma/client';
+import { Tag } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { Editor } from '@/components/editors/markdown-editor';
 import { useState } from 'react';
@@ -29,6 +28,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { createActivity } from '@/components/actions/action';
+import { toast } from '@/components/ui/use-toast';
+import { EVENT_LOCATIONS } from '../../../../../constants';
+import { Listbox } from '@headlessui/react';
 
 const ActivityForm = ({
   initialData,
@@ -66,17 +69,25 @@ const ActivityForm = ({
   const onSubmit = async (values: z.infer<typeof activityFormSchema>) => {
     try {
       console.log(values);
-      const response = await createNewActivity(values);
+      const response = await createActivity(values);
 
       if (response.errors) {
         const errors = response.errors;
         console.log(errors);
       }
 
+      toast({
+        title: (response.message),
+        variant: 'default'
+      })
       form.reset();
-      router.push('/admin/activities');
-    } catch (e) {
+      router.push(`/activities`);
+    } catch (e: any) {
       console.error(e);
+      toast({
+        title: (e.message as string),
+        variant: 'destructive'
+      })
     }
   };
 
@@ -164,7 +175,7 @@ const ActivityForm = ({
           <FormField
             control={form.control}
             name="city"
-            defaultValue={initialData?.city ?? ''}
+            defaultValue={initialData?.city ?? 'Chennai'}
             render={({ field }) => (
               <div className="mt-6">
                 <FormItem>
@@ -173,10 +184,20 @@ const ActivityForm = ({
                     {field.name}{' '}
                   </FormLabel>
                   <FormControl className="mt-2">
-                    <input
+                    {/* <input
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       {...field}
+                    /> */}
+
+                    <MultiSelect
+                      ref={field.ref}
+                      items={EVENT_LOCATIONS.map(l => l.name)}
+                      onChange={field.onChange}
+                      value={field.value}
+                      multiple={false}
+                      key={"location"}
                     />
+
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -249,8 +270,10 @@ const ActivityForm = ({
                       <MultiSelect
                         ref={field.ref}
                         items={tags}
+                        multiple={true}
                         onChange={field.onChange}
                         value={field.value}
+                        key={"tags"}
                       />
                     )}
                   </FormControl>

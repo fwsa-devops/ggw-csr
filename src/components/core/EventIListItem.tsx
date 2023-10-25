@@ -58,15 +58,19 @@ const EventListItem = ({
     try {
       if (action === 'JOIN') {
         const res = await joinEvent(event.id)
-        toastObj.title = res.message as string
+        if (!res.success) throw (res.message)
+
+        toastObj.title = res.data as string
       }
       else {
         const res = await unJoinEvent(event.id)
-        toastObj.title = res.message as string
+        if (!res.success) throw (res.message)
+
+        toastObj.title = res.data as string
       }
     } catch (error) {
       toastObj.
-        title = '';
+        title = error as string;
       toastObj.
         varient = 'destructive'
 

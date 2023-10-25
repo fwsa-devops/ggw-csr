@@ -162,16 +162,16 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
             </Button>
 
             {status === 'authenticated' && (
-              <Button
-                variant={'default'}
-                disabled={isLoading}
-                onClick={clearFilters}
-              >
-                <Link href={`/admin/activities/new`} className="flex">
+              <Link href={`/admin/activities/new`} className="flex">
+                <Button
+                  variant={'default'}
+                  disabled={isLoading}
+                  onClick={clearFilters}
+                >
                   <PlusIcon size={18} className="mr-2" />
                   New
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             )}
           </div>
         </div>

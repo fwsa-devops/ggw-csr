@@ -8,7 +8,7 @@ import {
   getAllTags,
 } from './utils';
 import { DateRange } from 'react-day-picker';
-import { Eraser, PlusIcon } from 'lucide-react';
+import { FilterXIcon, PlusIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import { DatePickerWithRange } from '../ui/date-range-picker';
 import { DropdownMenuCheckboxes } from '../ui/dropdown/checkbox-dd';
@@ -130,8 +130,8 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
             onChange={onTagsChange}
             disabled={isLoading}
             items={tags}
-            key="tags"
-            label={'Tags'}
+            key="themes"
+            label={'Themes'}
             title={'Filter by Themes'}
           />
           <DropdownMenuCheckboxes
@@ -146,7 +146,7 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
             date={date}
             setDate={setDate}
             disabled={isLoading}
-            onUpdate={() => {}}
+            onUpdate={() => { }}
           />
 
           <div className="flex gap-3">
@@ -158,7 +158,7 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
               disabled={isLoading}
               onClick={clearFilters}
             >
-              <Eraser size={18} />
+              <FilterXIcon size={18} />
             </Button>
 
             {status === 'authenticated' && (
@@ -181,9 +181,8 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
         activties?.map((activity) => {
           return (
             <div
-              className={`container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground ${
-                isLoading ? 'opacity-50' : ''
-              }`}
+              className={`container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground ${isLoading ? 'opacity-50' : ''
+                }`}
               key={activity.id}
             >
               <ActivityListItem key={activity.id} activity={activity} />

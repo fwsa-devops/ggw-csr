@@ -2,22 +2,21 @@ import {
   BuildingIcon,
   CalendarRangeIcon,
   HandIcon,
-  LocateIcon,
   MapIcon,
   XIcon,
 } from 'lucide-react';
-import Link from 'next/link';
-import { Event, EventLeader, User, Volunteers } from '@prisma/client';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '../ui/button';
 import { signIn, useSession } from 'next-auth/react';
 import { useBoolean } from 'usehooks-ts';
-import { deleteEvent, joinEvent } from '../events/utils/api';
+// import { deleteEvent, joinEvent } from '../events/utils/api';
 import { toast } from '../ui/use-toast';
 import { Progress } from '../ui/progress';
 import { cn } from '@/lib/utils';
 import UserAvatar from '../event/user-avatar';
 import { IEvent } from '@/types';
+import { joinEvent, unJoinEvent } from '@/components/actions/action'
+import { useTransition } from 'react'
 
 const calculateTimeDiff = (start, end) => {
   return (
@@ -38,9 +37,9 @@ const EventListItem = ({
   isMember: boolean;
   onJoin?: () => void;
 }) => {
-  const { status, data } = useSession();
 
-  const { value: isLoading, setTrue, setFalse, toggle } = useBoolean(false);
+  const { status } = useSession();
+  const [isPending, startTransition] = useTransition();
 
   const { is_dates_announced, date_announcement_text, startTime, endTime } =
     event;
@@ -48,36 +47,35 @@ const EventListItem = ({
     ? date_announcement_text
     : calculateTimeDiff(startTime, endTime);
 
-  const toggleJoin = async () => {
-    setTrue();
+
+  const callServerAction = async (action: 'JOIN' | 'UNJOIN') => {
 
     const toastObj = {
-      varient: 'default',
       title: '',
-      description: '',
-    };
-
-    try {
-      if (isMember) {
-        toastObj.title = 'Unjoin Event';
-        await deleteEvent(event.id);
-        toastObj.description = 'Successfully Unjoined event';
-      } else {
-        toastObj.title = 'Join Event';
-        await joinEvent(event.id);
-        toastObj.description = 'Successfully Joined event';
-      }
-    } catch (error: any) {
-      console.log(error);
-      toastObj.varient = 'destructive';
-      // toastObj.title = 'Error Joining event'
-      toastObj.description = error.message;
+      varient: 'default'
     }
 
-    onJoin?.();
-    toast(toastObj);
-    setFalse();
-  };
+    try {
+      if (action === 'JOIN') {
+        const res = await joinEvent(event.id)
+        toastObj.title = res.message as string
+      }
+      else {
+        const res = await unJoinEvent(event.id)
+        toastObj.title = res.message as string
+      }
+    } catch (error) {
+      toastObj.
+        title = '';
+      toastObj.
+        varient = 'destructive'
+
+    } finally {
+      toast(toastObj)
+    }
+
+  }
+
 
   return (
     <>
@@ -139,33 +137,42 @@ const EventListItem = ({
 
             {size === 'lg' && (
               <div>
-                {!isMember ? (
-                  <Button
-                    variant={'default'}
-                    className="ml-4"
-                    type="button"
-                    disabled={isLoading}
-                    onClick={() =>
-                      status === 'unauthenticated'
-                        ? signIn('google')
-                        : toggleJoin()
-                    }
-                  >
-                    <HandIcon size={18} className="mr-2" />
-                    Join this event
-                  </Button>
-                ) : (
-                  <Button
-                    variant={'default'}
-                    className="ml-4"
-                    type="button"
-                    disabled={isLoading}
-                    onClick={() => toggleJoin()}
-                  >
-                    <XIcon size={18} className="mr-2" />
-                    Unjoin this event
-                  </Button>
-                )}
+                {
+                  (status === 'unauthenticated') ?
+                    <Button
+                      variant={'default'}
+                      className="ml-4"
+                      type="button"
+                      onClick={() => signIn('google')}
+                    >
+                      <HandIcon size={18} className="mr-2" />
+                      Sign in to Join Event
+                    </Button>
+                    :
+                    (!isMember) ? (
+                      <Button
+                        variant={'default'}
+                        className="ml-4"
+                        type="button"
+                        disabled={isPending}
+                        onClick={() => startTransition(() => callServerAction('JOIN'))}
+                      >
+                        <HandIcon size={18} className="mr-2" />
+                        Join this event
+                      </Button>
+                    ) : (
+                      <Button
+                        variant={'default'}
+                        className="ml-4"
+                        type="button"
+                        disabled={isPending}
+                        onClick={() => startTransition(() => callServerAction('UNJOIN'))}
+                      >
+                        <XIcon size={18} className="mr-2" />
+                        Unjoin this event
+                      </Button>
+                    )
+                }
               </div>
             )}
           </div>
@@ -181,9 +188,10 @@ const EventListItem = ({
             </div>
           )}
         </div>
-      </div>
+      </div >
 
-      {size === 'sm' && <Separator />}
+      {size === 'sm' && <Separator />
+      }
     </>
   );
 };

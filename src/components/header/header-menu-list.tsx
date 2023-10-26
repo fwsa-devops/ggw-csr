@@ -10,7 +10,7 @@ export function MainNav({
   return (
     <nav
       className={cn(
-        'flex items-center space-x-4 lg:space-x-6 w-11/12',
+        'flex items-center space-x-4 lg:space-x-6 w-10/12',
         className,
       )}
       {...props}

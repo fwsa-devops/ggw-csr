@@ -32,6 +32,7 @@ const EventList = ({
 
   useEffect(() => {
     checkUserAlreadyRegistered();
+    // think this will call infinitely since isMember is changed when isMember is changed
   }, [events, isMember]);
 
   return (

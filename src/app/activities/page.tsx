@@ -4,6 +4,7 @@ import {
   getAllActivitiesFromDB,
   getPastActivities,
 } from '@/components/events/utils';
+import { Separator } from '@/components/ui/separator';
 
 export default async function Home() {
   const activities = await getAllActivitiesFromDB();
@@ -14,6 +15,7 @@ export default async function Home() {
       <main className="flex flex-col items-center justify-between min-h-screen ">
         <section className="w-full text-gray-600 body-font">
           <ActiveEvents activities={activities} />
+          <Separator className="mt-6 mb-4" />
           <PastActivities pastActivities={pastActivities} />
         </section>
       </main>

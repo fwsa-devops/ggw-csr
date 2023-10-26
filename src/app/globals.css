@@ -140,10 +140,6 @@ img {
   }
 }
 
-.header-logo {
-  margin-right: 2.5rem;
-}
-
 .header-logo a {
   display: flex;
   align-items: center;
@@ -316,10 +312,9 @@ img {
     margin: 10px;
   }
 
-  .date-filter button{
+  .date-filter button {
     width: 100% !important;
   }
-
 }
 
 .search {
@@ -521,6 +516,9 @@ p {
 @media (min-width: 600px) {
   .card-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .header-logo {
+    margin-right: 2.5rem;
   }
 }
 

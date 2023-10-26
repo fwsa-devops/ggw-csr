@@ -15,9 +15,9 @@ const ActivityPreview = ({ activity }: { activity: IActivity }) => {
           />
         </div>
 
-        <div className="w-full mt-12 lg:mt-6 lg:mx-auto lg:order-2 order-2 ">
-          <div className="flex justify-between">
-            <h1 className="mb-4 text-2xl font-semibold text-gray-700 title-font">
+        <div className="w-full mt-12 lg:mt-6 lg:mx-auto lg:order-2 order-2">
+          <div className="flex md:flex-row flex-col md:justify-between md:items-center items-end">
+            <h1 className="md:mb-4 text-2xl font-semibold text-gray-700 title-font">
               {activity.name}
             </h1>
 
@@ -36,10 +36,10 @@ const ActivityPreview = ({ activity }: { activity: IActivity }) => {
           <h2 className="mt-2 mb-3 text-sm tracking-widest text-gray-400 title-font">
             {activity.tags
               ? activity?.tags.map((tag) => (
-                <span key={tag.id} className="mr-2">
-                  #{tag?.tag.name}
-                </span>
-              ))
+                  <span key={tag.id} className="mr-2">
+                    #{tag?.tag.name}
+                  </span>
+                ))
               : ''}
           </h2>
 

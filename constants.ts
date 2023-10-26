@@ -15,11 +15,11 @@ export const EVENT_LOCATIONS = [
     name: 'Bangalore',
     checked: false,
   },
-  {
-    id: 3,
-    name: 'Online',
-    checked: false,
-  },
+  // {
+  //   id: 3,
+  //   name: 'Online',
+  //   checked: false,
+  // },
 ];
 
 export const INCLUDE_ALL_ACTIVITIES_DATA: Partial<
@@ -33,7 +33,11 @@ export const INCLUDE_ALL_ACTIVITIES_DATA: Partial<
             user: true,
           },
         },
-        volunteers: true,
+        volunteers: {
+          include: {
+            user: true,
+          },
+        },
       },
     },
     tags: {
@@ -41,8 +45,8 @@ export const INCLUDE_ALL_ACTIVITIES_DATA: Partial<
         tag: true,
       },
     },
-    author: {
-      select: { name: true },
-    },
+    // author: {
+    //   select: { name: true },
+    // },
   },
 };

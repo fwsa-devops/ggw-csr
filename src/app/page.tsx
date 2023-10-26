@@ -1,23 +1,16 @@
-import ActiveEvents from '@/components/events/active-events';
-import PastActivities from '@/components/events/past-events';
-import {
-  getAllActivitiesFromDB,
-  getPastActivities,
-  serializeActivities,
-} from '@/components/events/utils';
+import { getHomepageContent } from '@/components/events/utils/api';
+import HomepageViewer from './components/viewer';
+import { useSsr } from 'usehooks-ts';
 
 export default async function Home() {
-  const activities = await getAllActivitiesFromDB();
-  // activities = serializeActivities(activities);
-
-  let pastActivities = await getPastActivities();
+  const response = await getHomepageContent();
+  const { isBrowser } = useSsr();
 
   return (
     <>
       <main className="flex flex-col items-center justify-between min-h-screen ">
         <section className="w-full text-gray-600 body-font">
-          <ActiveEvents activities={activities} />
-          <PastActivities pastActivities={pastActivities} />
+          {!isBrowser && <HomepageViewer body={response.data.body} />}
         </section>
       </main>
     </>

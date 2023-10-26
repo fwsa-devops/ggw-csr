@@ -126,9 +126,7 @@ export const getActivity = async (activityId: string) => {
           },
           volunteers: {
             include: {
-              user: {
-                select: { email: true, name: true, image: true },
-              },
+              user: true,
             },
           },
         },

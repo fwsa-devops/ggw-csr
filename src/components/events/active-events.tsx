@@ -3,41 +3,26 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-  convertToReadableDate,
-  getActivityDescription,
-  shortenDate,
   getFilteredActivities,
   getAllActivitiesFromDB,
   getAllTags,
 } from './utils';
 import { DateRange } from 'react-day-picker';
-import { CalendarRangeIcon, MapPin } from 'lucide-react';
+import { FilterXIcon, PlusIcon } from 'lucide-react';
 import { Button } from '../ui/button';
-import EventJoinButton from './event-join-button';
-import { Separator } from '../ui/separator';
 import { DatePickerWithRange } from '../ui/date-range-picker';
 import { DropdownMenuCheckboxes } from '../ui/dropdown/checkbox-dd';
 import { EVENT_LOCATIONS } from '../../../constants';
-import {
-  Activity,
-  ActivityTags,
-  Event,
-  EventLeader,
-  Tag,
-  User,
-  Volunteers,
-} from '@prisma/client';
-import ActivityComponent from '../activity';
+
 import Loader from '../ui/loader';
+import ActivityListItem from '../core/ActivityListItem';
+import { IActivity } from '@/types';
+import { useSession } from 'next-auth/react';
 
-export interface Activities extends Activity {
-  events: { volunteers: Volunteers[]; leaders: EventLeader[] } & Event[];
-  tags: ({ tag: Tag } & ActivityTags)[];
-  author: { name: String };
-}
-
-const ActiveEvents = (props: { activities: Activities[] }) => {
+const ActiveEvents = (props: { activities: IActivity[] }) => {
   const { activities } = props;
+
+  const { status } = useSession();
 
   const [isLoading, setLoading] = React.useState<boolean>(false);
   const [activties, setActivities] = React.useState(activities);
@@ -145,9 +130,10 @@ const ActiveEvents = (props: { activities: Activities[] }) => {
             onChange={onTagsChange}
             disabled={isLoading}
             items={tags}
-            key="tags"
-            label={'Tags'}
+            key="themes"
+            label={'Themes'}
             title={'Filter by Themes'}
+            className="md:w-auto w-full justify-start"
           />
           <DropdownMenuCheckboxes
             onChange={onLocationChange}
@@ -156,13 +142,16 @@ const ActiveEvents = (props: { activities: Activities[] }) => {
             key="location"
             label={'Locations'}
             title={'Filter by Location'}
+            className="md:w-auto w-full justify-start"
           />
           <DatePickerWithRange
             date={date}
             setDate={setDate}
             disabled={isLoading}
             onUpdate={() => {}}
+            className="date-filter md:w-auto w-full"
           />
+
           <div className="flex gap-3">
             <Button disabled={isLoading} onClick={applyFilter}>
               Apply filters
@@ -171,9 +160,23 @@ const ActiveEvents = (props: { activities: Activities[] }) => {
               variant={'secondary'}
               disabled={isLoading}
               onClick={clearFilters}
+              title={'Clear Filters'}
             >
-              Clear filters
+              <FilterXIcon size={18} />
             </Button>
+
+            {status === 'authenticated' && (
+              <Link href={`/admin/activities/new`} className="flex">
+                <Button
+                  variant={'default'}
+                  disabled={isLoading}
+                  onClick={clearFilters}
+                >
+                  <PlusIcon size={18} className="mr-2" />
+                  New
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -187,7 +190,7 @@ const ActiveEvents = (props: { activities: Activities[] }) => {
               }`}
               key={activity.id}
             >
-              <ActivityComponent activity={activity} />
+              <ActivityListItem key={activity.id} activity={activity} />
             </div>
           );
         })

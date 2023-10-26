@@ -16,20 +16,20 @@ import {
 type Checked = DropdownMenuCheckboxItemProps['checked'];
 
 export function DropdownMenuCheckboxes(props) {
-  const { onChange, items, label, title, disabled } = props;
+  const { onChange, items, label, title, disabled, className } = props;
 
   const checkedItems = items.filter((item) => item.checked);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" disabled={disabled}>
+        <Button variant="outline" className={`text-left ${className}`} disabled={disabled}>
           {checkedItems.length > 0
             ? checkedItems.map((checked) => checked.name).join(', ')
             : title}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-56 ">
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {(items || []).map((item, idx) => (

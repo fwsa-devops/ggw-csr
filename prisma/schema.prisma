@@ -12,16 +12,16 @@ datasource db {
 }
 
 model Activity {
-  id          String         @id @default(cuid())
+  id          String        @id @default(cuid())
   name        String
-  cover       String?
-  description String?        @db.Text // for storing RTE info
-  summary     String?        @db.Text // for storing short description in events list page
-  duration    Int?           @default(120)
-  city        String?
-  status      ActivityState? @default(DRAFT)
-  author_id   String?
-  author      User?          @relation(fields: [author_id], references: [id])
+  cover       String
+  description String        @db.Text // for storing RTE info
+  summary     String        @db.Text // for storing short description in events list page
+  duration    Int           @default(120)
+  city        City?
+  status      ActivityState @default(DRAFT)
+  author_id   String
+  author      User          @relation(fields: [author_id], references: [email])
   // published   Boolean @default(false)
   // startTime   DateTime?
   // endTime     DateTime?
@@ -38,9 +38,14 @@ enum ActivityState {
   CLOSED
 }
 
+enum City {
+  Chennai
+  Bangalore
+}
+
 model Event {
   id                 String        @id @default(cuid())
-  city               String
+  city               City
   location           String
   leaders            EventLeader[]
   volunteers         Volunteers[]
@@ -55,11 +60,11 @@ model Event {
 
   date_announcement_text String? @db.Text
 
-  author_id String?
-  author    User?   @relation(fields: [author_id], references: [id])
+  author_id String
+  author    User   @relation(fields: [author_id], references: [id])
 
-  activityId String?
-  Activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String
+  Activity   Activity @relation(fields: [activityId], references: [id])
 
   @@index([author_id], name: "author_id")
   @@index([activityId], name: "activityId")
@@ -83,10 +88,10 @@ model Volunteers {
 model EventLeader {
   id String @id @default(cuid())
 
-  event_id String?
-  event    Event?  @relation(fields: [event_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  user_id  String?
-  user     User?   @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  event_id String
+  event    Event  @relation(fields: [event_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user_id  String
+  user     User   @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   assigned_at DateTime @default(now())
 
@@ -109,10 +114,10 @@ model Tag {
 model ActivityTags {
   id String @id @default(cuid())
 
-  activity    Activity? @relation(fields: [activity_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  tag         Tag?      @relation(fields: [tag_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  activity_id String?
-  tag_id      String?
+  activity    Activity @relation(fields: [activity_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  tag         Tag      @relation(fields: [tag_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  activity_id String
+  tag_id      String
 
   @@index([activity_id], name: "activity_id")
   @@index([tag_id], name: "tag_id")
@@ -120,8 +125,8 @@ model ActivityTags {
 
 model User {
   id         String   @id @default(cuid())
-  name       String?
-  email      String?  @unique
+  name       String
+  email      String   @unique
   image      String?
   created_at DateTime @default(now()) @map(name: "created_at")
   updated_at DateTime @updatedAt @map(name: "updated_at")
@@ -132,4 +137,14 @@ model User {
   EventLeader EventLeader[]
 
   @@map(name: "users")
+}
+
+model Homepage {
+  id   String @id @default(cuid())
+  body String @db.LongText()
+
+  created_at DateTime @default(now()) @map(name: "created_at")
+  updated_at DateTime @updatedAt @map(name: "updated_at")
+
+  status ActivityState
 }

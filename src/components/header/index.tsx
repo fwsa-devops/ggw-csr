@@ -12,7 +12,7 @@ const Header = () => {
           </Link>
         </div>
         <div className="header-navigation">
-          {/* <MainNav /> */}
+          <MainNav />
           <div className="gap-4 header-navigation-actions">
             <UserNav />
           </div>

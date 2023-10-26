@@ -31,8 +31,8 @@ export async function POST(req: Request) {
             endTime: {
               lte: filters.to,
             },
-          }
-        }
+          },
+        },
       },
     },
     ...INCLUDE_ALL_ACTIVITIES_DATA,

@@ -13,7 +13,6 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const body = await req.json();
-  console.log(body);
   const homepage = await prisma.homepage.create({
     data: body,
   });

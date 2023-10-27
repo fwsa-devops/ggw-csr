@@ -14,10 +14,7 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request, res: Response) {
-  console.log(req);
   const body: unknown = await req.json();
-  console.log(body);
-
   const formData = activityFormSchema.safeParse(body);
 
   let zodErrors = {};
@@ -75,3 +72,5 @@ export async function POST(req: Request, res: Response) {
 
   return NextResponse.json({ success: true, data: response });
 }
+
+// need to implement delete activity feature & also delete respective Posts from UploadThing

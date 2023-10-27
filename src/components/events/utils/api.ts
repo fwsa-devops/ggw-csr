@@ -99,3 +99,22 @@ export const getHomepageContent = async () => {
   const json = response.json();
   return json;
 };
+
+export const uploadPostToActivity = async (
+  imageUrls: any,
+  activityId: string,
+) => {
+  const response = await fetch(
+    `${HOST_API_URL}api/activities/upload-posts?activity_id=${activityId}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(imageUrls),
+      credentials: 'include',
+    },
+  );
+  const json = await response.json();
+  return json;
+};

@@ -22,14 +22,25 @@ model Activity {
   status      ActivityState @default(DRAFT)
   author_id   String
   author      User          @relation(fields: [author_id], references: [email])
+  posts_urls  String?
   // published   Boolean @default(false)
   // startTime   DateTime?
   // endTime     DateTime?
 
-  events Event[]
+events Event[]
   tags   ActivityTags[]
+  posts  Posts[]
 
   @@index([author_id])
+}
+
+model Posts {
+  id          String   @id @default(cuid())
+  activity_id String
+  activity    Activity @relation(fields: [activity_id], references: [id])
+  url         String
+
+  @@index([activity_id])
 }
 
 enum ActivityState {

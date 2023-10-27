@@ -6,8 +6,6 @@ export default async function ActivityPage({
 }: {
   params: { activityId: string };
 }) {
-  console.log(params);
-
   const activity = await prisma.activity.findUnique({
     where: {
       id: params.activityId,
@@ -22,7 +20,7 @@ export default async function ActivityPage({
     { ...activity, tags: activity?.tags.map((_t) => _t.tag_id) },
   );
 
-  console.log('formData', formData);
+  // console.log('formData', formData);
 
   return (
     <>

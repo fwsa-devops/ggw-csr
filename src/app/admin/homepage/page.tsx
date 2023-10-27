@@ -20,14 +20,14 @@ const HomePage = () => {
   }
 
   const onChange = async (editor: any) => {
-    console.log(JSON.stringify(editor.topLevelBlocks));
+    // console.log(JSON.stringify(editor.topLevelBlocks));
     setContent(JSON.stringify(editor.topLevelBlocks));
   };
 
   const onSubmit = async (event: any) => {
     event?.preventDefault();
     try {
-      console.log(content);
+      // console.log(content);
 
       const formData = {
         status: 'OPEN',
@@ -35,7 +35,7 @@ const HomePage = () => {
       };
 
       const res = await createHomepageContent(formData);
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       console.log(error);
     }

@@ -10,7 +10,7 @@ export const ourFileRouter = {
   imageUploader: f({
     image: { maxFileSize: '4MB', maxFileCount: 10 },
     video: {
-      maxFileSize: '16MB',
+      maxFileSize: '32MB',
       maxFileCount: 1,
     },
   })

@@ -17,42 +17,34 @@ const authOptions: NextAuthOptions = {
   },
   events: {
     createUser: async ({ user }) => {
-
       const { email, image, name } = user;
-      console.log("createUser", user)
       await prisma.user.create({
         data: {
           email: email as string,
           name: name as string,
-          image: image ?? null
-        }
-      })
-
+          image: image ?? null,
+        },
+      });
     },
     signIn: async ({ user }) => {
-      console.log("signIn", user)
-
       const { email, image, name } = user;
 
-      console.log("newUser");
       await prisma.user.upsert({
         where: {
-          email: email as string
+          email: email as string,
         },
         update: {
           name: name as string,
-          image: image ?? null
+          image: image ?? null,
         },
         create: {
           email: email as string,
           name: name as string,
-          image: image ?? null
+          image: image ?? null,
         },
-      })
-
-    }
-
-  }
+      });
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);

@@ -26,10 +26,10 @@
 - [x] Show past activities
 - [x] Change title to "Global Giving Week"
 - [x] Change "Upcoming Events" to "Events 2023"
+- [x] Allow users to add event photos, videos and feedback
 - [ ] Filter by "City" in Events instead of Activities
 - [ ] Add a hero section on the landing page
 - [ ] Valid activity information
-- [ ] Allow users to add event photos, videos and feedback
 
 ### - Good to haves
 

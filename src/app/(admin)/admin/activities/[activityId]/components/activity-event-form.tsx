@@ -1,46 +1,28 @@
-'use client';
+'use client'
 
-import * as z from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
-import { IActivityForm, activityFormSchema } from '@/types';
-import { Tag } from '@prisma/client';
-import { useSession } from 'next-auth/react';
-import { Editor } from '@/components/editors/markdown-editor';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { getAllTags } from '@/components/utils';
-import MultiSelect from '@/components/ui/dropdown/list-box';
-import { useRouter } from 'next/navigation';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { createActivity } from '@/components/actions/action';
-import { toast } from '@/components/ui/use-toast';
-import { EVENT_LOCATIONS } from '@/../constants';
-import React from 'react';
-import Loader from '@/components/ui/loader';
+import { createActivityEvent } from "@/components/actions/action";
+import { Button } from "@/components/ui/button";
+import ComboBox from "@/components/ui/dropdown/combo-box";
+import MultiSelect from "@/components/ui/dropdown/list-box";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { toast } from "@/components/ui/use-toast";
+import { eventFormSchema } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { User } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useFetch } from "usehooks-ts";
+import * as z from "zod";
 
-const ActivityForm = ({
-  initialData,
-}: {
-  initialData: IActivityForm | null;
-}) => {
-  const { data: session, status } = useSession();
-  const [isLoading, setLoading] = React.useState<boolean>(false);
+const ActivityEventForm = () => {
+  const { activityId } = useParams();
+  const { data: session } = useSession();
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   if (!session?.user) {
     return <>Un-Authorized User</>;
@@ -48,31 +30,33 @@ const ActivityForm = ({
 
   const router = useRouter();
 
-  const [tags, setTags] = useState<Tag[]>([]);
+  const { data: leaders, error } = useFetch<User[]>('/api/users', {
+    method: 'GET',
+  })
 
-  useEffect(() => {
-    fetchAllTags();
-  }, []);
-
-  const fetchAllTags = async () => {
-    const tags = await getAllTags();
-    setTags(tags);
-  };
-
-  const form = useForm<z.infer<typeof activityFormSchema>>({
-    resolver: zodResolver(activityFormSchema),
-    defaultValues: (initialData as any) ?? {
-      status: 'OPEN',
-      author_id: session?.user?.email as string,
-      tags: [],
+  const form = useForm<z.infer<typeof eventFormSchema>>({
+    resolver: zodResolver(eventFormSchema),
+    defaultValues: {
+      city: 'Chennai',
+      location: '',
+      description: '',
+      min_volunteers: 1,
+      max_volunteers: 1,
+      activityId: activityId as string,
+      is_dates_announced: false,
+      date_announcement_text: '',
+      published: true
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof activityFormSchema>) => {
+
+  const onSubmit = async (values: z.infer<typeof eventFormSchema>) => {
+    console.log(values);
+
     try {
       setLoading(true);
       // console.log(values);
-      const response = await createActivity(values);
+      const response = await createActivityEvent(values);
 
       if (response.errors) {
         const errors = response.errors;
@@ -85,6 +69,7 @@ const ActivityForm = ({
       });
       form.reset();
       router.push(`/admin/activities`);
+
     } catch (e: any) {
       console.error(e);
       toast({
@@ -94,34 +79,39 @@ const ActivityForm = ({
     } finally {
       setLoading(false);
     }
-  };
+  }
+
+  const onChange = (val) => {
+    console.log(form)
+    console.log(form.formState)
+  }
 
   return (
-    <div className={isLoading ? 'opacity-50' : ''}>
-      <h2 className="text-base font-semibold leading-7 text-gray-900">
-        Activity
-      </h2>
-      <p className="mt-1 text-sm leading-6 text-gray-600">
-        This information will be displayed publicly.
-      </p>
+    <>
 
-      {isLoading && <Loader />}
+      <div>
+        <h2 className="text-base font-semibold leading-7 text-gray-900">
+          Event
+        </h2>
+        <p className="mt-1 text-sm leading-6 text-gray-600">
+          This information will be displayed publicly.
+        </p>
+      </div>
 
       <Form {...form}>
+
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className={isLoading ? 'opacity-50' : ''}
-        >
+          onChange={onChange}>
+
           <FormField
             control={form.control}
-            name="name"
-            defaultValue={initialData?.name ?? ''}
-            render={({ field }) => (
-              <div className="mt-6">
+            name='city'
+            render={
+              ({ field }) => (
                 <FormItem>
                   <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900">
-                    {' '}
-                    {field.name}{' '}
+                    {' '}{field.name}{' '}
                   </FormLabel>
                   <FormControl className="mt-2">
                     <input
@@ -131,14 +121,12 @@ const ActivityForm = ({
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              </div>
-            )}
+              )}
           />
 
           <FormField
             control={form.control}
-            name="summary"
-            defaultValue={initialData?.summary ?? ''}
+            name="location"
             render={({ field }) => (
               <div className="mt-6">
                 <FormItem>
@@ -161,63 +149,6 @@ const ActivityForm = ({
           <FormField
             control={form.control}
             name="description"
-            defaultValue={initialData?.description ?? ''}
-            render={({ field }) => (
-              <div className="mt-6">
-                <FormItem>
-                  <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900">
-                    {' '}
-                    {field.name}{' '}
-                  </FormLabel>
-                  <FormControl className="mt-2">
-                    <Editor
-                      theme="snow"
-                      {...field}
-                      className="block w-full bg-white rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </div>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="city"
-            defaultValue={initialData?.city ?? 'Chennai'}
-            render={({ field }) => (
-              <div className="mt-6">
-                <FormItem>
-                  <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900">
-                    {' '}
-                    {field.name}{' '}
-                  </FormLabel>
-                  <FormControl className="mt-2">
-                    {/* <input
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      {...field}
-                    /> */}
-
-                    <MultiSelect
-                      ref={field.ref}
-                      items={EVENT_LOCATIONS.map((l) => l.name)}
-                      onChange={field.onChange}
-                      value={field.value}
-                      multiple={false}
-                      key={'location'}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </div>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="duration"
-            defaultValue={initialData?.duration ?? 120}
             render={({ field }) => (
               <div className="mt-6">
                 <FormItem>
@@ -227,9 +158,30 @@ const ActivityForm = ({
                   </FormLabel>
                   <FormControl className="mt-2">
                     <input
-                      type="number"
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      {...form.register('duration', {
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </div>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="min_volunteers"
+            render={({ field }) => (
+              <div className="mt-6">
+                <FormItem>
+                  <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900">
+                    {' '}
+                    {field.name}{' '}
+                  </FormLabel>
+                  <FormControl className="mt-2">
+                    <input type="number"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      {...form.register('min_volunteers', {
                         setValueAs: (v) =>
                           v === '' ? undefined : parseInt(v, 10),
                       })}
@@ -243,8 +195,86 @@ const ActivityForm = ({
 
           <FormField
             control={form.control}
-            name="cover"
-            defaultValue={initialData?.cover ?? ''}
+            name="max_volunteers"
+            render={({ field }) => (
+              <div className="mt-6">
+                <FormItem>
+                  <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900">
+                    {' '}{field.name}{' '}
+                  </FormLabel>
+                  <FormControl className="mt-2">
+                    <input type="number"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      {...form.register('max_volunteers', {
+                        setValueAs: (v) =>
+                          v === '' ? undefined : parseInt(v, 10),
+                      })}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </div>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="leaders"
+            render={({ field }) => (
+              <div className="mt-6">
+                <FormItem>
+                  <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900">
+                    {' '}{field.name}{' '}
+                  </FormLabel>
+                  <FormControl className="mt-2">
+                    {(leaders && leaders.length > 0) && (
+                      <ComboBox
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        ref={field.ref}
+                        items={leaders}
+                        multiple={true}
+                        onChange={field.onChange}
+                        value={field.value ?? []}
+                        key={'tags'}
+                      />
+                    )}
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </div>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='is_dates_announced'
+            render={
+              ({ field }) => (
+                <div className="mt-6">
+                  <FormItem>
+                    <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900">
+                      Announce Dates
+                    </FormLabel>
+                    <FormControl className="mt-2">
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        ref={field.ref}
+                        disabled={field.disabled}
+                        name={field.name}
+                        onBlur={field.onBlur}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </div>
+              )}
+          />
+
+
+          <FormField
+            control={form.control}
+            name="date_announcement_text"
             render={({ field }) => (
               <div className="mt-6">
                 <FormItem>
@@ -264,61 +294,6 @@ const ActivityForm = ({
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="tags"
-            render={({ field }) => (
-              <div className="mt-6">
-                <FormItem>
-                  <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900">
-                    {' '}
-                    {field.name}{' '}
-                  </FormLabel>
-                  <FormControl className="mt-2">
-                    {tags.length > 0 && (
-                      <MultiSelect
-                        ref={field.ref}
-                        items={tags}
-                        multiple={true}
-                        onChange={field.onChange}
-                        value={field.value}
-                        key={'tags'}
-                      />
-                    )}
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </div>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="status"
-            render={({ field }) => (
-              <div className="mt-6">
-                <FormItem>
-                  <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900">
-                    {' '}
-                    {field.name}{' '}
-                  </FormLabel>
-                  <FormControl className="mt-2">
-                    <Select {...field} onValueChange={field.onChange}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="OPEN">OPEN</SelectItem>
-                        <SelectItem value="DRAFT">DRAFT</SelectItem>
-                        <SelectItem value="CLOSED">CLOSED</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </div>
-            )}
-          />
 
           <div className="w-full mt-6 flex justify-end">
             <Button
@@ -330,9 +305,13 @@ const ActivityForm = ({
             </Button>
           </div>
         </form>
-      </Form>
-    </div>
-  );
-};
 
-export default ActivityForm;
+      </Form>
+
+
+    </>
+  )
+
+}
+
+export default ActivityEventForm

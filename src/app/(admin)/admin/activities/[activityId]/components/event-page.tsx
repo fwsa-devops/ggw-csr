@@ -16,7 +16,7 @@ const EventPage = (props: { activity: IActivity }) => {
       key={activity.id}
     >
       <ActivityPreview activity={activity} />
-      <EventList events={activity.events} size="lg" />
+      <EventList activityId={activity.id} events={activity.events} size="lg" />
 
       {/* <PostsList imageUrls={imageUrls} /> */}
       {/* <UploadImageDropzone setImageUrls={setImageUrls} activity={activity} /> */}

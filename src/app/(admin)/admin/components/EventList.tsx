@@ -9,11 +9,14 @@ import { isUserPartOfActivity } from '@/components/utils';
 import { useEffect } from 'react';
 import { IEvent } from '@/types';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const EventList = ({
+  activityId,
   events,
   size = 'lg',
 }: {
+  activityId: string,
   events: IEvent[];
   size: 'lg' | 'sm';
 }) => {
@@ -43,10 +46,12 @@ const EventList = ({
           </h2>
 
           {status === 'authenticated' && (
-            <Button variant={'default'}>
-              <PlusIcon size={18} className="mr-2" />
-              Add
-            </Button>
+            <Link href={`/admin/activities/${activityId}/events/new`}>
+              <Button variant={'default'}>
+                <PlusIcon size={18} className="mr-2" />
+                Add
+              </Button>
+            </Link>
           )}
         </div>
       </div>

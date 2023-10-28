@@ -4,7 +4,13 @@ import React, { Fragment, forwardRef } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
 
 const MultiSelect = forwardRef((props: any, ref) => {
+
+  console.log(props)
+
   const selected = () => {
+    if (!props.value)
+      return
+
     if (typeof props.value === 'string') return props.value;
     else
       return props.value
@@ -40,10 +46,9 @@ const MultiSelect = forwardRef((props: any, ref) => {
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {props.items.map((item) => (
                 <Listbox.Option
-                  key={item.name ?? item}
+                  key={item.id ?? item.name ?? item}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
+                    `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
                     }`
                   }
                   value={item.id ?? item}
@@ -51,9 +56,8 @@ const MultiSelect = forwardRef((props: any, ref) => {
                   {({ selected }) => (
                     <>
                       <span
-                        className={`block truncate ${
-                          selected ? 'font-medium' : 'font-normal'
-                        }`}
+                        className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                          }`}
                       >
                         {item.name ?? item}
                       </span>

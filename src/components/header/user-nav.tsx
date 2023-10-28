@@ -27,11 +27,11 @@ export function UserNav() {
             <Button
               variant={'ghost'}
               type="button"
-              className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 mr-2"
+              className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 mr-4"
             >
               <span className="absolute -inset-1.5" />
               <span className="sr-only">View notifications</span>
-              <CalendarCheck2 size={18} className="mr-3" />
+              <CalendarCheck2 size={18} />
             </Button>
             <AuthButton user={session.user} />
           </>

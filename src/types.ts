@@ -30,7 +30,7 @@ export interface IActivity extends Activity {
     volunteers: ({ user: User } & Volunteers)[];
   } & Event)[];
   tags?: ({ tag: Tag } & ActivityTags)[];
-  author?: { name: String };
+  author?: { name: string };
   posts?: Posts[];
 }
 

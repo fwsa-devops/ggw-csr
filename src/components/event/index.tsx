@@ -4,8 +4,6 @@ import React from 'react';
 import EventList from '../core/EventList';
 import ActivityPreview from '../core/ActivityPreview';
 import { IActivity } from '@/types';
-import UploadImageDropzone from '../upload-image/page';
-import PostsList from '../upload-image/PostsList';
 
 const EventPage = (props: { activity: IActivity }) => {
   const { activity } = props;

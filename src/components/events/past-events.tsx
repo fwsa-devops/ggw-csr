@@ -1,5 +1,4 @@
 import React from 'react';
-import { PAST_EVENTS_DESCRIPTION_TEXT_LENGTH } from '../../../constants';
 import { getActivityDescription } from './utils';
 import Link from 'next/link';
 import { Button } from '../ui/button';

@@ -3,9 +3,8 @@
 import { PlusIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
-import { Event, EventLeader, User, Volunteers } from '@prisma/client';
 import EventListItem from './EventIListItem';
-import { useBoolean, useFetch } from 'usehooks-ts';
+import { useBoolean } from 'usehooks-ts';
 import { isUserPartOfActivity } from '../events/utils';
 import { useEffect } from 'react';
 import { IEvent } from '@/types';

@@ -1,8 +1,7 @@
 import { Listbox, Transition } from '@headlessui/react';
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import React, { Fragment, forwardRef } from 'react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import { Item } from '@radix-ui/react-dropdown-menu';
+import { CheckIcon } from '@heroicons/react/20/solid';
 
 const MultiSelect = forwardRef((props: any, ref) => {
   const selected = () => {

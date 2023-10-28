@@ -8,7 +8,6 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Button } from '../ui/button';
 import { signIn, useSession } from 'next-auth/react';
-import { useBoolean } from 'usehooks-ts';
 // import { deleteEvent, joinEvent } from '../events/utils/api';
 import { toast } from '../ui/use-toast';
 import { Progress } from '../ui/progress';

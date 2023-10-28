@@ -2,8 +2,6 @@
 
 import prisma from '@/lib/prisma';
 import { activityFormSchema } from '@/types';
-import { Prisma } from '@prisma/client';
-import { DefaultArgs } from '@prisma/client/runtime/library';
 import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 import * as z from 'zod';

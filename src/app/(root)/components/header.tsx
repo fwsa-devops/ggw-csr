@@ -5,7 +5,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
-import { UserNav } from './user-nav';
+import { UserNav } from '../../../components/user-nav';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -31,9 +31,9 @@ export default function Example() {
     <>
       <Collapsible>
         <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 relative">
+          <div className="mx-auto max-w-7xl px-2 relative">
             <div className="relative flex h-16 justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden ml-2">
                 <CollapsibleTrigger
                   onClick={toggle}
                   className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -49,8 +49,10 @@ export default function Example() {
               </div>
 
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center font-bold">
-                  Global Giving Week
+                <div className="flex flex-shrink-0 items-center text-2xl font-bold">
+                  <Link href={"/"} >
+                    Global Giving Week
+                  </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                   {navigations.map((nav) => (

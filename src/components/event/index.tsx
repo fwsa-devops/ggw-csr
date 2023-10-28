@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import React from 'react';
 import EventList from '../core/EventList';
@@ -10,7 +10,7 @@ import PostsList from '../upload-image/PostsList';
 const EventPage = (props: { activity: IActivity }) => {
   const { activity } = props;
 
-  const [imageUrls, setImageUrls] = React.useState(activity.posts || []); // replace [] with activity.imageUrls
+  // const [imageUrls, setImageUrls] = React.useState(activity.posts || []); // replace [] with activity.imageUrls
 
   return (
     <div
@@ -20,8 +20,8 @@ const EventPage = (props: { activity: IActivity }) => {
       <ActivityPreview activity={activity} />
       <EventList events={activity.events} size="lg" />
 
-      <PostsList imageUrls={imageUrls} />
-      <UploadImageDropzone setImageUrls={setImageUrls} activity={activity} />
+      {/* <PostsList imageUrls={imageUrls} /> */}
+      {/* <UploadImageDropzone setImageUrls={setImageUrls} activity={activity} /> */}
     </div>
   );
 };

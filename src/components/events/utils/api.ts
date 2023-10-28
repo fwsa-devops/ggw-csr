@@ -3,6 +3,9 @@ const { HOST_API_URL = '/' } = process.env;
 export const joinEvent = async (eventId: string) => {
   const response = await fetch(`/api/event/${eventId}/join`, {
     method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
   if (response.ok) {
     const json = await response.json();
@@ -15,6 +18,9 @@ export const joinEvent = async (eventId: string) => {
 export const deleteEvent = async (eventId: string) => {
   const response = await fetch(`/api/event/${eventId}/join`, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
   const json = await response.json();
   return json;
@@ -47,6 +53,9 @@ export const getAllActivities = async () => {
 export const getAllTagsFromDB = async () => {
   const tags = await fetch(`${HOST_API_URL}api/tags`, {
     method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
   const json = await tags.json();
   return json;
@@ -55,6 +64,9 @@ export const getAllTagsFromDB = async () => {
 export const checkUserAlreadyRegistered = async () => {
   const response = await fetch(`${HOST_API_URL}api/activities/is-joined`, {
     method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
   const json = await response.json();
   return json;

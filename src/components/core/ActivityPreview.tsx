@@ -2,8 +2,12 @@ import { LaptopIcon, PenIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { IActivity } from '@/types';
+import { getServerSession } from 'next-auth';
 
-const ActivityPreview = ({ activity }: { activity: IActivity }) => {
+const ActivityPreview = async ({ activity }: { activity: IActivity }) => {
+
+  const session = await getServerSession();
+
   return (
     <>
       <div className="flex flex-wrap flex-col mx-auto event-container md:flex-nowrap md:h-600 lg:gap-8">
@@ -21,12 +25,14 @@ const ActivityPreview = ({ activity }: { activity: IActivity }) => {
               {activity.name}
             </h1>
 
-            <Link href={`/admin/activities/${activity.id}/edit`}>
-              <Button variant={'default'}>
-                <PenIcon size={18} className="mr-3" />
-                Edit
-              </Button>
-            </Link>
+            {session?.user &&
+              <Link href={`/admin/activities/${activity.id}/edit`}>
+                <Button variant={'default'}>
+                  <PenIcon size={18} className="mr-3" />
+                  Edit
+                </Button>
+              </Link>
+            }
           </div>
 
           <div className="flex gap-2 mb-2 location align-center">
@@ -36,10 +42,10 @@ const ActivityPreview = ({ activity }: { activity: IActivity }) => {
           <h2 className="mt-2 mb-3 text-sm tracking-widest text-gray-400 title-font">
             {activity.tags
               ? activity?.tags.map((tag) => (
-                  <span key={tag.id} className="mr-2">
-                    #{tag?.tag.name}
-                  </span>
-                ))
+                <span key={tag.id} className="mr-2">
+                  #{tag?.tag.name}
+                </span>
+              ))
               : ''}
           </h2>
 

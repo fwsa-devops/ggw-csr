@@ -53,15 +53,20 @@ const EventList = ({
       </div>
 
       <div>
-        {events.map((event) => (
-          <EventListItem
-            key={event.id}
-            event={event}
-            size={size}
-            isMember={isMember}
-            onJoin={() => router.refresh()}
-          />
-        ))}
+        {(events && events.length > 0) ?
+          events.map((event) => (
+            <EventListItem
+              key={event.id}
+              event={event}
+              size={size}
+              isMember={isMember}
+              onJoin={() => router.refresh()}
+            />
+          )) :
+          <p>
+            As of now, we have not scheduled any events. We appreciate your interest and will keep you updated as soon as we have something planned
+          </p>
+        }
       </div>
     </>
   );

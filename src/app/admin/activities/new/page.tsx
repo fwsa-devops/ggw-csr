@@ -1,4 +1,3 @@
-import prisma from '@/lib/prisma';
 import ActivityForm from '../components/activity-form';
 
 export default async function ActivityPage() {

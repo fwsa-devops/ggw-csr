@@ -1,12 +1,10 @@
-'use server'
+'use server';
 
-import prisma from "@/lib/prisma";
-import { activityFormSchema } from "@/types";
-import { Prisma } from "@prisma/client";
-import { DefaultArgs } from "@prisma/client/runtime/library";
-import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
-import * as z from "zod";
+import prisma from '@/lib/prisma';
+import { activityFormSchema } from '@/types';
+import { getServerSession } from 'next-auth';
+import { revalidatePath } from 'next/cache';
+import * as z from 'zod';
 
 type ResponseType = {
   success: boolean;
@@ -15,10 +13,9 @@ type ResponseType = {
   data?: any;
 };
 
-
-
-export async function createActivity(formData: z.infer<typeof activityFormSchema>): Promise<ResponseType> {
-
+export async function createActivity(
+  formData: z.infer<typeof activityFormSchema>,
+): Promise<ResponseType> {
   const data = activityFormSchema.safeParse(formData);
   console.log(data);
   try {
@@ -29,11 +26,11 @@ export async function createActivity(formData: z.infer<typeof activityFormSchema
         zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
       });
 
-      throw ({
+      throw {
         success: true,
         message: data.error.message,
         errors: zodErrors,
-      });
+      };
     }
 
     let response;
@@ -58,7 +55,7 @@ export async function createActivity(formData: z.infer<typeof activityFormSchema
     }
 
     if (response === null) {
-      throw ({ success: false, message: 'Failed to UPSERT activity' });
+      throw { success: false, message: 'Failed to UPSERT activity' };
     }
 
     // REMOVE old Tags
@@ -77,14 +74,15 @@ export async function createActivity(formData: z.infer<typeof activityFormSchema
       })),
     });
 
+    revalidatePath(`/activities`);
 
-    revalidatePath(`/activities`)
-
-    return ({
+    return {
       success: true,
-      message: data.data.id ? 'Activity updated successfully':  'Activity created successfully',
-      data: response
-    });
+      message: data.data.id
+        ? 'Activity updated successfully'
+        : 'Activity created successfully',
+      data: response,
+    };
   } catch (error: unknown) {
     console.log(error);
 
@@ -92,23 +90,16 @@ export async function createActivity(formData: z.infer<typeof activityFormSchema
       return {
         success: false,
         message: 'Failed to Submit Form',
-      }
+      };
     } else {
       return {
-        ...error as ResponseType
-      }
+        ...(error as ResponseType),
+      };
     }
   }
-
-
-
 }
 
-
-export async function updateActivity(activityId: string, formData: any) {
-
-}
-
+export async function updateActivity(activityId: string, formData: any) {}
 
 export async function joinEvent(eventId: string): Promise<ResponseType> {
   const session = await getServerSession();
@@ -116,9 +107,12 @@ export async function joinEvent(eventId: string): Promise<ResponseType> {
   try {
     if (
       session?.user?.email === undefined ||
-      !(session?.user?.email && /^\S+freshworks\.com$/.test(session?.user?.email))
+      !(
+        session?.user?.email &&
+        /^\S+freshworks\.com$/.test(session?.user?.email)
+      )
     ) {
-      throw ('Not part of Freshworks')
+      throw 'Not part of Freshworks';
     }
 
     const user = await prisma.user.upsert({
@@ -132,7 +126,7 @@ export async function joinEvent(eventId: string): Promise<ResponseType> {
     });
 
     if (!(user && user.email)) {
-      throw ('Un-Authorized User');
+      throw 'Un-Authorized User';
     }
 
     await prisma.volunteers.create({
@@ -145,15 +139,14 @@ export async function joinEvent(eventId: string): Promise<ResponseType> {
     revalidatePath(`/activities/${eventId}`, 'page');
     return {
       success: true,
-      message: 'Successfully Joined Event'
-    }
-
+      message: 'Successfully Joined Event',
+    };
   } catch (e: any) {
-    console.log(e)
+    console.log(e);
     return {
       success: false,
-      message: e
-    }
+      message: e,
+    };
   }
 }
 
@@ -162,7 +155,7 @@ export async function unJoinEvent(eventId: string): Promise<ResponseType> {
 
   try {
     if (session?.user?.email === undefined) {
-      throw ('Not authorized session');
+      throw 'Not authorized session';
     }
 
     const user = await prisma.user.upsert({
@@ -176,7 +169,7 @@ export async function unJoinEvent(eventId: string): Promise<ResponseType> {
     });
 
     if (!(user && user.email)) {
-      throw ('Not authorized');
+      throw 'Not authorized';
     }
 
     await prisma.volunteers.deleteMany({
@@ -186,18 +179,17 @@ export async function unJoinEvent(eventId: string): Promise<ResponseType> {
       },
     });
 
-    revalidatePath(`/activities/${eventId}`, 'page')
+    revalidatePath(`/activities/${eventId}`, 'page');
 
     return {
       success: true,
-      message: 'Successfully Unjoined Event'
-    }
+      message: 'Successfully Unjoined Event',
+    };
   } catch (e: any) {
-    console.log(e)
+    console.log(e);
     return {
       success: false,
-      message: e
-    }
+      message: e,
+    };
   }
-
 }

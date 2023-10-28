@@ -13,7 +13,7 @@ const UserAvatar = ({ user }) => {
           <Avatar key={u.id}>
             <AvatarImage src={u?.image} />
             <AvatarFallback>
-              {(u?.name || u?.email || u?.user_id)
+              {(u?.name || u?.email || u?.user_id || '')
                 .toUpperCase()
                 .substring(0, 2)}
             </AvatarFallback>
@@ -30,7 +30,7 @@ const UserAvatar = ({ user }) => {
                 <Avatar style={{ width: '70px', height: '70px' }} key={u.id}>
                   <AvatarImage src={u?.image} />
                   <AvatarFallback>
-                    {(u?.name || u?.email || u?.user_id)
+                    {(u?.name || u?.email || u?.user_id || '')
                       .toUpperCase()
                       .substring(0, 2)}
                   </AvatarFallback>

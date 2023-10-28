@@ -4,8 +4,6 @@ import React from 'react';
 import EventList from '../core/EventList';
 import ActivityPreview from '../core/ActivityPreview';
 import { IActivity } from '@/types';
-import UploadImageDropzone from '../upload-image/page';
-import PostsList from '../upload-image/PostsList';
 
 const EventPage = (props: { activity: IActivity }) => {
   const { activity } = props;
@@ -20,8 +18,8 @@ const EventPage = (props: { activity: IActivity }) => {
       <ActivityPreview activity={activity} />
       <EventList events={activity.events} size="lg" />
 
-      <PostsList imageUrls={imageUrls} />
-      <UploadImageDropzone setImageUrls={setImageUrls} activity={activity} />
+      {/* <PostsList imageUrls={imageUrls} />
+      <UploadImageDropzone setImageUrls={setImageUrls} activity={activity} /> */}
     </div>
   );
 };

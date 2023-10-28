@@ -38,7 +38,7 @@ function AuthButton({ user }: { user: any }) {
           <Avatar className="w-8 h-8">
             <AvatarImage src={user.image} alt={user.name} />
             <AvatarFallback delayMs={500}>
-              {(user?.name || user?.email).toUpperCase().substring(0, 2)}
+              {(user?.name || user?.email || '').toUpperCase().substring(0, 2)}
             </AvatarFallback>
           </Avatar>
         </Button>

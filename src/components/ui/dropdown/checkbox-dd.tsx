@@ -22,7 +22,11 @@ export function DropdownMenuCheckboxes(props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className={`text-left ${className}`} disabled={disabled}>
+        <Button
+          variant="outline"
+          className={`text-left ${className}`}
+          disabled={disabled}
+        >
           {checkedItems.length > 0
             ? checkedItems.map((checked) => checked.name).join(', ')
             : title}

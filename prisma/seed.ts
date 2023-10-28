@@ -1,11 +1,9 @@
-import { readFileSync } from 'fs'
+import { readFileSync } from 'fs';
 import { PrismaClient } from '@prisma/client';
-
 
 const prisma = new PrismaClient();
 async function main() {
-
-  const jsonString = readFileSync('./sample.json', { encoding: 'utf-8' })
+  const jsonString = readFileSync('./sample.json', { encoding: 'utf-8' });
 
   const {
     homepage,
@@ -27,8 +25,6 @@ async function main() {
   await prisma.event.createMany({ data: events });
   await prisma.eventLeader.createMany({ data: eventLeaders });
   await prisma.volunteers.createMany({ data: volunteers });
-
-
 }
 main()
   .then(async () => {

@@ -20,21 +20,24 @@ export function UserNav() {
   const { data: session } = useSession();
 
   if (session) {
-    return <>{session?.user &&
+    return (
       <>
-        <Button
-          variant={'ghost'}
-          type="button"
-          className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 mr-2"
-        >
-          <span className="absolute -inset-1.5" />
-          <span className="sr-only">View notifications</span>
-          <CalendarCheck2 size={18} className='mr-3'/>
-        </Button>
-        <AuthButton user={session.user} />
+        {session?.user && (
+          <>
+            <Button
+              variant={'ghost'}
+              type="button"
+              className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 mr-2"
+            >
+              <span className="absolute -inset-1.5" />
+              <span className="sr-only">View notifications</span>
+              <CalendarCheck2 size={18} className="mr-3" />
+            </Button>
+            <AuthButton user={session.user} />
+          </>
+        )}
       </>
-
-    }</>;
+    );
   }
   return (
     <>
@@ -53,7 +56,7 @@ function AuthButton({ user }: { user: any }) {
           <Avatar className="w-8 h-8">
             <AvatarImage src={user.image} alt={user.name} />
             <AvatarFallback delayMs={500}>
-              {(user?.name || user?.email).toUpperCase().substring(0, 2)}
+              {(user?.name || user?.email || '').toUpperCase().substring(0, 2)}
             </AvatarFallback>
           </Avatar>
         </Button>

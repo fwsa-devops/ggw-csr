@@ -3,9 +3,8 @@
 import { PlusIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
-import { Event, EventLeader, User, Volunteers } from '@prisma/client';
 import EventListItem from './EventIListItem';
-import { useBoolean, useFetch } from 'usehooks-ts';
+import { useBoolean } from 'usehooks-ts';
 import { isUserPartOfActivity } from '../events/utils';
 import { useEffect } from 'react';
 import { IEvent } from '@/types';
@@ -53,7 +52,7 @@ const EventList = ({
       </div>
 
       <div>
-        {(events && events.length > 0) ?
+        {events && events.length > 0 ? (
           events.map((event) => (
             <EventListItem
               key={event.id}
@@ -62,11 +61,14 @@ const EventList = ({
               isMember={isMember}
               onJoin={() => router.refresh()}
             />
-          )) :
+          ))
+        ) : (
           <p>
-            As of now, we have not scheduled any events. We appreciate your interest and will keep you updated as soon as we have something planned
+            As of now, we have not scheduled any events. We appreciate your
+            interest and will keep you updated as soon as we have something
+            planned
           </p>
-        }
+        )}
       </div>
     </>
   );

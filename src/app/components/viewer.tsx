@@ -3,9 +3,11 @@ import '@blocknote/core/style.css';
 import dynamic from 'next/dynamic';
 
 export const BlockNote = dynamic(
-  () => import('@/components/editors/blocknote'), {
-  ssr: false,
-});
+  () => import('@/components/editors/blocknote'),
+  {
+    ssr: false,
+  },
+);
 
 const HomepageViewer = ({ body }: { body: string }) => {
   return (

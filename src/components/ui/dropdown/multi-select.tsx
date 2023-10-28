@@ -1,35 +1,30 @@
 import { Listbox, Transition } from '@headlessui/react';
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import React, { Fragment, forwardRef } from 'react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import { Item } from '@radix-ui/react-dropdown-menu';
+import { CheckIcon } from '@heroicons/react/20/solid';
 
 const MultiSelect = forwardRef((props: any, ref) => {
-
-
   const selected = () => {
-    if (typeof props.value === 'string')
-      return props.value
+    if (typeof props.value === 'string') return props.value;
     else
       return props.value
         .map(
           (option) =>
-            props.items.find(
-              (_item) => {
-
-                if (typeof _item === 'string')
-                  return _item === option
-                else
-                  return _item?.id === option || _item?.id === option?.tag_id
-              },
-            ).name,
+            props.items.find((_item) => {
+              if (typeof _item === 'string') return _item === option;
+              else return _item?.id === option || _item?.id === option?.tag_id;
+            }).name,
         )
         .join(', ');
   };
 
   return (
     <>
-      <Listbox value={props.value} onChange={props.onChange} multiple={props.multiple}>
+      <Listbox
+        value={props.value}
+        onChange={props.onChange}
+        multiple={props.multiple}
+      >
         <div className="relative">
           <Listbox.Button className="flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
             <span className="block truncate">{selected()}</span>
@@ -47,7 +42,8 @@ const MultiSelect = forwardRef((props: any, ref) => {
                 <Listbox.Option
                   key={item.name ?? item}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
+                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                      active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
                     }`
                   }
                   value={item.id ?? item}
@@ -55,8 +51,9 @@ const MultiSelect = forwardRef((props: any, ref) => {
                   {({ selected }) => (
                     <>
                       <span
-                        className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                          }`}
+                        className={`block truncate ${
+                          selected ? 'font-medium' : 'font-normal'
+                        }`}
                       >
                         {item.name ?? item}
                       </span>

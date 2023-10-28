@@ -112,7 +112,7 @@ export const getPastActivities = async () => {
 };
 
 export const getActivity = async (activityId: string) => {
-  let activity = await prisma.activity.findUnique({
+  const activity = await prisma.activity.findUnique({
     where: {
       id: activityId,
     },

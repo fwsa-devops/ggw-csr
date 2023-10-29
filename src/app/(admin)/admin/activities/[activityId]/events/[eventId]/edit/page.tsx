@@ -1,9 +1,10 @@
 import ActivityEventForm from '@/admin/activities/[activityId]/components/activity-event-form';
 import prisma from '@/lib/prisma';
-import { useParams } from 'next/navigation';
+import { headers } from "next/headers";
 
-const EditEventpage = async () => {
-  const { activityId, eventId } = useParams();
+const EditEventpage = async ({ params }) => {
+
+  const { activityId, eventId } = params
 
   let event: any = null;
 

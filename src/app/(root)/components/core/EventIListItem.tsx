@@ -114,16 +114,23 @@ const EventListItem = ({
               </div>
 
               {event.description && size === 'lg' && (
-                <div className="basis-full">Description</div>
+                <>
+                  <div className="basis-full">Description</div>
+                  <p>
+                    {event.description}
+                  </p>
+                </>
               )}
             </div>
 
             {size === 'lg' && (
               <div className="ml-auto flex flex-col items-end">
                 <h2 className="font-semibold mb-2">Event Leaders</h2>
-                {event.leaders.map(({ user }) => (
-                  <UserAvatar key={user.id} user={user} />
-                ))}
+                <div className='flex'>
+                  {event.leaders.map(({ user }) => (
+                    <UserAvatar key={user.id} user={user} />
+                  ))}
+                </div>
               </div>
             )}
           </div>

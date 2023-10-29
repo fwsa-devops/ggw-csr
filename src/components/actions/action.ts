@@ -129,7 +129,15 @@ export async function createActivityEvent(
         where: {
           id: data.data.id,
         },
-        data: {},
+        data: {
+          city: data.data.city,
+          location: data.data.location,
+          description: data.data.description,
+          max_volunteers: data.data.max_volunteers,
+          min_volunteers: data.data.min_volunteers,
+          is_dates_announced: data.data.is_dates_announced,
+          date_announcement_text: data.data.date_announcement_text,
+        },
       });
     } else {
       response = await prisma.event.create({
@@ -137,11 +145,12 @@ export async function createActivityEvent(
           city: data.data.city,
           location: data.data.location,
           activityId: data.data.activityId,
+          description: data.data.description,
           author_id: session?.user?.email as string,
-          is_dates_announced: data.data.is_dates_announced,
-          date_announcement_text: data.data.date_announcement_text,
           max_volunteers: data.data.max_volunteers,
           min_volunteers: data.data.min_volunteers,
+          is_dates_announced: data.data.is_dates_announced,
+          date_announcement_text: data.data.date_announcement_text,
         },
       });
     }

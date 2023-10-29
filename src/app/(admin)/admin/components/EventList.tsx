@@ -60,6 +60,7 @@ const EventList = ({
         {events && events.length > 0 ? (
           events.map((event) => (
             <EventListItem
+              activityId={activityId}
               key={event.id}
               event={event}
               size={size}

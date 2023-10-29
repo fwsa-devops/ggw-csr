@@ -27,14 +27,17 @@ import { useFetch } from 'usehooks-ts';
 import * as z from 'zod';
 
 const ActivityEventForm = ({ activityId, event }) => {
+  
   const { data: session } = useSession();
   const [isLoading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   if (!session?.user) {
     return <>Un-Authorized User</>;
   }
 
-  const router = useRouter();
+  console.log("activityId", activityId)
+  console.log("event", event)
 
   const { data: leaders, error } = useFetch<User[]>('/api/users', {
     method: 'GET',
@@ -119,25 +122,33 @@ const ActivityEventForm = ({ activityId, event }) => {
     resolver: zodResolver(refinedSchema),
     defaultValues: event
       ? {
-          ...event,
-          activityId: activityId as string,
-        }
+        id: event.id,
+        activityId: activityId as string,
+        city: event.city ?? 'chennai',
+        location: event.location ?? '',
+        description: event.description ?? '',
+        min_volunteers: event.min_volunteers ?? 1,
+        max_volunteers: event.max_volunteers ?? 1,
+        is_dates_announced: event.is_dates_announced ?? false,
+        date_announcement_text: event.date_announcement_text ?? '',
+        published: event.published ?? true,
+        leaders: event.leaders
+      }
       : {
-          city: 'Chennai',
-          location: '',
-          description: '',
-          min_volunteers: 1,
-          max_volunteers: 1,
-          activityId: activityId as string,
-          is_dates_announced: false,
-          date_announcement_text: '',
-          published: true,
-        },
+        city: 'Chennai',
+        location: '',
+        description: '',
+        min_volunteers: 1,
+        max_volunteers: 1,
+        activityId: activityId as string,
+        is_dates_announced: false,
+        date_announcement_text: '',
+        published: true,
+      },
   });
 
   const onSubmit = async (values: z.infer<typeof eventFormSchema>) => {
     console.log(values);
-
     try {
       setLoading(true);
       // console.log(values);

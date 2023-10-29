@@ -3,22 +3,19 @@ import {
   CalendarRangeIcon,
   HandIcon,
   MapIcon,
+  PenIcon,
   XIcon,
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { signIn, useSession } from 'next-auth/react';
-import {
-  createActivity,
-  createActivityEvent,
-} from '@/components/actions/action';
 import { toast } from '@/components/ui/use-toast';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import UserAvatar from '@/components/user-avatar';
 import { IEvent } from '@/types';
-import { joinEvent, unJoinEvent } from '@/components/actions/action';
 import { useTransition } from 'react';
+import Link from 'next/link';
 
 const calculateTimeDiff = (start, end) => {
   return (
@@ -29,11 +26,13 @@ const calculateTimeDiff = (start, end) => {
 };
 
 const EventListItem = ({
+  activityId,
   event,
   size = 'lg',
   isMember,
   onJoin,
 }: {
+  activityId: string
   event: IEvent;
   size: 'lg' | 'sm';
   isMember: boolean;
@@ -47,32 +46,6 @@ const EventListItem = ({
   const date = !is_dates_announced
     ? date_announcement_text + ' Hrs'
     : calculateTimeDiff(startTime, endTime);
-
-  const callServerAction = async (action: 'JOIN' | 'UNJOIN') => {
-    const toastObj = {
-      title: '',
-      varient: 'default',
-    };
-
-    try {
-      if (action === 'JOIN') {
-        const res = await joinEvent(event.id);
-        if (!res.success) throw res.message;
-
-        toastObj.title = res.data as string;
-      } else {
-        const res = await unJoinEvent(event.id);
-        if (!res.success) throw res.message;
-
-        toastObj.title = res.data as string;
-      }
-    } catch (error) {
-      toastObj.title = error as string;
-      toastObj.varient = 'destructive';
-    } finally {
-      toast(toastObj);
-    }
-  };
 
   return (
     <>
@@ -117,16 +90,24 @@ const EventListItem = ({
               </div>
 
               {event.description && size === 'lg' && (
-                <div className="basis-full">Description</div>
-              )}
+                <>
+                  <div className="basis-full">Description</div>
+                  <p>
+                    {event.description}
+                  </p>
+                </>
+              )
+              }
             </div>
 
             {size === 'lg' && (
               <div className="ml-auto flex flex-col items-end">
                 <h2 className="font-semibold mb-2">Event Leaders</h2>
-                {event.leaders.map(({ user }) => (
-                  <UserAvatar key={user.id} user={user} />
-                ))}
+                <div className='flex'>
+                  {event.leaders.map(({ user }) => (
+                    <UserAvatar key={user.id} user={user} />
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -151,43 +132,17 @@ const EventListItem = ({
 
             {size === 'lg' && (
               <div>
-                {status === 'unauthenticated' ? (
+                <Link href={`/admin/activities/${activityId}/events/${event.id}/edit`}>
                   <Button
                     variant={'default'}
                     className="ml-4"
                     type="button"
                     onClick={() => signIn('google')}
                   >
-                    <HandIcon size={18} className="mr-2" />
-                    Sign in to Join Event
+                    <PenIcon size={18} className='mr-2' />
+                    Edit
                   </Button>
-                ) : !isMember ? (
-                  <Button
-                    variant={'default'}
-                    className="ml-4"
-                    type="button"
-                    disabled={isPending}
-                    onClick={() =>
-                      startTransition(() => callServerAction('JOIN'))
-                    }
-                  >
-                    <HandIcon size={18} className="mr-2" />
-                    Join this event
-                  </Button>
-                ) : (
-                  <Button
-                    variant={'default'}
-                    className="ml-4"
-                    type="button"
-                    disabled={isPending}
-                    onClick={() =>
-                      startTransition(() => callServerAction('UNJOIN'))
-                    }
-                  >
-                    <XIcon size={18} className="mr-2" />
-                    Unjoin this event
-                  </Button>
-                )}
+                </Link>
               </div>
             )}
           </div>

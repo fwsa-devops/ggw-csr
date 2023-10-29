@@ -1,7 +1,5 @@
 'use client';
 
-import { PlusIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
 import EventListItem from './EventIListItem';
 import { useBoolean } from 'usehooks-ts';

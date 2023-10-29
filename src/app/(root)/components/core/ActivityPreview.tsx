@@ -1,6 +1,4 @@
-import { LaptopIcon, PenIcon } from 'lucide-react';
-import { Button } from '../../../../components/ui/button';
-import Link from 'next/link';
+import { LaptopIcon } from 'lucide-react';
 import { IActivity } from '@/types';
 import { getServerSession } from 'next-auth';
 

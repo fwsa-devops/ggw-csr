@@ -32,7 +32,7 @@ const EventListItem = ({
   isMember,
   onJoin,
 }: {
-  activityId: string
+  activityId: string;
   event: IEvent;
   size: 'lg' | 'sm';
   isMember: boolean;
@@ -92,18 +92,15 @@ const EventListItem = ({
               {event.description && size === 'lg' && (
                 <>
                   <div className="basis-full">Description</div>
-                  <p>
-                    {event.description}
-                  </p>
+                  <p>{event.description}</p>
                 </>
-              )
-              }
+              )}
             </div>
 
             {size === 'lg' && (
               <div className="ml-auto flex flex-col items-end">
                 <h2 className="font-semibold mb-2">Event Leaders</h2>
-                <div className='flex'>
+                <div className="flex">
                   {event.leaders.map(({ user }) => (
                     <UserAvatar key={user.id} user={user} />
                   ))}
@@ -132,14 +129,16 @@ const EventListItem = ({
 
             {size === 'lg' && (
               <div>
-                <Link href={`/admin/activities/${activityId}/events/${event.id}/edit`}>
+                <Link
+                  href={`/admin/activities/${activityId}/events/${event.id}/edit`}
+                >
                   <Button
                     variant={'default'}
                     className="ml-4"
                     type="button"
                     onClick={() => signIn('google')}
                   >
-                    <PenIcon size={18} className='mr-2' />
+                    <PenIcon size={18} className="mr-2" />
                     Edit
                   </Button>
                 </Link>

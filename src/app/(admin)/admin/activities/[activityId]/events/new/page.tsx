@@ -1,7 +1,6 @@
 import ActivityEventForm from '../../components/activity-event-form';
 
 export default async function ActivityPage({ params }) {
-
   return (
     <>
       <main className="flex flex-col items-center justify-between min-h-screen ">

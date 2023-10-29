@@ -1,9 +1,5 @@
 const EventPage = () => {
-  return (
-    <>
-      Event
-    </>
-  )
-}
+  return <>Event</>;
+};
 
 export default EventPage;

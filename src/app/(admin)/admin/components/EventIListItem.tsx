@@ -1,15 +1,12 @@
 import {
   BuildingIcon,
   CalendarRangeIcon,
-  HandIcon,
   MapIcon,
   PenIcon,
-  XIcon,
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { signIn, useSession } from 'next-auth/react';
-import { toast } from '@/components/ui/use-toast';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import UserAvatar from '@/components/user-avatar';

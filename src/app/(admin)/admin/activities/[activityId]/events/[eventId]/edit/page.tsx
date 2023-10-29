@@ -1,6 +1,5 @@
 import ActivityEventForm from '@/admin/activities/[activityId]/components/activity-event-form';
 import prisma from '@/lib/prisma';
-import { headers } from 'next/headers';
 
 const EditEventpage = async ({ params }) => {
   const { activityId, eventId } = params;

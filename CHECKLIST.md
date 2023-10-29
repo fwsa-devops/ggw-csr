@@ -28,11 +28,12 @@
 - [x] Allow users to add event photos, videos and feedback
 - [x] Add Husky
 - [x] Post upload feature
-- [ ] Events CRUD operations
-- [ ] Add user role table ( add restrictions in each page accordingly )
+- [x] Events CRUD operations
+- [x] Add user role table ( add restrictions in each page accordingly )
+- [x] Need to work on seeds file
+- [ ] Add restrcitions in admin pages using UserRole table
 - [ ] Create /users endpoint to view all users in the application
 - [ ] Restriction in post uploads & activities CRUD
-- [ ] Need to work on seeds file
 - [ ] Filter by "City" in Events instead of Activities
 - [ ] Add a hero section on the landing page
 - [ ] Valid activity information

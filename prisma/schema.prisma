@@ -82,6 +82,20 @@ model Event {
   @@index([activityId], name: "activityId")
 }
 
+model UserRole {
+  id      String @id @default(cuid())
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id])
+  role    Role   @default(USER)
+
+  @@index([user_id])
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
 model Volunteers {
   id String @id @default(cuid())
 
@@ -147,6 +161,7 @@ model User {
   events      Event[]
   volunteers  Volunteers[]
   EventLeader EventLeader[]
+  UserRole    UserRole[]
 
   @@map(name: "users")
 }

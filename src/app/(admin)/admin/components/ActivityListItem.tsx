@@ -65,6 +65,7 @@ const ActivityListItem = ({ activity }: { activity: IActivity }) => {
 
         {activity.events.map((event: any) => (
           <EventListItem
+            activityId={activity.id}
             event={event}
             size="sm"
             isMember={false}

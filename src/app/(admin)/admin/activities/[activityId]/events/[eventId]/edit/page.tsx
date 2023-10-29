@@ -11,8 +11,16 @@ const EditEventpage = async ({ params }) => {
       where: {
         id: eventId as string,
       },
+      include: {
+        leaders: {
+          include: {
+            user: true
+          }
+        }
+      }
     });
     event = _event;
+    event.leaders = _event?.leaders.map(_l => _l.id)
   }
 
   return (

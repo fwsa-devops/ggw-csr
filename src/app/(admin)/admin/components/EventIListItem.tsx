@@ -133,7 +133,6 @@ const EventListItem = ({
                     variant={'default'}
                     className="ml-4"
                     type="button"
-                    onClick={() => signIn('google')}
                   >
                     <PenIcon size={18} className="mr-2" />
                     Edit

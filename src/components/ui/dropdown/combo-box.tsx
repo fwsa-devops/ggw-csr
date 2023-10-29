@@ -1,7 +1,6 @@
 'use client';
 
-import { Combobox, Listbox, Transition } from '@headlessui/react';
-import { CaretSortIcon } from '@radix-ui/react-icons';
+import { Combobox, Transition } from '@headlessui/react';
 import React, { Fragment, forwardRef, useState } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
 

@@ -3,7 +3,6 @@
 import { createActivityEvent } from '@/components/actions/action';
 import { Button } from '@/components/ui/button';
 import ComboBox from '@/components/ui/dropdown/combo-box';
-import MultiSelect from '@/components/ui/dropdown/list-box';
 import {
   Form,
   FormControl,
@@ -12,15 +11,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { toast } from '@/components/ui/use-toast';
 import { eventFormSchema } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@prisma/client';
-import { getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFetch } from 'usehooks-ts';

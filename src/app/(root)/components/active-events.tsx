@@ -7,7 +7,7 @@ import {
   getAllTags,
 } from '@/components/utils';
 import { DateRange } from 'react-day-picker';
-import { FilterXIcon, PlusIcon } from 'lucide-react';
+import { FilterXIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DatePickerWithRange } from '@/components/ui/date-range-picker';
 import { DropdownMenuCheckboxes } from '@/components/ui/dropdown/checkbox-dd';

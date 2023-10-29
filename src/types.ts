@@ -44,18 +44,7 @@ export const eventFormSchema = z.object({
   endTime: z.date().optional(),
   date_announcement_text: z.string().optional()
 })
-  .refine((data) => ((!data.is_dates_announced) && (data.date_announcement_text === "" || data.date_announcement_text === undefined)), {
-    message: "Announcement Details is required if actuall dates are not announced",
-    path: ['date_announcement_text']
-  })
-  // .refine((data) => data.startTime >= data.endTime, {
-  //   message: "End time must be greater the Start time",
-  //   path: ['startTime', 'endTime']
-  // })
-  .refine((data) => data.min_volunteers > data.max_volunteers, {
-    message: "Max Volunteers must be eithor same or greater than Min Volunteers",
-    path: ['min_volunteers', 'max_volunteers']
-  })
+
 
 
 export interface IActivity extends Activity {

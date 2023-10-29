@@ -6,6 +6,7 @@ const Page = async () => {
   const activities: any = await prisma.activity.findMany({
     include: {
       events: {
+        take: 2,
         include: {
           leaders: {
             include: {

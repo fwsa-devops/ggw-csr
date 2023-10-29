@@ -19,8 +19,8 @@ import { useForm } from "react-hook-form";
 import { useFetch } from "usehooks-ts";
 import * as z from "zod";
 
-const ActivityEventForm = () => {
-  const { activityId } = useParams();
+const ActivityEventForm = ({ activityId, event }) => {
+
   const { data: session } = useSession();
   const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -34,20 +34,70 @@ const ActivityEventForm = () => {
     method: 'GET',
   })
 
+  // const formSchemaPartial = eventFormSchema.partial();
+
+  const addRefines = (schema: typeof eventFormSchema) => {
+    return schema
+      .refine((data) => {
+        if (!data.is_dates_announced && (data.date_announcement_text === "" || data.date_announcement_text === undefined)) {
+          return false;
+        }
+        return true;
+      }, {
+        message: "Announcement Details is required if actual dates are not announced",
+        path: ['date_announcement_text']
+      })
+      .refine((data) => {
+        if (data.startTime && data.endTime && data.startTime >= data.endTime) {
+          return false;
+        }
+        return true;
+      }, {
+        message: "End time must be greater than Start time",
+        path: ['startTime', 'endTime']
+      })
+      .refine((data) => {
+        if (data.min_volunteers && data.max_volunteers && (data.min_volunteers > data.max_volunteers)) {
+          return false;
+        }
+        return true;
+      }, {
+        message: "Minimum Volunteers must be either same or less than Maximum Volunteers",
+        path: ['min_volunteers']
+      })
+      .refine((data) => {
+        if (data.min_volunteers && data.max_volunteers && (data.min_volunteers > data.max_volunteers)) {
+          return false;
+        }
+        return true;
+      }, {
+        message: "Maximum Volunteers must be either same or greater than Minimum Volunteers",
+        path: ['max_volunteers']
+      });
+  };
+
+  const refinedSchema = addRefines(eventFormSchema);
+
   const form = useForm<z.infer<typeof eventFormSchema>>({
-    resolver: zodResolver(eventFormSchema),
-    defaultValues: {
-      city: 'Chennai',
-      location: '',
-      description: '',
-      min_volunteers: 1,
-      max_volunteers: 1,
-      activityId: activityId as string,
-      is_dates_announced: false,
-      date_announcement_text: '',
-      published: true
-    },
+    resolver: zodResolver(refinedSchema),
+    defaultValues: event ?
+      {
+        ...event,
+        activityId: activityId as string
+      } :
+      {
+        city: 'Chennai',
+        location: '',
+        description: '',
+        min_volunteers: 1,
+        max_volunteers: 1,
+        activityId: activityId as string,
+        is_dates_announced: false,
+        date_announcement_text: '',
+        published: true
+      },
   });
+
 
 
   const onSubmit = async (values: z.infer<typeof eventFormSchema>) => {
@@ -83,8 +133,10 @@ const ActivityEventForm = () => {
 
   const onChange = (val) => {
     console.log(form)
+    console.log(form.getValues())
     console.log(form.formState)
   }
+
 
   return (
     <>
@@ -180,6 +232,7 @@ const ActivityEventForm = () => {
                   </FormLabel>
                   <FormControl className="mt-2">
                     <input type="number"
+                      {...field}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       {...form.register('min_volunteers', {
                         setValueAs: (v) =>
@@ -204,6 +257,7 @@ const ActivityEventForm = () => {
                   </FormLabel>
                   <FormControl className="mt-2">
                     <input type="number"
+                      {...field}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       {...form.register('max_volunteers', {
                         setValueAs: (v) =>

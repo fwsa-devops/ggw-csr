@@ -1,7 +1,6 @@
 import { getActivity } from '@/components/utils';
 import EventPage from './components/event-page';
 
-
 export default async function Event({ params }: { params: { id: string } }) {
   const activity: any = await getActivity(params.id);
 

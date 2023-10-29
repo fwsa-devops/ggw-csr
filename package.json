@@ -9,7 +9,8 @@
     "lint": "next lint",
     "eslint": "eslint src --color --fix",
     "format": "prettier --write .",
-    "seed": "npm run db-seed"
+    "seed": "npm run db-seed",
+    "prepare": "husky install"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

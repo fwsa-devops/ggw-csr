@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { Combobox, Listbox, Transition } from '@headlessui/react';
 import { CaretSortIcon } from '@radix-ui/react-icons';
@@ -6,22 +6,19 @@ import React, { Fragment, forwardRef, useState } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
 
 const ComboBox = forwardRef((props: any, ref) => {
-
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState('');
 
   const filteredItems =
     query === ''
       ? props.items
       : props.items.filter((item) => {
-        if (typeof item === 'string')
-          return item.toLowerCase().includes(query.toLowerCase())
-        else
-          return item.name.toLowerCase().includes(query.toLowerCase())
-      })
+          if (typeof item === 'string')
+            return item.toLowerCase().includes(query.toLowerCase());
+          else return item.name.toLowerCase().includes(query.toLowerCase());
+        });
 
   const selected = () => {
-    if (!props.value)
-      return
+    if (!props.value) return;
 
     if (typeof props.value === 'string') return props.value;
     else
@@ -35,8 +32,6 @@ const ComboBox = forwardRef((props: any, ref) => {
         )
         .join(', ');
   };
-
-
 
   return (
     <>
@@ -63,7 +58,8 @@ const ComboBox = forwardRef((props: any, ref) => {
                 <Combobox.Option
                   key={item.id ?? item.name ?? item}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
+                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                      active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
                     }`
                   }
                   value={item.id ?? item.name ?? item}
@@ -71,7 +67,9 @@ const ComboBox = forwardRef((props: any, ref) => {
                   {({ active, selected }) => (
                     <>
                       <span
-                        className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}
+                        className={`block truncate ${
+                          selected ? 'font-medium' : 'font-normal'
+                        }`}
                       >
                         {item.name ?? item}
                       </span>
@@ -87,7 +85,7 @@ const ComboBox = forwardRef((props: any, ref) => {
             </Combobox.Options>
           </Transition>
         </div>
-      </Combobox >
+      </Combobox>
     </>
   );
 });

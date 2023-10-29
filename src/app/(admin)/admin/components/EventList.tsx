@@ -16,7 +16,7 @@ const EventList = ({
   events,
   size = 'lg',
 }: {
-  activityId: string,
+  activityId: string;
   events: IEvent[];
   size: 'lg' | 'sm';
 }) => {

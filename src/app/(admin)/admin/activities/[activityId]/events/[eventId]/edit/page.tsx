@@ -1,9 +1,8 @@
-import ActivityEventForm from "@/admin/activities/[activityId]/components/activity-event-form";
-import prisma from "@/lib/prisma";
-import { useParams } from "next/navigation";
+import ActivityEventForm from '@/admin/activities/[activityId]/components/activity-event-form';
+import prisma from '@/lib/prisma';
+import { useParams } from 'next/navigation';
 
 const EditEventpage = async () => {
-
   const { activityId, eventId } = useParams();
 
   let event: any = null;
@@ -11,10 +10,10 @@ const EditEventpage = async () => {
   if (eventId) {
     const _event = await prisma.event.findUnique({
       where: {
-        id: eventId as string
-      }
-    })
-    event = _event
+        id: eventId as string,
+      },
+    });
+    event = _event;
   }
 
   return (
@@ -29,8 +28,7 @@ const EditEventpage = async () => {
         </section>
       </main>
     </>
-  )
-
-}
+  );
+};
 
 export default EditEventpage;

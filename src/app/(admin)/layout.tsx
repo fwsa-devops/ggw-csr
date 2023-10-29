@@ -24,7 +24,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title >CSR Events Portal</title>
+        <title>CSR Events Portal</title>
       </head>
       <SessionProvider session={session}>
         <body className={inter.className}>

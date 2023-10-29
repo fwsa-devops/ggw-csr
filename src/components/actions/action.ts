@@ -100,9 +100,8 @@ export async function createActivity(
 }
 
 export async function createActivityEvent(
-  formData: z.infer<typeof eventFormSchema>
+  formData: z.infer<typeof eventFormSchema>,
 ) {
-
   const data = eventFormSchema.safeParse(formData);
   console.log(data);
 
@@ -130,9 +129,7 @@ export async function createActivityEvent(
         where: {
           id: data.data.id,
         },
-        data: {
-
-        },
+        data: {},
       });
     } else {
       response = await prisma.event.create({
@@ -192,7 +189,6 @@ export async function createActivityEvent(
       };
     }
   }
-
 }
 
 export async function joinEvent(eventId: string): Promise<ResponseType> {
@@ -287,5 +283,3 @@ export async function unJoinEvent(eventId: string): Promise<ResponseType> {
     };
   }
 }
-
-

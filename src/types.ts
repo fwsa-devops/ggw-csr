@@ -24,14 +24,26 @@ export const activityFormSchema = z.object({
   tags: z.array(z.string()),
 });
 
-
 export const eventFormSchema = z.object({
   activityId: z.string(),
   id: z.string().optional(),
   city: z.enum(['Chennai', 'Bangalore']),
   location: z.string().min(2),
 
-  leaders: z.array(z.string(), { description: 'Atleast 1 leader must be selected' }).superRefine((val, ctx) => { if (val.length === 0) ctx.addIssue({ code: z.ZodIssueCode.too_small, minimum: 1, fatal: true, type: 'array', inclusive: true, message: 'Atleast 1 leader must be selected' }); return z.NEVER; }),
+  leaders: z
+    .array(z.string(), { description: 'Atleast 1 leader must be selected' })
+    .superRefine((val, ctx) => {
+      if (val.length === 0)
+        ctx.addIssue({
+          code: z.ZodIssueCode.too_small,
+          minimum: 1,
+          fatal: true,
+          type: 'array',
+          inclusive: true,
+          message: 'Atleast 1 leader must be selected',
+        });
+      return z.NEVER;
+    }),
   volunteers: z.array(z.string()).optional(),
 
   description: z.string().optional(),
@@ -42,10 +54,8 @@ export const eventFormSchema = z.object({
   is_dates_announced: z.boolean(),
   startTime: z.date().optional(),
   endTime: z.date().optional(),
-  date_announcement_text: z.string().optional()
-})
-
-
+  date_announcement_text: z.string().optional(),
+});
 
 export interface IActivity extends Activity {
   events: ({

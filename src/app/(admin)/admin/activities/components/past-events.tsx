@@ -36,8 +36,8 @@ const PastActivities = (props) => {
                       <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
                         {activity?.tags.length > 0
                           ? activity?.tags
-                            .map((tag) => `#${tag?.tag.name}`)
-                            .join(', ')
+                              .map((tag) => `#${tag?.tag.name}`)
+                              .join(', ')
                           : 'No tags available'}
                       </h2>
 

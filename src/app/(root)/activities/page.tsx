@@ -1,9 +1,6 @@
 import ActiveEvents from '@/root/components/active-events';
 import PastActivities from '@/root/components/past-events';
-import {
-  getAllActivitiesFromDB,
-  getPastActivities,
-} from '@/components/utils';
+import { getAllActivitiesFromDB, getPastActivities } from '@/components/utils';
 import { Separator } from '@/components/ui/separator';
 
 export default async function Home() {

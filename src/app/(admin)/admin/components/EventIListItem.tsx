@@ -8,7 +8,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { signIn, useSession } from 'next-auth/react';
-import { createActivity } from '@/components/actions/action';
+import { createActivity, createActivityEvent } from '@/components/actions/action';
 import { toast } from '@/components/ui/use-toast';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';

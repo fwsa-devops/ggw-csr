@@ -33,10 +33,10 @@ const EventDetails = ({ event }: { event: any }) => {
           <h2 className="mt-2 mb-3 text-sm tracking-widest text-gray-400 title-font">
             {event.activity.tags
               ? event.activity?.tags.map((tag) => (
-                <span key={tag.id} className="mr-2">
-                  #{tag?.tag.name}
-                </span>
-              ))
+                  <span key={tag.id} className="mr-2">
+                    #{tag?.tag.name}
+                  </span>
+                ))
               : ''}
           </h2>
 

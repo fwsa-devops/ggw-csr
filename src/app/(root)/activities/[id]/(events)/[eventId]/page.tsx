@@ -25,7 +25,7 @@ const EventPage = async ({
               Asset: true,
             },
           },
-          author: true
+          author: true,
         },
       },
     },

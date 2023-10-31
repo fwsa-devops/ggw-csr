@@ -1,22 +1,14 @@
-
 import PostsList from '@/components/upload-image/PostsList';
 import UserAvatar from '@/components/user-avatar';
-import { ChatBubbleLeftEllipsisIcon, } from '@heroicons/react/20/solid'
 
-const EventFeedbackListItem = ({
-  feedback
-}: {
-  feedback: any
-}) => {
+const EventFeedbackListItem = ({ feedback }: { feedback: any }) => {
   return (
     <>
       {/* {JSON.stringify(feedback, null, 4)} */}
 
-
-      <div className="relative flex items-start space-x-3 border-2 rounded w-full p-4 mt-4" >
+      <div className="relative flex items-start space-x-3 border-2 rounded w-full p-4 mt-4">
         <div className="relative">
-          <UserAvatar
-            user={feedback.author} />
+          <UserAvatar user={feedback.author} />
         </div>
 
         <div className="min-w-0 flex-1">
@@ -31,19 +23,13 @@ const EventFeedbackListItem = ({
           <div className="mt-2 text-sm text-gray-700">
             <p>{feedback.comment}</p>
           </div>
-          <div className='flex flex-wrap gap-6 mt-4'>
-            <PostsList imageUrls={feedback.assets.map(_a => _a.Asset)} />
+          <div className="flex flex-wrap gap-6 mt-4">
+            <PostsList imageUrls={feedback.assets.map((_a) => _a.Asset)} />
           </div>
         </div>
       </div>
-
     </>
   );
 };
 
 export default EventFeedbackListItem;
-
-
-
-
-

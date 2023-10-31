@@ -5,7 +5,7 @@ import { Inter } from 'next/font/google';
 import Header from '@/app/(root)/components/header';
 import { Toaster } from '@/components/ui/toaster';
 
-import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
 import { extractRouterConfig } from 'uploadthing/server';
 import { ourFileRouter } from '@/api/uploadthing/core';
 
@@ -35,9 +35,7 @@ export default async function RootLayout({
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <Header />
           <main className="main">
-            <div className="responsive-wrapper">
-              {children}
-            </div>
+            <div className="responsive-wrapper">{children}</div>
             <Toaster />
           </main>
         </body>

@@ -56,14 +56,13 @@ export const eventFormSchema = z.object({
   date_announcement_text: z.string().optional(),
 });
 
-
 export const eventFeedbackFormSchema = z.object({
   eventId: z.string(),
   activityId: z.string(),
   assets: z.array(z.object({ url: z.string(), name: z.string().optional() })),
   comment: z.string().min(5, 'Few more words... 🥺🥺'),
-  author_id: z.string()
-})
+  author_id: z.string(),
+});
 
 export interface IActivity extends Activity {
   events: ({

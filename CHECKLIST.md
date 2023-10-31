@@ -34,9 +34,9 @@
 - [ ] Add restrcitions in admin pages using UserRole table
 - [ ] Create /users endpoint to view all users in the application
 - [ ] Restriction in post uploads & activities CRUD
-- [X] Filter by "City" in Events instead of Activities
-- [X] Add a hero section on the landing page
-- [X] Valid activity information
+- [x] Filter by "City" in Events instead of Activities
+- [x] Add a hero section on the landing page
+- [x] Valid activity information
 - [ ] Video support in Homepage
 - [ ] Automatic Event Close based on event date
 - [ ] Event feedback/review

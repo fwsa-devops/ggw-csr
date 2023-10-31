@@ -1,13 +1,11 @@
-'use client'
+'use client';
 
-import { LaptopIcon } from "lucide-react";
-import EventFeedbackForm from "./event-feedback-form";
-import { Separator } from "@/components/ui/separator";
-// import EventFeedbackList from "./event-feedback-list";
-
+import { LaptopIcon } from 'lucide-react';
+import EventFeedbackForm from './event-feedback-form';
+import { Separator } from '@/components/ui/separator';
+import EventFeedbackList from './event-feedback-list';
 
 const EventDetails = ({ event }: { event: any }) => {
-
   console.log(event);
 
   return (
@@ -21,7 +19,6 @@ const EventDetails = ({ event }: { event: any }) => {
       </div>
 
       <div className="flex flex-col md:flex-row md:flex-nowrap lg:gap-8 lg:order-2 order-2">
-
         <div className="mt-12 lg:mt-6 lg:mx-auto order-1 lg:order-1 lg:w-full ">
           <div className="flex md:flex-row flex-col md:justify-between md:items-center items-end">
             <h1 className="md:mb-4 text-2xl font-semibold text-gray-700 title-font">
@@ -54,10 +51,11 @@ const EventDetails = ({ event }: { event: any }) => {
 
           <div
             className="leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: event.activity.description ?? '' }}
+            dangerouslySetInnerHTML={{
+              __html: event.activity.description ?? '',
+            }}
           ></div>
         </div>
-
       </div>
 
       <Separator className="my-10 sm:hidden md:block" />
@@ -67,15 +65,10 @@ const EventDetails = ({ event }: { event: any }) => {
       </div>
 
       <div className="my-10">
-        {/* <EventFeedbackList /> */}
-
-        {JSON.stringify(event.feedback, null, 2)}
+        <EventFeedbackList feedbacks={event.feedback} />
       </div>
-
-
-
     </>
-  )
-}
+  );
+};
 
 export default EventDetails;

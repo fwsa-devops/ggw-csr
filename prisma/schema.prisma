@@ -195,6 +195,9 @@ model Feedback {
   author    User   @relation(fields: [author_id], references: [email])
   author_id String
 
+  created_at DateTime @default(now()) @map(name: "created_at")
+  updated_at DateTime @updatedAt @map(name: "updated_at")
+
   assets FeedbackAssets[]
 
   @@index([event_id])

@@ -1,7 +1,11 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { activityFormSchema, eventFeedbackFormSchema, eventFormSchema } from '@/types';
+import {
+  activityFormSchema,
+  eventFeedbackFormSchema,
+  eventFormSchema,
+} from '@/types';
 import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 import * as z from 'zod';
@@ -293,11 +297,9 @@ export async function unJoinEvent(eventId: string): Promise<ResponseType> {
   }
 }
 
-
 export async function createEventFeedback(
-  formData: z.infer<typeof eventFeedbackFormSchema>
+  formData: z.infer<typeof eventFeedbackFormSchema>,
 ) {
-
   const data = eventFeedbackFormSchema.safeParse(formData);
   console.log(data);
 
@@ -326,15 +328,15 @@ export async function createEventFeedback(
         author_id: author_id,
         assets: {
           create: [
-            ...assets.map(_a => ({
+            ...assets.map((_a) => ({
               Asset: {
-                create: _a
-              }
-            }))
-          ]
-        }
+                create: _a,
+              },
+            })),
+          ],
+        },
       },
-    })
+    });
 
     revalidatePath(`/activities/${formData.activityId}`);
 
@@ -343,7 +345,6 @@ export async function createEventFeedback(
       message: 'Feedback created successfully',
       data: feedback,
     };
-
   } catch (error) {
     console.log(error);
 
@@ -358,6 +359,4 @@ export async function createEventFeedback(
       };
     }
   }
-
-
 }

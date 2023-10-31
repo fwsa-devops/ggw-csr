@@ -1,19 +1,17 @@
 'use client'; // this registers <Editor> as a Client Component
 
 import React from 'react';
-import ReactPlayer from 'react-player'
+import ReactPlayer from 'react-player';
 import {
   BlockNoteEditor,
-
   PartialBlock,
   BlockSchema,
   defaultBlockSchema,
   defaultProps,
-} from "@blocknote/core";
+} from '@blocknote/core';
 import {
   BlockNoteView,
   useBlockNote,
-  
   createReactBlockSpec,
   ReactSlashMenuItem,
   getDefaultReactSlashMenuItems,
@@ -27,35 +25,32 @@ interface EditorProps {
   onChange?: (value: any) => void;
 }
 
-
-
 // Our <Editor> component we can reuse later
 export default function BlockNote({
   editable,
   onChange,
   initialContent,
 }: EditorProps) {
-
   const VideoPlayerSchema = createReactBlockSpec({
-    type: "video",
+    type: 'video',
     propSchema: {
       ...defaultProps,
       src: {
-        default: "https://via.placeholder.com/1000",
+        default: 'https://via.placeholder.com/1000',
       },
       alt: {
-        default: "Video",
+        default: 'Video',
       },
       textAlignment: {
-        default: "left",
-        values: ["left", "center", "right", "justify"],
+        default: 'left',
+        values: ['left', 'center', 'right', 'justify'],
       },
       width: {
         default: 512,
       },
       backgroundColor: {
-        default: "default",
-      }
+        default: 'default',
+      },
     },
     containsInlineContent: false,
     render: ({ block }) => (
@@ -66,7 +61,6 @@ export default function BlockNote({
     ),
   });
 
-
   const customSchema = {
     // Adds all default blocks.
     ...defaultBlockSchema,
@@ -74,41 +68,40 @@ export default function BlockNote({
     video: VideoPlayerSchema,
   } satisfies BlockSchema;
 
-
   const insertVideo: ReactSlashMenuItem<typeof customSchema> = {
     name: 'Video',
     execute(editor) {
-      const src: string | null = prompt("Enter video URL");
-      const alt: string | null = prompt("Enter video alt text");
+      const src: string | null = prompt('Enter video URL');
+      const alt: string | null = prompt('Enter video alt text');
 
       editor.insertBlocks(
         [
           {
-            type: "video",
+            type: 'video',
             props: {
-              src: src || "https://via.placeholder.com/1000",
-              alt: alt || "image",
+              src: src || 'https://via.placeholder.com/1000',
+              alt: alt || 'image',
             },
           },
-
         ],
         editor.getTextCursorPosition().block,
-        "before"
+        'before',
       );
     },
-    aliases: ["video", "img", "picture", "media"],
-    group: "Media",
+    aliases: ['video', 'img', 'picture', 'media'],
+    group: 'Media',
     icon: <Video size={16} />,
-    hint: "Insert an image",
-  }
-
+    hint: 'Insert an image',
+  };
 
   // Creates a new editor instance.
   const editor: BlockNoteEditor | null = useBlockNote({
     editable: editable,
-    initialContent: initialContent ? (JSON.parse(initialContent) as PartialBlock[]) : undefined,
+    initialContent: initialContent
+      ? (JSON.parse(initialContent) as PartialBlock[])
+      : undefined,
     onEditorContentChange: (editor) => {
-      console.log(editor)
+      console.log(editor);
 
       // const saveBlocksAsMarkdown = async () => {
       //   const markdown: string =
@@ -129,13 +122,8 @@ export default function BlockNote({
       onChange?.(editor);
     },
     blockSchema: customSchema,
-    slashMenuItems: [
-      ...getDefaultReactSlashMenuItems(),
-      insertVideo
-    ]
+    slashMenuItems: [...getDefaultReactSlashMenuItems(), insertVideo],
   });
-
 
   return <BlockNoteView editor={editor} theme={'light'} />;
 }
-

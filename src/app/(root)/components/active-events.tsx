@@ -168,8 +168,9 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
         activties?.map((activity) => {
           return (
             <div
-              className={`container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground ${isLoading ? 'opacity-50' : ''
-                }`}
+              className={`container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground ${
+                isLoading ? 'opacity-50' : ''
+              }`}
               key={activity.id}
             >
               <ActivityListItem key={activity.id} activity={activity} />

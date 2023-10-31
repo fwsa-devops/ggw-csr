@@ -7,7 +7,6 @@ import { createHomepageContent } from '@/components/utils/api';
 import { CheckIcon, X } from 'lucide-react';
 
 const HomePage = ({ initialContent = '' }) => {
-
   const [isLoaded, setLoaded] = useState(false);
   const [content, setContent] = useState<any>();
   const [isSubmitting, setSubmitting] = useState(false);
@@ -29,7 +28,6 @@ const HomePage = ({ initialContent = '' }) => {
     event?.preventDefault();
     console.log(content);
     try {
-
       const formData = {
         status: 'OPEN',
         body: content,

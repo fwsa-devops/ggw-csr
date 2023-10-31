@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       events: {
         some: {
           city: {
-            in: filters.city
+            in: filters.city,
           },
           // OR: [
           //   {
@@ -58,12 +58,11 @@ export async function POST(req: Request) {
           //     },
           //   },
           // ]
-        }
-      }
+        },
+      },
     },
     ...INCLUDE_ALL_ACTIVITIES_DATA,
   });
-
 
   console.log('activities', activities);
   return Response.json(activities);

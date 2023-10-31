@@ -14,13 +14,13 @@ const EditEventpage = async ({ params }) => {
       include: {
         leaders: {
           include: {
-            user: true
-          }
-        }
-      }
+            user: true,
+          },
+        },
+      },
     });
     event = _event;
-    event.leaders = _event?.leaders.map(_l => _l.id)
+    event.leaders = _event?.leaders.map((_l) => _l.id);
   }
 
   return (

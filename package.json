@@ -9,8 +9,7 @@
     "lint": "next lint",
     "eslint": "eslint src --color --fix",
     "format": "prettier --write .",
-    "seed": "npm run db-seed",
-    "prepare": "husky install"
+    "seed": "npm run db-seed"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -56,6 +55,7 @@
     "react-dom": "latest",
     "react-hook-form": "^7.47.0",
     "react-markdown": "^9.0.0",
+    "react-player": "^2.13.0",
     "react-quill": "^2.0.0",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",

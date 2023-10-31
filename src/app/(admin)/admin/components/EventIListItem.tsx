@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import UserAvatar from '@/components/user-avatar';
@@ -129,11 +129,7 @@ const EventListItem = ({
                 <Link
                   href={`/admin/activities/${activityId}/events/${event.id}/edit`}
                 >
-                  <Button
-                    variant={'default'}
-                    className="ml-4"
-                    type="button"
-                  >
+                  <Button variant={'default'} className="ml-4" type="button">
                     <PenIcon size={18} className="mr-2" />
                     Edit
                   </Button>

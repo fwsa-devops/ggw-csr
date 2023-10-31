@@ -6,7 +6,7 @@ import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 import * as z from 'zod';
 
-type ResponseType = {
+export type ResponseType = {
   success: boolean;
   message: string;
   errors?: Record<string, string>;

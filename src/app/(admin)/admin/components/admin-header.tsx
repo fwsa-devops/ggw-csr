@@ -15,6 +15,7 @@ import { UserNav } from '@/components/user-nav';
 const navigations = [
   { name: 'Dashboard', href: '/admin' },
   { name: 'Activites', href: '/admin/activities' },
+  { name: 'Homepage', href: '/admin/homepage' },
 ];
 
 export default function AdminHeader() {

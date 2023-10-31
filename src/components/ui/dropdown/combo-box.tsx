@@ -5,8 +5,7 @@ import React, { Fragment, forwardRef, useState } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
 
 const ComboBox = forwardRef((props: any, ref) => {
-
-  console.log(props)
+  console.log(props);
 
   const [query, setQuery] = useState('');
 
@@ -14,10 +13,10 @@ const ComboBox = forwardRef((props: any, ref) => {
     query === ''
       ? props.items
       : props.items.filter((item) => {
-        if (typeof item === 'string')
-          return item.toLowerCase().includes(query.toLowerCase());
-        else return item.name.toLowerCase().includes(query.toLowerCase());
-      });
+          if (typeof item === 'string')
+            return item.toLowerCase().includes(query.toLowerCase());
+          else return item.name.toLowerCase().includes(query.toLowerCase());
+        });
 
   const selected = () => {
     if (!props.value) return;
@@ -29,7 +28,13 @@ const ComboBox = forwardRef((props: any, ref) => {
           (option) =>
             props.items.find((_item) => {
               if (typeof _item === 'string') return _item === option;
-              else return _item === option || _item?.id === option || _item?.id === option?.id || _item?.id === option?.tag_id;
+              else
+                return (
+                  _item === option ||
+                  _item?.id === option ||
+                  _item?.id === option?.id ||
+                  _item?.id === option?.tag_id
+                );
             }).name,
         )
         .join(', ');
@@ -60,7 +65,8 @@ const ComboBox = forwardRef((props: any, ref) => {
                 <Combobox.Option
                   key={item.id ?? item.name ?? item}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
+                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                      active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
                     }`
                   }
                   value={item.id ?? item.name ?? item}
@@ -68,8 +74,9 @@ const ComboBox = forwardRef((props: any, ref) => {
                   {({ active, selected }) => (
                     <>
                       <span
-                        className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                          }`}
+                        className={`block truncate ${
+                          selected ? 'font-medium' : 'font-normal'
+                        }`}
                       >
                         {item.name ?? item}
                       </span>

@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { activityFormSchema, eventFormSchema } from '@/types';
+import { activityFormSchema, eventFeedbackFormSchema, eventFormSchema } from '@/types';
 import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 import * as z from 'zod';
@@ -291,4 +291,73 @@ export async function unJoinEvent(eventId: string): Promise<ResponseType> {
       message: e,
     };
   }
+}
+
+
+export async function createEventFeedback(
+  formData: z.infer<typeof eventFeedbackFormSchema>
+) {
+
+  const data = eventFeedbackFormSchema.safeParse(formData);
+  console.log(data);
+
+  try {
+    let zodErrors = {};
+
+    if (!data.success) {
+      data.error.issues.forEach((issue) => {
+        zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
+      });
+
+      throw {
+        success: true,
+        message: data.error.message,
+        errors: zodErrors,
+      };
+    }
+
+    const { activityId, eventId, assets, comment, author_id } = data.data;
+
+    const feedback = await prisma.feedback.create({
+      data: {
+        comment: comment,
+        activity_id: activityId,
+        event_id: eventId,
+        author_id: author_id,
+        assets: {
+          create: [
+            ...assets.map(_a => ({
+              Asset: {
+                create: _a
+              }
+            }))
+          ]
+        }
+      },
+    })
+
+    revalidatePath(`/activities/${formData.activityId}`);
+
+    return {
+      success: true,
+      message: 'Feedback created successfully',
+      data: feedback,
+    };
+
+  } catch (error) {
+    console.log(error);
+
+    if (typeof error === 'string') {
+      return {
+        success: false,
+        message: 'Failed to Submit Form',
+      };
+    } else {
+      return {
+        ...(error as ResponseType),
+      };
+    }
+  }
+
+
 }

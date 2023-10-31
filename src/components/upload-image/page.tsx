@@ -5,6 +5,7 @@ import { UploadDropzone } from '@uploadthing/react';
 import { uploadPostToActivity } from '@/components/utils/api';
 
 export default function UploadImageDropzone({ setImageUrls, activity }) {
+
   const addPostToActivity = async (imageUrls) => {
     console.log('imageUrls', imageUrls);
     const response = await uploadPostToActivity(imageUrls, activity.id);

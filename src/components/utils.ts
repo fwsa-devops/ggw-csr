@@ -139,7 +139,6 @@ export const getActivity = async (activityId: string) => {
           tag: true,
         },
       },
-      posts: true,
     },
   });
   return activity;

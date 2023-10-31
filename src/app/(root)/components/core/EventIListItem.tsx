@@ -56,12 +56,12 @@ const EventListItem = ({
         const res = await joinEvent(event.id);
         if (!res.success) throw res.message;
 
-        toastObj.title = res.message
+        toastObj.title = res.message;
       } else {
         const res = await unJoinEvent(event.id);
         if (!res.success) throw res.message;
 
-        toastObj.title = res.message
+        toastObj.title = res.message;
       }
     } catch (error) {
       toastObj.title = error as string;

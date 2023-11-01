@@ -121,7 +121,9 @@ const EventFeedbackForm = ({
                 </div>
               )}
             />
-
+            <div className="comment-tooltip">
+              ⓘ Please add few images or videos to submit a comment
+            </div>
             <FormField
               control={form.control}
               name="comment"

@@ -67,7 +67,7 @@ const ActivityListItem = ({ activity }: { activity: IActivity }) => {
           <EventListItem
             event={event}
             size="sm"
-            isMember={false}
+            isPartOfAnyEvent={false}
             key={event.id}
           />
         ))}

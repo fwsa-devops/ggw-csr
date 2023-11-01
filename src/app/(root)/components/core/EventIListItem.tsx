@@ -1,3 +1,6 @@
+'use client';
+
+import { Separator } from '@/components/ui/separator';
 import {
   BuildingIcon,
   CalendarRangeIcon,
@@ -5,17 +8,16 @@ import {
   MapIcon,
   XIcon,
 } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
-import { Button } from '../../../../components/ui/button';
 import { signIn, useSession } from 'next-auth/react';
+import { Button } from '../../../../components/ui/button';
 // import { deleteEvent, joinEvent } from '../events/utils/api';
-import { toast } from '../../../../components/ui/use-toast';
-import { Progress } from '../../../../components/ui/progress';
-import { cn } from '@/lib/utils';
-import UserAvatar from '@/components/user-avatar';
-import { IEvent } from '@/types';
 import { joinEvent, unJoinEvent } from '@/components/actions/action';
+import UserAvatar from '@/components/user-avatar';
+import { cn } from '@/lib/utils';
+import { IEvent } from '@/types';
 import { useTransition } from 'react';
+import { Progress } from '../../../../components/ui/progress';
+import { toast } from '../../../../components/ui/use-toast';
 
 const calculateTimeDiff = (start, end) => {
   return (
@@ -28,13 +30,13 @@ const calculateTimeDiff = (start, end) => {
 const EventListItem = ({
   event,
   size = 'lg',
-  isMember,
-  onJoin,
+  isPartOfAnyEvent,
+  isPartOfThisEvent,
 }: {
   event: IEvent;
   size: 'lg' | 'sm';
-  isMember: boolean;
-  onJoin?: () => void;
+  isPartOfAnyEvent: boolean;
+  isPartOfThisEvent: boolean;
 }) => {
   const { status } = useSession();
   const [isPending, startTransition] = useTransition();
@@ -163,7 +165,7 @@ const EventListItem = ({
                     <HandIcon size={18} className="mr-2" />
                     Sign in to Join Event
                   </Button>
-                ) : !isMember ? (
+                ) : !isPartOfAnyEvent ? (
                   <Button
                     variant={'default'}
                     className="ml-4"
@@ -177,18 +179,20 @@ const EventListItem = ({
                     Join this event
                   </Button>
                 ) : (
-                  <Button
-                    variant={'default'}
-                    className="ml-4"
-                    type="button"
-                    disabled={isPending}
-                    onClick={() =>
-                      startTransition(() => callServerAction('UNJOIN'))
-                    }
-                  >
-                    <XIcon size={18} className="mr-2" />
-                    Unjoin this event
-                  </Button>
+                  isPartOfThisEvent && (
+                    <Button
+                      variant={'default'}
+                      className="ml-4"
+                      type="button"
+                      disabled={isPending}
+                      onClick={() =>
+                        startTransition(() => callServerAction('UNJOIN'))
+                      }
+                    >
+                      <XIcon size={18} className="mr-2" />
+                      Unjoin this event
+                    </Button>
+                  )
                 )}
               </div>
             )}

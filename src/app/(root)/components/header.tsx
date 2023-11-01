@@ -17,13 +17,13 @@ const navigations = [
   // { name: 'Events', href: '/events' },
 ];
 
-export default function Example() {
+export default function HeaderComp() {
   const pathname = usePathname();
   const { value, toggle } = useBoolean(false);
 
   const isActivePath = (path: string) => {
     return (
-      pathname.split('/')[0].toLocaleLowerCase() === path.toLocaleLowerCase()
+      pathname?.split('/')[0].toLocaleLowerCase() === path.toLocaleLowerCase()
     );
   };
 

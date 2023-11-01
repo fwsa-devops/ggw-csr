@@ -1,36 +1,25 @@
-'use client';
-
-import { useSession } from 'next-auth/react';
 import EventListItem from './EventIListItem';
-import { useBoolean } from 'usehooks-ts';
-import { isUserPartOfActivity } from '../../../../components/utils';
-import { useEffect } from 'react';
 import { IEvent } from '@/types';
-import { useRouter } from 'next/navigation';
+import { getServerSession } from 'next-auth';
 
-const EventList = ({
+const EventList = async ({
   events,
   size = 'lg',
+  isPartOfAnyEvent = false,
 }: {
   events: IEvent[];
   size: 'lg' | 'sm';
+  isPartOfAnyEvent: boolean;
 }) => {
-  const { status } = useSession();
-  const router = useRouter();
+  const session = await getServerSession();
 
-  const { setValue, value: isMember } = useBoolean(false);
-
-  const checkUserAlreadyRegistered = async () => {
-    console.log('checkUserAlreadyRegistered', isMember);
-    const result = await isUserPartOfActivity();
-    console.log(result);
-    setValue(Boolean(result));
+  const isPartOfThisEvent = (event: IEvent): boolean => {
+    return (
+      event.volunteers.find(
+        (volunteer) => volunteer.user_id === session?.user?.email,
+      ) !== undefined
+    );
   };
-
-  useEffect(() => {
-    checkUserAlreadyRegistered();
-    // think this will call infinitely since isMember is changed when isMember is changed
-  }, [events, isMember]);
 
   return (
     <>
@@ -49,8 +38,8 @@ const EventList = ({
               key={event.id}
               event={event}
               size={size}
-              isMember={isMember}
-              onJoin={() => router.refresh()}
+              isPartOfAnyEvent={isPartOfAnyEvent}
+              isPartOfThisEvent={isPartOfThisEvent(event)}
             />
           ))
         ) : (

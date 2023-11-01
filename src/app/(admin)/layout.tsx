@@ -18,6 +18,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession();
+  // check for login & role in here
 
   // console.log('Root component');
 

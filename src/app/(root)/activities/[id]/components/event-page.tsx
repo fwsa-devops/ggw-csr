@@ -1,14 +1,22 @@
-// 'use client';
-
-import React from 'react';
-import EventList from '@/root/components/core/EventList';
+import prisma from '@/lib/prisma';
 import ActivityPreview from '@/root/components/core/ActivityPreview';
+import EventList from '@/root/components/core/EventList';
 import { IActivity } from '@/types';
+import { getServerSession } from 'next-auth';
 
-const EventPage = (props: { activity: IActivity }) => {
+const EventPage = async (props: { activity: IActivity }) => {
   const { activity } = props;
+  const session = await getServerSession();
 
-  // const [imageUrls, setImageUrls] = React.useState(activity.posts || []); // replace [] with activity.imageUrls
+  let isPartOfAnyEvent: boolean = false;
+  if (session) {
+    const volunteeredEvents = await prisma.volunteers.findMany({
+      where: {
+        user_id: session?.user?.email || '',
+      },
+    });
+    isPartOfAnyEvent = volunteeredEvents.length > 0;
+  }
 
   return (
     <div
@@ -16,7 +24,11 @@ const EventPage = (props: { activity: IActivity }) => {
       key={activity.id}
     >
       <ActivityPreview activity={activity} />
-      <EventList events={activity.events} size="lg" />
+      <EventList
+        isPartOfAnyEvent={isPartOfAnyEvent}
+        events={activity.events}
+        size="lg"
+      />
 
       {/* <PostsList imageUrls={imageUrls} /> */}
       {/* <UploadImageDropzone setImageUrls={setImageUrls} activity={activity} /> */}

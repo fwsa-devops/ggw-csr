@@ -4,7 +4,7 @@ import EventDetails from './components/event-detail';
 const EventPage = async ({
   params,
 }: {
-  params: { activityId: string; eventId: string };
+  params: { id: string; eventId: string };
 }) => {
   const { eventId } = params;
 
@@ -15,7 +15,11 @@ const EventPage = async ({
     include: {
       activity: {
         include: {
-          tags: true,
+          tags: {
+            include: {
+              tag: true
+            }
+          },
         },
       },
       feedback: {

@@ -17,8 +17,8 @@ const EventPage = async ({
         include: {
           tags: {
             include: {
-              tag: true
-            }
+              tag: true,
+            },
           },
         },
       },

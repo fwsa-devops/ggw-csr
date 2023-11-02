@@ -1,46 +1,167 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  relationMode      = "prisma"
 }
 
 model Activity {
-  id          String        @id @default(cuid())
+  id          String         @id @default(cuid())
   name        String
   cover       String
-  description String        @db.Text // for storing RTE info
-  summary     String        @db.Text // for storing short description in events list page
-  duration    Int           @default(120)
+  description String         @db.Text
+  summary     String         @db.Text
+  duration    Int            @default(120)
   city        City?
-  status      ActivityState @default(DRAFT)
+  status      ActivityState  @default(DRAFT)
   author_id   String
-  author      User          @relation(fields: [author_id], references: [email])
   posts_urls  String?
-  // published   Boolean @default(false)
-  // startTime   DateTime?
-  // endTime     DateTime?
-
-events Event[]
-  tags   ActivityTags[]
-  posts  Posts[]
+  author      User           @relation(fields: [author_id], references: [email])
+  events      Event[]
+  tags        ActivityTags[]
+  Feedback    Feedback[]
 
   @@index([author_id])
 }
 
-model Posts {
+model Event {
+  id                     String        @id @default(cuid())
+  city                   City
+  location               String
+  description            String?       @db.Text
+  min_volunteers         Int           @default(1)
+  max_volunteers         Int           @default(1)
+  published              Boolean       @default(false)
+  is_dates_announced     Boolean       @default(false)
+  startTime              DateTime?
+  endTime                DateTime?
+  date_announcement_text String?       @db.Text
+  author_id              String
+  activityId             String
+  leaders                EventLeader[]
+  volunteers             Volunteers[]
+  author                 User          @relation(fields: [author_id], references: [id])
+  activity               Activity      @relation(fields: [activityId], references: [id])
+  feedback               Feedback[]
+
+  @@index([author_id], map: "author_id")
+  @@index([activityId], map: "activityId")
+}
+
+model UserRole {
+  id      String @id @default(cuid())
+  user_id String
+  role    Role   @default(USER)
+  user    User   @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+}
+
+model Volunteers {
+  id          String   @id @default(cuid())
+  event_id    String
+  user_id     String
+  assigned_at DateTime @default(now())
+  event       Event    @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user        User     @relation(fields: [user_id], references: [email], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([event_id], map: "event_id")
+  @@index([user_id], map: "user_id")
+}
+
+model EventLeader {
+  id          String   @id @default(cuid())
+  event_id    String
+  user_id     String
+  assigned_at DateTime @default(now())
+  event       Event    @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([event_id], map: "event_id")
+  @@index([user_id], map: "user_id")
+}
+
+model Tag {
+  id           String         @id @default(cuid())
+  name         String
+  description  String?
+  ActivityTags ActivityTags[]
+}
+
+model ActivityTags {
   id          String   @id @default(cuid())
   activity_id String
-  activity    Activity @relation(fields: [activity_id], references: [id])
-  url         String
+  tag_id      String
+  activity    Activity @relation(fields: [activity_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  tag         Tag      @relation(fields: [tag_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
+  @@index([activity_id], map: "activity_id")
+  @@index([tag_id], map: "tag_id")
+}
+
+model User {
+  id          String        @id @default(cuid())
+  name        String
+  email       String        @unique
+  image       String?
+  created_at  DateTime      @default(now()) @map("created_at")
+  updated_at  DateTime      @updatedAt @map("updated_at")
+  activites   Activity[]
+  events      Event[]
+  volunteers  Volunteers[]
+  EventLeader EventLeader[]
+  UserRole    UserRole[]
+  Feedback    Feedback[]
+
+  @@map("users")
+}
+
+model Homepage {
+  id         String        @id @default(cuid())
+  body       String        @db.LongText
+  created_at DateTime      @default(now()) @map("created_at")
+  updated_at DateTime      @updatedAt @map("updated_at")
+  status     ActivityState
+}
+
+model Asset {
+  id             String           @id @default(cuid())
+  url            String
+  created_at     DateTime         @default(now()) @map("created_at")
+  updated_at     DateTime         @updatedAt @map("updated_at")
+  name           String?
+  FeedbackAssets FeedbackAssets[]
+}
+
+model Feedback {
+  id          String           @id @default(cuid())
+  comment     String           @db.Text
+  activity_id String
+  author_id   String
+  event_id    String
+  activity    Activity         @relation(fields: [activity_id], references: [id])
+  event       Event            @relation(fields: [event_id], references: [id])
+  author      User             @relation(fields: [author_id], references: [email])
+  assets      FeedbackAssets[]
+
+  @@index([event_id])
   @@index([activity_id])
+  @@index([author_id])
+}
+
+model FeedbackAssets {
+  id         String   @id @default(cuid())
+  assetId    String
+  feedbackId String
+  Asset      Asset    @relation(fields: [assetId], references: [id])
+  Feedback   Feedback @relation(fields: [feedbackId], references: [id])
+
+  @@index([assetId])
+  @@index([feedbackId])
 }
 
 enum ActivityState {
@@ -54,108 +175,7 @@ enum City {
   Bangalore
 }
 
-model Event {
-  id                 String        @id @default(cuid())
-  city               City
-  location           String
-  leaders            EventLeader[]
-  volunteers         Volunteers[]
-  description        String?       @db.Text
-  min_volunteers     Int           @default(1)
-  max_volunteers     Int           @default(1)
-  published          Boolean       @default(false)
-  // Will display the date only if enough volunteers are joined. So have added a field named "dates_announced"
-  is_dates_announced Boolean       @default(false)
-  startTime          DateTime?
-  endTime            DateTime?
-
-  date_announcement_text String? @db.Text
-
-  author_id String
-  author    User   @relation(fields: [author_id], references: [id])
-
-  activityId String
-  Activity   Activity @relation(fields: [activityId], references: [id])
-
-  @@index([author_id], name: "author_id")
-  @@index([activityId], name: "activityId")
-}
-
-model Volunteers {
-  id String @id @default(cuid())
-
-  event_id String
-  event    Event  @relation(fields: [event_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  user_id  String
-  user     User   @relation(fields: [user_id], references: [email], onUpdate: Cascade, onDelete: Cascade)
-
-  assigned_at DateTime @default(now())
-
-  @@index([event_id], name: "event_id")
-  @@index([user_id], name: "user_id")
-}
-
-// people who organizes the event
-model EventLeader {
-  id String @id @default(cuid())
-
-  event_id String
-  event    Event  @relation(fields: [event_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  user_id  String
-  user     User   @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-
-  assigned_at DateTime @default(now())
-
-  // TODO: need to add later
-  // author_id   String
-  // author      User     @relation(fields: [author_id], references: [id], name: "author")
-
-  @@index([event_id], name: "event_id")
-  @@index([user_id], name: "user_id")
-}
-
-model Tag {
-  id          String  @id @default(cuid())
-  name        String
-  description String?
-
-  ActivityTags ActivityTags[]
-}
-
-model ActivityTags {
-  id String @id @default(cuid())
-
-  activity    Activity @relation(fields: [activity_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  tag         Tag      @relation(fields: [tag_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  activity_id String
-  tag_id      String
-
-  @@index([activity_id], name: "activity_id")
-  @@index([tag_id], name: "tag_id")
-}
-
-model User {
-  id         String   @id @default(cuid())
-  name       String
-  email      String   @unique
-  image      String?
-  created_at DateTime @default(now()) @map(name: "created_at")
-  updated_at DateTime @updatedAt @map(name: "updated_at")
-
-  activites   Activity[]
-  events      Event[]
-  volunteers  Volunteers[]
-  EventLeader EventLeader[]
-
-  @@map(name: "users")
-}
-
-model Homepage {
-  id   String @id @default(cuid())
-  body String @db.LongText()
-
-  created_at DateTime @default(now()) @map(name: "created_at")
-  updated_at DateTime @updatedAt @map(name: "updated_at")
-
-  status ActivityState
+enum Role {
+  ADMIN
+  USER
 }

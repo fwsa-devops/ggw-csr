@@ -2,7 +2,7 @@
 
 import { OurFileRouter } from '@/app/(api-routes)/api/uploadthing/core';
 import { UploadDropzone } from '@uploadthing/react';
-import { uploadPostToActivity } from '../events/utils/api';
+import { uploadPostToActivity } from '@/components/utils/api';
 
 export default function UploadImageDropzone({ setImageUrls, activity }) {
   const addPostToActivity = async (imageUrls) => {

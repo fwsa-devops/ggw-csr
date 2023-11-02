@@ -6,7 +6,6 @@ import {
   Tag,
   User,
   Event,
-  Posts,
 } from '@prisma/client';
 import * as z from 'zod';
 
@@ -24,6 +23,47 @@ export const activityFormSchema = z.object({
   tags: z.array(z.string()),
 });
 
+export const eventFormSchema = z.object({
+  activityId: z.string(),
+  id: z.string().optional(),
+  city: z.enum(['Chennai', 'Bangalore']),
+  location: z.string().min(2),
+
+  leaders: z
+    .array(z.string(), { description: 'Atleast 1 leader must be selected' })
+    .superRefine((val, ctx) => {
+      if (val.length === 0)
+        ctx.addIssue({
+          code: z.ZodIssueCode.too_small,
+          minimum: 1,
+          fatal: true,
+          type: 'array',
+          inclusive: true,
+          message: 'Atleast 1 leader must be selected',
+        });
+      return z.NEVER;
+    }),
+  volunteers: z.array(z.string()).optional(),
+
+  description: z.string().optional(),
+  min_volunteers: z.union([z.number().int().positive().min(1), z.nan()]),
+  max_volunteers: z.union([z.number().int().positive().min(1), z.nan()]),
+  published: z.boolean(),
+
+  is_dates_announced: z.boolean(),
+  startTime: z.date().optional(),
+  endTime: z.date().optional(),
+  date_announcement_text: z.string().optional(),
+});
+
+export const eventFeedbackFormSchema = z.object({
+  eventId: z.string(),
+  activityId: z.string(),
+  assets: z.array(z.object({ url: z.string(), name: z.string().optional() })),
+  comment: z.string().min(5, 'Few more words... 🥺🥺'),
+  author_id: z.string(),
+});
+
 export interface IActivity extends Activity {
   events: ({
     leaders: ({ user: User } & EventLeader)[];
@@ -31,7 +71,6 @@ export interface IActivity extends Activity {
   } & Event)[];
   tags?: ({ tag: Tag } & ActivityTags)[];
   author?: { name: string };
-  posts?: Posts[];
 }
 
 export interface IEvent extends Event {

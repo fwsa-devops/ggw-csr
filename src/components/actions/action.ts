@@ -1,12 +1,16 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { activityFormSchema } from '@/types';
+import {
+  activityFormSchema,
+  eventFeedbackFormSchema,
+  eventFormSchema,
+} from '@/types';
 import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 import * as z from 'zod';
 
-type ResponseType = {
+export type ResponseType = {
   success: boolean;
   message: string;
   errors?: Record<string, string>;
@@ -99,7 +103,106 @@ export async function createActivity(
   }
 }
 
-export async function updateActivity(activityId: string, formData: any) {}
+export async function createActivityEvent(
+  formData: z.infer<typeof eventFormSchema>,
+) {
+  const data = eventFormSchema.safeParse(formData);
+  console.log(data);
+
+  const session = await getServerSession();
+
+  try {
+    let zodErrors = {};
+
+    if (!data.success) {
+      data.error.issues.forEach((issue) => {
+        zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
+      });
+
+      throw {
+        success: true,
+        message: data.error.message,
+        errors: zodErrors,
+      };
+    }
+
+    let response;
+
+    if (data.data.id) {
+      response = await prisma.event.update({
+        where: {
+          id: data.data.id,
+        },
+        data: {
+          city: data.data.city,
+          location: data.data.location,
+          description: data.data.description,
+          max_volunteers: data.data.max_volunteers,
+          min_volunteers: data.data.min_volunteers,
+          is_dates_announced: data.data.is_dates_announced,
+          date_announcement_text: data.data.date_announcement_text,
+        },
+      });
+    } else {
+      response = await prisma.event.create({
+        data: {
+          city: data.data.city,
+          location: data.data.location,
+          activityId: data.data.activityId,
+          description: data.data.description,
+          author_id: session?.user?.email as string,
+          max_volunteers: data.data.max_volunteers,
+          min_volunteers: data.data.min_volunteers,
+          is_dates_announced: data.data.is_dates_announced,
+          date_announcement_text: data.data.date_announcement_text,
+        },
+      });
+    }
+
+    if (response === null) {
+      throw { success: false, message: 'Failed to UPSERT activity' };
+    }
+
+    // REMOVE old Leaders
+    await prisma.eventLeader.deleteMany({
+      where: {
+        event_id: response.id,
+      },
+    });
+
+    // ADDING new Leaders
+    await prisma.eventLeader.createMany({
+      skipDuplicates: true,
+      data: data.data.leaders.map((t) => ({
+        event_id: response.id,
+        user_id: t,
+      })),
+    });
+
+    revalidatePath(`/activities/${formData.activityId}`);
+
+    return {
+      success: true,
+      message: data.data.id
+        ? 'Event updated successfully'
+        : 'Event created successfully',
+      data: response,
+    };
+  } catch (error: unknown) {
+    console.log(error);
+
+    if (typeof error === 'string') {
+      return {
+        success: false,
+        message: 'Failed to Submit Form',
+      };
+    } else {
+      return {
+        ...(error as ResponseType),
+      };
+    }
+  }
+}
 
 export async function joinEvent(eventId: string): Promise<ResponseType> {
   const session = await getServerSession();
@@ -191,5 +294,69 @@ export async function unJoinEvent(eventId: string): Promise<ResponseType> {
       success: false,
       message: e,
     };
+  }
+}
+
+export async function createEventFeedback(
+  formData: z.infer<typeof eventFeedbackFormSchema>,
+) {
+  const data = eventFeedbackFormSchema.safeParse(formData);
+  console.log(data);
+
+  try {
+    let zodErrors = {};
+
+    if (!data.success) {
+      data.error.issues.forEach((issue) => {
+        zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
+      });
+
+      throw {
+        success: true,
+        message: data.error.message,
+        errors: zodErrors,
+      };
+    }
+
+    const { activityId, eventId, assets, comment, author_id } = data.data;
+
+    const feedback = await prisma.feedback.create({
+      data: {
+        comment: comment,
+        activity_id: activityId,
+        event_id: eventId,
+        author_id: author_id,
+        assets: {
+          create: [
+            ...assets.map((_a) => ({
+              Asset: {
+                create: _a,
+              },
+            })),
+          ],
+        },
+      },
+    });
+
+    revalidatePath(`/activities/${formData.activityId}`);
+
+    return {
+      success: true,
+      message: 'Feedback created successfully',
+      data: feedback,
+    };
+  } catch (error) {
+    console.log(error);
+
+    if (typeof error === 'string') {
+      return {
+        success: false,
+        message: 'Failed to Submit Form',
+      };
+    } else {
+      return {
+        ...(error as ResponseType),
+      };
+    }
   }
 }

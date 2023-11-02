@@ -27,6 +27,7 @@ export const INCLUDE_ALL_ACTIVITIES_DATA: Partial<
 > = {
   include: {
     events: {
+      take: 2,
       include: {
         leaders: {
           include: {

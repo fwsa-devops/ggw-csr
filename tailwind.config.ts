@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import { withUt } from 'uploadthing/tw';
 
 const config: Config = {
   darkMode: ['class'],
@@ -79,4 +80,4 @@ const config: Config = {
     require('@headlessui/tailwindcss'),
   ],
 };
-export default config;
+export default withUt(config);

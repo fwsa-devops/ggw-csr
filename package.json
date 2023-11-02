@@ -9,7 +9,8 @@
     "lint": "next lint",
     "eslint": "eslint src --color --fix",
     "format": "prettier --write .",
-    "seed": "npm run db-seed"
+    "seed": "npm run db-seed",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -23,7 +24,9 @@
     "@hookform/resolvers": "^3.3.2",
     "@mdxeditor/editor": "^1.4.2",
     "@prisma/client": "5.4.1",
+    "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-avatar": "^1.0.4",
+    "@radix-ui/react-collapsible": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-hover-card": "^1.0.7",
@@ -34,12 +37,14 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-toast": "^1.1.5",
     "@tailwindcss/forms": "^0.5.6",
     "@tailwindcss/typography": "^0.5.10",
     "@uploadthing/react": "^5.7.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
     "husky": "^8.0.3",
     "lucide-react": "^0.279.0",
@@ -51,6 +56,8 @@
     "react-dom": "latest",
     "react-hook-form": "^7.47.0",
     "react-markdown": "^9.0.0",
+    "react-medium-image-zoom": "^5.1.8",
+    "react-player": "^2.13.0",
     "react-quill": "^2.0.0",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
@@ -75,5 +82,10 @@
     "tailwindcss": "^3.3.3",
     "tsx": "^3.13.0",
     "typescript": "latest"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run eslint && npm run format"
+    }
   }
 }

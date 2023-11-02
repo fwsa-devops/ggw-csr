@@ -517,6 +517,11 @@ p {
   margin: 40px 0;
 }
 
+.comment-tooltip {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
 @media (min-width: 600px) {
   .card-grid {
     grid-template-columns: repeat(2, 1fr);

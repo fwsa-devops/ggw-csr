@@ -31,16 +31,23 @@
 - [x] Events CRUD operations
 - [x] Add user role table ( add restrictions in each page accordingly )
 - [x] Need to work on seeds file
-- [ ] Add restrcitions in admin pages using UserRole table
-- [ ] Create /users endpoint to view all users in the application
-- [ ] Restriction in post uploads & activities CRUD
 - [x] Filter by "City" in Events instead of Activities
 - [x] Add a hero section on the landing page
 - [x] Valid activity information
-- [ ] Video support in Homepage
+- [x] Video support in Homepage
+- [x] Event feedback/review
+- [x] Create /users endpoint to view all users in the application
+- [x] Upload photos/videos as part of Event feedback/review
+- [ ] Edit event form ComboBox component error - Need to fix by placing the selected users in separate component
+- [ ] Need to add date component in event form & status field
+- [ ] Current events notifications drawer: https://flowbite.com/docs/components/drawer/
+- [ ] Filtering by date, city - bug fix
+- [ ] Export whole activity data in an excel sheet including users joined and volunteers
+- [ ] View participant list for users & for admin have functionality to add or remove volunteers
+- [ ] Video positioning in admin/homepage
+- [ ] Add restrcitions in admin pages using UserRole table
+- [ ] Restriction in post uploads & activities CRUD
 - [ ] Automatic Event Close based on event date
-- [ ] Event feedback/review
-- [ ] Upload photos/videos as part of Event feedback/review
 
 ### - Good to haves
 

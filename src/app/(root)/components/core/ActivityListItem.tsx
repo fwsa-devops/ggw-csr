@@ -1,10 +1,8 @@
-'use client';
-
-import { MapPin } from 'lucide-react';
 import React from 'react';
-import { getActivityDescription } from '../../../../components/utils';
-import { Button } from '../../../../components/ui/button';
+import { MapPin } from 'lucide-react';
 import Link from 'next/link';
+import { getActivityDescription } from '@/components/utils';
+import { Button } from '@/components/ui/button';
 import EventListItem from './EventIListItem';
 import { IActivity } from '@/types';
 
@@ -65,6 +63,7 @@ const ActivityListItem = ({ activity }: { activity: IActivity }) => {
 
         {activity.events.map((event: any) => (
           <EventListItem
+            isPartOfThisEvent={true}
             event={event}
             size="sm"
             isPartOfAnyEvent={false}

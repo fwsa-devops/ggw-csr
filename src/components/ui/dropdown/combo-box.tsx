@@ -35,7 +35,7 @@ const ComboBox = forwardRef((props: any, ref) => {
                   _item?.id === option?.id ||
                   _item?.id === option?.tag_id
                 );
-            }).name,
+            })?.name,
         )
         .join(', ');
   };

@@ -20,7 +20,7 @@ const EditEventpage = async ({ params }) => {
       },
     });
     event = _event;
-    event.leaders = _event?.leaders.map((_l) => _l.id);
+    event.leaders = _event?.leaders.map((_l) => _l.user_id);
   }
 
   return (

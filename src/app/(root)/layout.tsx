@@ -8,6 +8,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
 import { extractRouterConfig } from 'uploadthing/server';
 import { ourFileRouter } from '@/api/uploadthing/core';
+import { getActivitiesJoined } from '@/components/actions/action';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,6 +24,7 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession();
 
+  const activitiesJoined = await getActivitiesJoined();
   // console.log('Root component');
 
   return (
@@ -33,7 +35,7 @@ export default async function RootLayout({
       <SessionProvider session={session}>
         <body className={inter.className}>
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-          <Header />
+          <Header activitiesJoined={activitiesJoined} />
           <main className="main">
             <div className="responsive-wrapper">{children}</div>
             <Toaster />

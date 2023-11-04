@@ -14,9 +14,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown/dropdown-menu';
 import Link from 'next/link';
-import { CalendarCheck2 } from 'lucide-react';
+import NotificationsDrawer from './notifications-drawer';
 
-export function UserNav() {
+export function UserNav({ activitiesJoined }) {
   const { data: session } = useSession();
 
   if (session) {
@@ -24,15 +24,9 @@ export function UserNav() {
       <>
         {session?.user && (
           <>
-            <Button
-              variant={'ghost'}
-              type="button"
-              className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 mr-4"
-            >
-              <span className="absolute -inset-1.5" />
-              <span className="sr-only">View notifications</span>
-              <CalendarCheck2 size={18} />
-            </Button>
+            <NotificationsDrawer activitiesJoined={activitiesJoined} />
+            <span className="absolute -inset-1.5" />
+
             <AuthButton user={session.user} />
           </>
         )}

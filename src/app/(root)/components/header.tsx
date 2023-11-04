@@ -17,7 +17,7 @@ const navigations = [
   // { name: 'Events', href: '/events' },
 ];
 
-export default function HeaderComp() {
+export default function HeaderComp({ activitiesJoined }) {
   const pathname = usePathname();
   const { value, toggle } = useBoolean(false);
 
@@ -71,7 +71,7 @@ export default function HeaderComp() {
               </div>
 
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <UserNav />
+                <UserNav activitiesJoined={activitiesJoined} />
               </div>
             </div>
           </div>

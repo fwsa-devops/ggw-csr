@@ -364,3 +364,22 @@ export async function createEventFeedback(
     }
   }
 }
+
+export async function getActivitiesJoined() {
+  const session = await getServerSession();
+
+  const volunteers = await prisma.volunteers.findMany({
+    where: {
+      user_id: session?.user?.email || '',
+    },
+    include: {
+      event: {
+        include: {
+          activity: true,
+        },
+      },
+    },
+  });
+
+  return volunteers;
+}

@@ -51,6 +51,9 @@ const EventListItem = ({
     ? date_announcement_text + ' Hrs'
     : calculateTimeDiff(startTime, endTime);
 
+  const isEventLimitReached: boolean =
+    event?.max_volunteers === event.leaders.length;
+
   const callServerAction = async (action: 'JOIN' | 'UNJOIN') => {
     const toastObj = {
       title: '',
@@ -175,7 +178,7 @@ const EventListItem = ({
                       variant={'default'}
                       className="ml-4"
                       type="button"
-                      disabled={isPending}
+                      disabled={isPending || isEventLimitReached}
                       onClick={() =>
                         startTransition(() => callServerAction('JOIN'))
                       }
@@ -189,7 +192,7 @@ const EventListItem = ({
                         variant={'default'}
                         className="ml-4"
                         type="button"
-                        disabled={isPending}
+                        disabled={isPending || isEventLimitReached}
                         onClick={() =>
                           startTransition(() => callServerAction('UNJOIN'))
                         }

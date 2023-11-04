@@ -3,12 +3,11 @@
 import { Combobox, Transition } from '@headlessui/react';
 import React, { Fragment, forwardRef, useState } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
+import UserAvatar from '@/components/user-avatar';
 
 const ComboBox = forwardRef((props: any, ref) => {
-  console.log(props);
-
   const [query, setQuery] = useState('');
-
+  const [selectedItems, setSelectedItems] = useState<any[]>([]);
   const filteredItems =
     query === ''
       ? props.items
@@ -18,27 +17,30 @@ const ComboBox = forwardRef((props: any, ref) => {
           else return item.name.toLowerCase().includes(query.toLowerCase());
         });
 
-  const selected = () => {
+  const refetchSelectedItems = () => {
     if (!props.value) return;
 
     if (typeof props.value === 'string') return props.value;
-    else
-      return props.value
-        .map(
-          (option) =>
-            props.items.find((_item) => {
-              if (typeof _item === 'string') return _item === option;
-              else
-                return (
-                  _item === option ||
-                  _item?.id === option ||
-                  _item?.id === option?.id ||
-                  _item?.id === option?.tag_id
-                );
-            })?.name,
-        )
-        .join(', ');
+    else {
+      const items = props.value.map((option) =>
+        props.items.find((_item) => {
+          if (typeof _item === 'string') return _item === option;
+          else
+            return (
+              _item === option ||
+              _item?.id === option ||
+              _item?.id === option?.id ||
+              _item?.id === option?.tag_id
+            );
+        }),
+      );
+      setSelectedItems(items);
+    }
   };
+
+  React.useEffect(() => {
+    refetchSelectedItems();
+  }, [props.value]);
 
   return (
     <>
@@ -48,12 +50,18 @@ const ComboBox = forwardRef((props: any, ref) => {
         multiple={props.multiple}
       >
         <div className="relative">
+          <div className="ml-auto flex my-3">
+            {selectedItems.map((user) => (
+              <div className="m-2">
+                <UserAvatar key={user.id} user={user} />
+              </div>
+            ))}
+          </div>
           <Combobox.Input
             className="flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
             onChange={(event) => setQuery(event.target.value)}
-            displayValue={selected}
+            placeholder={props.placeholder}
           />
-
           <Transition
             as={Fragment}
             leave="transition ease-in duration-100"

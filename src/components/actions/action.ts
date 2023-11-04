@@ -107,7 +107,7 @@ export async function createActivityEvent(
   formData: z.infer<typeof eventFormSchema>,
 ) {
   const data = eventFormSchema.safeParse(formData);
-  console.log(data);
+  console.log('data', data);
 
   const session = await getServerSession();
 
@@ -141,6 +141,8 @@ export async function createActivityEvent(
           min_volunteers: data.data.min_volunteers,
           is_dates_announced: data.data.is_dates_announced,
           date_announcement_text: data.data.date_announcement_text,
+          startTime: data.data.startTime,
+          endTime: data.data.endTime,
         },
       });
     } else {
@@ -155,6 +157,8 @@ export async function createActivityEvent(
           min_volunteers: data.data.min_volunteers,
           is_dates_announced: data.data.is_dates_announced,
           date_announcement_text: data.data.date_announcement_text,
+          startTime: data.data.startTime,
+          endTime: data.data.endTime,
         },
       });
     }

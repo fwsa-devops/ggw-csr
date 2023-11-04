@@ -48,6 +48,7 @@
     "date-fns": "^2.30.0",
     "husky": "^8.0.3",
     "lucide-react": "^0.279.0",
+    "luxon": "^3.4.3",
     "next": "latest",
     "next-auth": "^4.23.2",
     "prettier": "^3.0.3",

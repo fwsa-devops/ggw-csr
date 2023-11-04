@@ -2,6 +2,7 @@
 
 import { createActivityEvent } from '@/components/actions/action';
 import { Button } from '@/components/ui/button';
+import { DateTimePicker } from '@/components/ui/date-time-picker';
 import ComboBox from '@/components/ui/dropdown/combo-box';
 import {
   Form,
@@ -11,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+
 import { Switch } from '@/components/ui/switch';
 import { toast } from '@/components/ui/use-toast';
 import { eventFormSchema } from '@/types';
@@ -31,8 +33,6 @@ const ActivityEventForm = ({ activityId, event }) => {
   if (!session?.user) {
     return <>Un-Authorized User</>;
   }
-
-  console.log('activityId', activityId);
   console.log('event', event);
 
   const { data: leaders, error } = useFetch<User[]>('/api/users', {
@@ -129,6 +129,8 @@ const ActivityEventForm = ({ activityId, event }) => {
           date_announcement_text: event.date_announcement_text ?? '',
           published: event.published ?? true,
           leaders: event.leaders,
+          startTime: event.startTime,
+          endTime: event.endTime,
         }
       : {
           city: 'Chennai',
@@ -144,7 +146,7 @@ const ActivityEventForm = ({ activityId, event }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof eventFormSchema>) => {
-    console.log(values);
+    console.log('onsubmit', values);
     try {
       setLoading(true);
       // console.log(values);
@@ -311,6 +313,34 @@ const ActivityEventForm = ({ activityId, event }) => {
 
           <FormField
             control={form.control}
+            name="startTime"
+            render={({ field }) => (
+              <div className="mt-6">
+                <FormItem className="flex flex-col">
+                  <FormLabel> Start time </FormLabel>
+                  <DateTimePicker date={field.value} setDate={field.onChange} />
+                  <FormMessage />
+                </FormItem>
+              </div>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="endTime"
+            render={({ field }) => (
+              <div className="mt-6">
+                <FormItem className="flex flex-col">
+                  <FormLabel> End Time </FormLabel>
+                  <DateTimePicker date={field.value} setDate={field.onChange} />
+                  <FormMessage />
+                </FormItem>
+              </div>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="leaders"
             render={({ field }) => (
               <div className="mt-6">
@@ -329,6 +359,7 @@ const ActivityEventForm = ({ activityId, event }) => {
                         onChange={field.onChange}
                         value={field.value ?? []}
                         key={'tags'}
+                        placeholder="Search leaders..."
                       />
                     )}
                   </FormControl>

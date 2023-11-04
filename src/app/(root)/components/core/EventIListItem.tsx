@@ -18,6 +18,8 @@ import { IEvent } from '@/types';
 import { useTransition } from 'react';
 import { Progress } from '../../../../components/ui/progress';
 import { toast } from '../../../../components/ui/use-toast';
+import { ActivityState } from '@prisma/client';
+import Link from 'next/link';
 
 const calculateTimeDiff = (start, end) => {
   return (
@@ -32,11 +34,13 @@ const EventListItem = ({
   size = 'lg',
   isPartOfAnyEvent,
   isPartOfThisEvent,
+  activity,
 }: {
   event: IEvent;
   size: 'lg' | 'sm';
   isPartOfAnyEvent: boolean;
   isPartOfThisEvent: boolean;
+  activity: any;
 }) => {
   const { status } = useSession();
   const [isPending, startTransition] = useTransition();
@@ -153,49 +157,58 @@ const EventListItem = ({
               </div>
             </div>
 
-            {size === 'lg' && (
-              <div>
-                {status === 'unauthenticated' ? (
-                  <Button
-                    variant={'default'}
-                    className="ml-4"
-                    type="button"
-                    onClick={() => signIn('google')}
-                  >
-                    <HandIcon size={18} className="mr-2" />
-                    Sign in to Join Event
-                  </Button>
-                ) : !isPartOfAnyEvent ? (
-                  <Button
-                    variant={'default'}
-                    className="ml-4"
-                    type="button"
-                    disabled={isPending}
-                    onClick={() =>
-                      startTransition(() => callServerAction('JOIN'))
-                    }
-                  >
-                    <HandIcon size={18} className="mr-2" />
-                    Join this event
-                  </Button>
-                ) : (
-                  isPartOfThisEvent && (
+            {size === 'lg' &&
+              (activity.status !== ActivityState.CLOSED ? (
+                <div>
+                  {status === 'unauthenticated' ? (
+                    <Button
+                      variant={'default'}
+                      className="ml-4"
+                      type="button"
+                      onClick={() => signIn('google')}
+                    >
+                      <HandIcon size={18} className="mr-2" />
+                      Sign in to Join Event
+                    </Button>
+                  ) : !isPartOfAnyEvent ? (
                     <Button
                       variant={'default'}
                       className="ml-4"
                       type="button"
                       disabled={isPending}
                       onClick={() =>
-                        startTransition(() => callServerAction('UNJOIN'))
+                        startTransition(() => callServerAction('JOIN'))
                       }
                     >
-                      <XIcon size={18} className="mr-2" />
-                      Unjoin this event
+                      <HandIcon size={18} className="mr-2" />
+                      Join this event
                     </Button>
-                  )
-                )}
-              </div>
-            )}
+                  ) : (
+                    isPartOfThisEvent && (
+                      <Button
+                        variant={'default'}
+                        className="ml-4"
+                        type="button"
+                        disabled={isPending}
+                        onClick={() =>
+                          startTransition(() => callServerAction('UNJOIN'))
+                        }
+                      >
+                        <XIcon size={18} className="mr-2" />
+                        Unjoin this event
+                      </Button>
+                    )
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <Link href={`/activities/${activity.id}/${event.id}`}>
+                    <Button variant={'default'} className="ml-4" type="button">
+                      Write feedback
+                    </Button>
+                  </Link>
+                </div>
+              ))}
           </div>
 
           {size === 'lg' && (

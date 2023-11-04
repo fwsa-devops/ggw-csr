@@ -28,6 +28,7 @@ const EventPage = async (props: { activity: IActivity }) => {
         isPartOfAnyEvent={isPartOfAnyEvent}
         events={activity.events}
         size="lg"
+        activity={activity}
       />
 
       {/* <PostsList imageUrls={imageUrls} /> */}

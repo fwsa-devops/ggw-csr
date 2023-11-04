@@ -10,7 +10,15 @@ if (process.env.NODE_ENV === 'production') {
   };
   if (!globalWithPrisma.prisma) {
     globalWithPrisma.prisma = new PrismaClient();
+    // for viewing sql queries executed
+    // globalWithPrisma.prisma = new PrismaClient({ log: ['query'] });
   }
+  // advanced debugging
+  //   const prisma = new PrismaClient({ log: [{ emit: "event", level: "query", },],})
+  // prisma.$on("query", async (e) => {
+  //     logger.info(`Query: ${e.query}`)
+  //     logger.info(`Params: ${e.params}`)
+  // });
   prisma = globalWithPrisma.prisma;
 }
 

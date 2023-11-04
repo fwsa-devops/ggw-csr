@@ -383,3 +383,111 @@ export async function getActivitiesJoined() {
 
   return volunteers;
 }
+
+export async function addParticipant(
+  eventId: string,
+  participantEmail: string,
+): Promise<ResponseType> {
+  const session = await getServerSession();
+
+  try {
+    if (
+      session?.user?.email === undefined ||
+      !(
+        session?.user?.email &&
+        /^\S+freshworks\.com$/.test(session?.user?.email)
+      )
+    ) {
+      throw 'Not part of Freshworks';
+    }
+
+    const user = await prisma.user.upsert({
+      where: { email: session?.user?.email || '' },
+      update: {},
+      create: {
+        email: session?.user?.email || '',
+        name: session?.user?.name || '',
+        image: session?.user?.image || '',
+      },
+    });
+
+    if (!(user && user.email)) {
+      throw 'Un-Authorized Action';
+    }
+
+    await prisma.volunteers.create({
+      data: {
+        event_id: eventId,
+        user_id: participantEmail,
+      },
+    });
+
+    // revalidatePath(`/activities/${eventId}`, 'page');
+    return {
+      success: true,
+      message: 'Successfully Joined Event',
+    };
+  } catch (e: any) {
+    console.log(e);
+    return {
+      success: false,
+      message: e,
+    };
+  }
+}
+
+export async function removeParticipant(
+  eventId: string,
+  participantEmail: string,
+): Promise<ResponseType> {
+  const session = await getServerSession();
+
+  try {
+    if (session?.user?.email === undefined) {
+      throw 'Not authorized session';
+    }
+
+    const user = await prisma.user.upsert({
+      where: { email: session?.user?.email || '' },
+      update: {},
+      create: {
+        email: session?.user?.email || '',
+        name: session?.user?.name || '',
+        image: session?.user?.image || '',
+      },
+    });
+
+    if (!(user && user.email)) {
+      throw 'Not authorized';
+    }
+
+    const volunteer = await prisma.volunteers.findFirst({
+      where: {
+        event_id: eventId,
+        user_id: participantEmail,
+      },
+    });
+
+    if (!volunteer) {
+      throw 'Participant is not part of this Event';
+    }
+
+    await prisma.volunteers.delete({
+      where: {
+        id: volunteer.id,
+      },
+    });
+
+    // revalidatePath(`/activities/${eventId}`, 'page');
+    return {
+      success: true,
+      message: 'Successfully Unjoined Event',
+    };
+  } catch (e: any) {
+    console.log(e);
+    return {
+      success: false,
+      message: e,
+    };
+  }
+}

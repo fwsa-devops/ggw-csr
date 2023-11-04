@@ -24,9 +24,9 @@ const NotificationsDrawer = ({ activitiesJoined }) => {
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Activities joined</h4>
             <div className="text-sm text-muted-foreground">
-              {activitiesJoined.map((activity) => (
+              {activitiesJoined?.map((activity) => (
                 <>
-                  <Link href={`/activity/${activity.id}`}>
+                  <Link href={`/activity/${activity.id}`} key={activity.id}>
                     {' '}
                     <p className="text-bold">{activity.name}</p>
                   </Link>

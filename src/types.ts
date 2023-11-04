@@ -72,12 +72,10 @@ export interface IActivity extends Activity {
   tags?: ({ tag: Tag } & ActivityTags)[];
   author?: { name: string };
 }
-
 export interface IEvent extends Event {
   leaders: ({ user: User } & EventLeader)[];
   volunteers: ({ user: User } & Volunteers)[];
 }
-
 export interface IActivityForm extends Activity {
   tags: string[];
 }

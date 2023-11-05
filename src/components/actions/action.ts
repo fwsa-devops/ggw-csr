@@ -6,6 +6,7 @@ import {
   eventFeedbackFormSchema,
   eventFormSchema,
 } from '@/types';
+import { User } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 import * as z from 'zod';
@@ -488,6 +489,61 @@ export async function removeParticipant(
     return {
       success: false,
       message: e,
+    };
+  }
+}
+
+export async function updateParticipant(
+  eventId: string,
+  addUsers: User[] = [],
+  removeUsers: User[] = [],
+): Promise<ResponseType> {
+  const session = await getServerSession();
+
+  try {
+    if (session?.user?.email === undefined) {
+      throw 'Not authorized session';
+    }
+
+    const user = await prisma.user.upsert({
+      where: { email: session?.user?.email || '' },
+      update: {},
+      create: {
+        email: session?.user?.email || '',
+        name: session?.user?.name || '',
+        image: session?.user?.image || '',
+      },
+    });
+
+    if (!(user && user.email)) {
+      throw 'Not authorized';
+    }
+
+    await prisma.volunteers.deleteMany({
+      where: {
+        event_id: eventId,
+        user_id: {
+          in: removeUsers.map((_r) => _r.email),
+        },
+      },
+    });
+
+    console.log('removed participants, adding new participants');
+
+    await prisma.volunteers.createMany({
+      skipDuplicates: true,
+      data: addUsers.map((_u) => ({ event_id: eventId, user_id: _u.email })),
+    });
+
+    return {
+      success: true,
+      message: 'Successfully Updated Participants',
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      success: false,
+      message: error,
     };
   }
 }

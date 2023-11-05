@@ -4,6 +4,22 @@ import { Combobox, Transition } from '@headlessui/react';
 import React, { Fragment, forwardRef, useState } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import UserAvatar from '@/components/user-avatar';
+import { Tag, User } from '@prisma/client';
+
+function isUser(obj: any): obj is User {
+  return (
+    typeof obj.id === 'number' &&
+    typeof obj.email === 'string' &&
+    (typeof obj.name === 'string' || obj.name === null)
+  );
+}
+function isTag(obj: any): obj is Tag {
+  return (
+    typeof obj.id === 'number' &&
+    typeof obj.email === 'string' &&
+    (typeof obj.name === 'string' || obj.name === null)
+  );
+}
 
 const ComboBox = forwardRef((props: any, ref) => {
   const [query, setQuery] = useState('');
@@ -24,14 +40,18 @@ const ComboBox = forwardRef((props: any, ref) => {
     else {
       const items = props.value.map((option) =>
         props.items.find((_item) => {
-          if (typeof _item === 'string') return _item === option;
-          else
-            return (
-              _item === option ||
-              _item?.id === option ||
-              _item?.id === option?.id ||
-              _item?.id === option?.tag_id
-            );
+          console.log(_item);
+
+          if (typeof _item === 'string') {
+            console.log('type string');
+            return _item === option;
+          } else if (isUser(_item)) {
+            console.log('type User');
+            return _item?.id === option?.id;
+          } else if (isTag(_item)) {
+            console.log('type Tag');
+            return _item?.id === option?.tag_id;
+          } else return _item === option || _item?.id === option;
         }),
       );
       setSelectedItems(items);

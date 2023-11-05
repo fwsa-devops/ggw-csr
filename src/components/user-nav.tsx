@@ -25,7 +25,7 @@ export function UserNav({ activitiesJoined }) {
         {session?.user && (
           <>
             <NotificationsDrawer activitiesJoined={activitiesJoined} />
-            <span className="absolute -inset-1.5" />
+            {/* <span className="absolute -inset-1.5" /> */}
 
             <AuthButton user={session.user} />
           </>

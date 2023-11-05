@@ -48,7 +48,7 @@ export default function HeaderComp({ activitiesJoined }) {
                 </CollapsibleTrigger>
               </div>
 
-              <div className="flex flex-1 items-center sm:items-stretch sm:justify-start ml-12">
+              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start mr-10">
                 <div className="flex flex-shrink-0 items-center text-2xl font-bold">
                   <Link href={'/'}>Global Giving Week</Link>
                 </div>

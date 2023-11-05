@@ -54,8 +54,8 @@ export default function BlockNote({
     },
     containsInlineContent: false,
     render: ({ block }) => (
-      <div>
-        <ReactPlayer url={block.props.src} />
+      <div className="aspect-w-16 aspect-h-9">
+        <ReactPlayer url={block.props.src} style={{ 'margin': 'auto', 'maxWidth': '100%' }} />
         {/* <video src={block.props.src} controls /> */}
       </div>
     ),

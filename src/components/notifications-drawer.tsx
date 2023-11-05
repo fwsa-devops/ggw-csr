@@ -9,10 +9,10 @@ import Link from 'next/link';
 
 const NotificationsDrawer = ({ activitiesJoined }) => {
   return (
-    <div className="z-10 h-2/4">
+    <div className="z-10">
       <Popover>
         <PopoverTrigger asChild>
-          <div className="p-3 mx-3 hover:bg-gray-200 rounded-full bg-white p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer">
+          <div className="mr-3 hover:bg-gray-200 rounded-full bg-white p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer">
             <CalendarCheck2 className="bg-grey-700" size={18} />
             <span className="sr-only">View notifications</span>
           </div>
@@ -25,13 +25,13 @@ const NotificationsDrawer = ({ activitiesJoined }) => {
             <h4 className="font-medium leading-none">Activities joined</h4>
             <div className="text-sm text-muted-foreground">
               {activitiesJoined?.map((activity) => (
-                <>
-                  <Link href={`/activity/${activity.id}`} key={activity.id}>
+                <div key={activity.id}>
+                  <Link href={`/activity/${activity.id}`}>
                     {' '}
                     <p className="text-bold">{activity.name}</p>
                   </Link>
                   <p className="">{activity.description}</p>
-                </>
+                </div>
               ))}
             </div>
           </div>

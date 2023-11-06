@@ -4,6 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import EventFeedbackList from './event-feedback-list';
 import prisma from '@/lib/prisma';
 import EventParticipants from './event-participants';
+import ExportButton from './export-csv';
 
 const EventDetails = async ({ event: eventDetails }: { event: any }) => {
   const volunteers = (
@@ -35,6 +36,8 @@ const EventDetails = async ({ event: eventDetails }: { event: any }) => {
             <h1 className="md:mb-4 text-2xl font-semibold text-gray-700 title-font">
               {eventDetails.activity.name}
             </h1>
+
+            <ExportButton eventId={eventDetails.id} />
           </div>
 
           <div className="flex gap-2 mb-2 location align-center">

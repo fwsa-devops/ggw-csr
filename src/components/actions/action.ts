@@ -547,3 +547,130 @@ export async function updateParticipant(
     };
   }
 }
+
+export async function exportEventData(eventId: string) {
+  const session = await getServerSession();
+
+  try {
+    if (session?.user?.email === undefined) {
+      throw 'Not authorized session';
+    }
+
+    const user = await prisma.user.upsert({
+      where: { email: session?.user?.email || '' },
+      update: {},
+      create: {
+        email: session?.user?.email || '',
+        name: session?.user?.name || '',
+        image: session?.user?.image || '',
+      },
+    });
+
+    if (!(user && user.email)) {
+      throw 'Not authorized';
+    }
+
+    const eventDetails = await prisma.event.findFirst({
+      where: {
+        id: eventId,
+      },
+      include: {
+        _count: true,
+        activity: true,
+        leaders: {
+          include: {
+            user: true,
+          },
+        },
+        author: {
+          select: {
+            email: true,
+          },
+        },
+        feedback: {
+          select: {
+            author: {
+              select: {
+                email: true,
+              },
+            },
+            comment: true,
+            assets: {
+              include: {
+                Asset: {
+                  select: {
+                    url: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        volunteers: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    const activity = Object.assign({}, { ...eventDetails?.activity });
+    const volunteer = eventDetails?.volunteers.map(({ user, assigned_at }) => ({
+      ...user,
+      assigned_at,
+    }));
+    const feedbacks = eventDetails?.feedback.map(
+      ({ author, assets, comment }) => ({
+        author: author.email,
+        comment,
+        assets: assets.map(({ Asset }) => Asset.url).join(', '),
+      }),
+    );
+
+    const {
+      id,
+      city,
+      leaders,
+      location,
+      description,
+      min_volunteers,
+      max_volunteers,
+      published,
+      is_dates_announced,
+      startTime,
+      endTime,
+      date_announcement_text,
+      author,
+    } = eventDetails!;
+
+    const event = {
+      id,
+      city,
+      location,
+      description,
+      min_volunteers,
+      max_volunteers,
+      is_dates_announced,
+      startTime,
+      endTime,
+      date_announcement_text,
+      published,
+      author: author.email,
+      leaders: leaders.map(({ user }) => user.email).join(', '),
+    };
+
+    const formattedResponse = {
+      event,
+      activity,
+      volunteer,
+      feedbacks,
+    };
+
+    console.log(JSON.stringify(formattedResponse, null, 2));
+
+    return formattedResponse;
+  } catch (error) {
+    console.log(error);
+  }
+}

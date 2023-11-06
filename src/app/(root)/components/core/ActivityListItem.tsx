@@ -63,6 +63,7 @@ const ActivityListItem = ({ activity }: { activity: IActivity }) => {
 
         {activity.events.map((event: any) => (
           <EventListItem
+            activity={activity}
             isPartOfThisEvent={true}
             event={event}
             size="sm"

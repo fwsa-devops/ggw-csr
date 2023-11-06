@@ -64,6 +64,6 @@ export async function POST(req: Request) {
     ...INCLUDE_ALL_ACTIVITIES_DATA,
   });
 
-  console.log('activities', activities);
+  // console.log('activities', activities);
   return Response.json(activities);
 }

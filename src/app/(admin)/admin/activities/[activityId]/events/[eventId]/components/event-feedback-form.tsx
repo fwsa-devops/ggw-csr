@@ -50,10 +50,10 @@ const EventFeedbackForm = ({
 
   const onSubmit = async (value: z.infer<typeof eventFeedbackFormSchema>) => {
     try {
-      console.log('onSubmit', value);
+      // console.log('onSubmit', value);
 
       const resp = await createEventFeedback(value);
-      console.log(resp);
+      // console.log(resp);
 
       if (!resp.success) {
         throw resp;
@@ -63,9 +63,9 @@ const EventFeedbackForm = ({
       form.setValue('assets', []);
       form.reset();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
-      console.log('finally');
+      // console.log('finally');
     }
   };
 

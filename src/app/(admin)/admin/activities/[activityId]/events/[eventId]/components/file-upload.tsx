@@ -16,7 +16,7 @@ const FileUpload = ({
           endpoint="imageUploader"
           onClientUploadComplete={(res) => {
             // Do something with the response
-            console.log('Files: ', res);
+            // console.log('Files: ', res);
             onChange?.(res);
           }}
           onUploadError={(error: Error) => {
@@ -25,11 +25,11 @@ const FileUpload = ({
           }}
           onUploadBegin={(name) => {
             // Do something once upload begins
-            console.log('Uploading: ', name);
+            // console.log('Uploading: ', name);
           }}
           // onUploadProgress={(name) => {
           //   // Do something once upload begins
-          //   console.log('Uploading: ', name);
+          //   // console.log('Uploading: ', name);
           // }}
         />
       </div>

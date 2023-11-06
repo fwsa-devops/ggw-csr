@@ -18,7 +18,7 @@ const EventDetails = async ({ event: eventDetails }: { event: any }) => {
     })
   ).map((_vol) => _vol.user);
 
-  console.log(volunteers);
+  // console.log(volunteers);
 
   return (
     <>

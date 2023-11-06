@@ -26,7 +26,7 @@ const HomePage = ({ initialContent = '' }) => {
 
   const onSubmit = async (event: any) => {
     event?.preventDefault();
-    console.log(content);
+    // console.log(content);
     try {
       const formData = {
         status: 'OPEN',
@@ -36,7 +36,7 @@ const HomePage = ({ initialContent = '' }) => {
       const res = await createHomepageContent(formData);
       // console.log(res);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

@@ -76,7 +76,7 @@ const ActivityForm = ({
 
       if (response.errors) {
         const errors = response.errors;
-        console.log(errors);
+        // console.log(errors);
       }
 
       toast({

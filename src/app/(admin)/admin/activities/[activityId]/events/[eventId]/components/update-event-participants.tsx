@@ -67,10 +67,10 @@ const EventParticipantsUpdate = ({
   }
 
   const volunteerOnChange = async (event) => {
-    console.log('event', event);
-    console.log('form.value', form.getValues('volunteers'));
-    console.log('volunteers', volunteers);
-    console.log('users', users);
+    // console.log('event', event);
+    // console.log('form.value', form.getValues('volunteers'));
+    // console.log('volunteers', volunteers);
+    // console.log('users', users);
 
     const selectedUsers = form.getValues('volunteers') ?? [];
 
@@ -86,11 +86,11 @@ const EventParticipantsUpdate = ({
       (user) => !selectedUsers.includes(user.id),
     );
 
-    console.log('compareSelectedUsers', {
-      added: added,
-      removed: removedUsers,
-      unchanged: unchanged,
-    });
+    // console.log('compareSelectedUsers', {
+    //   added: added,
+    //   removed: removedUsers,
+    //   unchanged: unchanged,
+    // });
 
     setAddedVolunteers(added);
     setRemovedVolunteers(removedUsers);
@@ -105,7 +105,7 @@ const EventParticipantsUpdate = ({
       // router.push(`/admin/activities/${activityId}/events/${eventId}`);
       router.refresh();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

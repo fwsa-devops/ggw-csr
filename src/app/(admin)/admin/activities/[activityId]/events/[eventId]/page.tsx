@@ -36,7 +36,7 @@ const EventPage = async ({
     },
   });
 
-  console.log(eventDetails);
+  // console.log(eventDetails);
 
   return (
     <>

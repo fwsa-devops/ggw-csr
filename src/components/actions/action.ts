@@ -22,7 +22,7 @@ export async function createActivity(
   formData: z.infer<typeof activityFormSchema>,
 ): Promise<ResponseType> {
   const data = activityFormSchema.safeParse(formData);
-  console.log(data);
+  // console.log(data);
   try {
     let zodErrors = {};
 
@@ -89,7 +89,7 @@ export async function createActivity(
       data: response,
     };
   } catch (error: unknown) {
-    console.log(error);
+    // console.log(error);
 
     if (typeof error === 'string') {
       return {
@@ -108,7 +108,7 @@ export async function createActivityEvent(
   formData: z.infer<typeof eventFormSchema>,
 ) {
   const data = eventFormSchema.safeParse(formData);
-  console.log('data', data);
+  // console.log('data', data);
 
   const session = await getServerSession();
 
@@ -194,7 +194,7 @@ export async function createActivityEvent(
       data: response,
     };
   } catch (error: unknown) {
-    console.log(error);
+    // console.log(error);
 
     if (typeof error === 'string') {
       return {
@@ -250,7 +250,7 @@ export async function joinEvent(eventId: string): Promise<ResponseType> {
       message: 'Successfully Joined Event',
     };
   } catch (e: any) {
-    console.log(e);
+    // console.log(e);
     return {
       success: false,
       message: e,
@@ -294,7 +294,7 @@ export async function unJoinEvent(eventId: string): Promise<ResponseType> {
       message: 'Successfully Unjoined Event',
     };
   } catch (e: any) {
-    console.log(e);
+    // console.log(e);
     return {
       success: false,
       message: e,
@@ -306,7 +306,7 @@ export async function createEventFeedback(
   formData: z.infer<typeof eventFeedbackFormSchema>,
 ) {
   const data = eventFeedbackFormSchema.safeParse(formData);
-  console.log(data);
+  // console.log(data);
 
   try {
     let zodErrors = {};
@@ -351,7 +351,7 @@ export async function createEventFeedback(
       data: feedback,
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
 
     if (typeof error === 'string') {
       return {
@@ -429,7 +429,7 @@ export async function addParticipant(
       message: 'Successfully Joined Event',
     };
   } catch (e: any) {
-    console.log(e);
+    // console.log(e);
     return {
       success: false,
       message: e,
@@ -485,7 +485,7 @@ export async function removeParticipant(
       message: 'Successfully Unjoined Event',
     };
   } catch (e: any) {
-    console.log(e);
+    // console.log(e);
     return {
       success: false,
       message: e,
@@ -528,7 +528,7 @@ export async function updateParticipant(
       },
     });
 
-    console.log('removed participants, adding new participants');
+    // console.log('removed participants, adding new participants');
 
     await prisma.volunteers.createMany({
       skipDuplicates: true,
@@ -540,7 +540,7 @@ export async function updateParticipant(
       message: 'Successfully Updated Participants',
     };
   } catch (error: any) {
-    console.log(error);
+    // console.log(error);
     return {
       success: false,
       message: error,
@@ -667,10 +667,10 @@ export async function exportEventData(eventId: string) {
       feedbacks,
     };
 
-    console.log(JSON.stringify(formattedResponse, null, 2));
+    // console.log(JSON.stringify(formattedResponse, null, 2));
 
     return formattedResponse;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 }

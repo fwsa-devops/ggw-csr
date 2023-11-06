@@ -33,7 +33,7 @@ const ActivityEventForm = ({ activityId, event }) => {
   if (!session?.user) {
     return <>Un-Authorized User</>;
   }
-  console.log('event', event);
+  // console.log('event', event);
 
   const { data: leaders, error } = useFetch<User[]>('/api/users', {
     method: 'GET',
@@ -146,7 +146,7 @@ const ActivityEventForm = ({ activityId, event }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof eventFormSchema>) => {
-    console.log('onsubmit', values);
+    // console.log('onsubmit', values);
     try {
       setLoading(true);
       // console.log(values);
@@ -154,7 +154,7 @@ const ActivityEventForm = ({ activityId, event }) => {
 
       if (response.errors) {
         const errors = response.errors;
-        console.log(errors);
+        // console.log(errors);
       }
 
       toast({
@@ -175,9 +175,9 @@ const ActivityEventForm = ({ activityId, event }) => {
   };
 
   const onChange = (val) => {
-    console.log(form);
-    console.log(form.getValues());
-    console.log(form.formState);
+    // console.log(form);
+    // console.log(form.getValues());
+    // console.log(form.formState);
   };
 
   return (

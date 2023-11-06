@@ -104,13 +104,13 @@ export default function BlockNote({
       ? (JSON.parse(initialContent) as PartialBlock[])
       : undefined,
     onEditorContentChange: (editor) => {
-      console.log(editor);
+      // console.log(editor);
 
       // const saveBlocksAsMarkdown = async () => {
       //   const markdown: string =
       //     await editor.blocksToMarkdown(editor.topLevelBlocks);
       //   useContent(markdown);
-      //   console.log(markdown);
+      //   // console.log(markdown);
       // };
       // saveBlocksAsMarkdown();
 
@@ -118,7 +118,7 @@ export default function BlockNote({
       //   const markdown: string =
       //     await editor.blocksToHTML(editor.topLevelBlocks);
       //   useContent(markdown);
-      //   console.log(markdown);
+      //   // console.log(markdown);
       // };
       // saveBlocksAsHTML();
 

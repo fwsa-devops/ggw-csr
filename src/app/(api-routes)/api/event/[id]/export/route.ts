@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 export async function GET(req: Request, context: { params }) {
   // Your JSON data
   const eventId = context.params.id;
-  console.log(eventId);
+  // console.log(eventId);
 
   if (!eventId) {
     return new Response('Invalid Event Id');

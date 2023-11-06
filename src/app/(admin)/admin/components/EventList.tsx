@@ -26,9 +26,9 @@ const EventList = ({
   const { setValue, value: isMember } = useBoolean(false);
 
   const checkUserAlreadyRegistered = async () => {
-    console.log('checkUserAlreadyRegistered', isMember);
+    // console.log('checkUserAlreadyRegistered', isMember);
     const result = await isUserPartOfActivity();
-    console.log(result);
+    // console.log(result);
     setValue(Boolean(result));
   };
 

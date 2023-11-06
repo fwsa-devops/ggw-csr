@@ -40,16 +40,16 @@ const ComboBox = forwardRef((props: any, ref) => {
     else {
       const items = props.value.map((option) =>
         props.items.find((_item) => {
-          console.log(_item);
+          // console.log(_item);
 
           if (typeof _item === 'string') {
-            console.log('type string');
+            // console.log('type string');
             return _item === option;
           } else if (isUser(_item)) {
-            console.log('type User');
+            // console.log('type User');
             return _item?.id === option?.id;
           } else if (isTag(_item)) {
-            console.log('type Tag');
+            // console.log('type Tag');
             return _item?.id === option?.tag_id;
           } else return _item === option || _item?.id === option;
         }),

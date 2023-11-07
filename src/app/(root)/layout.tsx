@@ -9,6 +9,7 @@ import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
 import { extractRouterConfig } from 'uploadthing/server';
 import { ourFileRouter } from '@/api/uploadthing/core';
 import { getActivitiesJoined } from '@/components/actions/action';
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -40,6 +41,7 @@ export default async function RootLayout({
             <div className="responsive-wrapper">{children}</div>
             <Toaster />
           </main>
+          <Analytics />
         </body>
       </SessionProvider>
     </html>

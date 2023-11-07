@@ -1,8 +1,4 @@
-import {
-  BuildingIcon,
-  CalendarRangeIcon,
-  MapIcon,
-} from 'lucide-react';
+import { BuildingIcon, CalendarRangeIcon, MapIcon } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';

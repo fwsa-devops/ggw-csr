@@ -140,6 +140,7 @@ model Asset {
 model Feedback {
   id          String           @id @default(cuid())
   comment     String           @db.Text
+  feature     Boolean          @default(false)
   activity_id String
   author_id   String
   event_id    String

@@ -3,6 +3,9 @@ import prisma from '@/lib/prisma';
 
 export default async function Example() {
   const testimonials = await prisma.feedback.findMany({
+    where: {
+      feature: true,
+    },
     include: {
       author: true,
     },

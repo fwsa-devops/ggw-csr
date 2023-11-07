@@ -13,8 +13,8 @@ import { useBoolean } from 'usehooks-ts';
 import { usePathname } from 'next/navigation';
 
 const navigations = [
-  { name: 'Activites', href: '/activities' },
-  // { name: 'Events', href: '/events' },
+  { name: 'Activites', href: '/activities', show: true },
+  { name: 'Testimonies', href: '/testimonies', show: false },
 ];
 
 export default function HeaderComp({ activitiesJoined }) {
@@ -52,21 +52,24 @@ export default function HeaderComp({ activitiesJoined }) {
                 <div className="flex flex-shrink-0 items-center text-2xl font-bold">
                   <Link href={'/'}>Global Giving Week</Link>
                 </div>
+
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                  {navigations.map((nav) => (
-                    <Link
-                      key={nav.name}
-                      href={nav.href}
-                      className={cn(
-                        'inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900',
-                        isActivePath(nav.href)
-                          ? 'border-indigo-500 text-gray-900'
-                          : 'border-transparent text-gray-500  hover:text-gray-700',
-                      )}
-                    >
-                      {nav.name}
-                    </Link>
-                  ))}
+                  {navigations
+                    .filter((nav) => nav.show)
+                    .map((nav) => (
+                      <Link
+                        key={nav.name}
+                        href={nav.href}
+                        className={cn(
+                          'inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900',
+                          isActivePath(nav.href)
+                            ? 'border-indigo-500 text-gray-900'
+                            : 'border-transparent text-gray-500  hover:text-gray-700',
+                        )}
+                      >
+                        {nav.name}
+                      </Link>
+                    ))}
                 </div>
               </div>
 
@@ -78,18 +81,20 @@ export default function HeaderComp({ activitiesJoined }) {
 
           <CollapsibleContent className="sm:hidden relative">
             <nav className="absolute right-0 z-10 w-screen origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-              {navigations.map((nav) => (
-                <Link
-                  key={nav.name}
-                  href={nav.href}
-                  className={cn(
-                    'block px-4 py-3 text-sm text-gray-700 font-medium',
-                    isActivePath(nav.href) ? 'bg-gray-100' : '',
-                  )}
-                >
-                  {nav.name}
-                </Link>
-              ))}
+              {navigations
+                .filter((nav) => nav.show)
+                .map((nav) => (
+                  <Link
+                    key={nav.name}
+                    href={nav.href}
+                    className={cn(
+                      'block px-4 py-3 text-sm text-gray-700 font-medium',
+                      isActivePath(nav.href) ? 'bg-gray-100' : '',
+                    )}
+                  >
+                    {nav.name}
+                  </Link>
+                ))}
             </nav>
           </CollapsibleContent>
         </>

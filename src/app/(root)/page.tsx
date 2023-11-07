@@ -1,6 +1,12 @@
 import { getHomepageContent } from '@/components/utils/api';
 import { useSsr } from 'usehooks-ts';
 import HomepageViewer from './components/viewer';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Freshworks Global Giving - 2023',
+  description: 'CSR initiative by Freshworks',
+};
 
 export default async function Home() {
   const response = await getHomepageContent();

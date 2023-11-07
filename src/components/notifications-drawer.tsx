@@ -10,8 +10,6 @@ import { Separator } from '@/components/ui/separator';
 import moment from 'moment';
 
 const NotificationsDrawer = ({ activitiesJoined }) => {
-  console.log(activitiesJoined);
-
   return (
     <div className="z-10">
       <Popover>

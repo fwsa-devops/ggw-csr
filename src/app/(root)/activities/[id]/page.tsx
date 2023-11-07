@@ -7,9 +7,9 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
+  // Fetch data or use params to generate dynamic metadata
   const activity = await getActivity(params.id);
 
-  // Fetch data or use params to generate dynamic metadata
   const title = `Event - ${activity?.name}`;
 
   return {
@@ -18,7 +18,7 @@ export async function generateMetadata({
     authors: [{ name: activity?.author?.name }],
     openGraph: {
       type: 'article',
-      url: `${process.env.NEXTAUTH_URL}/activities/${params.id}`,
+      url: `${process.env.NEXTAUTH_URL}activities/${params.id}`,
       title: title,
       description: activity?.summary,
       siteName: 'Global Giving',
@@ -28,7 +28,6 @@ export async function generateMetadata({
         },
       ],
     },
-    // Other metadata fields...
   };
 }
 

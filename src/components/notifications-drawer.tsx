@@ -6,11 +6,9 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import Link from 'next/link';
-import { Separator } from "@/components/ui/separator"
+import { Separator } from '@/components/ui/separator';
 
 const NotificationsDrawer = ({ activitiesJoined }) => {
-
-
   return (
     <div className="z-10">
       <Popover>
@@ -30,10 +28,17 @@ const NotificationsDrawer = ({ activitiesJoined }) => {
               <ul role="list" className="divide-y divide-gray-100">
                 {activitiesJoined?.map((activity) => (
                   <>
-                    <li key={activity.event.id} className="flex justify-between gap-x-6 py-5">
-                      <Link href={`/activities/${activity.event.activity.id}#${activity.event.id}`}>
+                    <li
+                      key={activity.event.id}
+                      className="flex justify-between gap-x-6 py-5"
+                    >
+                      <Link
+                        href={`/activities/${activity.event.activity.id}#${activity.event.id}`}
+                      >
                         {' '}
-                        <p className="text-sm font-semibold leading-6 text-gray-900">{activity.event.activity.name}</p>
+                        <p className="text-sm font-semibold leading-6 text-gray-900">
+                          {activity.event.activity.name}
+                        </p>
                       </Link>
                       {/* <p className="">{activity.event.activity.description}</p> */}
                     </li>
@@ -45,7 +50,7 @@ const NotificationsDrawer = ({ activitiesJoined }) => {
           </div>
         </PopoverContent>
       </Popover>
-    </div >
+    </div>
   );
 };
 

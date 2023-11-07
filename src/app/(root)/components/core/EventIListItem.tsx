@@ -82,7 +82,8 @@ const EventListItem = ({
 
   return (
     <>
-      <div id={event.id}
+      <div
+        id={event.id}
         className={cn(
           'my-5 text-sm text-gray-700 event-timings align-center',
           size === 'lg'

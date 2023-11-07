@@ -36,6 +36,25 @@ const DashboardPage = async () => {
     },
   });
 
+  // For each activity, get the total number of volunteers
+  const activityVolunteerCounts = await Promise.all(
+    activities.map(async (activity) => {
+      const volunteerCount = await prisma.volunteers.count({
+        where: {
+          event: {
+            activityId: activity.id,
+          },
+        },
+      });
+
+      return {
+        id: activity.id,
+        name: activity.name,
+        count: volunteerCount,
+      };
+    })
+  );
+
   const users = await prisma.user.findMany({
     select: {
       email: true,
@@ -181,7 +200,7 @@ const DashboardPage = async () => {
                 <CardTitle>Overview</CardTitle>
               </CardHeader>
               <CardContent className="pl-2 sm:pr-2 sm:w-full">
-                <Overview events={events} />
+                <Overview events={activityVolunteerCounts} />
               </CardContent>
             </Card>
             <Card className="col-span-3">

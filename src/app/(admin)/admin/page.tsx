@@ -52,7 +52,7 @@ const DashboardPage = async () => {
         name: activity.name,
         count: volunteerCount,
       };
-    })
+    }),
   );
 
   const users = await prisma.user.findMany({

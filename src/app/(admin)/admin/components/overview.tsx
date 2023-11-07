@@ -3,8 +3,7 @@
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 export function Overview({ events = [] }: { events: any[] }) {
-
-  const filteredData = events.filter(e => e.count > 0)
+  const filteredData = events.filter((e) => e.count > 0);
 
   return (
     <ResponsiveContainer width="100%" height={350}>

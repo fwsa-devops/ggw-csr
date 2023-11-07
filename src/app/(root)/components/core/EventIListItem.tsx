@@ -82,7 +82,7 @@ const EventListItem = ({
 
   return (
     <>
-      <div
+      <div id={event.id}
         className={cn(
           'my-5 text-sm text-gray-700 event-timings align-center',
           size === 'lg'
@@ -131,7 +131,7 @@ const EventListItem = ({
             </div>
 
             {size === 'lg' && (
-              <div className="ml-auto flex flex-col items-end">
+              <div className="flex flex-col md:ml-auto md:items-end">
                 <h2 className="font-semibold mb-2">Event Leaders</h2>
                 <div className="flex">
                   {event.leaders.map(({ user }) => (

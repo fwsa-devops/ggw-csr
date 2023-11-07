@@ -8,7 +8,7 @@ import { IActivity } from '@/types';
 
 const ActivityListItem = ({ activity }: { activity: IActivity }) => {
   return (
-    <div className="flex flex-wrap gap-6 p-4 mx-auto event-container md:flex-nowrap md:h-600">
+    <div id={activity.id} className="flex flex-wrap gap-6 p-4 mx-auto event-container md:flex-nowrap md:h-600">
       <Link
         className="flex lg:w-1/3 lg:h-100 max-h-72"
         href={`/activities/${activity.id}`}

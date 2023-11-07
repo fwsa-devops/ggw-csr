@@ -6,8 +6,11 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import Link from 'next/link';
+import { Separator } from "@/components/ui/separator"
 
 const NotificationsDrawer = ({ activitiesJoined }) => {
+
+
   return (
     <div className="z-10">
       <Popover>
@@ -24,20 +27,25 @@ const NotificationsDrawer = ({ activitiesJoined }) => {
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Activities joined</h4>
             <div className="text-sm text-muted-foreground">
-              {activitiesJoined?.map((activity) => (
-                <div key={activity.id}>
-                  <Link href={`/activity/${activity.id}`}>
-                    {' '}
-                    <p className="text-bold">{activity.name}</p>
-                  </Link>
-                  <p className="">{activity.description}</p>
-                </div>
-              ))}
+              <ul role="list" className="divide-y divide-gray-100">
+                {activitiesJoined?.map((activity) => (
+                  <>
+                    <li key={activity.event.id} className="flex justify-between gap-x-6 py-5">
+                      <Link href={`/activities/${activity.event.activity.id}#${activity.event.id}`}>
+                        {' '}
+                        <p className="text-sm font-semibold leading-6 text-gray-900">{activity.event.activity.name}</p>
+                      </Link>
+                      {/* <p className="">{activity.event.activity.description}</p> */}
+                    </li>
+                    <Separator />
+                  </>
+                ))}
+              </ul>
             </div>
           </div>
         </PopoverContent>
       </Popover>
-    </div>
+    </div >
   );
 };
 

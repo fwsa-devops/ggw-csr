@@ -2,7 +2,6 @@ import {
   BuildingIcon,
   CalendarRangeIcon,
   MapIcon,
-  PenIcon,
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
@@ -127,11 +126,11 @@ const EventListItem = ({
             {size === 'lg' && (
               <div>
                 <Link
-                  href={`/admin/activities/${activityId}/events/${event.id}/edit`}
+                  href={`/admin/activities/${activityId}/events/${event.id}`}
                 >
                   <Button variant={'default'} className="ml-4" type="button">
-                    <PenIcon size={18} className="mr-2" />
-                    Edit
+                    {/* <PenIcon size={18} className="mr-2" /> */}
+                    View
                   </Button>
                 </Link>
               </div>

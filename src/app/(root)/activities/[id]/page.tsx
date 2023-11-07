@@ -1,5 +1,36 @@
 import { getActivity } from '@/components/utils';
 import EventPage from './components/event-page';
+import { Metadata } from 'next';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const activity = await getActivity(params.id);
+
+  // Fetch data or use params to generate dynamic metadata
+  const title = `Event - ${activity?.name}`;
+
+  return {
+    title,
+    description: activity?.summary,
+    authors: [{ name: activity?.author?.name }],
+    openGraph: {
+      type: 'article',
+      url: `${process.env.NEXTAUTH_URL}/activities/${params.id}`,
+      title: title,
+      description: activity?.summary,
+      siteName: 'Global Giving',
+      images: [
+        {
+          url: activity?.posts_urls ?? '',
+        },
+      ],
+    },
+    // Other metadata fields...
+  };
+}
 
 export default async function Event({ params }: { params: { id: string } }) {
   const activity: any = await getActivity(params.id);

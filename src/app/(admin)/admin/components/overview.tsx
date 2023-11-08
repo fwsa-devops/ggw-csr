@@ -16,6 +16,7 @@ export function Overview({ events = [] }: { events: any[] }) {
           axisLine={false}
         />
         <YAxis
+          interval={1}
           stroke="#888888"
           fontSize={12}
           tickLine={false}

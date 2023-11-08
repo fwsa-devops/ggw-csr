@@ -42,10 +42,10 @@
 - [x] Edit event form ComboBox component error - Need to fix by placing the selected users in separate component
 - [x] Need to add date component in event form
 - [x] Have a button name “Write feedback” for CLOSED activity for writing respective feedbacks
-- [ ] Current events notifications drawer: https://flowbite.com/docs/components/drawer/
-- [ ] Export whole activity data in an excel sheet including users joined and volunteers
-- [ ] View participant list for users & for admin; have functionality to add or remove volunteers
-- [ ] Video positioning in admin/homepage
+- [x] Current events notifications drawer
+- [x] Export whole activity data in an excel sheet including users joined and volunteers
+- [x] View participant list for users & for admin; have functionality to add or remove volunteers
+- [x] Video positioning in admin/homepage - have workaround for now by centering all videos
 - [ ] Add restrcitions in admin pages using UserRole table
 - [ ] Restriction in post uploads & activities CRUD
 - [ ] Automatic Event Close based on event date (scheduling CRON job)

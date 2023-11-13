@@ -1,7 +1,7 @@
 import SessionProvider from '@/components/providers/session';
 import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
-import { Inter } from 'next/font/google';
+import { Inter, Roboto } from 'next/font/google';
 import Header from '@/app/(root)/components/header';
 import { Toaster } from '@/components/ui/toaster';
 
@@ -12,6 +12,7 @@ import { getActivitiesJoined } from '@/components/actions/action';
 import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] });
+const roboto = Roboto({ weight: '400', subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Volunteer by Freshworks',
@@ -34,8 +35,8 @@ export default async function RootLayout({
         <body className={inter.className}>
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <Header activitiesJoined={activitiesJoined} />
-          <main className="main">
-            <div className="responsive-wrapper">{children}</div>
+          <main className="main bg-white">
+            <div className="">{children}</div>
             <Toaster />
           </main>
           <Analytics />

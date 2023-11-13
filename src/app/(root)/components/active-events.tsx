@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   getFilteredActivities,
   getAllActivitiesFromDB,
@@ -9,32 +9,32 @@ import {
 import { DateRange } from 'react-day-picker';
 import { FilterXIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-// import { DatePickerWithRange } from '@/components/ui/date-range-picker';
 import { DropdownMenuCheckboxes } from '@/components/ui/dropdown/checkbox-dd';
 import { EVENT_LOCATIONS } from './../../../../constants';
-
 import Loader from '@/components/ui/loader';
 import ActivityListItem from '@/app/(root)/components/core/ActivityListItem';
 import { IActivity } from '@/types';
 
-const ActiveEvents = (props: { activities: IActivity[] }) => {
-  const { activities } = props;
+const useTags = (): [any[], React.Dispatch<React.SetStateAction<any[]>>] => {
+  const [tags, setTags] = useState<any[]>([]);
 
-  const [isLoading, setLoading] = React.useState<boolean>(false);
-  const [activties, setActivities] = React.useState(activities);
-  const [locations, setLocations] = React.useState([...EVENT_LOCATIONS]);
-  const [tags, setTags] = React.useState<any>([]);
-  const [date, setDate] = React.useState<DateRange | undefined>();
-
-  React.useEffect(() => {
-    fetchAllTags();
-    scrollTo;
+  useEffect(() => {
+    const fetchTags = async () => {
+      const fetchedTags = await getAllTags();
+      setTags(fetchedTags);
+    };
+    fetchTags();
   }, []);
 
-  const fetchAllTags = async () => {
-    const tags = await getAllTags();
-    setTags(tags);
-  };
+  return [tags, setTags];
+};
+
+const ActiveEvents = ({ activities }: { activities: IActivity[] }) => {
+  const [isLoading, setLoading] = useState(false);
+  const [activitiesState, setActivities] = useState(activities);
+  const [locations, setLocations] = useState([...EVENT_LOCATIONS]);
+  const [tags, setTags] = useTags();
+  const [date, setDate] = useState<DateRange | undefined>();
 
   const onLocationChange = async (item, value) => {
     try {
@@ -165,8 +165,8 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
         </div>
       </div>
       {isLoading && <Loader />}
-      {activties.length ? (
-        activties?.map((activity) => {
+      {activities.length ? (
+        activities?.map((activity) => {
           return (
             <div
               className={`container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground ${

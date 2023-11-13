@@ -1,5 +1,4 @@
 import ActiveEvents from '@/root/components/active-events';
-import PastActivities from '@/root/components/past-events';
 import { getAllActivitiesFromDB, getPastActivities } from '@/components/utils';
 import { Separator } from '@/components/ui/separator';
 
@@ -9,11 +8,11 @@ export default async function Home() {
 
   return (
     <>
-      <main className="flex flex-col items-center justify-between min-h-screen ">
+      <main className="responsive-wrapper flex flex-col items-center justify-between min-h-screen ">
         <section className="w-full text-gray-600 body-font">
           <ActiveEvents activities={activities} />
           <Separator className="mt-6 mb-4" />
-          <PastActivities pastActivities={pastActivities} />
+          {/* <PastActivities pastActivities={pastActivities} /> */}
         </section>
       </main>
     </>

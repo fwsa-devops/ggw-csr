@@ -39,7 +39,9 @@ const EventPage = async ({
 
   return (
     <>
-      <EventDetails event={eventDetails} />
+      <div className="responsive-wrapper">
+        <EventDetails event={eventDetails} />
+      </div>
     </>
   );
 };

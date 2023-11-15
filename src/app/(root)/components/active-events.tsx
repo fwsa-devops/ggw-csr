@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   getFilteredActivities,
   getAllActivitiesFromDB,
@@ -9,32 +9,31 @@ import {
 import { DateRange } from 'react-day-picker';
 import { FilterXIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+// import { DatePickerWithRange } from '@/components/ui/date-range-picker';
 import { DropdownMenuCheckboxes } from '@/components/ui/dropdown/checkbox-dd';
 import { EVENT_LOCATIONS } from './../../../../constants';
+
 import Loader from '@/components/ui/loader';
 import ActivityListItem from '@/app/(root)/components/core/ActivityListItem';
 import { IActivity } from '@/types';
 
-const useTags = (): [any[], React.Dispatch<React.SetStateAction<any[]>>] => {
-  const [tags, setTags] = useState<any[]>([]);
+const ActiveEvents = (props: { activities: IActivity[] }) => {
+  const { activities: activitiesList } = props;
 
-  useEffect(() => {
-    const fetchTags = async () => {
-      const fetchedTags = await getAllTags();
-      setTags(fetchedTags);
+  const [isLoading, setLoading] = React.useState<boolean>(false);
+  const [activities, setActivities] = React.useState(activitiesList);
+  const [locations, setLocations] = React.useState([...EVENT_LOCATIONS]);
+  const [tags, setTags] = React.useState<any>([]);
+  const [date, setDate] = React.useState<DateRange | undefined>();
+
+  React.useEffect(() => {
+    const fetchAllTags = async () => {
+      const tags = await getAllTags();
+      setTags(tags);
     };
-    fetchTags();
+
+    fetchAllTags();
   }, []);
-
-  return [tags, setTags];
-};
-
-const ActiveEvents = ({ activities }: { activities: IActivity[] }) => {
-  const [isLoading, setLoading] = useState(false);
-  const [activitiesState, setActivities] = useState(activities);
-  const [locations, setLocations] = useState([...EVENT_LOCATIONS]);
-  const [tags, setTags] = useTags();
-  const [date, setDate] = useState<DateRange | undefined>();
 
   const onLocationChange = async (item, value) => {
     try {

@@ -17,7 +17,6 @@ export default function FeatureSection() {
       </div>
 
       <div className="overflow-hidden bg-white pt-10 sm:pt-32">
-
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-24">
           <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start">
             <div className="order-2 lg:order-1">
@@ -38,12 +37,21 @@ export default function FeatureSection() {
                   Education
                 </h2>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
-                  Unblock the boundless potential of young minds! Make school spaces vibrant for students. Create learning aids for children with special needs. Help young minds become computer literate.
+                  Unblock the boundless potential of young minds! Make school
+                  spaces vibrant for students. Create learning aids for children
+                  with special needs. Help young minds become computer literate.
                 </p>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
                   For
                   <span className="mx-1.5 font-bold">Education</span>
-                  related activities, Register <Link className='underline text-blue-700 font-semibold' href="/activities">here</Link>.
+                  related activities, Register{' '}
+                  <Link
+                    className="underline text-blue-700 font-semibold"
+                    href="/activities"
+                  >
+                    here
+                  </Link>
+                  .
                 </p>
               </div>
             </div>
@@ -58,12 +66,22 @@ export default function FeatureSection() {
                   Community
                 </h2>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
-                  Every action we take either contributes to the harmony or the degradation of our environment; let's choose wisely for a sustainable and thriving future. Let's clean up our beaches and lakes. Be a ally to our paw friends. Or plant trees.
+                  Every action we take either contributes to the harmony or the
+                  degradation of our environment; let's choose wisely for a
+                  sustainable and thriving future. Let's clean up our beaches
+                  and lakes. Be a ally to our paw friends. Or plant trees.
                 </p>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
                   For
                   <span className="mx-1.5 font-bold">Environment</span>
-                  related activities, Register <Link className='underline text-blue-700 font-semibold' href="/activities">here</Link>.
+                  related activities, Register{' '}
+                  <Link
+                    className="underline text-blue-700 font-semibold"
+                    href="/activities"
+                  >
+                    here
+                  </Link>
+                  .
                 </p>
               </div>
             </div>
@@ -101,12 +119,23 @@ export default function FeatureSection() {
                   Environment
                 </h2>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
-                  Each act of kindness, every moment of empathy, and the collective pursuit of health weaves a fabric of resilience, strength, and harmony that enriches the entire community. Help build hygiene and basic groceries kits. Interact with the elderly. Do your bit.
+                  Each act of kindness, every moment of empathy, and the
+                  collective pursuit of health weaves a fabric of resilience,
+                  strength, and harmony that enriches the entire community. Help
+                  build hygiene and basic groceries kits. Interact with the
+                  elderly. Do your bit.
                 </p>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
                   For
                   <span className="mx-1.5 font-bold">Environment</span>
-                  related activities, Register <Link className='underline text-blue-700 font-semibold' href="/activities">here</Link>.
+                  related activities, Register{' '}
+                  <Link
+                    className="underline text-blue-700 font-semibold"
+                    href="/activities"
+                  >
+                    here
+                  </Link>
+                  .
                 </p>
               </div>
             </div>

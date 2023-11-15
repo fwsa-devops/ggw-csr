@@ -1,4 +1,4 @@
-import { BellIcon } from 'lucide-react';
+import { CalendarIcon } from 'lucide-react';
 import React from 'react';
 import {
   Popover,
@@ -15,7 +15,8 @@ const NotificationsDrawer = ({ activitiesJoined }) => {
       <Popover>
         <PopoverTrigger asChild>
           <div className="mr-3 hover:bg-gray-200 rounded-full bg-white p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer">
-            <BellIcon className="bg-grey-700" size={18} />
+            {/* <BellIcon className="bg-grey-700" size={18} /> */}
+            <CalendarIcon className="bg-grey-700" size={18} />
             <span className="sr-only">View notifications</span>
           </div>
         </PopoverTrigger>

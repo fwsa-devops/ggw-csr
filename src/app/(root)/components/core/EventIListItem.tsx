@@ -9,15 +9,15 @@ import {
   XIcon,
 } from 'lucide-react';
 import { signIn, useSession } from 'next-auth/react';
-import { Button } from '../../../../components/ui/button';
+import { Button } from '@/components/ui/button';
 // import { deleteEvent, joinEvent } from '../events/utils/api';
 import { joinEvent, unJoinEvent } from '@/components/actions/action';
 import UserAvatar from '@/components/user-avatar';
 import { cn } from '@/lib/utils';
 import { IEvent } from '@/types';
 import { useTransition } from 'react';
-import { Progress } from '../../../../components/ui/progress';
-import { toast } from '../../../../components/ui/use-toast';
+import { Progress } from '@/components/ui/progress';
+import { useToast } from '@/components/ui/use-toast';
 import { ActivityState } from '@prisma/client';
 import Link from 'next/link';
 
@@ -42,6 +42,8 @@ const EventListItem = ({
   isPartOfThisEvent: boolean;
   activity: any;
 }) => {
+  const { toast } = useToast();
+
   const { status } = useSession();
   const [isPending, startTransition] = useTransition();
 
@@ -146,7 +148,7 @@ const EventListItem = ({
           {size === 'lg' && <Separator className="mt-6 mb-4" />}
 
           <div className="flex justify-between items-start font-medium">
-            <div className={cn('flex-1 ', size === 'lg' ? 'mb-2' : '')}>
+            <div className={cn('flex-1', size === 'lg' ? 'mb-2' : '')}>
               <Progress
                 value={(event.volunteers.length / event.max_volunteers) * 100}
                 className="my-2"
@@ -163,7 +165,7 @@ const EventListItem = ({
 
             {size === 'lg' &&
               (activity.status !== ActivityState.CLOSED ? (
-                <div>
+                <div className="">
                   {status === 'unauthenticated' ? (
                     <Button
                       variant={'default'}
@@ -214,6 +216,22 @@ const EventListItem = ({
                 </div>
               ))}
           </div>
+
+          {(isEventLimitReached && (
+            <div className="text-red-500 font-medium ">
+              Maximum number of volunteers limit reached. Check out some of our
+              other events.
+            </div>
+          )) ||
+            (status === 'authenticated' &&
+              isPartOfAnyEvent &&
+              !isPartOfThisEvent && (
+                <div className="text-red-500 font-medium">
+                  You are already part of Another Event.
+                </div>
+              ))}
+
+          {}
 
           {size === 'lg' && (
             <div className="mt-3 flex items-center">

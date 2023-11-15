@@ -55,7 +55,7 @@ const ActivityListItem = ({ activity }: { activity: IActivity }) => {
 
         <div className="flex">
           <Link href={`/activities/${activity.id}`}>
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="default">
               Learn more
             </Button>
           </Link>

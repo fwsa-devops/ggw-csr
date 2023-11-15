@@ -34,7 +34,7 @@ export default async function RootLayout({
         <body className={inter.className}>
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <Header activitiesJoined={activitiesJoined} />
-          <main className="main bg-white">
+          <main className="main relative">
             <div className="">{children}</div>
             <Toaster />
           </main>

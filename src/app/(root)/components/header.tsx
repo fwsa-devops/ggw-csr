@@ -5,7 +5,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
-import { UserNav } from '../../../components/user-nav';
+import { UserNav } from '@/components/user-nav';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -15,6 +15,7 @@ import { usePathname } from 'next/navigation';
 const navigations = [
   { name: 'Activities', href: '/activities', show: true },
   { name: 'Testimonies', href: '/testimonies', show: false },
+  { name: 'FAQ', href: '/faq', show: true },
 ];
 
 export default function HeaderComp({ activitiesJoined }) {
@@ -31,7 +32,7 @@ export default function HeaderComp({ activitiesJoined }) {
     <>
       <Collapsible>
         <>
-          <div className="mx-auto max-w-7xl px-2 relative">
+          <div className="mx-auto max-w-7xl px-2 sticky top-0 z-50 bg-white">
             <div className="relative flex h-16 justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden ml-2">
                 <CollapsibleTrigger

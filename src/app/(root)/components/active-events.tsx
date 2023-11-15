@@ -103,8 +103,9 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
     try {
       setLoading(true);
       const filters = getFilters();
-      if (filters) {
-        setActivities(await getFilteredActivities(filters));
+      if (filters && Object.keys(filters).length > 0) {
+        const activities = await getFilteredActivities(filters);
+        setActivities(activities);
       } else {
         setActivities(await getAllActivitiesFromDB());
       }

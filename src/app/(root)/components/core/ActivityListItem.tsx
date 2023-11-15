@@ -6,6 +6,8 @@ import EventListItem from './EventIListItem';
 import { IActivity } from '@/types';
 
 const ActivityListItem = ({ activity }: { activity: IActivity }) => {
+  activity.events.length = 2;
+
   return (
     <div
       id={activity.id}

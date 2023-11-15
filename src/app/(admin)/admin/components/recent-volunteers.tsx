@@ -1,7 +1,7 @@
 import UserAvatar from '@/components/user-avatar';
 import moment from 'moment';
 
-export function RecentSales({ volunteers }) {
+export function RecentVolunteers({ volunteers }) {
   return (
     <div className="space-y-8">
       {volunteers.map(({ user, assigned_at }) => (

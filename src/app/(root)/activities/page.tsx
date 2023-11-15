@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 
 export default async function Home() {
   const activities = await getAllActivitiesFromDB();
-  const pastActivities = await getPastActivities();
+  // const pastActivities = await getPastActivities();
 
   return (
     <>

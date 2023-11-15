@@ -66,7 +66,7 @@ function AuthButton({ user }: { user: any }) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link href="/events">
+          <Link href="/activities">
             <DropdownMenuItem className="cursor-pointer">
               Events
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>

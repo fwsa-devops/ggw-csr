@@ -13,7 +13,7 @@ import { useBoolean } from 'usehooks-ts';
 import { usePathname } from 'next/navigation';
 
 const navigations = [
-  { name: 'Activites', href: '/activities', show: true },
+  { name: 'Activities', href: '/activities', show: true },
   { name: 'Testimonies', href: '/testimonies', show: false },
 ];
 

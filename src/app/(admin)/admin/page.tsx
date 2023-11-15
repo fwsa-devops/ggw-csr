@@ -6,8 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { CalendarIcon } from '@radix-ui/react-icons';
 import { Overview } from './components/overview';
-import { RecentSales } from './components/recent-activity';
+import { RecentVolunteers } from './components/recent-volunteers';
 
 const DashboardPage = async () => {
   const events = await prisma.event.findMany({
@@ -29,11 +30,44 @@ const DashboardPage = async () => {
     },
   });
   const activities = await prisma.activity.findMany({
-    select: {
-      name: true,
-      id: true,
-      status: true,
+    include: {
+      events: {
+        include: {
+          _count: {
+            select: {
+              volunteers: true,
+            },
+          },
+        },
+      },
+      tags: {
+        include: {
+          tag: true,
+        },
+      },
     },
+  });
+
+  const themeBasedVolunteersCount = {};
+
+  activities.forEach((activity) => {
+    // console.log('activity.events', JSON.stringify(activity.events));
+    const volunteersCount = activity.events.reduce((val, event) => {
+      return val + event['_count'].volunteers;
+    }, 0);
+    // console.log('volunteersCount', volunteersCount);
+    activity.tags.forEach((tag) => {
+      themeBasedVolunteersCount[tag.tag.name] =
+        (themeBasedVolunteersCount[tag.tag.name] || 0) + volunteersCount;
+    });
+  });
+
+  const locationBasedVolunteers = {};
+
+  events.forEach((event) => {
+    const volunteersCount = event._count.volunteers;
+    locationBasedVolunteers[event.city] =
+      (locationBasedVolunteers[event.city] || 0) + volunteersCount;
   });
 
   // For each activity, get the total number of volunteers
@@ -81,6 +115,8 @@ const DashboardPage = async () => {
     },
   });
 
+  // console.log('themeBasedVolunteersCount',themeBasedVolunteersCount, Object.keys(themeBasedVolunteersCount), Object.keys(themeBasedVolunteersCount).map(val => ({name:  val, count: themeBasedVolunteersCount[val]})));
+
   return (
     <>
       <main className="flex flex-col items-center justify-between">
@@ -98,18 +134,7 @@ const DashboardPage = async () => {
                   <CardTitle className="text-sm font-medium">
                     Activities
                   </CardTitle>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="h-4 w-4 text-muted-foreground"
-                  >
-                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                  </svg>
+                  <CalendarIcon className="opacity-70 h-4 w-4" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold"> {activeActivities} </div>
@@ -197,10 +222,10 @@ const DashboardPage = async () => {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card className="col-span-4">
               <CardHeader>
-                <CardTitle>Overview</CardTitle>
+                <CardTitle>Overview - Activity wise</CardTitle>
               </CardHeader>
               <CardContent className="pl-2 sm:pr-2 sm:w-full">
-                <Overview events={activityVolunteerCounts} />
+                <Overview data={activityVolunteerCounts} />
               </CardContent>
             </Card>
             <Card className="col-span-3">
@@ -218,10 +243,41 @@ const DashboardPage = async () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <RecentSales volunteers={volunteers} />
+                <RecentVolunteers volunteers={volunteers} />
               </CardContent>
             </Card>
           </div>
+
+          <div className="grid mt-4 md:grid-cols-2 lg:grid-cols-8">
+            <Card className="col-span-4 mr-3">
+              <CardHeader>
+                <CardTitle>Overview - Theme wise</CardTitle>
+              </CardHeader>
+              <CardContent className="pl-2 sm:pr-2 sm:w-full">
+                <Overview
+                  data={Object.keys(themeBasedVolunteersCount).map((val) => ({
+                    name: val,
+                    count: themeBasedVolunteersCount[val],
+                  }))}
+                />
+              </CardContent>
+            </Card>
+            <Card className="col-span-4">
+              <CardHeader>
+                <CardTitle>Overview - Location wise</CardTitle>
+              </CardHeader>
+              <CardContent className="pl-2 sm:pr-2 sm:w-full">
+                <Overview
+                  data={Object.keys(locationBasedVolunteers).map((val) => ({
+                    name: val,
+                    count: locationBasedVolunteers[val],
+                  }))}
+                />
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7"></div>
         </section>
       </main>
 

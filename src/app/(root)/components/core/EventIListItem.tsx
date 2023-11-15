@@ -52,7 +52,7 @@ const EventListItem = ({
     : calculateTimeDiff(startTime, endTime);
 
   const isEventLimitReached: boolean =
-    event?.max_volunteers === event.leaders.length;
+    event?.max_volunteers === event.volunteers.length;
 
   const callServerAction = async (action: 'JOIN' | 'UNJOIN') => {
     const toastObj = {
@@ -193,7 +193,7 @@ const EventListItem = ({
                         variant={'default'}
                         className="ml-4"
                         type="button"
-                        disabled={isPending || isEventLimitReached}
+                        disabled={isPending}
                         onClick={() =>
                           startTransition(() => callServerAction('UNJOIN'))
                         }

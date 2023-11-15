@@ -30,7 +30,6 @@ import {
 } from '@/components/ui/select';
 import { createActivity } from '@/components/actions/action';
 import { toast } from '@/components/ui/use-toast';
-import { EVENT_LOCATIONS } from '@/../constants';
 import React from 'react';
 import Loader from '@/components/ui/loader';
 
@@ -174,38 +173,6 @@ const ActivityForm = ({
                       theme="snow"
                       {...field}
                       className="block w-full bg-white rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </div>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="city"
-            defaultValue={initialData?.city ?? 'Chennai'}
-            render={({ field }) => (
-              <div className="mt-6">
-                <FormItem>
-                  <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900">
-                    {' '}
-                    {field.name}{' '}
-                  </FormLabel>
-                  <FormControl className="mt-2">
-                    {/* <input
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      {...field}
-                    /> */}
-
-                    <MultiSelect
-                      ref={field.ref}
-                      items={EVENT_LOCATIONS.map((l) => l.name)}
-                      onChange={field.onChange}
-                      value={field.value}
-                      multiple={false}
-                      key={'location'}
                     />
                   </FormControl>
                   <FormMessage />

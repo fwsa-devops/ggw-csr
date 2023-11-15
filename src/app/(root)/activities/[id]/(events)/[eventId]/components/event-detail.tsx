@@ -1,6 +1,5 @@
 'use client';
 
-import { LaptopIcon } from 'lucide-react';
 import EventFeedbackForm from './event-feedback-form';
 import { Separator } from '@/components/ui/separator';
 import EventFeedbackList from './event-feedback-list';
@@ -25,10 +24,11 @@ const EventDetails = ({ event: eventDetails }: { event: any }) => {
             </h1>
           </div>
 
-          <div className="flex gap-2 mb-2 location align-center">
+          {/* <div className="flex gap-2 mb-2 location align-center">
             <LaptopIcon />
             <p>{eventDetails.activity?.city}</p>
-          </div>
+          </div> */}
+
           <h2 className="mt-2 mb-3 text-sm tracking-widest text-gray-400 title-font">
             {eventDetails.activity.tags
               ? eventDetails.activity?.tags.map((tag) => (

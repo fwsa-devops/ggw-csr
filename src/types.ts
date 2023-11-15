@@ -15,7 +15,6 @@ export const activityFormSchema = z.object({
   cover: z.string().url(),
   summary: z.string().min(1, 'Summary is required'),
   description: z.string().min(10, 'Description is required'),
-  city: z.enum(['Chennai', 'Bangalore']),
   duration: z.union([z.number().int().positive().min(1), z.nan()]),
   // duration: z.string().optional(),
   author_id: z.string(),

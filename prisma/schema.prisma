@@ -16,7 +16,7 @@ model Activity {
   description String         @db.Text
   summary     String         @db.Text
   duration    Int            @default(120)
-  city        City?
+  // city        City?
   status      ActivityState  @default(DRAFT)
   author_id   String
   posts_urls  String?

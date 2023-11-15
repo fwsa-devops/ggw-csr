@@ -30,11 +30,8 @@ const NotificationsDrawer = ({ activitiesJoined }) => {
               <ul role="list" className="divide-y divide-gray-100">
                 {activitiesJoined.length > 0 ? (
                   activitiesJoined?.map((activity) => (
-                    <>
-                      <li
-                        key={activity.event.id}
-                        className="flex justify-between gap-x-6 py-5"
-                      >
+                    <div key={activity.event.id}>
+                      <li className="flex justify-between gap-x-6 py-5">
                         <Link
                           href={`/activities/${activity.event.activity.id}#${activity.event.id}`}
                         >
@@ -52,7 +49,7 @@ const NotificationsDrawer = ({ activitiesJoined }) => {
                         </Link>
                       </li>
                       <Separator />
-                    </>
+                    </div>
                   ))
                 ) : (
                   <span>No activities joined yet</span>

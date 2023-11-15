@@ -1,4 +1,3 @@
-import { LaptopIcon } from 'lucide-react';
 import { IActivity } from '@/types';
 import { getServerSession } from 'next-auth';
 
@@ -23,11 +22,12 @@ const ActivityPreview = async ({ activity }: { activity: IActivity }) => {
             </h1>
           </div>
 
-          <div className="flex gap-2 mb-2 location align-center">
-            <LaptopIcon />
+          {/* <div className="flex gap-2 mb-2 location align-center">
+            <MapPin size="18" />
             <p>{activity?.city}</p>
-          </div>
-          <h2 className="mt-2 mb-3 text-sm tracking-widest text-gray-400 title-font">
+          </div> */}
+
+          <h2 className="mb-3 text-sm tracking-widest text-gray-400 title-font">
             {activity.tags
               ? activity?.tags.map((tag) => (
                   <span key={tag.id} className="mr-2">

@@ -1,5 +1,4 @@
 import React from 'react';
-import { MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { getActivityDescription } from '@/components/utils';
 import { Button } from '@/components/ui/button';
@@ -30,10 +29,10 @@ const ActivityListItem = ({ activity }: { activity: IActivity }) => {
           </h1>
         </Link>
 
-        <div className="flex gap-2 mb-2 text-gray-700 location items-center">
+        {/* <div className="flex gap-2 mb-2 text-gray-700 location items-center">
           <MapPin size="18" />
           <p className="text-sm">{activity?.city}</p>
-        </div>
+        </div> */}
 
         <h2 className="mb-1 text-sm tracking-widest text-gray-400 title-font">
           {activity.tags && activity?.tags?.length > 0

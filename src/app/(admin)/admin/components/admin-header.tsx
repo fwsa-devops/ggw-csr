@@ -14,8 +14,9 @@ import { UserNav } from '@/components/user-nav';
 
 const navigations = [
   { name: 'Dashboard', href: '/admin' },
-  { name: 'Activites', href: '/admin/activities' },
   { name: 'Homepage', href: '/admin/homepage' },
+  { name: 'Activites', href: '/admin/activities' },
+  { name: 'Testimonies', href: '/admin/testimonies' },
 ];
 
 export default function AdminHeader() {
@@ -49,7 +50,7 @@ export default function AdminHeader() {
                 </CollapsibleTrigger>
               </div>
 
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start mr-10">
                 <div className="flex flex-shrink-0 items-center text-2xl font-bold">
                   <Link href={'/'}>Global Giving Week</Link>
                 </div>
@@ -72,7 +73,7 @@ export default function AdminHeader() {
               </div>
 
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <UserNav />
+                <UserNav activitiesJoined={[]} />
               </div>
             </div>
           </div>

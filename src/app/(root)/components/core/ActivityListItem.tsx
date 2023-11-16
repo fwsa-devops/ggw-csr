@@ -1,5 +1,4 @@
 import React from 'react';
-import { MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { getActivityDescription } from '@/components/utils';
 import { Button } from '@/components/ui/button';
@@ -7,8 +6,13 @@ import EventListItem from './EventIListItem';
 import { IActivity } from '@/types';
 
 const ActivityListItem = ({ activity }: { activity: IActivity }) => {
+  activity.events.length = 2;
+
   return (
-    <div className="flex flex-wrap gap-6 p-4 mx-auto event-container md:flex-nowrap md:h-600">
+    <div
+      id={activity.id}
+      className="flex flex-wrap gap-6 p-4 mx-auto event-container md:flex-nowrap md:h-600"
+    >
       <Link
         className="flex lg:w-1/3 lg:h-100 max-h-72"
         href={`/activities/${activity.id}`}
@@ -27,10 +31,10 @@ const ActivityListItem = ({ activity }: { activity: IActivity }) => {
           </h1>
         </Link>
 
-        <div className="flex gap-2 mb-2 text-gray-700 location items-center">
+        {/* <div className="flex gap-2 mb-2 text-gray-700 location items-center">
           <MapPin size="18" />
           <p className="text-sm">{activity?.city}</p>
-        </div>
+        </div> */}
 
         <h2 className="mb-1 text-sm tracking-widest text-gray-400 title-font">
           {activity.tags && activity?.tags?.length > 0
@@ -51,7 +55,7 @@ const ActivityListItem = ({ activity }: { activity: IActivity }) => {
 
         <div className="flex">
           <Link href={`/activities/${activity.id}`}>
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="default">
               Learn more
             </Button>
           </Link>
@@ -63,6 +67,7 @@ const ActivityListItem = ({ activity }: { activity: IActivity }) => {
 
         {activity.events.map((event: any) => (
           <EventListItem
+            activity={activity}
             isPartOfThisEvent={true}
             event={event}
             size="sm"

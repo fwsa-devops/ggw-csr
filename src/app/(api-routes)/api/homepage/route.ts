@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     const homepage = await prisma.homepage.create({
       data: body,
     });
-    console.log(homepage);
+    // console.log(homepage);
 
     const res: ResponseType = {
       success: true,
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(res);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
 
     const res: ResponseType = {
       success: false,

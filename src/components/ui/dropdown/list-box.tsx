@@ -4,7 +4,7 @@ import React, { Fragment, forwardRef } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
 
 const MultiSelect = forwardRef((props: any, ref) => {
-  console.log(props);
+  // console.log(props);
 
   const selected = () => {
     if (!props.value) return;

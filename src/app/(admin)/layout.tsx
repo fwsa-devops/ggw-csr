@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth';
 import { Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import AdminHeader from '@/admin/components/admin-header';
+import { redirect } from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,12 +21,16 @@ export default async function RootLayout({
   const session = await getServerSession();
   // check for login & role in here
 
-  // console.log('Root component');
-
+  const adminUsers = process.env.ADMIN_USERS?.split(' ') ?? [];
+  console.log('adminUsers', adminUsers);
+  if (!adminUsers.includes(session?.user?.email ?? '')) {
+    redirect('/');
+  }
   return (
     <html lang="en">
       <head>
         <title>CSR Events Portal</title>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <SessionProvider session={session}>
         <body className={inter.className}>

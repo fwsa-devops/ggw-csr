@@ -14,7 +14,7 @@ const PostsList = ({ imageUrls: assets = [] }: { imageUrls: Asset[] }) => {
 
       if (imageExtensionRegex.test(assetUrl.url)) {
         return (
-          <div className="bg-card text-card-foreground ">
+          <div className="bg-card text-card-foreground" key={assetUrl.id}>
             <ExpandImageOnClick>
               <img
                 loading="lazy"
@@ -26,7 +26,7 @@ const PostsList = ({ imageUrls: assets = [] }: { imageUrls: Asset[] }) => {
         );
       } else {
         return (
-          <div className="">
+          <div className="" key={assetUrl.id}>
             <video
               src={assetUrl.url}
               controls

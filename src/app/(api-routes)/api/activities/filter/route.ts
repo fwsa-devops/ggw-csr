@@ -1,69 +1,144 @@
 import prisma from '@/lib/prisma';
 import { INCLUDE_ALL_ACTIVITIES_DATA } from '../../../../../../constants';
 
+function onlyUnique(value, index, array) {
+  return array.indexOf(value) === index;
+}
+
+const cities = ['Chennai', 'Bangalore'];
+
 // POST /api/filter
 // return filtered activities
 export async function POST(req: Request) {
   const filters = await req.json();
 
-  // const activities = await prisma.activity.findMany({
-  //   take: 10,
-  //   where: {
-  //     AND: {
-  //       city: {
-  //         in: filters.locations,
-  //       },
-  //       tags: {
-  //         some: {
-  //           tag: {
-  //             name: {
-  //               in: filters.tagNames,
-  //             },
-  //           },
-  //         },
-  //       },
-  //     },
-  //   },
-  //   ...INCLUDE_ALL_ACTIVITIES_DATA,
-  // });
+  // console.log('filters', filters);
 
-  const activities = await prisma.activity.findMany({
-    take: 10,
-    where: {
-      tags: {
-        some: {
-          tag: {
-            name: {
-              in: filters.tagNames,
+  let activities: any[] = [];
+
+  if (filters.tagNames && filters.locations) {
+    const _activities = await prisma.activity.findMany({
+      take: 10,
+      where: {
+        status: {
+          equals: 'OPEN',
+        },
+        tags: {
+          some: {
+            tag: {
+              name: {
+                in: filters.tagNames,
+              },
             },
           },
         },
       },
-      events: {
-        some: {
+      ...INCLUDE_ALL_ACTIVITIES_DATA,
+    });
+
+    for (const activity of _activities) {
+      const events = await prisma.event.findMany({
+        where: {
+          activityId: activity.id,
           city: {
-            in: filters.city,
+            in: filters.locations,
           },
-          // OR: [
-          //   {
-          //     is_dates_announced: true,
-          //     startTime: {
-          //       gte: filters.startDate, // Assuming filters.startDate contains the start date you want to filter by
-          //     },
-          //   },
-          //   {
-          //     is_dates_announced: true,
-          //     endTime: {
-          //       lte: filters.endDate, // Assuming filters.endDate contains the end date you want to filter by
-          //     },
-          //   },
-          // ]
+        },
+        include: {
+          leaders: {
+            include: {
+              user: true,
+            },
+          },
+          volunteers: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      });
+      // console.log('events', {
+      //   name: activity.name,
+      //   eventLength: events.length,
+      // });
+      activity['events'] = events;
+    }
+
+    // console.log('_activities', _activities);
+    activities = _activities;
+  }
+
+  if (filters.tagNames && !filters.locations) {
+    const _activities = await prisma.activity.findMany({
+      take: 10,
+      where: {
+        status: {
+          equals: 'OPEN',
+        },
+        tags: {
+          some: {
+            tag: {
+              name: {
+                in: filters.tagNames,
+              },
+            },
+          },
         },
       },
-    },
-    ...INCLUDE_ALL_ACTIVITIES_DATA,
-  });
+      ...INCLUDE_ALL_ACTIVITIES_DATA,
+    });
 
-  console.log('activities', activities);
-  return Response.json(activities);
+    activities = _activities;
+  }
+
+  if (!filters.tagNames && filters.locations) {
+    const events = await prisma.event.findMany({
+      where: {
+        city: {
+          in: filters.locations,
+        },
+      },
+      include: {
+        leaders: {
+          include: {
+            user: true,
+          },
+        },
+        volunteers: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    // console.log('events', events);
+
+    const _activityIds = events
+      .map((event) => event.activityId)
+      .filter(onlyUnique);
+    // console.log('_activityIds', _activityIds);
+
+    const _activities = await prisma.activity.findMany({
+      where: {
+        id: {
+          in: _activityIds,
+        },
+      },
+    });
+    // console.log('_activities', _activities);
+
+    _activities.forEach((activity) => {
+      activity['events'] = events.filter(
+        (event) => event.activityId === activity.id,
+      );
+    });
+
+    activities = _activities;
+  }
+
+  // console.log('final activities', (activities));
+  return Response.json(
+    activities.filter((activity) => activity.events.length > 0),
+  );
 }

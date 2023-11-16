@@ -6,17 +6,14 @@ import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown/dropdown-menu';
-import Link from 'next/link';
-import { CalendarCheck2 } from 'lucide-react';
+import NotificationsDrawer from './notifications-drawer';
 
-export function UserNav() {
+export function UserNav({ activitiesJoined }) {
   const { data: session } = useSession();
 
   if (session) {
@@ -24,15 +21,9 @@ export function UserNav() {
       <>
         {session?.user && (
           <>
-            <Button
-              variant={'ghost'}
-              type="button"
-              className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 mr-4"
-            >
-              <span className="absolute -inset-1.5" />
-              <span className="sr-only">View notifications</span>
-              <CalendarCheck2 size={18} />
-            </Button>
+            <NotificationsDrawer activitiesJoined={activitiesJoined} />
+            {/* <span className="absolute -inset-1.5" /> */}
+
             <AuthButton user={session.user} />
           </>
         )}
@@ -61,7 +52,7 @@ function AuthButton({ user }: { user: any }) {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent className="w-60" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">{user.name}</p>
@@ -71,22 +62,8 @@ function AuthButton({ user }: { user: any }) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <Link href="/events">
-            <DropdownMenuItem className="cursor-pointer">
-              Events
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </Link>
-          <DropdownMenuItem className="cursor-pointer">
-            Settings
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
           Log out
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

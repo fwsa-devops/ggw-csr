@@ -34,6 +34,7 @@ export const getActivitiesBasedOnFilters = async (filters: any) => {
     },
     body: JSON.stringify(filters),
     credentials: 'include',
+    cache: 'no-cache',
   });
   const json = await response.json();
   return json;

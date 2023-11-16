@@ -1,9 +1,4 @@
-import {
-  BuildingIcon,
-  CalendarRangeIcon,
-  MapIcon,
-  PenIcon,
-} from 'lucide-react';
+import { BuildingIcon, CalendarRangeIcon } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
@@ -69,10 +64,10 @@ const EventListItem = ({
                 size === 'sm' ? 'flex' : '',
               )}
             >
-              <div className="flex mr-4  mb-2">
+              {/* <div className="flex mr-4  mb-2">
                 <MapIcon size={18} className="mr-2" />
                 {event.city}
-              </div>
+              </div> */}
 
               {size === 'lg' && (
                 <div className="flex mr-4  mb-2">
@@ -127,11 +122,11 @@ const EventListItem = ({
             {size === 'lg' && (
               <div>
                 <Link
-                  href={`/admin/activities/${activityId}/events/${event.id}/edit`}
+                  href={`/admin/activities/${activityId}/events/${event.id}`}
                 >
                   <Button variant={'default'} className="ml-4" type="button">
-                    <PenIcon size={18} className="mr-2" />
-                    Edit
+                    {/* <PenIcon size={18} className="mr-2" /> */}
+                    View
                   </Button>
                 </Link>
               </div>

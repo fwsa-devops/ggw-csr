@@ -1,4 +1,4 @@
-import { LaptopIcon, PenIcon } from 'lucide-react';
+import { PenIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { IActivity } from '@/types';
@@ -34,10 +34,11 @@ const ActivityPreview = async ({ activity }: { activity: IActivity }) => {
             )}
           </div>
 
-          <div className="flex gap-2 mb-2 location align-center">
-            <LaptopIcon />
+          {/* <div className="flex gap-2 mb-2 location align-center">
+            <MapPin size="18" />
             <p>{activity?.city}</p>
-          </div>
+          </div> */}
+
           <h2 className="mt-2 mb-3 text-sm tracking-widest text-gray-400 title-font">
             {activity.tags
               ? activity?.tags.map((tag) => (

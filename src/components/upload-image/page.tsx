@@ -6,12 +6,12 @@ import { uploadPostToActivity } from '@/components/utils/api';
 
 export default function UploadImageDropzone({ setImageUrls, activity }) {
   const addPostToActivity = async (imageUrls) => {
-    console.log('imageUrls', imageUrls);
+    // console.log('imageUrls', imageUrls);
     const response = await uploadPostToActivity(imageUrls, activity.id);
     const finalImageUrls = imageUrls.map((imageUrl) => ({
       url: imageUrl,
     }));
-    console.log('finalImageUrls', finalImageUrls);
+    // console.log('finalImageUrls', finalImageUrls);
 
     setImageUrls((images: string[]) => [...images, finalImageUrls]);
   };
@@ -22,7 +22,7 @@ export default function UploadImageDropzone({ setImageUrls, activity }) {
         endpoint="imageUploader"
         onClientUploadComplete={(images) => {
           // Need to store the image url in activity model as string[]
-          console.log('Files: ', images);
+          // console.log('Files: ', images);
           addPostToActivity(images?.map((image) => image.url));
         }}
         onUploadError={(error: Error) => {
@@ -30,7 +30,7 @@ export default function UploadImageDropzone({ setImageUrls, activity }) {
         }}
         onUploadBegin={(name) => {
           // Do something once upload begins
-          console.log('Uploading: ', name);
+          // console.log('Uploading: ', name);
         }}
       />
     </div>

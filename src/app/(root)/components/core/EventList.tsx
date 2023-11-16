@@ -6,10 +6,12 @@ const EventList = async ({
   events,
   size = 'lg',
   isPartOfAnyEvent = false,
+  activity,
 }: {
   events: IEvent[];
   size: 'lg' | 'sm';
   isPartOfAnyEvent: boolean;
+  activity: any;
 }) => {
   const session = await getServerSession();
 
@@ -35,6 +37,7 @@ const EventList = async ({
         {events && events.length > 0 ? (
           events.map((event) => (
             <EventListItem
+              activity={activity}
               key={event.id}
               event={event}
               size={size}

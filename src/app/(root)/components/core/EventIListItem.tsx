@@ -9,15 +9,17 @@ import {
   XIcon,
 } from 'lucide-react';
 import { signIn, useSession } from 'next-auth/react';
-import { Button } from '../../../../components/ui/button';
+import { Button } from '@/components/ui/button';
 // import { deleteEvent, joinEvent } from '../events/utils/api';
 import { joinEvent, unJoinEvent } from '@/components/actions/action';
 import UserAvatar from '@/components/user-avatar';
 import { cn } from '@/lib/utils';
 import { IEvent } from '@/types';
 import { useTransition } from 'react';
-import { Progress } from '../../../../components/ui/progress';
-import { toast } from '../../../../components/ui/use-toast';
+import { Progress } from '@/components/ui/progress';
+import { useToast } from '@/components/ui/use-toast';
+import { ActivityState } from '@prisma/client';
+import Link from 'next/link';
 
 const calculateTimeDiff = (start, end) => {
   return (
@@ -32,12 +34,16 @@ const EventListItem = ({
   size = 'lg',
   isPartOfAnyEvent,
   isPartOfThisEvent,
+  activity,
 }: {
   event: IEvent;
   size: 'lg' | 'sm';
   isPartOfAnyEvent: boolean;
   isPartOfThisEvent: boolean;
+  activity: any;
 }) => {
+  const { toast } = useToast();
+
   const { status } = useSession();
   const [isPending, startTransition] = useTransition();
 
@@ -46,6 +52,9 @@ const EventListItem = ({
   const date = !is_dates_announced
     ? date_announcement_text + ' Hrs'
     : calculateTimeDiff(startTime, endTime);
+
+  const isEventLimitReached: boolean =
+    event?.max_volunteers === event.volunteers.length;
 
   const callServerAction = async (action: 'JOIN' | 'UNJOIN') => {
     const toastObj = {
@@ -76,6 +85,7 @@ const EventListItem = ({
   return (
     <>
       <div
+        id={event.id}
         className={cn(
           'my-5 text-sm text-gray-700 event-timings align-center',
           size === 'lg'
@@ -124,7 +134,7 @@ const EventListItem = ({
             </div>
 
             {size === 'lg' && (
-              <div className="ml-auto flex flex-col items-end">
+              <div className="flex flex-col md:ml-auto md:items-end">
                 <h2 className="font-semibold mb-2">Event Leaders</h2>
                 <div className="flex">
                   {event.leaders.map(({ user }) => (
@@ -138,7 +148,7 @@ const EventListItem = ({
           {size === 'lg' && <Separator className="mt-6 mb-4" />}
 
           <div className="flex justify-between items-start font-medium">
-            <div className={cn('flex-1 ', size === 'lg' ? 'mb-2' : '')}>
+            <div className={cn('flex-1', size === 'lg' ? 'mb-2' : '')}>
               <Progress
                 value={(event.volunteers.length / event.max_volunteers) * 100}
                 className="my-2"
@@ -153,50 +163,74 @@ const EventListItem = ({
               </div>
             </div>
 
-            {size === 'lg' && (
-              <div>
-                {status === 'unauthenticated' ? (
-                  <Button
-                    variant={'default'}
-                    className="ml-4"
-                    type="button"
-                    onClick={() => signIn('google')}
-                  >
-                    <HandIcon size={18} className="mr-2" />
-                    Sign in to Join Event
-                  </Button>
-                ) : !isPartOfAnyEvent ? (
-                  <Button
-                    variant={'default'}
-                    className="ml-4"
-                    type="button"
-                    disabled={isPending}
-                    onClick={() =>
-                      startTransition(() => callServerAction('JOIN'))
-                    }
-                  >
-                    <HandIcon size={18} className="mr-2" />
-                    Join this event
-                  </Button>
-                ) : (
-                  isPartOfThisEvent && (
+            {size === 'lg' &&
+              (activity.status !== ActivityState.CLOSED ? (
+                <div className="">
+                  {status === 'unauthenticated' ? (
                     <Button
                       variant={'default'}
                       className="ml-4"
                       type="button"
-                      disabled={isPending}
+                      onClick={() => signIn('google')}
+                    >
+                      <HandIcon size={18} className="mr-2" />
+                      Sign in to Join Event
+                    </Button>
+                  ) : !isPartOfAnyEvent ? (
+                    <Button
+                      variant={'default'}
+                      className="ml-4"
+                      type="button"
+                      disabled={isPending || isEventLimitReached}
                       onClick={() =>
-                        startTransition(() => callServerAction('UNJOIN'))
+                        startTransition(() => callServerAction('JOIN'))
                       }
                     >
-                      <XIcon size={18} className="mr-2" />
-                      Unjoin this event
+                      <HandIcon size={18} className="mr-2" />
+                      Join this event
                     </Button>
-                  )
-                )}
-              </div>
-            )}
+                  ) : (
+                    isPartOfThisEvent && (
+                      <Button
+                        variant={'default'}
+                        className="ml-4"
+                        type="button"
+                        disabled={isPending}
+                        onClick={() =>
+                          startTransition(() => callServerAction('UNJOIN'))
+                        }
+                      >
+                        <XIcon size={18} className="mr-2" />
+                        Unjoin this event
+                      </Button>
+                    )
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <Link href={`/activities/${activity.id}/${event.id}`}>
+                    <Button variant={'default'} className="ml-4" type="button">
+                      Write feedback
+                    </Button>
+                  </Link>
+                </div>
+              ))}
           </div>
+
+          {(size === 'lg' && isEventLimitReached && (
+            <div className="text-red-500 font-medium ">
+              Maximum number of volunteers limit reached. Check out some of our
+              other events.
+            </div>
+          )) ||
+            (status === 'authenticated' &&
+              isPartOfAnyEvent &&
+              !isPartOfThisEvent && (
+                <div className="text-red-500 font-medium">
+                  You are already part of Another Event, Please unjoin to join
+                  this one
+                </div>
+              ))}
 
           {size === 'lg' && (
             <div className="mt-3 flex items-center">

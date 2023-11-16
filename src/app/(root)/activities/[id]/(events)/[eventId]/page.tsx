@@ -1,14 +1,8 @@
 import prisma from '@/lib/prisma';
 import EventDetails from './components/event-detail';
 
-const EventPage = async ({
-  params,
-}: {
-  params: { id: string; eventId: string };
-}) => {
-  const { eventId } = params;
-
-  const eventDetails = await prisma.event.findUnique({
+async function getEventDetails(eventId: string) {
+  return await prisma.event.findUnique({
     where: {
       id: eventId,
     },
@@ -34,12 +28,20 @@ const EventPage = async ({
       },
     },
   });
+}
+
+const EventPage = async ({
+  params,
+}: {
+  params: { id: string; eventId: string };
+}) => {
+  const eventDetails = await getEventDetails(params.eventId);
 
   return (
     <>
-      <EventDetails event={eventDetails} />
-
-      {/* {JSON.stringify(eventDetails, null, 2)} */}
+      <div className="responsive-wrapper">
+        <EventDetails event={eventDetails} />
+      </div>
     </>
   );
 };

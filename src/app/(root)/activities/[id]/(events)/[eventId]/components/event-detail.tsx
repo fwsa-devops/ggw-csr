@@ -1,20 +1,18 @@
 'use client';
 
-import { LaptopIcon } from 'lucide-react';
 import EventFeedbackForm from './event-feedback-form';
 import { Separator } from '@/components/ui/separator';
 import EventFeedbackList from './event-feedback-list';
+import { ActivityState } from '@prisma/client';
 
-const EventDetails = ({ event }: { event: any }) => {
-  console.log(event);
-
+const EventDetails = ({ event: eventDetails }: { event: any }) => {
   return (
     <>
       <div className="order-1 lg:order-0 lg:w-full">
         <img
           alt="ecommerce"
           className=" lg:aspect-video lg:max-h-[420px]  object-cover object-center w-full rounded"
-          src={event.activity.cover || ''}
+          src={eventDetails.activity.cover || ''}
         />
       </div>
 
@@ -22,17 +20,18 @@ const EventDetails = ({ event }: { event: any }) => {
         <div className="mt-12 lg:mt-6 lg:mx-auto order-1 lg:order-1 lg:w-full ">
           <div className="flex md:flex-row flex-col md:justify-between md:items-center items-end">
             <h1 className="md:mb-4 text-2xl font-semibold text-gray-700 title-font">
-              {event.activity.name}
+              {eventDetails.activity.name}
             </h1>
           </div>
 
-          <div className="flex gap-2 mb-2 location align-center">
+          {/* <div className="flex gap-2 mb-2 location align-center">
             <LaptopIcon />
-            <p>{event.activity?.city}</p>
-          </div>
+            <p>{eventDetails.activity?.city}</p>
+          </div> */}
+
           <h2 className="mt-2 mb-3 text-sm tracking-widest text-gray-400 title-font">
-            {event.activity.tags
-              ? event.activity?.tags.map((tag) => (
+            {eventDetails.activity.tags
+              ? eventDetails.activity?.tags.map((tag) => (
                   <span key={tag.id} className="mr-2">
                     #{tag?.tag.name}
                   </span>
@@ -44,7 +43,7 @@ const EventDetails = ({ event }: { event: any }) => {
             <div className="flex flex-col gap-y-2">
               <div className="flex">
                 <div className="mr-3 font-semibold">Duration: </div>
-                {event.activity.duration} minutes
+                {eventDetails.activity.duration} minutes
               </div>
             </div>
           </div>
@@ -52,7 +51,7 @@ const EventDetails = ({ event }: { event: any }) => {
           <div
             className="leading-relaxed"
             dangerouslySetInnerHTML={{
-              __html: event.activity.description ?? '',
+              __html: eventDetails.activity.description ?? '',
             }}
           ></div>
         </div>
@@ -60,13 +59,19 @@ const EventDetails = ({ event }: { event: any }) => {
 
       <Separator className="my-10 sm:hidden md:block" />
 
-      <div className=" w-full my-10 order-2 lg:order-2 mt-12 lg:mt-6 lg:mx-auto">
-        <EventFeedbackForm eventId={event.id} activityId={event.activityId} />
-      </div>
-
-      <div className="my-10">
-        <EventFeedbackList feedbacks={event.feedback} />
-      </div>
+      {eventDetails.activity.status === ActivityState.CLOSED && (
+        <>
+          <div className=" w-full my-10 order-2 lg:order-2 mt-12 lg:mt-6 lg:mx-auto">
+            <EventFeedbackForm
+              eventId={eventDetails.id}
+              activityId={eventDetails.activityId}
+            />
+          </div>
+          <div className="my-10">
+            <EventFeedbackList feedbacks={eventDetails.feedback} />
+          </div>
+        </>
+      )}
     </>
   );
 };

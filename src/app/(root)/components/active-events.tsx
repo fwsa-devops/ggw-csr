@@ -18,22 +18,22 @@ import ActivityListItem from '@/app/(root)/components/core/ActivityListItem';
 import { IActivity } from '@/types';
 
 const ActiveEvents = (props: { activities: IActivity[] }) => {
-  const { activities } = props;
+  const { activities: activitiesList } = props;
 
   const [isLoading, setLoading] = React.useState<boolean>(false);
-  const [activties, setActivities] = React.useState(activities);
+  const [activities, setActivities] = React.useState(activitiesList);
   const [locations, setLocations] = React.useState([...EVENT_LOCATIONS]);
   const [tags, setTags] = React.useState<any>([]);
   const [date, setDate] = React.useState<DateRange | undefined>();
 
   React.useEffect(() => {
+    const fetchAllTags = async () => {
+      const tags = await getAllTags();
+      setTags(tags);
+    };
+
     fetchAllTags();
   }, []);
-
-  const fetchAllTags = async () => {
-    const tags = await getAllTags();
-    setTags(tags);
-  };
 
   const onLocationChange = async (item, value) => {
     try {
@@ -103,8 +103,9 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
     try {
       setLoading(true);
       const filters = getFilters();
-      if (filters) {
-        setActivities(await getFilteredActivities(filters));
+      if (filters && Object.keys(filters).length > 0) {
+        const activities = await getFilteredActivities(filters);
+        setActivities(activities);
       } else {
         setActivities(await getAllActivitiesFromDB());
       }
@@ -164,17 +165,19 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
         </div>
       </div>
       {isLoading && <Loader />}
-      {activties.length ? (
-        activties?.map((activity) => {
+      {activities.length ? (
+        activities?.map((activity) => {
           return (
-            <div
-              className={`container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground ${
-                isLoading ? 'opacity-50' : ''
-              }`}
-              key={activity.id}
-            >
-              <ActivityListItem key={activity.id} activity={activity} />
-            </div>
+            activity.events.length > 0 && (
+              <div
+                className={`container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground ${
+                  isLoading ? 'opacity-50' : ''
+                }`}
+                key={activity.id}
+              >
+                <ActivityListItem key={activity.id} activity={activity} />
+              </div>
+            )
           );
         })
       ) : (

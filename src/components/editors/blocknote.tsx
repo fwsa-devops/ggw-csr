@@ -54,8 +54,11 @@ export default function BlockNote({
     },
     containsInlineContent: false,
     render: ({ block }) => (
-      <div>
-        <ReactPlayer url={block.props.src} />
+      <div className="aspect-w-16 aspect-h-9">
+        <ReactPlayer
+          url={block.props.src}
+          style={{ margin: 'auto', maxWidth: '100%' }}
+        />
         {/* <video src={block.props.src} controls /> */}
       </div>
     ),
@@ -101,13 +104,13 @@ export default function BlockNote({
       ? (JSON.parse(initialContent) as PartialBlock[])
       : undefined,
     onEditorContentChange: (editor) => {
-      console.log(editor);
+      // console.log(editor);
 
       // const saveBlocksAsMarkdown = async () => {
       //   const markdown: string =
       //     await editor.blocksToMarkdown(editor.topLevelBlocks);
       //   useContent(markdown);
-      //   console.log(markdown);
+      //   // console.log(markdown);
       // };
       // saveBlocksAsMarkdown();
 
@@ -115,7 +118,7 @@ export default function BlockNote({
       //   const markdown: string =
       //     await editor.blocksToHTML(editor.topLevelBlocks);
       //   useContent(markdown);
-      //   console.log(markdown);
+      //   // console.log(markdown);
       // };
       // saveBlocksAsHTML();
 

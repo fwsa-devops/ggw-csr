@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 
 export default function FeatureSection() {
   return (
@@ -41,18 +40,6 @@ export default function FeatureSection() {
                   spaces vibrant for students. Create learning aids for children
                   with special needs. Help young minds become computer literate.
                 </p>
-                <p className="mt-6 text-lg leading-8 text-gray-600">
-                  For
-                  <span className="mx-1.5 font-bold">Education</span>
-                  related activities, Register{' '}
-                  <Link
-                    className="underline text-blue-700 font-semibold"
-                    href="/activities"
-                  >
-                    here
-                  </Link>
-                  .
-                </p>
               </div>
             </div>
           </div>
@@ -71,18 +58,6 @@ export default function FeatureSection() {
                   sustainable and thriving future. Let's clean up our beaches
                   and lakes. Be a ally to our paw friends. Or plant trees.
                 </p>
-                <p className="mt-6 text-lg leading-8 text-gray-600">
-                  For
-                  <span className="mx-1.5 font-bold">Environment</span>
-                  related activities, Register{' '}
-                  <Link
-                    className="underline text-blue-700 font-semibold"
-                    href="/activities"
-                  >
-                    here
-                  </Link>
-                  .
-                </p>
               </div>
             </div>
             <div className="">
@@ -91,7 +66,7 @@ export default function FeatureSection() {
                 alt="Picture of a group of student looking into a laptop"
                 className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill"
                 width={600}
-                height={400}
+                height={360}
                 quality={100}
                 loading="lazy"
               />
@@ -107,7 +82,7 @@ export default function FeatureSection() {
                 alt="Picture of a group of student looking into a laptop"
                 className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill"
                 width={600}
-                height={400}
+                height={360}
                 quality={100}
                 loading="lazy"
               />
@@ -124,18 +99,6 @@ export default function FeatureSection() {
                   strength, and harmony that enriches the entire community. Help
                   build hygiene and basic groceries kits. Interact with the
                   elderly. Do your bit.
-                </p>
-                <p className="mt-6 text-lg leading-8 text-gray-600">
-                  For
-                  <span className="mx-1.5 font-bold">Environment</span>
-                  related activities, Register{' '}
-                  <Link
-                    className="underline text-blue-700 font-semibold"
-                    href="/activities"
-                  >
-                    here
-                  </Link>
-                  .
                 </p>
               </div>
             </div>

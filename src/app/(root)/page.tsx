@@ -1,4 +1,3 @@
-
 import type { Metadata } from 'next';
 import HeroSection from './components/hero-section';
 import FeatureSection from './components/feature-section';

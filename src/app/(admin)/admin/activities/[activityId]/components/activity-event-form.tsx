@@ -37,6 +37,7 @@ const ActivityEventForm = ({ activityId, event }) => {
 
   const { data: leaders, error } = useFetch<User[]>('/api/users', {
     method: 'GET',
+    cache: 'no-cache',
   });
 
   // const formSchemaPartial = eventFormSchema.partial();

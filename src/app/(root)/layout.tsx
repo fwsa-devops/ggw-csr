@@ -15,8 +15,8 @@ import Footer from './components/footer';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Volunteer by Freshworks',
-  description: 'CSR initiative by Freshworks',
+  title: 'GGW India - 2023',
+  description: 'Social Impact by Freshworks',
 };
 
 export default async function RootLayout({

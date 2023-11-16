@@ -1,4 +1,4 @@
-import { BuildingIcon, CalendarRangeIcon } from 'lucide-react';
+import { BuildingIcon, CalendarRangeIcon, MapIcon } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
@@ -8,6 +8,7 @@ import UserAvatar from '@/components/user-avatar';
 import { IEvent } from '@/types';
 import { useTransition } from 'react';
 import Link from 'next/link';
+import moment from 'moment';
 
 const calculateTimeDiff = (start, end) => {
   return (
@@ -78,12 +79,19 @@ const EventListItem = ({
 
               <div className="flex mr-4 mb-2">
                 <CalendarRangeIcon size="18" className="mr-2" />
-                {is_dates_announced ? date : date_announcement_text}
+
+                {is_dates_announced
+                  ? moment(startTime).format('MMM Do, h:mm A') +
+                  ' - ' +
+                  moment(endTime).format('h:mm A')
+                  : date_announcement_text}
               </div>
 
               {event.description && size === 'lg' && (
                 <>
-                  <div className="basis-full">Description</div>
+                  <div className="basis-full text-base font-semibold mt-2 mb-1">
+                    Description
+                  </div>
                   <p>{event.description}</p>
                 </>
               )}

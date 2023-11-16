@@ -15,7 +15,7 @@ import { usePathname } from 'next/navigation';
 const navigations = [
   { name: 'Activities', href: '/activities', show: true },
   { name: 'Testimonies', href: '/testimonies', show: false },
-  { name: 'FAQ', href: '/faq', show: true },
+  { name: 'FAQs', href: '/faq', show: true },
 ];
 
 export default function HeaderComp({ activitiesJoined }) {

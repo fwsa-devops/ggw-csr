@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import HeroSection from './components/hero-section';
 import FeatureSection from './components/feature-section';
-import Footer from './components/footer';
 import PageQuotes from './components/quotes';
 
 export const metadata: Metadata = {

@@ -17,7 +17,6 @@ export default function FeatureSection() {
       </div>
 
       <div className="overflow-hidden bg-white pt-10 sm:pt-32">
-
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
           <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start">
             <div className="order-2 lg:order-1">
@@ -142,7 +141,6 @@ export default function FeatureSection() {
             </div>
           </div>
         </div>
-
       </div>
     </>
   );

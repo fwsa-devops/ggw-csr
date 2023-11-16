@@ -30,6 +30,7 @@ export default async function RootLayout({
     <html lang="en">
       <head>
         <title>CSR Events Portal</title>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <SessionProvider session={session}>
         <body className={inter.className}>

@@ -1,5 +1,4 @@
 const PageQuotes = () => {
-
   return (
     <div className="bg-white mx-auto overflow-hidden px-6 pt-10 pb-10 sm:pb-10 lg:px-8">
       <div>
@@ -8,8 +7,7 @@ const PageQuotes = () => {
         </h1>
       </div>
     </div>
-  )
-
-}
+  );
+};
 
 export default PageQuotes;

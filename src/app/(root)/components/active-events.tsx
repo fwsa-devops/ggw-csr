@@ -120,7 +120,7 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
     <>
       <div className="flex md:flex-row flex-col md:justify-between justify-start gap-4 mt-12 flex-wrap md:flex-nowrap">
         <div className="main-header">
-          <h1 className="text-xl">Events - 2023</h1>
+          <h1 className="text-xl">Activities - 2023</h1>
         </div>
         <div className="flex md:justify-end justify-start flex-1 gap-3 md:flex-nowrap flex-wrap">
           <DropdownMenuCheckboxes

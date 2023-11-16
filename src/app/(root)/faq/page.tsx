@@ -4,41 +4,6 @@ import { Disclosure } from '@headlessui/react';
 import { MinusIcon, PlusIcon } from 'lucide-react';
 // import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline'
 
-const faqs = [
-  {
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-  },
-  {
-    question: 'How do you make holy water?',
-    answer:
-      'You boil the hell out of it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam aut tempora vitae odio inventore fuga aliquam nostrum quod porro. Delectus quia facere id sequi expedita natus.',
-  },
-
-  {
-    question: 'What do you call someone with no body and no nose?',
-    answer:
-      'Nobody knows. Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, voluptas ipsa quia excepturi, quibusdam natus exercitationem sapiente tempore labore voluptatem.',
-  },
-  {
-    question: 'Why do you never see elephants hiding in trees?',
-    answer:
-      "Because they're so good at it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-  },
-  {
-    question: 'Why did the invisible man turn down the job offer?',
-    answer:
-      "He couldn't see himself doing it. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet perspiciatis officiis corrupti tenetur. Temporibus ut voluptatibus, perferendis sed unde rerum deserunt eius.",
-  },
-  {
-    question: "Why can't you hear a pterodactyl go to the bathroom?",
-    answer:
-      'Because the pee is silent. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, quas voluptatibus ex culpa ipsum, aspernatur blanditiis fugiat ullam magnam suscipit deserunt illum natus facilis atque vero consequatur! Quisquam, debitis error.',
-  },
-  // More questions...
-];
-
 export default function FAQ() {
   return (
     <div className="bg-transparent">
@@ -48,41 +13,700 @@ export default function FAQ() {
             Frequently Asked Questions
           </h2>
           <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
-            {faqs.map((faq) => (
-              <Disclosure as="div" key={faq.question} className="pt-6">
-                {({ open }) => (
-                  <>
-                    <dt>
-                      <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
-                        <span className="text-base font-semibold leading-7">
-                          {faq.question}
-                        </span>
-                        <span className="ml-6 flex h-7 items-center">
-                          {open ? (
-                            <MinusIcon
-                              size={18}
-                              className="h-6 w-6"
-                              aria-hidden="true"
-                            />
-                          ) : (
-                            <PlusIcon
-                              size={18}
-                              className="h-6 w-6"
-                              aria-hidden="true"
-                            />
-                          )}
-                        </span>
-                      </Disclosure.Button>
-                    </dt>
-                    <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                      <p className="text-base leading-7 text-gray-600">
-                        {faq.answer}
-                      </p>
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-            ))}
+            <Disclosure as="div" key={'1'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        What is Global Giving Week (GGW)?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600">
+                      It is a celebration of the spirit of employee volunteerism
+                      by Freshworks offices across the globe. We aim to
+                      faciltate avenues for giving towards various social causes
+                      under the three themes of:
+                      <ol>
+                        <li>Environment</li>
+                        <li>Education</li>
+                        <li>Community</li>
+                      </ol>
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'2'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        Why do I only see Chennai and Bangalore office locations
+                        in India?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600">
+                      Owing to logistical constraints and the interests received
+                      in the social impact pulse survey, we are only looking to
+                      organise it in Chennai and Bangalore this time around
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'3'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        Are employees allowed to propose their own activities?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600">
+                      As this is our very first edition of GGW, employees DO NOT
+                      have the provision to propose their own activities owing
+                      to operational difficulities. We will be scoping the
+                      possibilities for this in the upcoming years{' '}
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'4'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        How do I register for an event?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600">
+                      <ol>
+                        <li>1. Go to the 'Activities' tab</li>
+                        <li>
+                          2. Once in, you will find a list of activities that
+                          can be filtered by 'Location', 'Theme' and 'Date'.
+                          Apply a filter of your choice to go to your preferred
+                          activity
+                        </li>
+                        <li>
+                          3. Each activity consists of key information such a
+                          duration, location, minimum and maximum number of
+                          participants per event
+                        </li>
+                        <li>
+                          4. Simply click on 'Join this event' button against an
+                          event to join the event
+                        </li>
+                        <li>
+                          5. Upon joining an event, you will be presented with a
+                          message on top right corner of the screen confirming
+                          your successful registration with an event
+                        </li>
+                        <li>
+                          6. Information regarding the exact location and
+                          logistics will be shared closer to the event date via
+                          email
+                        </li>
+                      </ol>
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'5'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        Why is the 'Join this event' button disabled for me?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600">
+                      As employees can only join 1 event, if you have already
+                      joined one, the 'Join this event' button gets
+                      automatically disabled for other events. Please unjoin the
+                      currently registered activity to jbe able to join a new
+                      one.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'6'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        From where can I have a quick view of the event I have
+                        joined in?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600">
+                      You can have a quick view of the event you have registered
+                      for, from the top right corner of your screen.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'7'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        Can employees bring families or any external members to
+                        participate in GGW activities?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600">
+                      No, this edition of GGW is exclusive to Freshworks
+                      employees only
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'8'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        Can an employee sign up for more than 1 activity?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600">
+                      In this edition of GGW, employees are allowed to sign up
+                      for only 1 activity of their preference from the list
+                      provided.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'9'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        What do the minimum and maximum participation counts
+                        imply?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600 mb-2">
+                      "In order for an event to be considered for execution, we
+                      will need a minimum strength to feasibily opertionalise
+                      it. In case the event you have registered with, does not
+                      hit the minimum count, you will be intimated about this 72
+                      hours in prior. You may choose an alternate event in which
+                      we will try our best to accomodate you.
+                    </p>
+                    <p className="text-base leading-7 text-gray-600">
+                      Similarly, in case an event has reached maximum
+                      participant count, we will not be able to make exceptions
+                      for participation. You may have to choose your second
+                      preference."
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'10'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        How do employee volunteers commute to the event
+                        location?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600 mb-2">
+                      Employees who have registered with us for outdoor
+                      activities will be provided with Freshworks transportation
+                      which will ply to and from our respective offices at
+                      pre-decided times.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'11'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        Can employee volunteers use their own transport for
+                        commute to the event location and get the transport cost
+                        reimbursed?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600 mb-2">
+                      No, there is no option for transport cost reimbursement
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'12'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        Is there an option to make monetary donations to causes
+                        in GGW?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600 mb-2">
+                      Unfortunately no, this is not supported in this edition of
+                      GGW
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'13'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        Are there any specific activities for members of the
+                        night shift?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600 mb-2">
+                      Unfortunately no, this is not supported in this edition of
+                      GGW
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'14'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        Are there any virtual opportunities available as part of
+                        GGW?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600 mb-2">
+                      No, the activities are all in-person so as to optimise for
+                      the best impact filled experience
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'15'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        Are there in-office activities available?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600 mb-2">
+                      Yes options for both in-office and outdoor activities are
+                      available
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'16'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        How do apply for a GGW time off with my manager?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600 mb-2">
+                      Please write an email to your manager indicating the
+                      activity you are going to be participating in. Your
+                      manager will be sent a report (if required) on your
+                      participation upon activity completion from our end.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'17'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        I missed the deadline for registration, can I be
+                        accomodated on the spot?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600 mb-2">
+                      We will not be able accomodate on the spot registrations.
+                      This is to ensure we are able to provide the best
+                      experience for registered participants
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'18'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        Will we receive any certificate for volunteering?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600 mb-2">
+                      Yes, participants will receive a digital certificate for
+                      volunteering as an appreciation of your time and effort
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
           </dl>
         </div>
       </div>

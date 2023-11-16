@@ -165,7 +165,7 @@ const EventListItem = ({
                 {`${event.volunteers.length} / ${event?.max_volunteers}`} Joined
                 {size === 'lg' && (
                   <span className="ml-2 text-gray-400">
-                    ( Minimum {event.min_volunteers} Volunteers )
+                    (Minimum {event.min_volunteers} Volunteers)
                   </span>
                 )}
               </div>

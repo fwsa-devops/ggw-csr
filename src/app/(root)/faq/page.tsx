@@ -196,7 +196,7 @@ export default function FAQ() {
                   <dt>
                     <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
                       <span className="text-base font-semibold leading-7">
-                        Why is the 'Join this event' button disabled for me?
+                        Why is the 'join this event' button disabled for me?
                       </span>
                       <span className="ml-6 flex h-7 items-center">
                         {open ? (
@@ -220,44 +220,8 @@ export default function FAQ() {
                       As employees can only join 1 event, if you have already
                       joined one, the 'Join this event' button gets
                       automatically disabled for other events. Please unjoin the
-                      currently registered activity to jbe able to join a new
-                      one.
-                    </p>
-                  </Disclosure.Panel>
-                </>
-              )}
-            </Disclosure>
-
-            <Disclosure as="div" key={'6'} className="pt-6">
-              {({ open }) => (
-                <>
-                  <dt>
-                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
-                      <span className="text-base font-semibold leading-7">
-                        From where can I have a quick view of the event I have
-                        joined in?
-                      </span>
-                      <span className="ml-6 flex h-7 items-center">
-                        {open ? (
-                          <MinusIcon
-                            size={18}
-                            className="h-6 w-6"
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <PlusIcon
-                            size={18}
-                            className="h-6 w-6"
-                            aria-hidden="true"
-                          />
-                        )}
-                      </span>
-                    </Disclosure.Button>
-                  </dt>
-                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                    <p className="text-base leading-7 text-gray-600">
-                      You can have a quick view of the event you have registered
-                      for, from the top right corner of your screen.
+                      currently registered activity by following the link
+                      displayed to be able to join a new one
                     </p>
                   </Disclosure.Panel>
                 </>

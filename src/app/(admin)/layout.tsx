@@ -32,7 +32,7 @@ export default async function RootLayout({
       <head>
         <title>GGW India - 2023</title>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-      </head >
+      </head>
       <SessionProvider session={session}>
         <body className={inter.className + ' bg-white'}>
           <AdminHeader />
@@ -43,6 +43,6 @@ export default async function RootLayout({
           <Footer />
         </body>
       </SessionProvider>
-    </html >
+    </html>
   );
 }

@@ -1,6 +1,3 @@
-import { getHomepageContent } from '@/components/utils/api';
-import { useSsr } from 'usehooks-ts';
-import HomepageViewer from './components/viewer';
 
 import type { Metadata } from 'next';
 import HeroSection from './components/hero-section';

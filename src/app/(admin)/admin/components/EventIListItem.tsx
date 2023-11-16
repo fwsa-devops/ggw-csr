@@ -1,4 +1,4 @@
-import { BuildingIcon, CalendarRangeIcon, MapIcon } from 'lucide-react';
+import { BuildingIcon, CalendarRangeIcon } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
@@ -82,8 +82,8 @@ const EventListItem = ({
 
                 {is_dates_announced
                   ? moment(startTime).format('MMM Do, h:mm A') +
-                  ' - ' +
-                  moment(endTime).format('h:mm A')
+                    ' - ' +
+                    moment(endTime).format('h:mm A')
                   : date_announcement_text}
               </div>
 

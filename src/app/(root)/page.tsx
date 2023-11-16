@@ -1,11 +1,12 @@
+
 import type { Metadata } from 'next';
 import HeroSection from './components/hero-section';
 import FeatureSection from './components/feature-section';
 import PageQuotes from './components/quotes';
 
 export const metadata: Metadata = {
-  title: 'Freshworks Global Giving - 2023',
-  description: 'CSR initiative by Freshworks',
+  title: 'GGW India - 2023',
+  description: 'Social Impact by Freshworks',
 };
 
 export default async function Home() {

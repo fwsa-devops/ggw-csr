@@ -1,10 +1,12 @@
-import { LaptopIcon } from 'lucide-react';
+import { PenIcon } from 'lucide-react';
 import EventFeedbackForm from './event-feedback-form';
 import { Separator } from '@/components/ui/separator';
 import EventFeedbackList from './event-feedback-list';
 import prisma from '@/lib/prisma';
 import EventParticipants from './event-participants';
 import ExportButton from './export-csv';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const EventDetails = async ({ event: eventDetails }: { event: any }) => {
   const volunteers = (
@@ -37,13 +39,23 @@ const EventDetails = async ({ event: eventDetails }: { event: any }) => {
               {eventDetails.activity.name}
             </h1>
 
-            <ExportButton eventId={eventDetails.id} />
+            <div>
+              <ExportButton eventId={eventDetails.id} />
+              <Link
+                href={`/admin/activities/${eventDetails.activityId}/events/${eventDetails.id}/edit`}
+              >
+                <Button className="ml-2">
+                  <PenIcon size={18} className="mr-2" />
+                  Edit
+                </Button>
+              </Link>
+            </div>
           </div>
 
-          <div className="flex gap-2 mb-2 location align-center">
+          {/* <div className="flex gap-2 mb-2 location align-center">
             <LaptopIcon />
             <p>{eventDetails.activity?.city}</p>
-          </div>
+          </div> */}
 
           <h2 className="mt-2 mb-3 text-sm tracking-widest text-gray-400 title-font">
             {eventDetails.activity.tags

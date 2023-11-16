@@ -5,12 +5,13 @@ import { Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import AdminHeader from '@/admin/components/admin-header';
 import { redirect } from 'next/navigation';
+import Footer from '../(root)/components/footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Volunteer by Freshworks',
-  description: 'CSR initiative by Freshworks',
+  title: 'GGW India - 2023',
+  description: 'Social Impact by Freshworks',
 };
 
 export default async function RootLayout({
@@ -29,16 +30,17 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>CSR Events Portal</title>
+        <title>GGW India - 2023</title>
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <SessionProvider session={session}>
-        <body className={inter.className}>
+        <body className={inter.className + ' bg-white'}>
           <AdminHeader />
           <main className="main">
             <div className="responsive-wrapper">{children}</div>
             <Toaster />
           </main>
+          <Footer />
         </body>
       </SessionProvider>
     </html>

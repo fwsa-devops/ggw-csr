@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
-import HeroSection from './hero-section';
-import FeatureSection from './feature-section';
-import Footer from './footer';
+import HeroSection from './components/hero-section';
+import FeatureSection from './components/feature-section';
+import Footer from './components/footer';
+import PageQuotes from './components/quotes';
 
 export const metadata: Metadata = {
   title: 'Freshworks Global Giving - 2023',
@@ -14,16 +15,16 @@ export default async function Home() {
 
   return (
     <>
-      <main className="flex flex-col items-center justify-between min-h-screen ">
+      <main className="flex flex-col items-center justify-between min-h-screen bg-white">
         <section className="w-full text-gray-600 body-font">
           {/* {!isBrowser && <HomepageViewer body={response.data.body} />} */}
           <HeroSection />
           <FeatureSection />
-          <Footer />
+          <PageQuotes />
         </section>
       </main>
     </>
   );
 }
 
-export const revalidate = 30;
+// export const revalidate = 30;

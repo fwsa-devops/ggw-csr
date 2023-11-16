@@ -217,21 +217,21 @@ const EventListItem = ({
               ))}
           </div>
 
-          {(isEventLimitReached && (
-            <div className="text-red-500 font-medium ">
-              Maximum number of volunteers limit reached. Check out some of our
-              other events.
-            </div>
-          )) ||
+          {size === 'lg' &&
+            (isEventLimitReached && (
+              <div className="text-red-500 font-medium ">
+                Maximum number of volunteers limit reached. Check out some of our
+                other events.
+              </div>
+            )) ||
             (status === 'authenticated' &&
               isPartOfAnyEvent &&
               !isPartOfThisEvent && (
                 <div className="text-red-500 font-medium">
-                  You are already part of Another Event.
+                  You are already part of Another Event, Please unjoin to join this one
                 </div>
-              ))}
-
-          {}
+              ))
+          }
 
           {size === 'lg' && (
             <div className="mt-3 flex items-center">

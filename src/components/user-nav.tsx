@@ -21,7 +21,7 @@ export function UserNav({ activitiesJoined }) {
       <>
         {session?.user && (
           <>
-            <span className='p-2'>
+            <span className="p-2">
               <NotificationsDrawer activitiesJoined={activitiesJoined} />
             </span>
             {/* <span className="absolute -inset-1.5" /> */}

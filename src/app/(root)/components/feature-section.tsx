@@ -17,20 +17,18 @@ export default function FeatureSection() {
 
       <div className="overflow-hidden bg-white pt-10 sm:pt-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
             <div className="order-2 lg:order-1">
-              <Image
+              <img
                 src="https://iili.io/JBEIbqB.jpg"
                 alt="Picture of a group of student looking into a laptop"
                 className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill"
-                width={600}
-                height={360}
-                quality={100}
                 loading="lazy"
+                style={{ width: '100%', height: 'auto', maxWidth: '600px', maxHeight: '360px', objectFit: 'cover', objectPosition: 'center' }} // Set a fixed max width and height
               />
             </div>
-            <div className="order-1 lg:order-2 lg:pr-4 lg:pt-4">
-              <div className="lg:max-w-lg">
+            <div className="order-1 lg:order-2 lg:pr-4 lg:pt-4 flex items-center">
+              <div className="lg:max-w-lg ">
                 {/* <h2 className="text-base font-semibold leading-7 text-indigo-600">Deploy faster</h2> */}
                 <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                   Education
@@ -46,7 +44,7 @@ export default function FeatureSection() {
         </div>
 
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
             <div className="lg:pr-4 lg:pt-4">
               <div className="lg:max-w-lg">
                 <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -61,30 +59,26 @@ export default function FeatureSection() {
               </div>
             </div>
             <div className="">
-              <Image
+              <img
                 src="https://iili.io/JBEll24.jpg"
                 alt="Picture of a group of student looking into a laptop"
-                className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill"
-                width={600}
-                height={360}
-                quality={100}
+                className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill mx-auto"
                 loading="lazy"
+                style={{ height: 'auto', width: '600px', maxHeight: '360px', objectFit: 'cover', objectPosition: 'center' }} // Set a fixed max width and height
               />
             </div>
           </div>
         </div>
 
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
             <div className="order-2 lg:order-1">
-              <Image
+              <img
                 src="https://iili.io/JBEYWQa.jpg"
                 alt="Picture of a group of student looking into a laptop"
                 className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill"
-                width={600}
-                height={360}
-                quality={100}
                 loading="lazy"
+                style={{ height: 'auto', width: '600px', maxHeight: '360px', objectFit: 'cover', objectPosition: 'center' }} // Set a fixed max width and height
               />
             </div>
 

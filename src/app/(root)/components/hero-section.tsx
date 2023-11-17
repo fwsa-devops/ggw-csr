@@ -26,7 +26,7 @@ export default function HeroSection() {
                 >
                   <ReactPlayer
                     url="https://youtu.be/91sBp44_hzg"
-                    controls={false}
+                    controls={true}
                     style={{ position: 'absolute', top: 0, left: 0 }}
                     width="100%"
                     height="100%"

@@ -73,6 +73,7 @@ const ActivityListItem = ({ activity }: { activity: IActivity }) => {
             size="sm"
             isPartOfAnyEvent={false}
             key={event.id}
+            participatedEvents={null}
           />
         ))}
       </div>

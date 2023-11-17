@@ -18,7 +18,7 @@ import { IEvent } from '@/types';
 import { useTransition } from 'react';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/components/ui/use-toast';
-import { ActivityState, Event } from '@prisma/client';
+import { ActivityState } from '@prisma/client';
 import Link from 'next/link';
 import moment from 'moment';
 
@@ -60,7 +60,7 @@ const EventListItem = ({
     event?.max_volunteers === event.volunteers.length;
 
   const callServerAction = async (action: 'JOIN' | 'UNJOIN') => {
-    const toastObj = {
+    const toastObj: any = {
       title: '',
       varient: 'default',
     };
@@ -68,8 +68,11 @@ const EventListItem = ({
     try {
       if (action === 'JOIN') {
         const res = await joinEvent(event.id);
+
         if (!res.success) throw res.message;
 
+        toastObj['description'] =
+          'Event info will be shared via Email closer to the event date';
         toastObj.title = res.message;
       } else {
         const res = await unJoinEvent(event.id);
@@ -87,22 +90,19 @@ const EventListItem = ({
 
   return (
     <>
-
-      <div className={cn(
-        'my-5 relative',
-        size === 'lg' ? 'mt-12' : '',
-      )}
+      <div
+        className={cn('my-5 relative', size === 'lg' ? 'mt-12' : '')}
         id={event.id}
       >
-        {
-          size === 'lg' &&
-          <div className="absolute top-0 left-0 bg-blue-500 text-white text-base rounded py-1 px-2 pb-3 -mt-8 -z-10"> {/* Add the badge */}
+        {size === 'lg' && (
+          <div className="absolute top-0 left-0 bg-blue-500 text-white text-base rounded py-1 px-2 pb-3 -mt-8 -z-10">
+            {' '}
+            {/* Add the badge */}
             {event.city}
           </div>
-        }
+        )}
 
         <div
-
           className={cn(
             'text-sm text-gray-700 event-timings align-center z-10',
             size === 'lg'
@@ -142,8 +142,8 @@ const EventListItem = ({
 
                   {is_dates_announced
                     ? moment(startTime).format('MMM Do, h:mm A') +
-                    ' - ' +
-                    moment(endTime).format('h:mm A')
+                      ' - ' +
+                      moment(endTime).format('h:mm A')
                     : date_announcement_text}
                 </div>
 
@@ -178,7 +178,8 @@ const EventListItem = ({
                   className="my-2"
                 />
                 <div>
-                  {`${event.volunteers.length} / ${event?.max_volunteers}`} Joined
+                  {`${event.volunteers.length} / ${event?.max_volunteers}`}{' '}
+                  Joined
                   {size === 'lg' && (
                     <span className="ml-2 text-gray-400">
                       (Minimum {event.min_volunteers} Volunteers)
@@ -233,7 +234,11 @@ const EventListItem = ({
                 ) : (
                   <div>
                     <Link href={`/activities/${activity.id}/${event.id}`}>
-                      <Button variant={'default'} className="ml-4" type="button">
+                      <Button
+                        variant={'default'}
+                        className="ml-4"
+                        type="button"
+                      >
                         Write feedback
                       </Button>
                     </Link>
@@ -243,8 +248,8 @@ const EventListItem = ({
 
             {(size === 'lg' && isEventLimitReached && (
               <div className="text-red-500 font-medium ">
-                Maximum number of volunteers limit reached. Check out some of our
-                other events.
+                Maximum number of volunteers limit reached. Check out some of
+                our other events.
               </div>
             )) ||
               (status === 'authenticated' &&
@@ -277,8 +282,6 @@ const EventListItem = ({
           </div>
         </div>
       </div>
-
-
 
       {size === 'sm' && <Separator />}
     </>

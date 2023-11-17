@@ -22,10 +22,18 @@ export default function HeaderComp({ activitiesJoined }) {
   const pathname = usePathname();
   const { value, toggle } = useBoolean(false);
 
-  const isActivePath = (path: string) => {
-    return (
-      pathname?.split('/')[0].toLocaleLowerCase() === path.toLocaleLowerCase()
-    );
+  const isActivePath = (_path: string) => {
+    const currentPath = pathname
+      ?.split('/')
+      .filter((x) => `${x}` !== '')[0]
+      .toLocaleLowerCase();
+    const path = _path.replace('/', '').toLocaleLowerCase();
+    console.log(currentPath);
+    console.log(pathname?.split('/')[0].toLocaleLowerCase());
+    const boo = currentPath === path;
+    console.log(boo);
+
+    return boo;
   };
 
   return (
@@ -62,10 +70,10 @@ export default function HeaderComp({ activitiesJoined }) {
                         key={nav.name}
                         href={nav.href}
                         className={cn(
-                          'inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900',
+                          'inline-flex items-center border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900',
                           isActivePath(nav.href)
-                            ? 'border-indigo-500 text-gray-900'
-                            : 'border-transparent text-gray-500  hover:text-gray-700',
+                            ? 'border-black text-black  border-b-4'
+                            : 'border-transparent text-gray-500 hover:text-gray-700',
                         )}
                       >
                         {nav.name}

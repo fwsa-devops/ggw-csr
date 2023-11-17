@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 
 export default function FeatureSection() {
   return (
@@ -24,7 +23,14 @@ export default function FeatureSection() {
                 alt="Picture of a group of student looking into a laptop"
                 className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill"
                 loading="lazy"
-                style={{ width: '100%', height: 'auto', maxWidth: '600px', maxHeight: '360px', objectFit: 'cover', objectPosition: 'center' }} // Set a fixed max width and height
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  maxWidth: '600px',
+                  maxHeight: '360px',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                }} // Set a fixed max width and height
               />
             </div>
             <div className="order-1 lg:order-2 lg:pr-4 lg:pt-4 flex items-center">
@@ -64,7 +70,13 @@ export default function FeatureSection() {
                 alt="Picture of a group of student looking into a laptop"
                 className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill mx-auto"
                 loading="lazy"
-                style={{ height: 'auto', width: '600px', maxHeight: '360px', objectFit: 'cover', objectPosition: 'center' }} // Set a fixed max width and height
+                style={{
+                  height: 'auto',
+                  width: '600px',
+                  maxHeight: '360px',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                }} // Set a fixed max width and height
               />
             </div>
           </div>
@@ -78,7 +90,13 @@ export default function FeatureSection() {
                 alt="Picture of a group of student looking into a laptop"
                 className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill"
                 loading="lazy"
-                style={{ height: 'auto', width: '600px', maxHeight: '360px', objectFit: 'cover', objectPosition: 'center' }} // Set a fixed max width and height
+                style={{
+                  height: 'auto',
+                  width: '600px',
+                  maxHeight: '360px',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                }} // Set a fixed max width and height
               />
             </div>
 

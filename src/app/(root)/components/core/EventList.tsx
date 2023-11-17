@@ -1,5 +1,6 @@
 import EventListItem from './EventIListItem';
 import { IEvent } from '@/types';
+import { Event } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 
 const EventList = async ({
@@ -7,11 +8,13 @@ const EventList = async ({
   size = 'lg',
   isPartOfAnyEvent = false,
   activity,
+  participatedEvents = null
 }: {
   events: IEvent[];
   size: 'lg' | 'sm';
   isPartOfAnyEvent: boolean;
   activity: any;
+  participatedEvents: any;
 }) => {
   const session = await getServerSession();
 
@@ -43,6 +46,7 @@ const EventList = async ({
               size={size}
               isPartOfAnyEvent={isPartOfAnyEvent}
               isPartOfThisEvent={isPartOfThisEvent(event)}
+              participatedEvents={participatedEvents}
             />
           ))
         ) : (

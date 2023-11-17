@@ -18,7 +18,7 @@ import { IEvent } from '@/types';
 import { useTransition } from 'react';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/components/ui/use-toast';
-import { ActivityState } from '@prisma/client';
+import { ActivityState, Event } from '@prisma/client';
 import Link from 'next/link';
 import moment from 'moment';
 
@@ -36,12 +36,14 @@ const EventListItem = ({
   isPartOfAnyEvent,
   isPartOfThisEvent,
   activity,
+  participatedEvents = null,
 }: {
   event: IEvent;
   size: 'lg' | 'sm';
   isPartOfAnyEvent: boolean;
   isPartOfThisEvent: boolean;
   activity: any;
+  participatedEvents: any;
 }) => {
   const { toast } = useToast();
 
@@ -126,8 +128,8 @@ const EventListItem = ({
 
                 {is_dates_announced
                   ? moment(startTime).format('MMM Do, h:mm A') +
-                    ' - ' +
-                    moment(endTime).format('h:mm A')
+                  ' - ' +
+                  moment(endTime).format('h:mm A')
                   : date_announcement_text}
               </div>
 
@@ -235,7 +237,15 @@ const EventListItem = ({
               isPartOfAnyEvent &&
               !isPartOfThisEvent && (
                 <div className="text-red-500 font-medium">
-                  You are already part of Another Event, Please unjoin to join
+                  You are already part of
+                  {' '}
+                  <Link
+                    href={`/activities/${participatedEvents?.activity.id}#${participatedEvents?.id}`}
+                    className='underline'
+                  >
+                    {(participatedEvents ? participatedEvents?.activity.name : 'another ')}
+                  </Link>
+                  {' '} Event, Please unjoin to join
                   this one
                 </div>
               ))}

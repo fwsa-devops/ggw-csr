@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma';
 import ActivityPreview from '@/root/components/core/ActivityPreview';
 import EventList from '@/root/components/core/EventList';
 import { IActivity } from '@/types';
+import { Activity, Event } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 
 const EventPage = async (props: { activity: IActivity }) => {
@@ -9,13 +10,26 @@ const EventPage = async (props: { activity: IActivity }) => {
   const session = await getServerSession();
 
   let isPartOfAnyEvent: boolean = false;
+  let participatedEvents: any = null;
+
   if (session) {
     const volunteeredEvents = await prisma.volunteers.findMany({
       where: {
         user_id: session?.user?.email || '',
       },
+      include: {
+        event: {
+          include: {
+            activity: true,
+          }
+        },
+      }
     });
+
+    console.log(JSON.stringify(volunteeredEvents, null, 2))
+
     isPartOfAnyEvent = volunteeredEvents.length > 0;
+    participatedEvents = volunteeredEvents.at(0)?.event ?? null;
   }
 
   return (
@@ -29,6 +43,7 @@ const EventPage = async (props: { activity: IActivity }) => {
         events={activity.events}
         size="lg"
         activity={activity}
+        participatedEvents={participatedEvents}
       />
 
       {/* <PostsList imageUrls={imageUrls} /> */}

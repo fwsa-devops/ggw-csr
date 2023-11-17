@@ -10,7 +10,7 @@ import Footer from '../(root)/components/footer';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'GGW India - 2023',
+  title: 'Global Giving Week - 2023',
   description: 'Social Impact by Freshworks',
 };
 
@@ -30,7 +30,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>GGW India - 2023</title>
+        <title>Global Giving Week - 2023</title>
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <SessionProvider session={session}>

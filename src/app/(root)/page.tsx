@@ -4,7 +4,7 @@ import FeatureSection from './components/feature-section';
 import PageQuotes from './components/quotes';
 
 export const metadata: Metadata = {
-  title: 'GGW India - 2023',
+  title: 'Global Giving Week - 2023',
   description: 'Social Impact by Freshworks',
 };
 

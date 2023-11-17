@@ -42,8 +42,8 @@ export default function FAQ() {
                     <p className="text-base leading-7 text-gray-600">
                       It is a celebration of the spirit of employee volunteerism
                       by Freshworks offices across the globe. We aim to
-                      faciltate avenues for giving towards various social causes
-                      under the three themes of:
+                      facilitate avenues for giving towards various social
+                      causes under the three themes of:
                       <ol>
                         <li>Environment</li>
                         <li>Education</li>
@@ -293,7 +293,7 @@ export default function FAQ() {
                     <p className="text-base leading-7 text-gray-600">
                       In this edition of GGW, employees are allowed to sign up
                       for only 1 activity of their preference from the list
-                      provided.
+                      provided
                     </p>
                   </Disclosure.Panel>
                 </>
@@ -328,7 +328,7 @@ export default function FAQ() {
                   </dt>
                   <Disclosure.Panel as="dd" className="mt-2 pr-12">
                     <p className="text-base leading-7 text-gray-600 mb-2">
-                      "In order for an event to be considered for execution, we
+                      In order for an event to be considered for execution, we
                       will need a minimum strength to feasibily opertionalise
                       it. In case the event you have registered with, does not
                       hit the minimum count, you will be intimated about this 72
@@ -339,7 +339,7 @@ export default function FAQ() {
                       Similarly, in case an event has reached maximum
                       participant count, we will not be able to make exceptions
                       for participation. You may have to choose your second
-                      preference."
+                      preference
                     </p>
                   </Disclosure.Panel>
                 </>
@@ -448,8 +448,8 @@ export default function FAQ() {
                   </dt>
                   <Disclosure.Panel as="dd" className="mt-2 pr-12">
                     <p className="text-base leading-7 text-gray-600 mb-2">
-                      Unfortunately no, this is not supported in this edition of
-                      GGW
+                      This option is not available for India employees. For NA,
+                      please check with your regional SPOC
                     </p>
                   </Disclosure.Panel>
                 </>
@@ -520,8 +520,8 @@ export default function FAQ() {
                   </dt>
                   <Disclosure.Panel as="dd" className="mt-2 pr-12">
                     <p className="text-base leading-7 text-gray-600 mb-2">
-                      No, the activities are all in-person so as to optimise for
-                      the best impact filled experience
+                      This option is not available for India employees. For NA,
+                      please check with your regional SPOC
                     </p>
                   </Disclosure.Panel>
                 </>
@@ -555,7 +555,7 @@ export default function FAQ() {
                   </dt>
                   <Disclosure.Panel as="dd" className="mt-2 pr-12">
                     <p className="text-base leading-7 text-gray-600 mb-2">
-                      Yes options for both in-office and outdoor activities are
+                      Yes, options for both in-office and outdoor activities are
                       available
                     </p>
                   </Disclosure.Panel>

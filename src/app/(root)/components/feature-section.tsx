@@ -1,5 +1,6 @@
 'use client';
 
+
 export default function FeatureSection() {
   return (
     <>
@@ -18,7 +19,7 @@ export default function FeatureSection() {
           <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
             <div className="order-2 lg:order-1">
               <img
-                src="https://iili.io/JBEIbqB.jpg"
+                src="https://iili.io/JnC7dFV.jpg"
                 alt="Picture of a group of student looking into a laptop"
                 className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill"
                 loading="lazy"
@@ -86,7 +87,7 @@ export default function FeatureSection() {
           <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
             <div className="order-2 lg:order-1">
               <img
-                src="https://iili.io/JBEYWQa.jpg"
+                src="https://iili.io/JnC7H6Q.jpg"
                 alt="Picture of a group of student looking into a laptop"
                 className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill"
                 loading="lazy"

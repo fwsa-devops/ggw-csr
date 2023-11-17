@@ -142,8 +142,8 @@ const EventListItem = ({
 
                   {is_dates_announced
                     ? moment(startTime).format('MMM Do, h:mm A') +
-                      ' - ' +
-                      moment(endTime).format('h:mm A')
+                    ' - ' +
+                    moment(endTime).format('MMM Do, h:mm A')
                     : date_announcement_text}
                 </div>
 

@@ -16,7 +16,7 @@ const navigations = [
   { name: 'Dashboard', href: '/admin' },
   { name: 'Homepage', href: '/admin/homepage' },
   { name: 'Activites', href: '/admin/activities' },
-  { name: 'Testimonies', href: '/admin/testimonies' },
+  { name: 'Testimonials', href: '/admin/testimonies' },
 ];
 
 export default function AdminHeader() {

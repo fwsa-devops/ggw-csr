@@ -87,181 +87,198 @@ const EventListItem = ({
 
   return (
     <>
-      <div
+
+      <div className={cn(
+        'my-5 relative',
+        size === 'lg' ? 'mt-12' : '',
+      )}
         id={event.id}
-        className={cn(
-          'my-5 text-sm text-gray-700 event-timings align-center',
-          size === 'lg'
-            ? 'p-6 py-4 mt-6 border border-b-2 shadow rounded-xl bg-card text-card-foreground join-event'
-            : '',
-        )}
       >
-        <div className="text-sm text-gray-700 event-duration gap-x-1">
-          <div
-            className={cn(
-              'flex flex-row  flex-wrap ',
-              size === 'lg' ? 'lg:flex-nowrap items-top' : '',
-              event.description ? ' items-top' : 'items-center',
-            )}
-          >
+        {
+          size === 'lg' &&
+          <div className="absolute top-0 left-0 bg-blue-500 text-white text-base rounded py-1 px-2 pb-3 -mt-8 -z-10"> {/* Add the badge */}
+            {event.city}
+          </div>
+        }
+
+        <div
+
+          className={cn(
+            'text-sm text-gray-700 event-timings align-center z-10',
+            size === 'lg'
+              ? 'p-6 py-4 border border-b-2 shadow rounded-xl bg-card text-card-foreground join-event'
+              : '',
+          )}
+        >
+          <div className="text-sm text-gray-700 event-duration gap-x-1">
             <div
               className={cn(
-                'flex-row flex-wrap',
-                event.description ? 'flex ' : '',
-                size === 'sm' ? 'flex' : '',
+                'flex flex-row  flex-wrap ',
+                size === 'lg' ? 'lg:flex-nowrap items-top' : '',
+                event.description ? ' items-top' : 'items-center',
               )}
             >
-              <div className="flex mr-4 mb-2">
-                <MapIcon size={18} className="mr-2" />
-                {event.city}
+              <div
+                className={cn(
+                  'flex-row flex-wrap',
+                  event.description ? 'flex ' : '',
+                  size === 'sm' ? 'flex' : '',
+                )}
+              >
+                <div className="flex mr-4 mb-2">
+                  <MapIcon size={18} className="mr-2" />
+                  {event.city}
+                </div>
+
+                {size === 'lg' && (
+                  <div className="flex mr-4  mb-2">
+                    <BuildingIcon size={18} className="mr-2" />
+                    {event.location}
+                  </div>
+                )}
+
+                <div className="flex mr-4 mb-2">
+                  <CalendarRangeIcon size="18" className="mr-2" />
+
+                  {is_dates_announced
+                    ? moment(startTime).format('MMM Do, h:mm A') +
+                    ' - ' +
+                    moment(endTime).format('h:mm A')
+                    : date_announcement_text}
+                </div>
+
+                {event.description && size === 'lg' && (
+                  <>
+                    <div className="basis-full text-base font-semibold mt-2 mb-1">
+                      Description
+                    </div>
+                    <p>{event.description}</p>
+                  </>
+                )}
               </div>
 
               {size === 'lg' && (
-                <div className="flex mr-4  mb-2">
-                  <BuildingIcon size={18} className="mr-2" />
-                  {event.location}
-                </div>
-              )}
-
-              <div className="flex mr-4 mb-2">
-                <CalendarRangeIcon size="18" className="mr-2" />
-
-                {is_dates_announced
-                  ? moment(startTime).format('MMM Do, h:mm A') +
-                  ' - ' +
-                  moment(endTime).format('h:mm A')
-                  : date_announcement_text}
-              </div>
-
-              {event.description && size === 'lg' && (
-                <>
-                  <div className="basis-full text-base font-semibold mt-2 mb-1">
-                    Description
+                <div className="flex flex-col md:ml-auto md:items-end">
+                  <h2 className="font-semibold mb-2">Event Leaders</h2>
+                  <div className="flex">
+                    {event.leaders.map(({ user }) => (
+                      <UserAvatar key={user.id} user={user} />
+                    ))}
                   </div>
-                  <p>{event.description}</p>
-                </>
+                </div>
               )}
             </div>
 
+            {size === 'lg' && <Separator className="mt-6 mb-4" />}
+
+            <div className="flex justify-between items-start font-medium">
+              <div className={cn('flex-1', size === 'lg' ? 'mb-2' : '')}>
+                <Progress
+                  value={(event.volunteers.length / event.max_volunteers) * 100}
+                  className="my-2"
+                />
+                <div>
+                  {`${event.volunteers.length} / ${event?.max_volunteers}`} Joined
+                  {size === 'lg' && (
+                    <span className="ml-2 text-gray-400">
+                      (Minimum {event.min_volunteers} Volunteers)
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {size === 'lg' &&
+                (activity.status !== ActivityState.CLOSED ? (
+                  <div className="">
+                    {status === 'unauthenticated' ? (
+                      <Button
+                        variant={'default'}
+                        className="ml-4"
+                        type="button"
+                        onClick={() => signIn('google')}
+                      >
+                        <HandIcon size={18} className="mr-2" />
+                        Sign in to Join Event
+                      </Button>
+                    ) : !isPartOfAnyEvent ? (
+                      <Button
+                        variant={'default'}
+                        className="ml-4"
+                        type="button"
+                        disabled={isPending || isEventLimitReached}
+                        onClick={() =>
+                          startTransition(() => callServerAction('JOIN'))
+                        }
+                      >
+                        <HandIcon size={18} className="mr-2" />
+                        Join this event
+                      </Button>
+                    ) : (
+                      isPartOfThisEvent && (
+                        <Button
+                          variant={'default'}
+                          className="ml-4"
+                          type="button"
+                          disabled={isPending}
+                          onClick={() =>
+                            startTransition(() => callServerAction('UNJOIN'))
+                          }
+                        >
+                          <XIcon size={18} className="mr-2" />
+                          Unjoin this event
+                        </Button>
+                      )
+                    )}
+                  </div>
+                ) : (
+                  <div>
+                    <Link href={`/activities/${activity.id}/${event.id}`}>
+                      <Button variant={'default'} className="ml-4" type="button">
+                        Write feedback
+                      </Button>
+                    </Link>
+                  </div>
+                ))}
+            </div>
+
+            {(size === 'lg' && isEventLimitReached && (
+              <div className="text-red-500 font-medium ">
+                Maximum number of volunteers limit reached. Check out some of our
+                other events.
+              </div>
+            )) ||
+              (status === 'authenticated' &&
+                isPartOfAnyEvent &&
+                !isPartOfThisEvent && (
+                  <div className="text-red-500 font-medium">
+                    You are already part of{' '}
+                    <Link
+                      href={`/activities/${participatedEvents?.activity.id}#${participatedEvents?.id}`}
+                      className="underline"
+                    >
+                      {participatedEvents
+                        ? participatedEvents?.activity.name
+                        : 'another '}
+                    </Link>{' '}
+                    Event, Please unjoin to join this one
+                  </div>
+                ))}
+
             {size === 'lg' && (
-              <div className="flex flex-col md:ml-auto md:items-end">
-                <h2 className="font-semibold mb-2">Event Leaders</h2>
-                <div className="flex">
-                  {event.leaders.map(({ user }) => (
+              <div className="mt-3 flex items-center">
+                <div className="font-semibold mr-6 text-base">Volunteers</div>
+                <div className="flex flex-row flex-wrap">
+                  {event.volunteers.map(({ user }) => (
                     <UserAvatar key={user.id} user={user} />
                   ))}
                 </div>
               </div>
             )}
           </div>
-
-          {size === 'lg' && <Separator className="mt-6 mb-4" />}
-
-          <div className="flex justify-between items-start font-medium">
-            <div className={cn('flex-1', size === 'lg' ? 'mb-2' : '')}>
-              <Progress
-                value={(event.volunteers.length / event.max_volunteers) * 100}
-                className="my-2"
-              />
-              <div>
-                {`${event.volunteers.length} / ${event?.max_volunteers}`} Joined
-                {size === 'lg' && (
-                  <span className="ml-2 text-gray-400">
-                    (Minimum {event.min_volunteers} Volunteers)
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {size === 'lg' &&
-              (activity.status !== ActivityState.CLOSED ? (
-                <div className="">
-                  {status === 'unauthenticated' ? (
-                    <Button
-                      variant={'default'}
-                      className="ml-4"
-                      type="button"
-                      onClick={() => signIn('google')}
-                    >
-                      <HandIcon size={18} className="mr-2" />
-                      Sign in to Join Event
-                    </Button>
-                  ) : !isPartOfAnyEvent ? (
-                    <Button
-                      variant={'default'}
-                      className="ml-4"
-                      type="button"
-                      disabled={isPending || isEventLimitReached}
-                      onClick={() =>
-                        startTransition(() => callServerAction('JOIN'))
-                      }
-                    >
-                      <HandIcon size={18} className="mr-2" />
-                      Join this event
-                    </Button>
-                  ) : (
-                    isPartOfThisEvent && (
-                      <Button
-                        variant={'default'}
-                        className="ml-4"
-                        type="button"
-                        disabled={isPending}
-                        onClick={() =>
-                          startTransition(() => callServerAction('UNJOIN'))
-                        }
-                      >
-                        <XIcon size={18} className="mr-2" />
-                        Unjoin this event
-                      </Button>
-                    )
-                  )}
-                </div>
-              ) : (
-                <div>
-                  <Link href={`/activities/${activity.id}/${event.id}`}>
-                    <Button variant={'default'} className="ml-4" type="button">
-                      Write feedback
-                    </Button>
-                  </Link>
-                </div>
-              ))}
-          </div>
-
-          {(size === 'lg' && isEventLimitReached && (
-            <div className="text-red-500 font-medium ">
-              Maximum number of volunteers limit reached. Check out some of our
-              other events.
-            </div>
-          )) ||
-            (status === 'authenticated' &&
-              isPartOfAnyEvent &&
-              !isPartOfThisEvent && (
-                <div className="text-red-500 font-medium">
-                  You are already part of
-                  {' '}
-                  <Link
-                    href={`/activities/${participatedEvents?.activity.id}#${participatedEvents?.id}`}
-                    className='underline'
-                  >
-                    {(participatedEvents ? participatedEvents?.activity.name : 'another ')}
-                  </Link>
-                  {' '} Event, Please unjoin to join
-                  this one
-                </div>
-              ))}
-
-          {size === 'lg' && (
-            <div className="mt-3 flex items-center">
-              <div className="font-semibold mr-6 text-base">Volunteers</div>
-              <div className="flex flex-row flex-wrap">
-                {event.volunteers.map(({ user }) => (
-                  <UserAvatar key={user.id} user={user} />
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </div>
+
+
 
       {size === 'sm' && <Separator />}
     </>

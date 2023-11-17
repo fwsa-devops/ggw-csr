@@ -13,7 +13,7 @@ export default function HeroSection() {
                 Global Giving Week
               </h1>
               <p className="mt-3 text-3xl leading-8 text-white font-semibold">
-                Uniting for a Better World
+                Uniting for a better world
               </p>
             </div>
             <div className="mt-16 flow-root sm:mt-24">

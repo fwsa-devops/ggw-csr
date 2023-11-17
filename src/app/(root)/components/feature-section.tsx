@@ -1,6 +1,5 @@
 'use client';
 
-
 export default function FeatureSection() {
   return (
     <>
@@ -57,10 +56,11 @@ export default function FeatureSection() {
                   Community
                 </h2>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
-                  Every action we take either contributes to the harmony or the
-                  degradation of our environment; let's choose wisely for a
-                  sustainable and thriving future. Let's clean up our beaches
-                  and lakes. Be a ally to our paw friends. Or plant trees.
+                  Each act of kindness, every moment of empathy, and the
+                  collective pursuit of health weaves a fabric of resilience,
+                  strength, and harmony that enriches the entire community. Help
+                  build hygiene and basic groceries kits. Interact with the
+                  elderly. Do your bit.
                 </p>
               </div>
             </div>
@@ -106,11 +106,10 @@ export default function FeatureSection() {
                   Environment
                 </h2>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
-                  Each act of kindness, every moment of empathy, and the
-                  collective pursuit of health weaves a fabric of resilience,
-                  strength, and harmony that enriches the entire community. Help
-                  build hygiene and basic groceries kits. Interact with the
-                  elderly. Do your bit.
+                  Every action we take either contributes to the harmony or the
+                  degradation of our environment; let's choose wisely for a
+                  sustainable and thriving future. Let's clean up our beaches
+                  and lakes. Be an ally to our paw friends. Or plant trees.
                 </p>
               </div>
             </div>

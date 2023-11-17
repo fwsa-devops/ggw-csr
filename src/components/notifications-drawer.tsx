@@ -14,9 +14,14 @@ const NotificationsDrawer = ({ activitiesJoined }) => {
     <div className="z-10">
       <Popover>
         <PopoverTrigger asChild>
-          <div className="mr-3 hover:bg-gray-200 rounded-full bg-white p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer">
+          <div className="mr-3 hover:bg-gray-200 rounded-full bg-white p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer relative">
             {/* <BellIcon className="bg-grey-700" size={18} /> */}
-            <CalendarIcon className="bg-grey-700" size={18} />
+            <CalendarIcon className="bg-grey-700" size={24} />
+            {activitiesJoined.length > 0 && (
+              <span className="absolute bottom-0 right-0 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                {activitiesJoined.length}
+              </span>
+            )}
             <span className="sr-only">View notifications</span>
           </div>
         </PopoverTrigger>

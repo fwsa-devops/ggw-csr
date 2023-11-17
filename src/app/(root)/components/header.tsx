@@ -50,7 +50,7 @@ export default function HeaderComp({ activitiesJoined }) {
               </div>
 
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start mr-10">
-                <div className="flex flex-shrink-0 items-center text-2xl font-bold">
+                <div className="flex flex-shrink-0 items-center md:text-2xl text-xl font-bold">
                   <Link href={'/'}>Global Giving Week</Link>
                 </div>
 

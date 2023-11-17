@@ -23,18 +23,14 @@ export default function HeaderComp({ activitiesJoined }) {
   const { value, toggle } = useBoolean(false);
 
   const isActivePath = (_path: string) => {
+    if (pathname === '/') return false;
 
-    if (_path !== '') return false;
-
-    const currentPath =
-      pathname?.split('/')
-        .filter((x) => `${x}` !== '')[0]
-        .toLocaleLowerCase();
+    const currentPath = pathname
+      .split('/')
+      .filter((x) => `${x}` !== '')[0]
+      .toLocaleLowerCase();
     const path = (_path ?? '/').replace('/', '').toLocaleLowerCase();
-    console.log(currentPath);
-    console.log(pathname?.split('/')[0].toLocaleLowerCase());
     const boo = currentPath === path;
-    console.log(boo);
 
     return boo;
   };

@@ -174,6 +174,7 @@ enum ActivityState {
 enum City {
   Chennai
   Bangalore
+  North_America
 }
 
 enum Role {

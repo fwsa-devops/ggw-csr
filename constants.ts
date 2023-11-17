@@ -8,11 +8,19 @@ export const EVENT_LOCATIONS = [
   {
     id: 1,
     name: 'Chennai',
+    value: 'Chennai',
     checked: false,
   },
   {
     id: 2,
     name: 'Bangalore',
+    value: 'Bangalore',
+    checked: false,
+  },
+  {
+    id: 3,
+    name: 'North America',
+    value: 'North_America',
     checked: false,
   },
   // {

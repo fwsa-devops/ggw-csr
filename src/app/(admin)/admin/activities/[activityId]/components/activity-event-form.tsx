@@ -12,6 +12,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 import { Switch } from '@/components/ui/switch';
 import { toast } from '@/components/ui/use-toast';
@@ -121,7 +128,7 @@ const ActivityEventForm = ({ activityId, event }) => {
       ? {
           id: event.id,
           activityId: activityId as string,
-          city: event.city ?? 'chennai',
+          city: event.city ?? 'Chennai',
           location: event.location ?? '',
           description: event.description ?? '',
           min_volunteers: event.min_volunteers ?? 1,
@@ -204,10 +211,18 @@ const ActivityEventForm = ({ activityId, event }) => {
                   {field.name}{' '}
                 </FormLabel>
                 <FormControl className="mt-2">
-                  <input
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    {...field}
-                  />
+                  <Select {...field} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="City" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Chennai">Chennai</SelectItem>
+                      <SelectItem value="Bangalore">Bangalore</SelectItem>
+                      <SelectItem value="North_America">
+                        North America
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>

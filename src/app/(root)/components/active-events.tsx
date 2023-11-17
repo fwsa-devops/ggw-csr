@@ -36,6 +36,8 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
   }, []);
 
   const onLocationChange = async (item, value) => {
+    console.log('item', item);
+    console.log('value', value);
     try {
       setLoading(true);
       const updatedLocations = locations.map((obj) =>
@@ -84,7 +86,7 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
       (location) => location.checked,
     );
     const selectedLocationNames = selectedLocations.map(
-      (location) => location.name,
+      (location) => location.value,
     );
 
     const filters = {

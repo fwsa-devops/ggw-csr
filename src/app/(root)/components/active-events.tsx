@@ -120,7 +120,7 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
 
   return (
     <>
-      <div className="flex md:flex-row flex-col md:justify-between justify-start items-center gap-4 mt-12 flex-wrap md:flex-nowrap">
+      <div className="flex flex-col md:flex-row justify-start md:justify-between items-start flex-wrap md:flex-nowrap gap-4 mt-12 ">
         <div
           className="main-header flex-col"
           style={{ alignItems: 'flex-start' }}
@@ -131,6 +131,7 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
             All event timings indicated are in the respective local timezones{' '}
           </p>
         </div>
+
         <div className="flex md:justify-end justify-start flex-1 gap-3 md:flex-nowrap flex-wrap">
           <DropdownMenuCheckboxes
             onChange={onTagsChange}

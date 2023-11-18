@@ -11,7 +11,7 @@ const ActivityListItem = ({ activity }: { activity: IActivity }) => {
   return (
     <div
       id={activity.id}
-      className="flex flex-wrap gap-6 p-4 mx-auto event-container md:flex-nowrap md:h-600"
+      className="flex flex-wrap gap-6 p-4 mx-auto event-container lg:flex-nowrap"
     >
       <Link
         className="flex lg:w-1/3 lg:h-100 max-h-72"

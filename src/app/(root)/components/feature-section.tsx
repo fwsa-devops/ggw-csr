@@ -1,32 +1,30 @@
 'use client';
 
-
 export default function FeatureSection() {
   return (
     <>
-      <div className="mx-auto max-w-7xl px-6 lg:px-8  pt-24">
-        <h2 className="text-center text-lg sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl font-bold tracking-tight mt-3">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 pt-16 lg:pt-24">
+        <h2 className="text-center text-lg sm:text-3xl md:text-3xl lg:text-2xl xl:text-3xl font-bold tracking-tight mt-3">
           This year, we're highlighting
           <br />
         </h2>
-        <h2 className="mt-1 md:mt-3  pb-2 text-center text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-gray-900">
+        <h2 className="mt-1 md:mt-3  pb-2 text-center text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-gray-900">
           Three Major Themes
         </h2>
       </div>
 
-      <div className="overflow-hidden bg-white pt-10 sm:pt-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
+      <div className="overflow-hidden bg-white pt-10 sm:pt-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-24">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-12 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
             <div className="order-2 lg:order-1">
               <img
                 src="https://iili.io/JnC7dFV.jpg"
                 alt="Picture of a group of student looking into a laptop"
-                className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill"
+                className=" w-full lg:max-w-[560px] rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill mx-auto lg:mr-auto"
                 loading="lazy"
                 style={{
                   width: '100%',
                   height: 'auto',
-                  maxWidth: '600px',
                   maxHeight: '360px',
                   objectFit: 'cover',
                   objectPosition: 'center',
@@ -49,8 +47,8 @@ export default function FeatureSection() {
           </div>
         </div>
 
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-24">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-12 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
             <div className="lg:pr-4 lg:pt-4">
               <div className="lg:max-w-lg">
                 <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -69,11 +67,11 @@ export default function FeatureSection() {
               <img
                 src="https://iili.io/JBEll24.jpg"
                 alt="Picture of a group of student looking into a laptop"
-                className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill mx-auto"
+                className=" w-full lg:max-w-[560px] rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill mx-auto lg:ml-auto"
                 loading="lazy"
                 style={{
+                  width: '100%',
                   height: 'auto',
-                  width: '600px',
                   maxHeight: '360px',
                   objectFit: 'cover',
                   objectPosition: 'center',
@@ -83,17 +81,17 @@ export default function FeatureSection() {
           </div>
         </div>
 
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-24">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-12 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-center">
             <div className="order-2 lg:order-1">
               <img
-                src="https://iili.io/JnC7H6Q.jpg"
+                src="https://iili.io/Jn72Bmg.jpg"
                 alt="Picture of a group of student looking into a laptop"
-                className="rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill"
+                className=" w-full lg:max-w-[560px] rounded-xl shadow-xl ring-1 ring-gray-400/10 object-fill mx-auto lg:mr-auto"
                 loading="lazy"
                 style={{
+                  width: '100%',
                   height: 'auto',
-                  width: '600px',
                   maxHeight: '360px',
                   objectFit: 'cover',
                   objectPosition: 'center',

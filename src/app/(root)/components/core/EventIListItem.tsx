@@ -21,6 +21,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { ActivityState } from '@prisma/client';
 import Link from 'next/link';
 import moment from 'moment';
+import { EVENT_LOCATIONS } from '../../../../../constants';
 
 const calculateTimeDiff = (start, end) => {
   return (
@@ -98,7 +99,7 @@ const EventListItem = ({
           <div className="absolute top-0 left-0 bg-blue-500 text-white text-base rounded py-1 px-2 pb-3 -mt-8 -z-10">
             {' '}
             {/* Add the badge */}
-            {event.city}
+            {EVENT_LOCATIONS.find((loc) => loc.value === event.city)?.name}
           </div>
         )}
 
@@ -127,7 +128,10 @@ const EventListItem = ({
               >
                 <div className="flex mr-4 mb-2">
                   <MapIcon size={18} className="mr-2" />
-                  {event.city}
+                  {
+                    EVENT_LOCATIONS.find((loc) => loc.value === event.city)
+                      ?.name
+                  }
                 </div>
 
                 {size === 'lg' && (
@@ -142,8 +146,8 @@ const EventListItem = ({
 
                   {is_dates_announced
                     ? moment(startTime).format('MMM Do, h:mm A') +
-                    ' - ' +
-                    moment(endTime).format('MMM Do, h:mm A')
+                      ' - ' +
+                      moment(endTime).format('MMM Do, h:mm A')
                     : date_announcement_text}
                 </div>
 

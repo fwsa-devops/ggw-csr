@@ -19,15 +19,34 @@ export const EVENT_LOCATIONS = [
   },
   {
     id: 3,
-    name: 'North America',
+    name: 'North America - Remote',
     value: 'North_America',
     checked: false,
   },
-  // {
-  //   id: 3,
-  //   name: 'Online',
-  //   checked: false,
-  // },
+  {
+    id: 4,
+    name: 'Bellevue',
+    value: 'Bellevue',
+    checked: false,
+  },
+  {
+    id: 5,
+    name: 'San Mateo',
+    value: 'San_Mateo',
+    checked: false,
+  },
+  {
+    id: 6,
+    name: 'Denver',
+    value: 'Denver',
+    checked: false,
+  },
+  {
+    id: 7,
+    name: 'New York',
+    value: 'New_York',
+    checked: false,
+  },
 ];
 
 export const INCLUDE_ALL_ACTIVITIES_DATA: Partial<

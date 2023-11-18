@@ -5,8 +5,6 @@ function onlyUnique(value, index, array) {
   return array.indexOf(value) === index;
 }
 
-const cities = ['Chennai', 'Bangalore'];
-
 // POST /api/filter
 // return filtered activities
 export async function POST(req: Request) {
@@ -18,7 +16,6 @@ export async function POST(req: Request) {
 
   if (filters.tagNames && filters.locations) {
     const _activities = await prisma.activity.findMany({
-      take: 10,
       where: {
         status: {
           equals: 'OPEN',
@@ -57,20 +54,14 @@ export async function POST(req: Request) {
           },
         },
       });
-      // console.log('events', {
-      //   name: activity.name,
-      //   eventLength: events.length,
-      // });
       activity['events'] = events;
     }
 
-    // console.log('_activities', _activities);
     activities = _activities;
   }
 
   if (filters.tagNames && !filters.locations) {
     const _activities = await prisma.activity.findMany({
-      take: 10,
       where: {
         status: {
           equals: 'OPEN',
@@ -96,6 +87,11 @@ export async function POST(req: Request) {
       where: {
         city: {
           in: filters.locations,
+        },
+        activity: {
+          status: {
+            equals: 'OPEN',
+          },
         },
       },
       include: {
@@ -125,6 +121,7 @@ export async function POST(req: Request) {
           in: _activityIds,
         },
       },
+      ...INCLUDE_ALL_ACTIVITIES_DATA,
     });
     // console.log('_activities', _activities);
 

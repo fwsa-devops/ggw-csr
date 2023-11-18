@@ -175,6 +175,10 @@ enum City {
   Chennai
   Bangalore
   North_America
+  Bellevue
+  San_Mateo
+  Denver
+  New_York
 }
 
 enum Role {

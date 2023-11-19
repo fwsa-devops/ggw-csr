@@ -25,7 +25,15 @@ export const activityFormSchema = z.object({
 export const eventFormSchema = z.object({
   activityId: z.string(),
   id: z.string().optional(),
-  city: z.enum(['Chennai', 'Bangalore', 'North_America']),
+  city: z.enum([
+'Chennai', 
+'Bangalore', 
+'North_America',
+'Bellevue',
+'San_Mateo',
+'Denver',
+'New_York'
+      ]),
   location: z.string().min(2),
 
   leaders: z

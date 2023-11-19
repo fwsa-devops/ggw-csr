@@ -25,7 +25,7 @@ export default function AdminHeader() {
 
   const isActivePath = (path: string) => {
     return (
-      pathname.split('/')[0].toLocaleLowerCase() === path.toLocaleLowerCase()
+      pathname?.split('/')[0].toLocaleLowerCase() === path.toLocaleLowerCase()
     );
   };
 

@@ -26,7 +26,7 @@ export default function HeaderComp({ activitiesJoined }) {
   const isActivePath = (_path: string) => {
     if (pathname === '/') return false;
 
-    const currentPath = pathname
+    const currentPath = (pathname || '')
       .split('/')
       .filter((x) => `${x}` !== '')[0]
       .toLocaleLowerCase();

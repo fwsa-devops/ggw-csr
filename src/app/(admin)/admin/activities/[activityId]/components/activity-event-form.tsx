@@ -31,6 +31,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFetch } from 'usehooks-ts';
 import * as z from 'zod';
+import { EVENT_LOCATIONS } from '../../../../../../../constants';
 
 const ActivityEventForm = ({ activityId, event }) => {
   const { data: session } = useSession();
@@ -216,11 +217,11 @@ const ActivityEventForm = ({ activityId, event }) => {
                       <SelectValue placeholder="City" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Chennai">Chennai</SelectItem>
-                      <SelectItem value="Bangalore">Bangalore</SelectItem>
-                      <SelectItem value="North_America">
-                        North America
-                      </SelectItem>
+                      {EVENT_LOCATIONS.map((location) => (
+                        <SelectItem value={location.value}>
+                          {location.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>

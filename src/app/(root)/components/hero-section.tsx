@@ -5,7 +5,7 @@ import ReactPlayer from 'react-player';
 export default function HeroSection() {
   return (
     <div
-      className="h-fit"
+      className="h-fit  bg-gray-gradient"
       // style={{ height: '75vh', maxHeight: '75vh' }}
     >
       <div className="max-w-screen overflow-hidden h-full flex flex-col lg:flex-row">

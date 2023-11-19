@@ -15,7 +15,7 @@ import { UserNav } from '@/components/user-nav';
 const navigations = [
   { name: 'Dashboard', href: '/admin' },
   { name: 'Homepage', href: '/admin/homepage' },
-  { name: 'Activites', href: '/admin/activities' },
+  { name: 'Activities', href: '/admin/activities' },
   { name: 'Testimonials', href: '/admin/testimonies' },
 ];
 

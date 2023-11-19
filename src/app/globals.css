@@ -830,3 +830,22 @@ body {
 .custom-video {
   width: 95%;
 }
+
+.bg-gray-gradient {
+  /* background-image: linear-gradient(to right, #ffffff, #f5f5f5, #eaeaea, #e0e0e0, #d6d6d6, #d6d6d6, #d6d6d6, #d6d6d6, #e0e0e0, #eaeaea, #f5f5f5, #ffffff); */
+  background-image: linear-gradient(
+    to bottom,
+    #ffffff,
+    #f5f5f5,
+    #eaeaea,
+    #e0e0e0,
+    #d6d6d6,
+    #d6d6d6,
+    #d6d6d6,
+    #d6d6d6,
+    #e0e0e0,
+    #eaeaea,
+    #f5f5f5,
+    #ffffff
+  );
+}

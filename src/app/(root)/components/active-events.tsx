@@ -16,6 +16,7 @@ import { EVENT_LOCATIONS } from './../../../../constants';
 import Loader from '@/components/ui/loader';
 import ActivityListItem from '@/app/(root)/components/core/ActivityListItem';
 import { IActivity } from '@/types';
+import { DropdownMenuCheckboxesWListGroup } from '@/components/ui/dropdown/custom-checkbox-dd';
 
 const ActiveEvents = (props: { activities: IActivity[] }) => {
   const { activities: activitiesList } = props;
@@ -142,13 +143,14 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
             title={'Filter by Themes'}
             className="md:w-auto w-full justify-start"
           />
-          <DropdownMenuCheckboxes
+          <DropdownMenuCheckboxesWListGroup
             onChange={onLocationChange}
             disabled={isLoading}
             items={locations}
             key="location"
             label={'Locations'}
-            title={'Filter by Location'}
+            title={'Filter by Office Location'}
+            groupItems={true}
             className="md:w-auto w-full justify-start"
           />
           {/* <DatePickerWithRange

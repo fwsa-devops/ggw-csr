@@ -11,6 +11,21 @@ const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
+  pages: {
+    error: '/error',
+  },
+  callbacks: {
+    signIn: ({ account, profile }) => {
+      if (account && account.provider === 'google') {
+        const boo = (profile?.email as string).endsWith('@freshworks.com');
+        console.log(boo);
+        // throw new Error("Invalid email domain");
+        return boo;
+        // redirect(`/api/auth/error?error=NotPartOfFreshworks`);
+      }
+      return true; // Do different verification for other providers that don't have `email_verified`
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
   theme: {
     colorScheme: 'light' as const,

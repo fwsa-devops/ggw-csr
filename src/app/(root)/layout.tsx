@@ -35,7 +35,11 @@ export default async function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <SessionProvider session={session}>
-        <body className={inter.className + ' bg-white overflow-x-hidden'}>
+        <body
+          className={
+            inter.className + ' bg-white overflow-x-hidden min-h-screen'
+          }
+        >
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <Header activitiesJoined={activitiesJoined} />
           <main className="main relative">

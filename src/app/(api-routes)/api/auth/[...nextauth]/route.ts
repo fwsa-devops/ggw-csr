@@ -17,7 +17,8 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     signIn: ({ account, profile }) => {
       if (account && account.provider === 'google') {
-        const boo = (profile?.email as string).endsWith('@freshworks.com');
+        const boo = /^\S+freshworks\.com$/.test(profile?.email as string))
+
         console.log(boo);
         // throw new Error("Invalid email domain");
         return boo;

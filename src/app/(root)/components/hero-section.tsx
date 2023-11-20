@@ -5,8 +5,8 @@ import ReactPlayer from 'react-player';
 export default function HeroSection() {
   return (
     <div
-      className="h-fit  bg-gray-gradient"
-      // style={{ height: '75vh', maxHeight: '75vh' }}
+      className="h-fit"
+    // style={{ height: '75vh', maxHeight: '75vh' }}
     >
       <div className="max-w-screen overflow-hidden h-full flex flex-col lg:flex-row">
         <div className="w-full lg:w-3/7 sm:order-0 lg:order-2 lg:m-0">
@@ -212,7 +212,7 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="w-full lg:w-4/7 sm:order-1 order-1 my-14 lg:m-0">
+        <div className="w-full lg:w-4/7 sm:order-1 order-1 my-14 lg:m-0 bg-gray-custom">
           <div className="flex h-full justify-center items-center">
             <div className="rounded-lg lg:rounded-md shadow-xl ring-1 ring-gray-900/10  w-11/12 lg:w-9/12 overflow-hidden">
               <ReactPlayer

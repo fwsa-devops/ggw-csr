@@ -16,7 +16,7 @@ const ActivityListItem = ({ activity }: { activity: IActivity }) => {
       className="flex flex-wrap gap-6 p-4 mx-auto event-container lg:flex-nowrap"
     >
       <Link
-        className="flex lg:w-1/3 max-h-[260px] md:max-h-[320px] lg:max-h-[260px] w-full"
+        className="flex lg:w-1/3 max-h-[320px] md:max-h-[320px] w-full"
         href={`/activities/${activity.id}`}
       >
         <img

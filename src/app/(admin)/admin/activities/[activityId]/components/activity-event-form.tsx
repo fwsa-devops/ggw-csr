@@ -130,35 +130,35 @@ const ActivityEventForm = ({ activityId, event }) => {
     resolver: zodResolver(refinedSchema),
     defaultValues: event
       ? {
-        id: event.id,
-        activityId: activityId as string,
-        city: event.city ?? 'Chennai',
-        location: event.location ?? '',
-        description: event.description ?? '',
-        min_volunteers: event.min_volunteers ?? 1,
-        max_volunteers: event.max_volunteers ?? 1,
-        is_dates_announced: event.is_dates_announced ?? false,
-        date_announcement_text: event.date_announcement_text ?? '',
-        published: event.published ?? true,
-        leaders: event.leaders,
-        startTime: event.startTime,
-        endTime: event.endTime,
-      }
+          id: event.id,
+          activityId: activityId as string,
+          city: event.city ?? 'Chennai',
+          location: event.location ?? '',
+          description: event.description ?? '',
+          min_volunteers: event.min_volunteers ?? 1,
+          max_volunteers: event.max_volunteers ?? 1,
+          is_dates_announced: event.is_dates_announced ?? false,
+          date_announcement_text: event.date_announcement_text ?? '',
+          published: event.published ?? true,
+          leaders: event.leaders,
+          startTime: event.startTime,
+          endTime: event.endTime,
+        }
       : {
-        city: 'Chennai',
-        location: '',
-        description: '',
-        min_volunteers: 1,
-        max_volunteers: 1,
-        activityId: activityId as string,
-        is_dates_announced: false,
-        date_announcement_text: '',
-        published: true,
-      },
+          city: 'Chennai',
+          location: '',
+          description: '',
+          min_volunteers: 1,
+          max_volunteers: 1,
+          activityId: activityId as string,
+          is_dates_announced: false,
+          date_announcement_text: '',
+          published: true,
+        },
   });
 
   const onSubmit = async (values: z.infer<typeof eventFormSchema>) => {
-    // console.log('onsubmit', values);
+    console.log('onsubmit', values);
     try {
       setLoading(true);
       // console.log(values);
@@ -220,22 +220,19 @@ const ActivityEventForm = ({ activityId, event }) => {
                       <SelectValue placeholder="City" />
                     </SelectTrigger>
                     <SelectContent>
-                      {
-                        Object.entries(groupBy(EVENT_LOCATIONS, 'group')).map(
-                          ([group, _items], idx) => (
-                            <SelectGroup >
-                              <SelectLabel> {group} </SelectLabel>
+                      {Object.entries(groupBy(EVENT_LOCATIONS, 'group')).map(
+                        ([group, _items], idx) => (
+                          <SelectGroup>
+                            <SelectLabel> {group} </SelectLabel>
 
-                              {
-                                (_items as any[]).map((item, idx) => (
-                                  <SelectItem value={item.value}>
-                                    {item.name}
-                                  </SelectItem>
-                                ))
-                              }
-
-                            </SelectGroup>
-                          ))}
+                            {(_items as any[]).map((item, idx) => (
+                              <SelectItem value={item.value}>
+                                {item.name}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        ),
+                      )}
                     </SelectContent>
                   </Select>
                 </FormControl>

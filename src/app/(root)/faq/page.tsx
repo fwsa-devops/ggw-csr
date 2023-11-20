@@ -300,8 +300,6 @@ export default function FAQ() {
               )}
             </Disclosure>
 
-
-
             <Disclosure as="div" key={'9'} className="pt-6">
               {({ open }) => (
                 <>
@@ -354,7 +352,8 @@ export default function FAQ() {
                   <dt>
                     <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
                       <span className="text-base font-semibold leading-7">
-                        How do employee volunteers commute to the event location?
+                        How do employee volunteers commute to the event
+                        location?
                       </span>
                       <span className="ml-6 flex h-7 items-center">
                         {open ? (

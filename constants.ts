@@ -21,7 +21,7 @@ export const EVENT_LOCATIONS = [
   },
   {
     id: 3,
-    name: 'North America - Remote',
+    name: 'North America - Virtual',
     value: 'North_America',
     group: 'North America',
     checked: false,

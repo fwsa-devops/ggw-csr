@@ -121,7 +121,7 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row justify-start md:justify-between items-start flex-wrap md:flex-nowrap gap-4 mt-12 ">
+      <div className="flex flex-col justify-start md:justify-between items-start flex-wrap md:flex-col md:flex-wrap lg:flex-wrap lg:flex-row gap-4 mt-12 ">
         <div
           className="main-header flex-col"
           style={{ alignItems: 'flex-start' }}
@@ -149,7 +149,7 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
             items={locations}
             key="location"
             label={'Locations'}
-            title={'Filter by Office Location'}
+            title={'Filter by Event Location'}
             groupItems={true}
             className="md:w-auto w-full justify-start"
           />

@@ -60,6 +60,7 @@ export const eventFormSchema = z.object({
   is_dates_announced: z.boolean(),
   startTime: z.date().optional(),
   endTime: z.date().optional(),
+  timeZone: z.string().default('IST'),
   date_announcement_text: z.string().optional(),
 });
 

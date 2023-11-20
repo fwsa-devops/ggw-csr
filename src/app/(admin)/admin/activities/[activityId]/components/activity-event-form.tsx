@@ -143,6 +143,7 @@ const ActivityEventForm = ({ activityId, event }) => {
           leaders: event.leaders,
           startTime: event.startTime,
           endTime: event.endTime,
+          timeZone: event.timeZone ?? 'IST',
         }
       : {
           city: 'Chennai',
@@ -154,6 +155,7 @@ const ActivityEventForm = ({ activityId, event }) => {
           is_dates_announced: false,
           date_announcement_text: '',
           published: true,
+          timeZone: event.timeZone ?? 'IST',
         },
   });
 
@@ -331,6 +333,25 @@ const ActivityEventForm = ({ activityId, event }) => {
                         setValueAs: (v) =>
                           v === '' ? undefined : parseInt(v, 10),
                       })}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </div>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="timeZone"
+            render={({ field }) => (
+              <div className="mt-6">
+                <FormItem className="flex flex-col">
+                  <FormLabel> Time Zone </FormLabel>
+                  <FormControl className="mt-2">
+                    <input
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />

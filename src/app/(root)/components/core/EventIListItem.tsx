@@ -20,7 +20,7 @@ import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/components/ui/use-toast';
 import { ActivityState } from '@prisma/client';
 import Link from 'next/link';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { EVENT_LOCATIONS } from '../../../../../constants';
 
 const calculateTimeDiff = (start, end) => {
@@ -51,8 +51,18 @@ const EventListItem = ({
   const { status } = useSession();
   const [isPending, startTransition] = useTransition();
 
-  const { is_dates_announced, date_announcement_text, startTime, endTime } =
-    event;
+  console.log('EventListItem', event);
+
+  const {
+    is_dates_announced,
+    date_announcement_text,
+    startTime,
+    endTime,
+    timeZone,
+  } = event;
+
+  console.log('timeZone', timeZone);
+
   const date = !is_dates_announced
     ? date_announcement_text + ' Hrs'
     : calculateTimeDiff(startTime, endTime);
@@ -145,9 +155,17 @@ const EventListItem = ({
                   <CalendarRangeIcon size="18" className="mr-2" />
 
                   {is_dates_announced
-                    ? moment(startTime).format('MMM Do, h:mm A') +
+                    ? moment(startTime)
+                        .tz('Asia/Kolkata')
+                        .format('MMM Do, h:mm A') +
+                      ' ' +
+                      timeZone +
                       ' - ' +
-                      moment(endTime).format('MMM Do, h:mm A')
+                      moment(endTime)
+                        .tz('Asia/Kolkata')
+                        .format('MMM Do, h:mm A') +
+                      ' ' +
+                      timeZone
                     : date_announcement_text}
                 </div>
 

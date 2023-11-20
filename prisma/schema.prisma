@@ -39,6 +39,7 @@ model Event {
   is_dates_announced     Boolean       @default(false)
   startTime              DateTime?
   endTime                DateTime?
+  timeZone               String        @default("IST")
   date_announcement_text String?       @db.Text
   author_id              String
   activityId             String

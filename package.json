@@ -53,6 +53,7 @@
     "lucide-react": "^0.279.0",
     "luxon": "^3.4.3",
     "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
     "next": "^14.0.1",
     "next-auth": "^4.23.2",
     "prettier": "^3.0.3",

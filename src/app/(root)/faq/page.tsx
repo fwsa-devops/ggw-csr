@@ -160,7 +160,7 @@ export default function FAQ() {
                         <li>1. Go to the 'Activities' tab</li>
                         <li>
                           2. Once in, you will find a list of activities that
-                          can be filtered by 'Location', 'Theme' and 'Date'.
+                          can be filtered by 'Event Location' and 'Theme' .
                           Apply a filter of your choice to go to your preferred
                           activity
                         </li>
@@ -184,6 +184,42 @@ export default function FAQ() {
                           email
                         </li>
                       </ol>
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'8'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
+                        Can an employee sign up for more than 1 activity?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600">
+                      In this edition of GGW, employees are allowed to sign up
+                      for only 1 activity of their preference from the list
+                      provided
                     </p>
                   </Disclosure.Panel>
                 </>
@@ -264,41 +300,7 @@ export default function FAQ() {
               )}
             </Disclosure>
 
-            <Disclosure as="div" key={'8'} className="pt-6">
-              {({ open }) => (
-                <>
-                  <dt>
-                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
-                      <span className="text-base font-semibold leading-7">
-                        Can an employee sign up for more than 1 activity?
-                      </span>
-                      <span className="ml-6 flex h-7 items-center">
-                        {open ? (
-                          <MinusIcon
-                            size={18}
-                            className="h-6 w-6"
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <PlusIcon
-                            size={18}
-                            className="h-6 w-6"
-                            aria-hidden="true"
-                          />
-                        )}
-                      </span>
-                    </Disclosure.Button>
-                  </dt>
-                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                    <p className="text-base leading-7 text-gray-600">
-                      In this edition of GGW, employees are allowed to sign up
-                      for only 1 activity of their preference from the list
-                      provided
-                    </p>
-                  </Disclosure.Panel>
-                </>
-              )}
-            </Disclosure>
+
 
             <Disclosure as="div" key={'9'} className="pt-6">
               {({ open }) => (
@@ -352,8 +354,7 @@ export default function FAQ() {
                   <dt>
                     <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
                       <span className="text-base font-semibold leading-7">
-                        How do employee volunteers commute to the event
-                        location?
+                        How do employee volunteers commute to the event location?
                       </span>
                       <span className="ml-6 flex h-7 items-center">
                         {open ? (
@@ -377,7 +378,7 @@ export default function FAQ() {
                       Employees who have registered with us for outdoor
                       activities will be provided with Freshworks transportation
                       which will ply to and from our respective offices at
-                      pre-decided times.
+                      pre-decided times
                     </p>
                   </Disclosure.Panel>
                 </>
@@ -593,7 +594,7 @@ export default function FAQ() {
                       Please write an email to your manager indicating the
                       activity you are going to be participating in. Your
                       manager will be sent a report (if required) on your
-                      participation upon activity completion from our end.
+                      participation upon activity completion from our end
                     </p>
                   </Disclosure.Panel>
                 </>

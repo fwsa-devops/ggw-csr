@@ -46,7 +46,7 @@ const NotificationsDrawer = ({ activitiesJoined }) => {
                             {activity.event.activity.name}
                             {/* <LinkIcon size={12} className='inline ml-2' /> */}
                           </span>
-                          Scheduled for
+                          Scheduled to happen
                           <span className="ml-2 text-sm font-semibold leading-6 text-gray-900">
                             {activity.event.is_dates_announced
                               ? moment(activity.event.startTime).fromNow()

@@ -108,7 +108,7 @@ export async function createActivityEvent(
   formData: z.infer<typeof eventFormSchema>,
 ) {
   const data = eventFormSchema.safeParse(formData);
-  // console.log('data', data);
+  // console.log('createActivityEvent', data);
 
   const session = await getServerSession();
 
@@ -236,6 +236,24 @@ export async function joinEvent(eventId: string): Promise<ResponseType> {
     if (!(user && user.email)) {
       throw 'Un-Authorized User';
     }
+
+    const alreadyPartOfAnotherEvent = await prisma.volunteers.findMany({
+      where: {
+        user_id: user.email,
+      },
+      include: {
+        event: {
+          include: {
+            activity: true,
+          }
+        },
+      },
+    })
+
+    if (alreadyPartOfAnotherEvent.length > 0) {
+      throw 'Already part of another event - ' + alreadyPartOfAnotherEvent[0].event.activity.name;
+    }
+
 
     await prisma.volunteers.create({
       data: {

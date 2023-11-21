@@ -25,7 +25,7 @@ const EventPage = async (props: { activity: IActivity }) => {
       },
     });
 
-    console.log(JSON.stringify(volunteeredEvents, null, 2));
+    // console.log(JSON.stringify(volunteeredEvents, null, 2));
 
     isPartOfAnyEvent = volunteeredEvents.length > 0;
     participatedEvents = volunteeredEvents.at(0)?.event ?? null;

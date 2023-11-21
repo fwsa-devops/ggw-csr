@@ -11,6 +11,7 @@ import { ourFileRouter } from '@/api/uploadthing/core';
 import { getActivitiesJoined } from '@/components/actions/action';
 import { Analytics } from '@vercel/analytics/react';
 import Footer from './components/footer';
+import HeaderNotification from './components/header-notification';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -34,13 +35,14 @@ export default async function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <SessionProvider session={session}>
+      <SessionProvider session={session} >
         <body
           className={
             inter.className + ' bg-white overflow-x-hidden min-h-screen'
           }
         >
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+          <HeaderNotification />
           <Header activitiesJoined={activitiesJoined} />
           <main className="main relative">
             <div className="">{children}</div>

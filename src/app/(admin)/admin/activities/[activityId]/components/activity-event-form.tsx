@@ -155,12 +155,12 @@ const ActivityEventForm = ({ activityId, event }) => {
           is_dates_announced: false,
           date_announcement_text: '',
           published: true,
-          timeZone: event.timeZone ?? 'IST',
+          timeZone: 'IST',
         },
   });
 
   const onSubmit = async (values: z.infer<typeof eventFormSchema>) => {
-    console.log('onsubmit', values);
+    // console.log('onsubmit', values);
     try {
       setLoading(true);
       // console.log(values);
@@ -347,7 +347,10 @@ const ActivityEventForm = ({ activityId, event }) => {
             render={({ field }) => (
               <div className="mt-6">
                 <FormItem className="flex flex-col">
-                  <FormLabel> Time Zone </FormLabel>
+                  <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900">
+                    {' '}
+                    {field.name}{' '}
+                  </FormLabel>
                   <FormControl className="mt-2">
                     <input
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

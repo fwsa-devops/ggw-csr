@@ -9,6 +9,7 @@ import {
 import { CalendarIcon } from '@radix-ui/react-icons';
 import { Overview } from './components/overview';
 import { RecentVolunteers } from './components/recent-volunteers';
+import { cn } from '@/lib/utils';
 
 const DashboardPage = async () => {
   const events = await prisma.event.findMany({
@@ -220,7 +221,7 @@ const DashboardPage = async () => {
           </div>
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="col-span-4">
+            <Card className="col-span-4 lg:max-h-[450px] md:h-auto ">
               <CardHeader>
                 <CardTitle>Overview - Activity wise</CardTitle>
               </CardHeader>
@@ -228,7 +229,7 @@ const DashboardPage = async () => {
                 <Overview data={activityVolunteerCounts} />
               </CardContent>
             </Card>
-            <Card className="col-span-3">
+            <Card className=" col-span-4 lg:col-span-3 max-h-[450px] overflow-y-hidden">
               <CardHeader>
                 <CardTitle>Recent Volunteers</CardTitle>
                 <CardDescription>
@@ -242,8 +243,10 @@ const DashboardPage = async () => {
                   new volunteers today.
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <RecentVolunteers volunteers={volunteers} />
+              <CardContent className=''>
+                <div className={cn("space-y-8 h-[360px] overflow-y-scroll pb-10")}>
+                  <RecentVolunteers className='' volunteers={volunteers} />
+                </div>
               </CardContent>
             </Card>
           </div>

@@ -10,7 +10,7 @@ const ActivityPreview = async ({ activity }: { activity: IActivity }) => {
         <div className="order-1 lg:order-1 lg:w-full">
           <img
             alt="ecommerce"
-            className=" lg:aspect-video lg:max-h-[420px]  object-cover object-center w-full rounded"
+            className=" lg:aspect-video lg:max-h-[500px] object-cover object-center w-full rounded"
             src={activity.cover || ''}
           />
         </div>
@@ -30,10 +30,10 @@ const ActivityPreview = async ({ activity }: { activity: IActivity }) => {
           <h2 className="mb-3 text-sm tracking-widest text-gray-400 title-font">
             {activity.tags
               ? activity?.tags.map((tag) => (
-                  <span key={tag.id} className="mr-2">
-                    #{tag?.tag.name}
-                  </span>
-                ))
+                <span key={tag.id} className="mr-2">
+                  #{tag?.tag.name}
+                </span>
+              ))
               : ''}
           </h2>
 

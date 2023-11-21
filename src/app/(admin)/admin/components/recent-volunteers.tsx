@@ -1,9 +1,10 @@
 import UserAvatar from '@/components/user-avatar';
+import { cn } from '@/lib/utils';
 import moment from 'moment';
 
-export function RecentVolunteers({ volunteers }) {
+export function RecentVolunteers({ volunteers, className = "" }) {
   return (
-    <div className="space-y-8">
+    <>
       {volunteers.map(({ user, assigned_at }) => (
         <div key={user.email} className="flex items-center">
           <UserAvatar user={user} />
@@ -16,6 +17,6 @@ export function RecentVolunteers({ volunteers }) {
           </div>
         </div>
       ))}
-    </div>
+    </>
   );
 }

@@ -21,7 +21,7 @@ import { DropdownMenuCheckboxesWListGroup } from '@/components/ui/dropdown/custo
 const ActiveEvents = (props: { activities: IActivity[] }) => {
   const { activities: activitiesList } = props;
 
-  console.log('activitiesList', activitiesList);
+  // console.log('activitiesList', activitiesList);
 
   const [isLoading, setLoading] = React.useState<boolean>(false);
   const [activities, setActivities] = React.useState(activitiesList);
@@ -39,8 +39,8 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
   }, []);
 
   const onLocationChange = async (item, value) => {
-    console.log('item', item);
-    console.log('value', value);
+    // console.log('item', item);
+    // console.log('value', value);
     try {
       setLoading(true);
       const updatedLocations = locations.map((obj) =>
@@ -184,9 +184,8 @@ const ActiveEvents = (props: { activities: IActivity[] }) => {
           return (
             activity.events.length > 0 && (
               <div
-                className={`container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground ${
-                  isLoading ? 'opacity-50' : ''
-                }`}
+                className={`container h-auto px-0 mx-auto my-10 border border-b-2 shadow w-100 bg-grey rounded-xl bg-card text-card-foreground ${isLoading ? 'opacity-50' : ''
+                  }`}
                 key={activity.id}
               >
                 <ActivityListItem key={activity.id} activity={activity} />

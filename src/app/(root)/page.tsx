@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import HeroSection from './components/hero-section';
 import FeatureSection from './components/feature-section';
 import PageQuotes from './components/quotes';
+import HeaderNotification from './components/header-notification';
 
 export const metadata: Metadata = {
   title: 'Global Giving Week - 2023',

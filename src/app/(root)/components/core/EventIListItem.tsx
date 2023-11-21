@@ -51,7 +51,7 @@ const EventListItem = ({
   const { status } = useSession();
   const [isPending, startTransition] = useTransition();
 
-  console.log('EventListItem', event);
+  // console.log('EventListItem', event);
 
   const {
     is_dates_announced,
@@ -61,7 +61,7 @@ const EventListItem = ({
     timeZone,
   } = event;
 
-  console.log('timeZone', timeZone);
+  // console.log('timeZone', timeZone);
 
   const date = !is_dates_announced
     ? date_announcement_text + ' Hrs'
@@ -156,16 +156,16 @@ const EventListItem = ({
 
                   {is_dates_announced
                     ? moment(startTime)
-                        .tz('Asia/Kolkata')
-                        .format('MMM Do, h:mm A') +
-                      ' ' +
-                      timeZone +
-                      ' - ' +
-                      moment(endTime)
-                        .tz('Asia/Kolkata')
-                        .format('MMM Do, h:mm A') +
-                      ' ' +
-                      timeZone
+                      .tz('Asia/Kolkata')
+                      .format('MMM Do, h:mm A') +
+                    ' ' +
+                    timeZone +
+                    ' - ' +
+                    moment(endTime)
+                      .tz('Asia/Kolkata')
+                      .format('MMM Do, h:mm A') +
+                    ' ' +
+                    timeZone
                     : date_announcement_text}
                 </div>
 

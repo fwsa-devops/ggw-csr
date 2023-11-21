@@ -23,7 +23,7 @@ export default async function RootLayout({
   // check for login & role in here
 
   const adminUsers = process.env.ADMIN_USERS?.split(' ') ?? [];
-  console.log('adminUsers', adminUsers);
+  // console.log('adminUsers', adminUsers);
   if (!adminUsers.includes(session?.user?.email ?? '')) {
     redirect('/');
   }

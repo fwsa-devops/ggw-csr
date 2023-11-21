@@ -8,7 +8,7 @@ import { IActivity } from '@/types';
 const ActivityListItem = ({ activity }: { activity: IActivity }) => {
   activity.events.length = 2;
 
-  console.log('ActivityListItem', activity);
+  // console.log('ActivityListItem', activity);
 
   return (
     <div

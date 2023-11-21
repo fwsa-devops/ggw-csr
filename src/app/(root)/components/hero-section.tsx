@@ -6,7 +6,7 @@ export default function HeroSection() {
   return (
     <div
       className="h-fit"
-      // style={{ height: '75vh', maxHeight: '75vh' }}
+    // style={{ height: '75vh', maxHeight: '75vh' }}
     >
       <div className="max-w-screen overflow-hidden h-full flex flex-col lg:flex-row">
         <div className="w-full lg:w-3/7 sm:order-0 lg:order-2 lg:m-0">

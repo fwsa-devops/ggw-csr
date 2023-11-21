@@ -1,8 +1,7 @@
 import UserAvatar from '@/components/user-avatar';
-import { cn } from '@/lib/utils';
 import moment from 'moment';
 
-export function RecentVolunteers({ volunteers, className = "" }) {
+export function RecentVolunteers({ volunteers, className = '' }) {
   return (
     <>
       {volunteers.map(({ user, assigned_at }) => (

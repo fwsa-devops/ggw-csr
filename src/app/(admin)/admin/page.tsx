@@ -243,9 +243,11 @@ const DashboardPage = async () => {
                   new volunteers today.
                 </CardDescription>
               </CardHeader>
-              <CardContent className=''>
-                <div className={cn("space-y-8 h-[360px] overflow-y-scroll pb-10")}>
-                  <RecentVolunteers className='' volunteers={volunteers} />
+              <CardContent className="">
+                <div
+                  className={cn('space-y-8 h-[360px] overflow-y-scroll pb-10')}
+                >
+                  <RecentVolunteers className="" volunteers={volunteers} />
                 </div>
               </CardContent>
             </Card>

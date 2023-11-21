@@ -156,16 +156,16 @@ const EventListItem = ({
 
                   {is_dates_announced
                     ? moment(startTime)
-                      .tz('Asia/Kolkata')
-                      .format('MMM Do, h:mm A') +
-                    ' ' +
-                    timeZone +
-                    ' - ' +
-                    moment(endTime)
-                      .tz('Asia/Kolkata')
-                      .format('MMM Do, h:mm A') +
-                    ' ' +
-                    timeZone
+                        .tz('Asia/Kolkata')
+                        .format('MMM Do, h:mm A') +
+                      ' ' +
+                      timeZone +
+                      ' - ' +
+                      moment(endTime)
+                        .tz('Asia/Kolkata')
+                        .format('MMM Do, h:mm A') +
+                      ' ' +
+                      timeZone
                     : date_announcement_text}
                 </div>
 

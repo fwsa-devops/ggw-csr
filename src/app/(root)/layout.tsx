@@ -35,7 +35,7 @@ export default async function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <SessionProvider session={session} >
+      <SessionProvider session={session}>
         <body
           className={
             inter.className + ' bg-white overflow-x-hidden min-h-screen'

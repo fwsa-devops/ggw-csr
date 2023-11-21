@@ -245,15 +245,17 @@ export async function joinEvent(eventId: string): Promise<ResponseType> {
         event: {
           include: {
             activity: true,
-          }
+          },
         },
       },
-    })
+    });
 
     if (alreadyPartOfAnotherEvent.length > 0) {
-      throw 'Already part of another event - ' + alreadyPartOfAnotherEvent[0].event.activity.name;
+      throw (
+        `You're already part of another event - ` +
+        alreadyPartOfAnotherEvent[0].event.activity.name
+      );
     }
-
 
     await prisma.volunteers.create({
       data: {

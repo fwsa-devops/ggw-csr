@@ -30,10 +30,10 @@ const ActivityPreview = async ({ activity }: { activity: IActivity }) => {
           <h2 className="mb-3 text-sm tracking-widest text-gray-400 title-font">
             {activity.tags
               ? activity?.tags.map((tag) => (
-                  <span key={tag.id} className="mr-2">
-                    #{tag?.tag.name}
-                  </span>
-                ))
+                <span key={tag.id} className="mr-2">
+                  #{tag?.tag.name}
+                </span>
+              ))
               : ''}
           </h2>
 
@@ -47,7 +47,7 @@ const ActivityPreview = async ({ activity }: { activity: IActivity }) => {
           </div>
 
           <div
-            className="leading-relaxed"
+            className="leading-relaxed activity-description"
             dangerouslySetInnerHTML={{ __html: activity.description ?? '' }}
           ></div>
         </div>

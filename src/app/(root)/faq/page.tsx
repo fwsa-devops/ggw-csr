@@ -569,6 +569,40 @@ export default function FAQ() {
                   <dt>
                     <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
                       <span className="text-base font-semibold leading-7">
+                        Will Paid Time Off be granted?
+                      </span>
+                      <span className="ml-6 flex h-7 items-center">
+                        {open ? (
+                          <MinusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            size={18}
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </dt>
+                  <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                    <p className="text-base leading-7 text-gray-600 mb-2">
+                      GGW is to be thought of as an internal event similar to Hackathon, where although it's not a PTO, FW is giving you the time to indulge in something outside their regular roles. Check with your managers for more info
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" key={'16'} className="pt-6">
+              {({ open }) => (
+                <>
+                  <dt>
+                    <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                      <span className="text-base font-semibold leading-7">
                         How do apply for a GGW time off with my manager?
                       </span>
                       <span className="ml-6 flex h-7 items-center">
@@ -671,6 +705,8 @@ export default function FAQ() {
                 </>
               )}
             </Disclosure>
+
+
           </dl>
         </div>
       </div>

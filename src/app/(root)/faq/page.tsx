@@ -590,7 +590,10 @@ export default function FAQ() {
                   </dt>
                   <Disclosure.Panel as="dd" className="mt-2 pr-12">
                     <p className="text-base leading-7 text-gray-600 mb-2">
-                      GGW is to be thought of as an internal event similar to Hackathon, where although it's not a PTO, FW is giving you the time to indulge in something outside their regular roles. Check with your managers for more info
+                      GGW is to be thought of as an internal event similar to
+                      Hackathon, where although it's not a PTO, FW is giving you
+                      the time to indulge in something outside their regular
+                      roles. Check with your managers for more info
                     </p>
                   </Disclosure.Panel>
                 </>
@@ -705,8 +708,6 @@ export default function FAQ() {
                 </>
               )}
             </Disclosure>
-
-
           </dl>
         </div>
       </div>

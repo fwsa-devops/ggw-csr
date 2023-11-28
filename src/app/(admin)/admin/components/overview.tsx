@@ -1,6 +1,13 @@
 'use client';
 
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import {
+  Bar,
+  BarChart,
+  LabelList,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 export function Overview({ data = [] }: { data: any[] }) {
   const filteredData = data.filter((val) => val.count > 0);
@@ -23,7 +30,9 @@ export function Overview({ data = [] }: { data: any[] }) {
           axisLine={false}
           tickFormatter={(value) => `${value}`}
         />
-        <Bar dataKey="count" fill="#adfa1d" radius={[4, 4, 0, 0]} />
+        <Bar dataKey="count" fill="#adfa1d" radius={[4, 4, 0, 0]}>
+          <LabelList dataKey="count" position="center" />
+        </Bar>
       </BarChart>
     </ResponsiveContainer>
   );

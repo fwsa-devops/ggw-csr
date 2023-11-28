@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { CalendarIcon } from '@radix-ui/react-icons';
 import { Overview } from './components/overview';
 import { RecentVolunteers } from './components/recent-volunteers';
 import { cn } from '@/lib/utils';
@@ -71,24 +70,46 @@ const DashboardPage = async () => {
       (locationBasedVolunteers[event.city] || 0) + volunteersCount;
   });
 
+  // Get the date 5 days ago
+  const fiveDaysAgo = new Date();
+  fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
   // For each activity, get the total number of volunteers
-  const activityVolunteerCounts = await Promise.all(
-    activities.map(async (activity) => {
-      const volunteerCount = await prisma.volunteers.count({
-        where: {
-          event: {
-            activityId: activity.id,
-          },
-        },
-      });
+  const volunteerCountsByDate = await prisma.volunteers.groupBy({
+    by: ['assigned_at'],
+    where: {
+      assigned_at: {
+        gte: fiveDaysAgo,
+      },
+    },
+    _count: {
+      _all: true,
+    },
+  });
 
-      return {
-        id: activity.id,
-        name: activity.name,
-        count: volunteerCount,
-      };
-    }),
-  );
+  const formattedDate = (date: Date) => {
+    return date.toLocaleDateString();
+  };
+
+  const formattedVolunteerCounts = volunteerCountsByDate.map((item) => ({
+    date: formattedDate(new Date(item.assigned_at)),
+    count: item._count._all,
+  }));
+
+  const groupedVolunteerCounts = Object.entries(
+    formattedVolunteerCounts.reduce((acc, item) => {
+      const date = item.date;
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(item);
+      return acc;
+    }, {}),
+  ).map(([date, items]) => ({
+    name: date,
+    count: (items as any).reduce((acc, item) => acc + item.count, 0),
+  }));
+
+  console.log('[GROUPED_VOLUNTEER_COUNT]', groupedVolunteerCounts);
 
   const users = await prisma.user.findMany({
     select: {
@@ -130,7 +151,7 @@ const DashboardPage = async () => {
 
           <div className="mb-6">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <Card>
+              {/* <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
                     Activities
@@ -166,7 +187,7 @@ const DashboardPage = async () => {
                 <CardContent>
                   <div className="text-2xl font-bold">{events.length}</div>
                 </CardContent>
-              </Card>
+              </Card> */}
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
@@ -223,10 +244,10 @@ const DashboardPage = async () => {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card className="col-span-4 lg:max-h-[450px] md:h-auto ">
               <CardHeader>
-                <CardTitle>Overview - Activity wise</CardTitle>
+                <CardTitle>Overview - Volunteers count (Weekly) </CardTitle>
               </CardHeader>
               <CardContent className="pl-2 sm:pr-2 sm:w-full">
-                <Overview data={activityVolunteerCounts} />
+                <Overview data={groupedVolunteerCounts} />
               </CardContent>
             </Card>
             <Card className=" col-span-4 lg:col-span-3 max-h-[450px] overflow-y-hidden">

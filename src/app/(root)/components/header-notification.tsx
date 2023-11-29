@@ -7,7 +7,6 @@ import { useState } from 'react';
 
 export default function HeaderNotification() {
   const pathname = usePathname();
-  console.log(pathname);
 
   if (pathname !== '/') return <></>;
 

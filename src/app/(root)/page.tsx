@@ -1,7 +1,7 @@
+
 import type { Metadata } from 'next';
-import HeroSection from './components/hero-section';
-import FeatureSection from './components/feature-section';
-import PageQuotes from './components/quotes';
+import HomePage from './components/homepage';
+
 
 export const metadata: Metadata = {
   title: 'Global Giving Week - 2023',
@@ -20,17 +20,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home() {
+export default function Home() {
+
+
   return (
     <>
-      <main className="flex flex-col items-center justify-between min-h-screen bg-white">
-        <section className="w-full text-gray-600 body-font">
-          {/* {!isBrowser && <HomepageViewer body={response.data.body} />} */}
-          <HeroSection />
-          <FeatureSection />
-          <PageQuotes />
-        </section>
-      </main>
+      <HomePage />
     </>
   );
 }

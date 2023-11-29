@@ -19,7 +19,7 @@ const authOptions: NextAuthOptions = {
       if (account && account.provider === 'google') {
         const boo = /^\S+freshworks\.com$/.test(profile?.email as string);
 
-        console.log(boo);
+        // console.log(boo);
         // throw new Error("Invalid email domain");
         return boo;
         // redirect(`/api/auth/error?error=NotPartOfFreshworks`);

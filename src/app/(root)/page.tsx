@@ -6,12 +6,21 @@ import PageQuotes from './components/quotes';
 export const metadata: Metadata = {
   title: 'Global Giving Week - 2023',
   description: 'Social Impact by Freshworks',
+  openGraph: {
+    type: 'website',
+    url: 'https://globalgivingweek.com/',
+    title: 'Global Giving Week - 2023',
+    description: 'Social Impact by Freshworks',
+    siteName: 'Global Giving Week - 2023',
+    images: [
+      {
+        url: 'https://iili.io/JxVmRiN.png',
+      },
+    ],
+  },
 };
 
 export default async function Home() {
-  // const response = await getHomepageContent();
-  // const { isBrowser } = useSsr();
-
   return (
     <>
       <main className="flex flex-col items-center justify-between min-h-screen bg-white">
@@ -25,5 +34,3 @@ export default async function Home() {
     </>
   );
 }
-
-// export const revalidate = 30;

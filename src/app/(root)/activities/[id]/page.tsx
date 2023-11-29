@@ -24,7 +24,7 @@ export async function generateMetadata({
       siteName: 'Global Giving',
       images: [
         {
-          url: activity?.posts_urls ?? '',
+          url: activity?.cover ?? '',
         },
       ],
     },

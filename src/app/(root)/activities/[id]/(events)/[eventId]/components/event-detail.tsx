@@ -44,10 +44,10 @@ const EventDetails = ({ event: eventDetails }: { event: any }) => {
           <h2 className="mt-2 mb-3 text-sm tracking-widest text-gray-400 title-font">
             {eventDetails.activity.tags
               ? eventDetails.activity?.tags.map((tag) => (
-                  <span key={tag.id} className="mr-2">
-                    #{tag?.tag.name}
-                  </span>
-                ))
+                <span key={tag.id} className="mr-2">
+                  #{tag?.tag.name}
+                </span>
+              ))
               : ''}
           </h2>
 
@@ -71,7 +71,19 @@ const EventDetails = ({ event: eventDetails }: { event: any }) => {
 
       <Separator className="my-10 sm:hidden md:block" />
 
-      <div className="mt-3 flex flex-col">
+
+      <div className="mt-5 flex flex-col">
+        <div className="font-semibold text-base mb-4">Event Leaders</div>
+        <div className="flex flex-row flex-wrap">
+          {eventDetails.leaders.map(({ user }) => (
+            <UserAvatar key={user.id} user={user} />
+          ))}
+        </div>
+      </div>
+
+      {/* <Separator className="my-10 sm:hidden md:block" /> */}
+
+      <div className="mt-6 flex flex-col">
         <div className="font-semibold text-base mb-4">Volunteers</div>
         <div className="flex flex-row flex-wrap">
           {eventDetails.volunteers.map(({ user }) => (
@@ -82,15 +94,14 @@ const EventDetails = ({ event: eventDetails }: { event: any }) => {
 
       <Separator className="my-10 sm:hidden md:block" />
       <>
-        {eventDetails.status === ActivityState.CLOSED &&
-          isPartOfThisEvent() && (
-            <div className=" w-full my-10 order-2 lg:order-2 mt-12 lg:mt-6 lg:mx-auto">
-              <EventFeedbackForm
-                eventId={eventDetails.id}
-                activityId={eventDetails.activityId}
-              />
-            </div>
-          )}
+        {eventDetails.status === ActivityState.CLOSED && (
+          <div className=" w-full my-10 order-2 lg:order-2 mt-12 lg:mt-6 lg:mx-auto">
+            <EventFeedbackForm
+              eventId={eventDetails.id}
+              activityId={eventDetails.activityId}
+            />
+          </div>
+        )}
         <div className="my-10">
           <EventFeedbackList feedbacks={eventDetails.feedback} />
         </div>

@@ -42,7 +42,7 @@ export default async function RootLayout({
           }
         >
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-          <HeaderNotification />
+          {/* <HeaderNotification /> */}
           <Header activitiesJoined={activitiesJoined} />
           <main className="main relative">
             <div className="">{children}</div>

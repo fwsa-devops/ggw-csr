@@ -138,7 +138,7 @@ const EventFeedbackForm = ({
                     <FormControl className="mt-2">
                       <Textarea
                         placeholder="Tell us a little bit about the event"
-                        className="resize-none"
+                        className="resize-none text-black text-base"
                         {...field}
                       />
                     </FormControl>
@@ -150,7 +150,7 @@ const EventFeedbackForm = ({
 
             <div className="w-full mt-6 flex justify-end">
               <Button
-                disabled={form.formState.isSubmitting || isLoading}
+                disabled={!form.formState.isValid || form.formState.isSubmitting}
                 className="ml-auto "
                 type="submit"
               >

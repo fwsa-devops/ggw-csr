@@ -211,50 +211,52 @@ const EventListItem = ({
                 </div>
               </div>
 
-              {size === 'lg' &&
-                (event.status !== ActivityState.CLOSED ? (
-                  <div className="">
-                    {status === 'unauthenticated' ? (
+              {size === 'lg' && event.status !== ActivityState.CLOSED && (
+                <div className="">
+                  {status === 'unauthenticated' ? (
+                    <Button
+                      variant={'default'}
+                      className="ml-4"
+                      type="button"
+                      onClick={() => signIn('google')}
+                    >
+                      <HandIcon size={18} className="mr-2" />
+                      Sign in to Join Event
+                    </Button>
+                  ) : !isPartOfAnyEvent ? (
+                    <Button
+                      variant={'default'}
+                      className="ml-4"
+                      type="button"
+                      disabled={isPending || isEventLimitReached}
+                      onClick={() =>
+                        startTransition(() => callServerAction('JOIN'))
+                      }
+                    >
+                      <HandIcon size={18} className="mr-2" />
+                      Join this event
+                    </Button>
+                  ) : (
+                    isPartOfThisEvent && (
                       <Button
                         variant={'default'}
                         className="ml-4"
                         type="button"
-                        onClick={() => signIn('google')}
-                      >
-                        <HandIcon size={18} className="mr-2" />
-                        Sign in to Join Event
-                      </Button>
-                    ) : !isPartOfAnyEvent ? (
-                      <Button
-                        variant={'default'}
-                        className="ml-4"
-                        type="button"
-                        disabled={isPending || isEventLimitReached}
+                        disabled={isPending}
                         onClick={() =>
-                          startTransition(() => callServerAction('JOIN'))
+                          startTransition(() => callServerAction('UNJOIN'))
                         }
                       >
-                        <HandIcon size={18} className="mr-2" />
-                        Join this event
+                        <XIcon size={18} className="mr-2" />
+                        Unjoin this event
                       </Button>
-                    ) : (
-                      isPartOfThisEvent && (
-                        <Button
-                          variant={'default'}
-                          className="ml-4"
-                          type="button"
-                          disabled={isPending}
-                          onClick={() =>
-                            startTransition(() => callServerAction('UNJOIN'))
-                          }
-                        >
-                          <XIcon size={18} className="mr-2" />
-                          Unjoin this event
-                        </Button>
-                      )
-                    )}
-                  </div>
-                ) : (
+                    )
+                  )}
+                </div>
+              )}
+              {size === 'lg' &&
+                event.status === ActivityState.CLOSED &&
+                isPartOfThisEvent && (
                   <div>
                     <Link href={`/activities/${activity.id}/${event.id}`}>
                       <Button
@@ -266,7 +268,7 @@ const EventListItem = ({
                       </Button>
                     </Link>
                   </div>
-                ))}
+                )}
             </div>
 
             {event.status !== ActivityState.CLOSED &&

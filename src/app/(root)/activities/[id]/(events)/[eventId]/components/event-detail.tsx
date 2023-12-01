@@ -59,7 +59,7 @@ const EventDetails = ({ event: eventDetails }: { event: any }) => {
 
       <Separator className="my-10 sm:hidden md:block" />
 
-      {eventDetails.activity.status === ActivityState.CLOSED && (
+      {eventDetails.status === ActivityState.CLOSED && (
         <>
           <div className=" w-full my-10 order-2 lg:order-2 mt-12 lg:mt-6 lg:mx-auto">
             <EventFeedbackForm

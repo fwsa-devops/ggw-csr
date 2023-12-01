@@ -53,7 +53,7 @@ export async function GET(req: Request, context: { params }) {
     },
   });
 
-  console.log("event", event)
+  console.log('event', event);
 
   if (!event) {
     return new Response('Invalid Event Id');
@@ -61,7 +61,7 @@ export async function GET(req: Request, context: { params }) {
 
   const jsonData = await exportEventData(eventId as string);
 
-  console.log("jsonData", jsonData)
+  console.log('jsonData', jsonData);
 
   // Convert JSON to Excel
   const workBook = XLSX.utils.book_new();

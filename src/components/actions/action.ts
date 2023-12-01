@@ -114,9 +114,9 @@ export async function createActivityEvent(
 
   const user = await prisma.user.findFirst({
     where: {
-      email: session?.user?.email as string
-    }
-  })
+      email: session?.user?.email as string,
+    },
+  });
 
   try {
     let zodErrors = {};

@@ -150,7 +150,9 @@ const EventFeedbackForm = ({
 
             <div className="w-full mt-6 flex justify-end">
               <Button
-                disabled={!form.formState.isValid || form.formState.isSubmitting}
+                disabled={
+                  !form.formState.isValid || form.formState.isSubmitting
+                }
                 className="ml-auto "
                 type="submit"
               >

@@ -44,10 +44,10 @@ const EventDetails = ({ event: eventDetails }: { event: any }) => {
           <h2 className="mt-2 mb-3 text-sm tracking-widest text-gray-400 title-font">
             {eventDetails.activity.tags
               ? eventDetails.activity?.tags.map((tag) => (
-                <span key={tag.id} className="mr-2">
-                  #{tag?.tag.name}
-                </span>
-              ))
+                  <span key={tag.id} className="mr-2">
+                    #{tag?.tag.name}
+                  </span>
+                ))
               : ''}
           </h2>
 
@@ -70,7 +70,6 @@ const EventDetails = ({ event: eventDetails }: { event: any }) => {
       </div>
 
       <Separator className="my-10 sm:hidden md:block" />
-
 
       <div className="mt-5 flex flex-col">
         <div className="font-semibold text-base mb-4">Event Leaders</div>

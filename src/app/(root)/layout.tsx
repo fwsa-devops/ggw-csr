@@ -11,7 +11,6 @@ import { ourFileRouter } from '@/api/uploadthing/core';
 import { getActivitiesJoined } from '@/components/actions/action';
 import { Analytics } from '@vercel/analytics/react';
 import Footer from './components/footer';
-import HeaderNotification from './components/header-notification';
 
 const inter = Inter({ subsets: ['latin'] });
 

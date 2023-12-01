@@ -4,8 +4,20 @@ import EventFeedbackForm from './event-feedback-form';
 import { Separator } from '@/components/ui/separator';
 import EventFeedbackList from './event-feedback-list';
 import { ActivityState } from '@prisma/client';
+import { useSession } from 'next-auth/react';
+import UserAvatar from '@/components/user-avatar';
 
 const EventDetails = ({ event: eventDetails }: { event: any }) => {
+  const { data, status, update } = useSession();
+
+  const isPartOfThisEvent = (): boolean => {
+    return (
+      eventDetails.volunteers.find(
+        (volunteer) => volunteer.user_id === data?.user?.email,
+      ) !== undefined
+    );
+  };
+
   return (
     <>
       <div className="order-1 lg:order-0 lg:w-full">
@@ -59,19 +71,30 @@ const EventDetails = ({ event: eventDetails }: { event: any }) => {
 
       <Separator className="my-10 sm:hidden md:block" />
 
-      {eventDetails.status === ActivityState.CLOSED && (
-        <>
-          <div className=" w-full my-10 order-2 lg:order-2 mt-12 lg:mt-6 lg:mx-auto">
-            <EventFeedbackForm
-              eventId={eventDetails.id}
-              activityId={eventDetails.activityId}
-            />
-          </div>
-          <div className="my-10">
-            <EventFeedbackList feedbacks={eventDetails.feedback} />
-          </div>
-        </>
-      )}
+      <div className="mt-3 flex flex-col">
+        <div className="font-semibold text-base mb-4">Volunteers</div>
+        <div className="flex flex-row flex-wrap">
+          {eventDetails.volunteers.map(({ user }) => (
+            <UserAvatar key={user.id} user={user} />
+          ))}
+        </div>
+      </div>
+
+      <Separator className="my-10 sm:hidden md:block" />
+      <>
+        {eventDetails.status === ActivityState.CLOSED &&
+          isPartOfThisEvent() && (
+            <div className=" w-full my-10 order-2 lg:order-2 mt-12 lg:mt-6 lg:mx-auto">
+              <EventFeedbackForm
+                eventId={eventDetails.id}
+                activityId={eventDetails.activityId}
+              />
+            </div>
+          )}
+        <div className="my-10">
+          <EventFeedbackList feedbacks={eventDetails.feedback} />
+        </div>
+      </>
     </>
   );
 };

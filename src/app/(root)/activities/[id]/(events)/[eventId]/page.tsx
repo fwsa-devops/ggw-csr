@@ -26,6 +26,11 @@ async function getEventDetails(eventId: string) {
           author: true,
         },
       },
+      volunteers: {
+        include: {
+          user: true,
+        },
+      },
     },
   });
 }

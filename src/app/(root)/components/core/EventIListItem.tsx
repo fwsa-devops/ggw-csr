@@ -254,21 +254,15 @@ const EventListItem = ({
                   )}
                 </div>
               )}
-              {size === 'lg' &&
-                event.status === ActivityState.CLOSED &&
-                isPartOfThisEvent && (
-                  <div>
-                    <Link href={`/activities/${activity.id}/${event.id}`}>
-                      <Button
-                        variant={'default'}
-                        className="ml-4"
-                        type="button"
-                      >
-                        Write feedback
-                      </Button>
-                    </Link>
-                  </div>
-                )}
+              {size === 'lg' && event.status === ActivityState.CLOSED && (
+                <div>
+                  <Link href={`/activities/${activity.id}/${event.id}`}>
+                    <Button variant={'default'} className="ml-4" type="button">
+                      {isPartOfThisEvent ? `Write feedback` : 'View Feedback'}
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </div>
 
             {event.status !== ActivityState.CLOSED &&

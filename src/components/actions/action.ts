@@ -112,6 +112,12 @@ export async function createActivityEvent(
 
   const session = await getServerSession();
 
+  const user = await prisma.user.findFirst({
+    where: {
+      email: session?.user?.email as string
+    }
+  })
+
   try {
     let zodErrors = {};
 
@@ -154,7 +160,7 @@ export async function createActivityEvent(
           location: data.data.location,
           activityId: data.data.activityId,
           description: data.data.description,
-          author_id: session?.user?.email as string,
+          author_id: user?.id as string,
           max_volunteers: data.data.max_volunteers,
           min_volunteers: data.data.min_volunteers,
           is_dates_announced: data.data.is_dates_announced,
@@ -689,7 +695,7 @@ export async function exportEventData(eventId: string) {
       feedbacks,
     };
 
-    // console.log(JSON.stringify(formattedResponse, null, 2));
+    console.log(JSON.stringify(formattedResponse, null, 2));
 
     return formattedResponse;
   } catch (error) {

@@ -1,17 +1,67 @@
 import { exportEventData } from '@/components/actions/action';
+import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import * as XLSX from 'xlsx';
 
 export async function GET(req: Request, context: { params }) {
   // Your JSON data
   const eventId = context.params.id;
-  // console.log(eventId);
+  // console.log("context", context);
 
-  if (!eventId) {
+  const event = await prisma.event.findFirst({
+    where: {
+      id: eventId,
+    },
+    include: {
+      _count: true,
+      activity: true,
+      leaders: {
+        include: {
+          user: true,
+        },
+      },
+      author: {
+        select: {
+          email: true,
+        },
+      },
+      feedback: {
+        select: {
+          author: {
+            select: {
+              email: true,
+            },
+          },
+          comment: true,
+          assets: {
+            include: {
+              Asset: {
+                select: {
+                  url: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      volunteers: {
+        include: {
+          user: true,
+        },
+      },
+    },
+  });
+
+  console.log("event", event)
+
+  if (!event) {
     return new Response('Invalid Event Id');
   }
 
   const jsonData = await exportEventData(eventId as string);
+
+  console.log("jsonData", jsonData)
 
   // Convert JSON to Excel
   const workBook = XLSX.utils.book_new();

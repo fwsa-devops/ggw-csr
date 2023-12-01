@@ -258,7 +258,7 @@ const EventListItem = ({
                 <div>
                   <Link href={`/activities/${activity.id}/${event.id}`}>
                     <Button variant={'default'} className="ml-4" type="button">
-                      {isPartOfThisEvent ? `Write feedback` : 'View Feedback'}
+                      {`Volunteer reviews`}
                     </Button>
                   </Link>
                 </div>

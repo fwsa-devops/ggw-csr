@@ -144,6 +144,7 @@ const ActivityEventForm = ({ activityId, event }) => {
           startTime: event.startTime,
           endTime: event.endTime,
           timeZone: event.timeZone ?? 'IST',
+          status: event.status,
         }
       : {
           city: 'Chennai',
@@ -156,6 +157,7 @@ const ActivityEventForm = ({ activityId, event }) => {
           date_announcement_text: '',
           published: true,
           timeZone: 'IST',
+          status: 'OPEN',
         },
   });
 
@@ -176,7 +178,7 @@ const ActivityEventForm = ({ activityId, event }) => {
         variant: 'default',
       });
       form.reset();
-      router.push(`/admin/activities`);
+      router.push(`/admin/activities/${activityId}`);
     } catch (e: any) {
       console.error(e);
       toast({
@@ -461,6 +463,34 @@ const ActivityEventForm = ({ activityId, event }) => {
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       {...field}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </div>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="status"
+            render={({ field }) => (
+              <div className="mt-6">
+                <FormItem>
+                  <FormLabel className="capitalize block text-sm font-medium leading-6 text-gray-900">
+                    {' '}
+                    {field.name}{' '}
+                  </FormLabel>
+                  <FormControl className="mt-2">
+                    <Select {...field} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="OPEN">OPEN</SelectItem>
+                        <SelectItem value="DRAFT">DRAFT</SelectItem>
+                        <SelectItem value="CLOSED">CLOSED</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -1,7 +1,5 @@
-
 import type { Metadata } from 'next';
 import HomePage from './components/homepage';
-
 
 export const metadata: Metadata = {
   title: 'Global Giving Week - 2023',
@@ -21,8 +19,6 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-
-
   return (
     <>
       <HomePage />

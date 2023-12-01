@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Event` ADD COLUMN `status` ENUM('OPEN', 'DRAFT', 'CLOSED') NOT NULL DEFAULT 'DRAFT';

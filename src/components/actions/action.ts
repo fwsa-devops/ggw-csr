@@ -144,6 +144,7 @@ export async function createActivityEvent(
           date_announcement_text: data.data.date_announcement_text,
           startTime: data.data.startTime,
           endTime: data.data.endTime,
+          status: data.data.status,
         },
       });
     } else {
@@ -160,6 +161,7 @@ export async function createActivityEvent(
           date_announcement_text: data.data.date_announcement_text,
           startTime: data.data.startTime,
           endTime: data.data.endTime,
+          status: data.data.status,
         },
       });
     }

@@ -1,19 +1,16 @@
 'use client';
 
-
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import HeroSection from './hero-section';
 import FeatureSection from './feature-section';
 import PageQuotes from './quotes';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 const HomePage = () => {
-
   const [isSticky, setIsSticky] = useState(true);
   const { data } = useSession();
-
 
   const handleScroll = () => {
     const parentDiv = document.getElementById('parentDiv') as HTMLElement; // ID of the parent div
@@ -50,10 +47,9 @@ const HomePage = () => {
           <PageQuotes isSticky={isSticky} />
         </section>
 
-        {
-          isSticky &&
-          <div className={'m-auto sticky bottom-10 z-50 transition-all'} >
-            <Link className='md:hidden' id='absolute-div' href="/activities" >
+        {isSticky && (
+          <div className={'m-auto sticky bottom-10 z-50 transition-all'}>
+            <Link className="md:hidden" id="absolute-div" href="/activities">
               <Button
                 variant={'destructive'}
                 className="py-6 px-6 text-base font-semibold rounded-lg shadow-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-light focus:ring-offset-2 focus:ring-offset-primary-dark"
@@ -61,14 +57,11 @@ const HomePage = () => {
                 Sign up for Activities
               </Button>
             </Link>
-          </div >
-        }
-
+          </div>
+        )}
       </main>
     </>
   );
-
-}
-
+};
 
 export default HomePage;

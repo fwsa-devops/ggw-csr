@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 'use client';
 
 import { Separator } from '@/components/ui/separator';
@@ -211,7 +212,7 @@ const EventListItem = ({
               </div>
 
               {size === 'lg' &&
-                (activity.status !== ActivityState.CLOSED ? (
+                (event.status !== ActivityState.CLOSED ? (
                   <div className="">
                     {status === 'unauthenticated' ? (
                       <Button
@@ -268,28 +269,29 @@ const EventListItem = ({
                 ))}
             </div>
 
-            {(size === 'lg' && isEventLimitReached && (
-              <div className="text-red-500 font-medium ">
-                Maximum number of volunteers limit reached. Check out some of
-                our other events.
-              </div>
-            )) ||
-              (status === 'authenticated' &&
-                isPartOfAnyEvent &&
-                !isPartOfThisEvent && (
-                  <div className="text-red-500 font-medium">
-                    You are already part of{' '}
-                    <Link
-                      href={`/activities/${participatedEvents?.activity.id}#${participatedEvents?.id}`}
-                      className="underline"
-                    >
-                      {participatedEvents
-                        ? participatedEvents?.activity.name
-                        : 'another '}
-                    </Link>{' '}
-                    Event, Please unjoin to join this one
-                  </div>
-                ))}
+            {event.status !== ActivityState.CLOSED &&
+              ((size === 'lg' && isEventLimitReached && (
+                <div className="text-red-500 font-medium ">
+                  Maximum number of volunteers limit reached. Check out some of
+                  our other events.
+                </div>
+              )) ||
+                (status === 'authenticated' &&
+                  isPartOfAnyEvent &&
+                  !isPartOfThisEvent && (
+                    <div className="text-red-500 font-medium">
+                      You are already part of{' '}
+                      <Link
+                        href={`/activities/${participatedEvents?.activity.id}#${participatedEvents?.id}`}
+                        className="underline"
+                      >
+                        {participatedEvents
+                          ? participatedEvents?.activity.name
+                          : 'another '}
+                      </Link>{' '}
+                      Event, Please unjoin to join this one
+                    </div>
+                  )))}
 
             {size === 'lg' && (
               <div className="mt-3 flex items-center">
@@ -299,6 +301,12 @@ const EventListItem = ({
                     <UserAvatar key={user.id} user={user} />
                   ))}
                 </div>
+              </div>
+            )}
+
+            {size === 'lg' && event.status === ActivityState.CLOSED && (
+              <div className="mt-8 text-red-500 font-medium">
+                {`Registrations are closed. If you have registered, you will receive an email with the event details by Friday (1 Nov, 2023)`}
               </div>
             )}
           </div>

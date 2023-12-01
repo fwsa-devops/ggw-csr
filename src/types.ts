@@ -56,7 +56,7 @@ export const eventFormSchema = z.object({
   min_volunteers: z.union([z.number().int().positive().min(1), z.nan()]),
   max_volunteers: z.union([z.number().int().positive().min(1), z.nan()]),
   published: z.boolean(),
-
+  status: z.enum(['OPEN', 'DRAFT', 'CLOSED']),
   is_dates_announced: z.boolean(),
   startTime: z.date().optional(),
   endTime: z.date().optional(),

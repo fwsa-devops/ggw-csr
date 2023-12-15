@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import FileUpload from './file-upload';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import Loader from '@/components/ui/loader';
 import { cn } from '@/lib/utils';
@@ -35,7 +35,17 @@ const EventFeedbackForm = ({
   const [containAssets, setContainAssets] = useState<boolean>(false);
 
   if (!session?.user) {
-    return <>Un-Authorized User</>;
+    return (
+      <>
+        <div className="text-center">
+          Sign in to leave a comment
+          <div className="pb-3"></div>
+          <a onClick={() => signIn('google')} className="cursor-pointer button">
+            <span>Sign in</span>
+          </a>
+        </div>
+      </>
+    );
   }
 
   const form = useForm<z.infer<typeof eventFeedbackFormSchema>>({

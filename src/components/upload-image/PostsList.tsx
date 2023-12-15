@@ -6,7 +6,8 @@ const PostsList = ({ imageUrls: assets = [] }: { imageUrls: Asset[] }) => {
   const imageExtensionRegex =
     /\.(jpg|jpeg|png|gif|bmp|tiff|webp|svg|ico|jfif|jpe)$/i;
 
-  return assets.length > 0 ? (
+  return (
+    assets.length > 0 ??
     assets.map((assetUrl) => {
       {
         JSON.stringify(assetUrl);
@@ -36,8 +37,6 @@ const PostsList = ({ imageUrls: assets = [] }: { imageUrls: Asset[] }) => {
         );
       }
     })
-  ) : (
-    <h2 className="text-2xl text-center my-6">No posts here...</h2>
   );
 };
 

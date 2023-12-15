@@ -9,6 +9,7 @@ import {
 import { Overview } from './components/overview';
 import { RecentVolunteers } from './components/recent-volunteers';
 import { cn } from '@/lib/utils';
+import { LineChartOverview } from './components/line-chart';
 
 const DashboardPage = async () => {
   const events = await prisma.event.findMany({
@@ -70,6 +71,8 @@ const DashboardPage = async () => {
       (locationBasedVolunteers[event.city] || 0) + volunteersCount;
   });
 
+  // ===============================================================================
+
   // Get the date 5 days ago
   const fiveDaysAgo = new Date();
   fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
@@ -109,7 +112,9 @@ const DashboardPage = async () => {
     count: (items as any).reduce((acc, item) => acc + item.count, 0),
   }));
 
-  console.log('[GROUPED_VOLUNTEER_COUNT]', groupedVolunteerCounts);
+  // console.log('[GROUPED_VOLUNTEER_COUNT]', groupedVolunteerCounts);
+
+  // ===============================================================================
 
   const users = await prisma.user.findMany({
     select: {
@@ -299,6 +304,23 @@ const DashboardPage = async () => {
                     count: locationBasedVolunteers[val],
                   }))}
                 />
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid mt-4 md:grid-cols-2 lg:grid-cols-8">
+            <Card className="col-span-4 mr-3">
+              <CardHeader>
+                <CardTitle>Location x Date </CardTitle>
+              </CardHeader>
+              <CardContent className="pl-2 sm:pr-2 sm:w-full">
+                {/* <Overview
+                  data={Object.keys(themeBasedVolunteersCount).map((val) => ({
+                    name: val,
+                    count: themeBasedVolunteersCount[val],
+                  }))}
+                /> */}
+                <LineChartOverview data={groupedVolunteerCounts} />
               </CardContent>
             </Card>
           </div>

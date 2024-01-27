@@ -3,187 +3,28 @@ generator client {
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  relationMode      = "prisma"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Activity {
-  id          String         @id @default(cuid())
-  name        String
-  cover       String
-  description String         @db.Text
-  summary     String         @db.Text
-  duration    Int            @default(120)
-  // city        City?
-  status      ActivityState  @default(DRAFT)
-  author_id   String
-  posts_urls  String?
-  author      User           @relation(fields: [author_id], references: [email])
-  events      Event[]
-  tags        ActivityTags[]
-  Feedback    Feedback[]
 
-  @@index([author_id])
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  image     String?
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  isActive  Boolean  @default(true)
 }
 
 model Event {
-  id                     String        @id @default(cuid())
-  city                   City
-  location               String
-  description            String?       @db.Text
-  min_volunteers         Int           @default(1)
-  max_volunteers         Int           @default(1)
-  published              Boolean       @default(false)
-  is_dates_announced     Boolean       @default(false)
-  startTime              DateTime?
-  endTime                DateTime?
-  timeZone               String        @default("IST")
-  date_announcement_text String?       @db.Text
-  status                 ActivityState @default(DRAFT)
-  author_id              String
-  activityId             String
-  leaders                EventLeader[]
-  volunteers             Volunteers[]
-  author                 User          @relation(fields: [author_id], references: [id])
-  activity               Activity      @relation(fields: [activityId], references: [id])
-  feedback               Feedback[]
+  id            String      @id @default(cuid())
+  name          String
+  startDateTime DateTime @db.Timestamptz(3)
+  endDateTime   DateTime @db.Timestamptz(3)
+  timezone      String
 
-  @@index([author_id], map: "author_id")
-  @@index([activityId], map: "activityId")
-}
-
-model UserRole {
-  id      String @id @default(cuid())
-  user_id String
-  role    Role   @default(USER)
-  user    User   @relation(fields: [user_id], references: [id])
-
-  @@index([user_id])
-}
-
-model Volunteers {
-  id          String   @id @default(cuid())
-  event_id    String
-  user_id     String
-  assigned_at DateTime @default(now())
-  event       Event    @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  user        User     @relation(fields: [user_id], references: [email], onDelete: Cascade, onUpdate: Cascade)
-
-  @@index([event_id], map: "event_id")
-  @@index([user_id], map: "user_id")
-}
-
-model EventLeader {
-  id          String   @id @default(cuid())
-  event_id    String
-  user_id     String
-  assigned_at DateTime @default(now())
-  event       Event    @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@index([event_id], map: "event_id")
-  @@index([user_id], map: "user_id")
-}
-
-model Tag {
-  id           String         @id @default(cuid())
-  name         String
-  description  String?
-  ActivityTags ActivityTags[]
-}
-
-model ActivityTags {
-  id          String   @id @default(cuid())
-  activity_id String
-  tag_id      String
-  activity    Activity @relation(fields: [activity_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  tag         Tag      @relation(fields: [tag_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@index([activity_id], map: "activity_id")
-  @@index([tag_id], map: "tag_id")
-}
-
-model User {
-  id          String        @id @default(cuid())
-  name        String
-  email       String        @unique
-  image       String?
-  created_at  DateTime      @default(now()) @map("created_at")
-  updated_at  DateTime      @updatedAt @map("updated_at")
-  activites   Activity[]
-  events      Event[]
-  volunteers  Volunteers[]
-  EventLeader EventLeader[]
-  UserRole    UserRole[]
-  Feedback    Feedback[]
-
-  @@map("users")
-}
-
-model Homepage {
-  id         String        @id @default(cuid())
-  body       String        @db.LongText
-  created_at DateTime      @default(now()) @map("created_at")
-  updated_at DateTime      @updatedAt @map("updated_at")
-  status     ActivityState
-}
-
-model Asset {
-  id             String           @id @default(cuid())
-  url            String
-  created_at     DateTime         @default(now()) @map("created_at")
-  updated_at     DateTime         @updatedAt @map("updated_at")
-  name           String?
-  FeedbackAssets FeedbackAssets[]
-}
-
-model Feedback {
-  id          String           @id @default(cuid())
-  comment     String           @db.Text
-  feature     Boolean          @default(false)
-  activity_id String
-  author_id   String
-  event_id    String
-  activity    Activity         @relation(fields: [activity_id], references: [id])
-  event       Event            @relation(fields: [event_id], references: [id])
-  author      User             @relation(fields: [author_id], references: [email])
-  assets      FeedbackAssets[]
-
-  @@index([event_id])
-  @@index([activity_id])
-  @@index([author_id])
-}
-
-model FeedbackAssets {
-  id         String   @id @default(cuid())
-  assetId    String
-  feedbackId String
-  Asset      Asset    @relation(fields: [assetId], references: [id])
-  Feedback   Feedback @relation(fields: [feedbackId], references: [id])
-
-  @@index([assetId])
-  @@index([feedbackId])
-}
-
-enum ActivityState {
-  OPEN
-  DRAFT
-  CLOSED
-}
-
-enum City {
-  Chennai
-  Bangalore
-  North_America
-  Bellevue
-  San_Mateo
-  Denver
-  New_York
-}
-
-enum Role {
-  ADMIN
-  USER
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

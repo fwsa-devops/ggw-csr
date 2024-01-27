@@ -1,12 +1,5 @@
-import {
-  EventLeader,
-  Volunteers,
-  ActivityTags,
-  Activity,
-  Tag,
-  User,
-  Event,
-} from '@prisma/client';
+
+
 import * as z from 'zod';
 
 export const activityFormSchema = z.object({
@@ -71,19 +64,3 @@ export const eventFeedbackFormSchema = z.object({
   comment: z.string().min(5),
   author_id: z.string(),
 });
-
-export interface IActivity extends Activity {
-  events: ({
-    leaders: ({ user: User } & EventLeader)[];
-    volunteers: ({ user: User } & Volunteers)[];
-  } & Event)[];
-  tags?: ({ tag: Tag } & ActivityTags)[];
-  author?: { name: string };
-}
-export interface IEvent extends Event {
-  leaders: ({ user: User } & EventLeader)[];
-  volunteers: ({ user: User } & Volunteers)[];
-}
-export interface IActivityForm extends Activity {
-  tags: string[];
-}

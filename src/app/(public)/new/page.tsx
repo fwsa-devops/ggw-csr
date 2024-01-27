@@ -10,7 +10,7 @@ export default async function Event() {
   }
 
   return (
-    <div>
+    <div className="flex-1 space-y-8 pt-6 md:p-8">
       <h1>Create new Event</h1>
 
       <EventForm />

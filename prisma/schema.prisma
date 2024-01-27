@@ -7,24 +7,66 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String
-  image     String?
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt DateTime @updatedAt @db.Timestamptz(3)
-  isActive  Boolean  @default(true)
+  id           String         @id @default(cuid())
+  email        String         @unique
+  name         String
+  image        String?
+  createdAt    DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime       @updatedAt @db.Timestamptz(3)
+  isActive     Boolean        @default(true)
+  Event        Event[]
+  Registration Registration[]
+}
+
+enum EventVisibility {
+  PUBLIC
+  PRIVATE
+	@@map("Visibility")
 }
 
 model Event {
-  id            String      @id @default(cuid())
+  id            String   @id @default(cuid())
   name          String
   startDateTime DateTime @db.Timestamptz(3)
   endDateTime   DateTime @db.Timestamptz(3)
   timezone      String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  organizerId String
+  organizer   User   @relation(fields: [organizerId], references: [id])
+
+  capacity   Int        @default(0)
+  visibility EventVisibility @default(PUBLIC)
+
+  isActive     Boolean        @default(true)
+  isDeleted    Boolean        @default(false)
+  createdAt    DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime       @updatedAt @db.Timestamptz(3)
+  Registration Registration[]
+}
+
+enum RegistrationStatus {
+  APPROVED
+  REJECTED
+  WAITLISTED
+}
+
+enum UserEventStatus {
+  ATTENDING
+  NOT_ATTENDING
+  MAYBE
+}
+
+model Registration {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id])
+
+  registrationStatus    RegistrationStatus @default(APPROVED)
+  userStatus UserEventStatus @default(ATTENDING)
+  
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
 }

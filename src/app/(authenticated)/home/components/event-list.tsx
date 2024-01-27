@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table"
 import { findAll } from "@/server/service/event.service";
 import { format } from "date-fns";
+import Link from "next/link";
 
 
 const EventList = async () => {
@@ -27,7 +28,10 @@ const EventList = async () => {
                 </TableHeader>
                 <TableBody>
                     {events.map(_e => <TableRow key={_e.id}>
-                        <TableCell className="font-medium">{_e.name}</TableCell>
+                        <TableCell className="font-medium">
+                            <Link href={`/e/${_e.id}`}>
+                                {_e.name}
+                            </Link></TableCell>
                         <TableCell> {format(_e.startDateTime, 'Pp')} </TableCell>
                         <TableCell> {format(_e.endDateTime, 'Pp')} </TableCell>
                     </TableRow>)}

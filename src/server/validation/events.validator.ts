@@ -17,8 +17,18 @@ export class EventValidator {
       throw new Error("Event start date is undefined");
     }
 
+    const now = new Date();
+
+    if(new Date(event.start_date_time) < now){
+      throw new Error('Event start date is in the past');
+    }
+
     if (!event.end_date_time) {
       throw new Error("Event end date is undefined");
+    }
+
+    if(new Date(event.end_date_time) < now){
+      throw new Error('Event end date is in the past');
     }
 
     if (new Date(event.start_date_time) > new Date(event.end_date_time)) {

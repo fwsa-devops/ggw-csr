@@ -63,7 +63,6 @@ export function DateTimePicker({ date, setDate }: DateTimePickerProps) {
 
   return (
     <Popover>
-      <time dateTime={selectedDateTime.toString()} suppressHydrationWarning />
       <time
         dateTime={selectedDateTime.toFormat('DDD HH:mm')}
         suppressHydrationWarning

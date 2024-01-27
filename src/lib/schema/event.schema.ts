@@ -10,6 +10,10 @@ export const createEventFormSchema = z.object({
     required_error: 'End date is required',
   }),
   timezone: z.string().optional(),
+  organizer: z.string().optional(),
+  capacity: z.number().int().min(0).default(0),
+  visibility: z.enum(['PUBLIC', 'PRIVATE']).default('PUBLIC'),
+  isActive: z.boolean().default(true),
 });
 
 

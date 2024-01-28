@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import * as HoverCard from '@radix-ui/react-hover-card';
 
@@ -7,7 +8,7 @@ const UserAvatar = ({ user }) => {
   const u = user?.user || user;
 
   return (
-    <div className="cursor-pointer">
+    <div className={cn("cursor-pointer")}>
       <HoverCard.Root>
         <HoverCard.Trigger asChild>
           <Avatar key={u.id}>

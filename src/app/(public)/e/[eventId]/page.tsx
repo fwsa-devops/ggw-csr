@@ -1,10 +1,9 @@
-import { Button } from "@/components/ui/button";
 import { findById } from "@/server/service/event.service";
+import { RegistrationValidator } from "@/server/validation/registration.validator";
 import { UserValidator } from "@/server/validation/user.validator";
-import { format } from "date-fns";
 import { getServerSession } from "next-auth";
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import EventDetails from "./components/event-details";
 
 export default async function Page(props: { params: { eventId: string } }) {
   const { params } = props;
@@ -44,36 +43,13 @@ export default async function Page(props: { params: { eventId: string } }) {
   }
 
 
+  const isRegistered = await RegistrationValidator.checkRegistrationExists(event.id, session?.user?.email as string);
+
+
   return (
     <>
       <div className="flex-1 space-y-8 pt-6 md:p-8">
-        <h1>Event</h1>
-        <h2>{event.name}</h2>
-
-        <p>{format(event.startDateTime, 'PPP')}</p>
-        <p>{format(event.endDateTime, 'PPP')}</p>
-
-        {
-          isOrganizer && (
-            <p>
-              You are hosting this event
-              <Link className="mx-2" href={`/event/${event.id}/manage`}>Manage</Link>
-            </p>
-          )
-        }
-
-        {/* Registeration button */}
-        <div>
-          <h2>Registeration</h2>
-          <p>
-            <Button
-            variant={'default'}
-            >
-            <Link href={`/event/${event.id}/register`}>Register</Link>
-            </Button>
-          </p>
-        </div>
-
+        <EventDetails event={event} isOrganizer={isOrganizer} isRegistered={isRegistered} />
       </div>
     </>
   )

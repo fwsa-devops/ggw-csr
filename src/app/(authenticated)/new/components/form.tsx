@@ -107,10 +107,10 @@ const EventForm = () => {
                   <Label> Timezone</Label>
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <SelectTrigger className="w-[280px]">
+                      <SelectTrigger className="">
                         <SelectValue placeholder="Select a timezone" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="h-[300px] overflow-auto">
                         <SelectGroup>
                           <SelectLabel>North America</SelectLabel>
                           <SelectItem value="est">Eastern Standard Time (EST)</SelectItem>
@@ -196,7 +196,7 @@ const EventForm = () => {
                   <Label>Visibility</Label>
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <SelectTrigger className="w-[280px]">
+                      <SelectTrigger className="">
                         <SelectValue placeholder="Select a visibility" />
                       </SelectTrigger>
                       <SelectContent>

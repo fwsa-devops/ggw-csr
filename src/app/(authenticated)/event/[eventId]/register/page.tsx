@@ -1,7 +1,8 @@
-import registerEvent from "@/server/service/registration.service";
+import { registerEvent } from "@/server/service/registration.service";
+import { redirect } from "next/navigation";
+
 
 export default async function Register({ params }: { params: { eventId: string } }) {
-
   const { eventId } = params;
 
   if (!eventId) {
@@ -16,14 +17,5 @@ export default async function Register({ params }: { params: { eventId: string }
   }
 
   await registerEvent(eventId);
-
-  return (
-    <>
-      <h2>Registered!</h2>
-      <p>
-        <a href="/home">Go back</a>
-      </p>
-    </>
-  );
-
+  redirect(`e/${eventId}`);
 }

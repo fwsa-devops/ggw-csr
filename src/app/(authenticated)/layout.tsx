@@ -10,8 +10,8 @@ export default async function AuthenticatedLayout({ children }: { children: Reac
   }
 
   return (
-    <main className="container mx-auto px-4 py-2">
+    <>
       {children}
-    </main>
+    </>
   );
 }

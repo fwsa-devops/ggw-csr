@@ -22,7 +22,8 @@ model User {
 enum EventVisibility {
   PUBLIC
   PRIVATE
-	@@map("Visibility")
+
+  @@map("Visibility")
 }
 
 model Event {
@@ -35,7 +36,7 @@ model Event {
   organizerId String
   organizer   User   @relation(fields: [organizerId], references: [id])
 
-  capacity   Int        @default(0)
+  capacity   Int             @default(0)
   visibility EventVisibility @default(PUBLIC)
 
   isActive     Boolean        @default(true)
@@ -58,15 +59,17 @@ enum UserEventStatus {
 }
 
 model Registration {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  eventId   String
-  event     Event    @relation(fields: [eventId], references: [id])
+  id      String @id @default(cuid())
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
 
-  registrationStatus    RegistrationStatus @default(APPROVED)
-  userStatus UserEventStatus @default(ATTENDING)
-  
+  registrationStatus RegistrationStatus @default(APPROVED)
+  userStatus         UserEventStatus    @default(ATTENDING)
+
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  @@unique([userId, eventId])
 }

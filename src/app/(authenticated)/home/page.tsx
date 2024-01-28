@@ -1,6 +1,7 @@
+import EventList from "@/components/shared/event-list";
+import { findAll } from "@/server/service/event.service";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import EventList from "./components/event-list";
 
 export default async function Home() {
 
@@ -9,11 +10,13 @@ export default async function Home() {
     redirect('/api/auth/signin');
   }
 
+  const events = await findAll();
+
   return (
     <div className="flex-1 space-y-8 pt-6 md:p-8">
-      <h1>Home</h1>
+      <h1>Events</h1>
       <div>
-      <EventList />
+      <EventList  events={events}  />
       </div>
     </div>
   );

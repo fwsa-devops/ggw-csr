@@ -30,11 +30,8 @@ export class RegistrationValidator {
     })
     console.log("isAlreadyRegistration", isAlreadyRegistration);
 
-    if(isAlreadyRegistration){
-      throw new Error("User already registered for this event");
-    }
+    return !!isAlreadyRegistration;
 
-    return true;
   }
 
 
@@ -71,7 +68,13 @@ export class RegistrationValidator {
     const session = await getServerSession();
     await UserValidator.checkUserExistsByEmail(session?.user?.email);
 
-    await RegistrationValidator.checkRegistrationExists(eventId, session?.user?.email as string);
+   const isAlreadyRegistration =  await RegistrationValidator.checkRegistrationExists(eventId, session?.user?.email as string);
+
+    if(isAlreadyRegistration){
+      throw new Error("You are already registered for this event");
+    }
+
   }
+
 
 }

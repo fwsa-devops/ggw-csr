@@ -162,6 +162,13 @@ export async function findAllPublicEvents() {
       name: true,
       startDateTime: true,
       endDateTime: true,
+      organizer: {
+        select: {
+          name: true,
+          email: true,
+          image: true,
+        }
+      }
     }
   });
   return events;

@@ -8,9 +8,9 @@ const auth = (req: Request) => ({ id: 'fakeId' }); // Fake auth function
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
   imageUploader: f({
-    image: { maxFileSize: '4MB', maxFileCount: 10 },
+    image: { maxFileSize: '256MB', maxFileCount: 10 },
     video: {
-      maxFileSize: '32MB',
+      maxFileSize: '1024MB',
       maxFileCount: 1,
     },
   })

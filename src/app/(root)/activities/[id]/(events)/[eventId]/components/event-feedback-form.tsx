@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button';
 import { UploadFileResponse } from 'uploadthing/client';
 import { createEventFeedback } from '@/components/actions/action';
 import { revalidatePath } from 'next/cache';
+import { toast, useToast } from '@/components/ui/use-toast';
 
 const EventFeedbackForm = ({
   eventId,
@@ -33,6 +34,7 @@ const EventFeedbackForm = ({
   const { data: session, status } = useSession();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [containAssets, setContainAssets] = useState<boolean>(false);
+  const { toast, toasts } = useToast();
 
   if (!session?.user) {
     return (
@@ -60,22 +62,24 @@ const EventFeedbackForm = ({
 
   const onSubmit = async (value: z.infer<typeof eventFeedbackFormSchema>) => {
     try {
-      // console.log('onSubmit', value);
-
+      console.log('onSubmit', value);
       const resp = await createEventFeedback(value);
       // console.log(resp);
-
       if (!resp.success) {
         throw resp;
       }
-
-      revalidatePath(`/activities/${activityId}/${eventId}`);
       form.setValue('assets', []);
       form.reset();
+      console.log('onSubmit: end');
+      window.location.reload();
+      // revalidatePath(`/activities/${activityId}/${eventId}`);
     } catch (error) {
       // console.log(error);
-    } finally {
-      // console.log('finally');
+      toast({
+        title: "Failed add feedback",
+        description: "Please try again later",
+        variant: 'destructive'
+      })
     }
   };
 
@@ -131,9 +135,9 @@ const EventFeedbackForm = ({
                 </div>
               )}
             />
-            <div className="comment-tooltip">
+            {/* <div className="comment-tooltip">
               ⓘ Please add few images or videos to submit a comment
-            </div>
+            </div> */}
             <FormField
               control={form.control}
               name="comment"
@@ -163,7 +167,7 @@ const EventFeedbackForm = ({
                 disabled={
                   !form.formState.isValid || form.formState.isSubmitting
                 }
-                className="ml-auto "
+                className="ml-auto"
                 type="submit"
               >
                 Submit

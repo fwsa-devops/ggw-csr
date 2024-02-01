@@ -68,7 +68,7 @@ export const eventFeedbackFormSchema = z.object({
   eventId: z.string(),
   activityId: z.string(),
   assets: z.array(z.object({ url: z.string(), name: z.string().optional() })),
-  comment: z.string().min(5),
+  comment: z.string().min(1),
   author_id: z.string(),
 });
 

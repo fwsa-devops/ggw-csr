@@ -57,3 +57,5 @@ const EventPage = async ({
 };
 
 export default EventPage;
+
+export const revalidate = 5;

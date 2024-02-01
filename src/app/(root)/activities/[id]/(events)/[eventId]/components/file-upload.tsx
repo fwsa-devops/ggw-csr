@@ -10,8 +10,9 @@ const FileUpload = ({
 }: {
   onChange?: (value: UploadFileResponse[] | undefined) => void;
 }) => {
-
-  const [files, setFiles] = useState<UploadFileResponse[] | undefined>(undefined);
+  const [files, setFiles] = useState<UploadFileResponse[] | undefined>(
+    undefined,
+  );
 
   return (
     <>
@@ -19,18 +20,16 @@ const FileUpload = ({
         <UploadDropzone
           className=""
           endpoint="imageUploader"
-          config={
-            {
-              mode: 'auto',
-              appendOnPaste: true,
-            }
-          }
+          config={{
+            mode: 'auto',
+            appendOnPaste: true,
+          }}
           onClientUploadComplete={(res) => {
             // Do something with the response
             // console.log('Files: ', res);
 
             if (res && res.length > 0) {
-              setFiles(prev => {
+              setFiles((prev) => {
                 if (prev) {
                   onChange?.([...prev, ...res]);
                   return [...prev, ...res];
@@ -39,7 +38,6 @@ const FileUpload = ({
                 return res;
               });
             }
-
           }}
           onUploadError={(error: Error) => {
             // Do something with the error.
@@ -49,26 +47,28 @@ const FileUpload = ({
             // Do something once upload begins
             // console.log('Uploading: ', name);
           }}
-        // onUploadProgress={(name) => {
-        //   // Do something once upload begins
-        //   // console.log('Uploading: ', name);
-        // }}
+          // onUploadProgress={(name) => {
+          //   // Do something once upload begins
+          //   // console.log('Uploading: ', name);
+          // }}
         />
       </div>
 
-      <ul className='flex space-x-2 gap-2'>
-        {files && files.map((_f, i) =>
-
-          <li key={+i} className='p-2'>
-            <Image src={_f.url} width={100} height={100} alt={_f.name} className='max-w-[100px] h-[60px] object-contain' />
-            <span className='text-xs'>
-              {_f.name}
-            </span>
-          </li>
-
-        )}
+      <ul className="flex space-x-2 gap-2">
+        {files &&
+          files.map((_f, i) => (
+            <li key={+i} className="p-2">
+              <Image
+                src={_f.url}
+                width={100}
+                height={100}
+                alt={_f.name}
+                className="max-w-[100px] h-[60px] object-contain"
+              />
+              <span className="text-xs">{_f.name}</span>
+            </li>
+          ))}
       </ul>
-
     </>
   );
 };

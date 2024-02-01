@@ -21,8 +21,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { UploadFileResponse } from 'uploadthing/client';
 import { createEventFeedback } from '@/components/actions/action';
-import { revalidatePath } from 'next/cache';
-import { toast, useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 
 const EventFeedbackForm = ({
   eventId,
@@ -76,10 +75,10 @@ const EventFeedbackForm = ({
     } catch (error) {
       // console.log(error);
       toast({
-        title: "Failed add feedback",
-        description: "Please try again later",
-        variant: 'destructive'
-      })
+        title: 'Failed add feedback',
+        description: 'Please try again later',
+        variant: 'destructive',
+      });
     }
   };
 

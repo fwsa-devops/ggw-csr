@@ -1,4 +1,4 @@
-import { registerEvent } from '@/server/service/registration.service';
+import { unregisterEvent } from '@/server/service/registration.service';
 import { redirect } from 'next/navigation';
 
 export default async function Register({
@@ -19,7 +19,7 @@ export default async function Register({
     );
   }
 
-  await registerEvent(eventId);
+  await unregisterEvent(eventId);
   // revalidatePath(`/e/${eventId}`);
   redirect(`/e/${eventId}`);
 }

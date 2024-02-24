@@ -90,6 +90,7 @@ export async function findAllRegistrations(eventId: string) {
         id: true,
         registrationStatus: true,
         userStatus: true,
+        createdAt: true,
         user: {
           select: {
             id: true,

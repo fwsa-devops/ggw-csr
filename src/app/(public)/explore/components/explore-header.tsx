@@ -39,6 +39,11 @@ export default function ExploreHeader(props: { cityList: string[] }) {
     router.push(`?search=${search}&city=${city}`, { scroll: false });
   };
 
+  const handleReset = () => {
+    form.reset();
+    router.push("/", { scroll: false });
+  };
+
   return (
     <div className="mx-auto mb-20 grid w-full max-w-6xl gap-2">
       <h1 className="text-3xl font-semibold">Explore</h1>
@@ -48,7 +53,7 @@ export default function ExploreHeader(props: { cityList: string[] }) {
 
       <Form {...form}>
         <form onChange={form.handleSubmit(handleSubmit)}>
-          <div className="flex flex-col lg:flex-row gap-y-1 lg:gap-x-4 items-center">
+          <div className="flex flex-col items-center gap-y-1 lg:flex-row lg:gap-x-4">
             <FormField
               control={form.control}
               name="search"
@@ -79,7 +84,7 @@ export default function ExploreHeader(props: { cityList: string[] }) {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="text-md text-muted-foreground p-6 lg:text-lg">
+                        <SelectTrigger className="text-md p-6 text-muted-foreground lg:text-lg">
                           <SelectValue placeholder="Select city" />
                         </SelectTrigger>
                       </FormControl>
@@ -97,8 +102,13 @@ export default function ExploreHeader(props: { cityList: string[] }) {
               )}
             />
 
-            <div className="w-full lg:w-1/12 mt-4">
-              <Button type="reset" variant={'default'} className="text-md w-full lg:p-6 lg:text-lg" onClick={()=>form.reset()}>
+            <div className="mt-4 w-full lg:w-1/12">
+              <Button
+                type="reset"
+                variant={"default"}
+                className="text-md w-full lg:p-6 lg:text-lg"
+                onClick={handleReset}
+              >
                 Reset
               </Button>
             </div>

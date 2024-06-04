@@ -44,8 +44,12 @@ export function createGoogleCalendarLink(
     return s.replace(/<[^>]*(>|$)| |‌|»|«|>/g, " ").replace(/ +/g, " ");
   };
 
-  const startDate = format(new Date(event.startTime), "yyyyMMdd'T'HHmmss");
-  const endDate = format(new Date(event.endTime), "yyyyMMdd'T'HHmmss");
+  const startDate = DateTime.fromJSDate(event.startTime)
+    .setZone(event.timezone)
+    .toFormat("yyyyMMdd'T'HHmmss");
+  const endDate = DateTime.fromJSDate(event.endTime)
+    .setZone(event.timezone)
+    .toFormat("yyyyMMdd'T'HHmmss");
 
   const description = `${extractContent(event.description, true)}
   

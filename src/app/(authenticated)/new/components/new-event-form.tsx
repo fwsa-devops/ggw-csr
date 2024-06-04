@@ -63,6 +63,7 @@ import { DevTool } from "@hookform/devtools";
 import { type INewEvent } from "@/server/model";
 import * as EventService from "@/server/service/event.service";
 import { toast } from "sonner";
+import { redirect } from "next/navigation";
 
 function getGMTOffsetWithTimezoneString(timezone: string) {
   const dateTime = DateTime.now().setZone(timezone);
@@ -140,8 +141,8 @@ export default function NewEventForm() {
 
       const response = await EventService.create(formData);
       logger.debug(response);
-
       toast.success("Event created successfully");
+      redirect(`/event/${response.data?.slug}`);
     } catch (error) {
       logger.error(error);
       toast.error("Error creating event");

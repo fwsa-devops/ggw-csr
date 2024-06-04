@@ -27,6 +27,7 @@ export async function findMany() {
             },
           },
         ],
+        isActive: true,
       },
       select: {
         id: true,
@@ -62,6 +63,8 @@ export async function findOne(id: string) {
     const event = await db.event.findUnique({
       where: {
         id: id,
+        isActive: true,
+        isPublic: true,
       },
       select: {
         id: true,
@@ -93,6 +96,8 @@ export async function findBySlug(slug: string) {
     const event = await db.event.findUnique({
       where: {
         slug: slug,
+        isActive: true,
+        isPublic: true,
       },
       select: {
         id: true,

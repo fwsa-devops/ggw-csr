@@ -6,7 +6,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Project Giving",
-  description: "A platform for hosting and finding Freshworks community events.",
+  description:
+    "A platform for hosting and finding Freshworks community events.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 

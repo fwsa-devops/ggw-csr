@@ -4,7 +4,16 @@
 
 import Link from "next/link";
 import { DateTime } from "luxon";
-import { Menu, Moon, Package2, Sun } from "lucide-react";
+import {
+  Compass,
+  Globe,
+  LogOut,
+  Menu,
+  Moon,
+  Package2,
+  Sun,
+  User2,
+} from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import {
@@ -19,7 +28,8 @@ import { useTheme } from "next-themes";
 import { signIn, signOut, useSession } from "next-auth/react";
 import LocalDateTime from "./datetime";
 import UserAvatar from "../ui/user-avatar";
-import { redirect } from "next/navigation";
+import FwIcon from "../shared/fw-icon";
+import FwIconFull from "../shared/fw-full";
 
 export default function Header() {
   const { status, data } = useSession();
@@ -33,8 +43,9 @@ export default function Header() {
             href="#"
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
-            <Package2 className="h-6 w-6" />
-            <span className="sr-only">Acme Inc</span>
+            <FwIcon className="max-h-10 max-w-10" />
+            {/* <FwIconFull className="w-fit max-h-14" /> */}
+            <span className="sr-only">Freshworks Global Giving</span>
           </Link>
           <Link
             href="/explore"
@@ -42,14 +53,14 @@ export default function Header() {
           >
             Explore
           </Link>
-          {status === "authenticated" && (
+          {/* {status === "authenticated" && (
             <Link
               href="/profile"
               className="text-muted-foreground transition-colors hover:text-foreground"
             >
               Profile
             </Link>
-          )}
+          )} */}
         </nav>
         <Sheet>
           <SheetTrigger asChild>
@@ -65,24 +76,46 @@ export default function Header() {
           <SheetContent side="left">
             <nav className="grid gap-6 text-lg font-medium">
               <Link
-                href="#"
+                href="/explore"
                 className="flex items-center gap-2 text-lg font-semibold"
               >
-                <Package2 className="h-6 w-6" />
-                <span className="sr-only">Acme Inc</span>
+                <FwIconFull className="w-fit" />
+                <span className="sr-only">Freshworks Global Giving</span>
               </Link>
               <Link
                 href="/explore"
                 className="text-muted-foreground hover:text-foreground"
               >
+                <Compass className="mr-4 inline h-5 w-5" />
                 Explore
               </Link>
               {status === "authenticated" && (
+                <>
+                  <Link
+                    href="/profile"
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    <User2 className="mr-4 inline h-5 w-5" />
+                    Profile
+                  </Link>
+
+                  <Link
+                    href="#"
+                    onClick={() => signOut()}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    <LogOut className="mr-4 inline h-5 w-5" />
+                    Logout
+                  </Link>
+                </>
+              )}
+              {status === "unauthenticated" && (
                 <Link
-                  href="/profile"
+                  href="/#"
                   className="text-muted-foreground hover:text-foreground"
+                  onClick={() => signIn("google")}
                 >
-                  Profile
+                  Sign In
                 </Link>
               )}
             </nav>
@@ -133,8 +166,8 @@ export default function Header() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => redirect("/profile")}>
-                  Profile
+                <DropdownMenuItem asChild>
+                  <Link href="/profile">Profile</Link>
                 </DropdownMenuItem>
                 {/* <DropdownMenuSeparator /> */}
                 <DropdownMenuItem onClick={() => signOut()}>

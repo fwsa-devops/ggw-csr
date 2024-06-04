@@ -7,11 +7,10 @@ import { CalendarDays, MapPin, MicVocal, Ticket } from "lucide-react";
 import { DateTime } from "luxon";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import UserAvatar from "@/components/ui/user-avatar";
 import { db } from "@/server/db";
-import Link from "next/link";
-import userCreatedEvent, {
-  userRegisteredEvent,
+import  {
+  userCreatedEvent,
+  userRegisteredEvent
 } from "@/server/service/profile.service";
 import UserEventItem from "@/components/shared/user-event-item";
 

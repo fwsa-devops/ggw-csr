@@ -6,7 +6,7 @@ import { CommonValidator } from "../validators/core-validator";
 import { Exception } from "../exceptions/exception";
 import { db } from "../db";
 
-export default async function userCreatedEvent(userId: string) {
+export async function userCreatedEvent(userId: string) {
   try {
     logger.info("EventService.useCreatedEvent");
     CommonValidator.INPUT("User Id", userId);
@@ -15,6 +15,7 @@ export default async function userCreatedEvent(userId: string) {
       User: {
         id: userId,
       },
+      isActive: true,
     };
     const selectQuery = {
       id: true,
@@ -60,6 +61,7 @@ export async function userRegisteredEvent(userId: string) {
           userId: userId,
         },
       },
+      isActive: true,
     };
     const selectQuery = {
       id: true,

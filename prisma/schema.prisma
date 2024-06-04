@@ -72,6 +72,7 @@ model Event {
   timezone    String   @default("Asia/Calcutta")
 
   isPublic        Boolean @default(true)
+  isActive        Boolean @default(true)
   image           String
   maxParticipants Int     @default(0)
 

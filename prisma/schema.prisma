@@ -3,187 +3,119 @@ generator client {
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  relationMode      = "prisma"
-}
-
-model Activity {
-  id          String         @id @default(cuid())
-  name        String
-  cover       String
-  description String         @db.Text
-  summary     String         @db.Text
-  duration    Int            @default(120)
-  // city        City?
-  status      ActivityState  @default(DRAFT)
-  author_id   String
-  posts_urls  String?
-  author      User           @relation(fields: [author_id], references: [email])
-  events      Event[]
-  tags        ActivityTags[]
-  Feedback    Feedback[]
-
-  @@index([author_id])
-}
-
-model Event {
-  id                     String        @id @default(cuid())
-  city                   City
-  location               String
-  description            String?       @db.Text
-  min_volunteers         Int           @default(1)
-  max_volunteers         Int           @default(1)
-  published              Boolean       @default(false)
-  is_dates_announced     Boolean       @default(false)
-  startTime              DateTime?
-  endTime                DateTime?
-  timeZone               String        @default("IST")
-  date_announcement_text String?       @db.Text
-  status                 ActivityState @default(DRAFT)
-  author_id              String
-  activityId             String
-  leaders                EventLeader[]
-  volunteers             Volunteers[]
-  author                 User          @relation(fields: [author_id], references: [id])
-  activity               Activity      @relation(fields: [activityId], references: [id])
-  feedback               Feedback[]
-
-  @@index([author_id], map: "author_id")
-  @@index([activityId], map: "activityId")
-}
-
-model UserRole {
-  id      String @id @default(cuid())
-  user_id String
-  role    Role   @default(USER)
-  user    User   @relation(fields: [user_id], references: [id])
-
-  @@index([user_id])
-}
-
-model Volunteers {
-  id          String   @id @default(cuid())
-  event_id    String
-  user_id     String
-  assigned_at DateTime @default(now())
-  event       Event    @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  user        User     @relation(fields: [user_id], references: [email], onDelete: Cascade, onUpdate: Cascade)
-
-  @@index([event_id], map: "event_id")
-  @@index([user_id], map: "user_id")
-}
-
-model EventLeader {
-  id          String   @id @default(cuid())
-  event_id    String
-  user_id     String
-  assigned_at DateTime @default(now())
-  event       Event    @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@index([event_id], map: "event_id")
-  @@index([user_id], map: "user_id")
-}
-
-model Tag {
-  id           String         @id @default(cuid())
-  name         String
-  description  String?
-  ActivityTags ActivityTags[]
-}
-
-model ActivityTags {
-  id          String   @id @default(cuid())
-  activity_id String
-  tag_id      String
-  activity    Activity @relation(fields: [activity_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  tag         Tag      @relation(fields: [tag_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@index([activity_id], map: "activity_id")
-  @@index([tag_id], map: "tag_id")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id          String        @id @default(cuid())
-  name        String
-  email       String        @unique
-  image       String?
-  created_at  DateTime      @default(now()) @map("created_at")
-  updated_at  DateTime      @updatedAt @map("updated_at")
-  activites   Activity[]
-  events      Event[]
-  volunteers  Volunteers[]
-  EventLeader EventLeader[]
-  UserRole    UserRole[]
-  Feedback    Feedback[]
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
 
-  @@map("users")
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  Event            Event[]
+  EventParticipant EventParticipant[]
 }
 
-model Homepage {
-  id         String        @id @default(cuid())
-  body       String        @db.LongText
-  created_at DateTime      @default(now()) @map("created_at")
-  updated_at DateTime      @updatedAt @map("updated_at")
-  status     ActivityState
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
 }
 
-model Asset {
-  id             String           @id @default(cuid())
-  url            String
-  created_at     DateTime         @default(now()) @map("created_at")
-  updated_at     DateTime         @updatedAt @map("updated_at")
-  name           String?
-  FeedbackAssets FeedbackAssets[]
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Feedback {
-  id          String           @id @default(cuid())
-  comment     String           @db.Text
-  feature     Boolean          @default(false)
-  activity_id String
-  author_id   String
-  event_id    String
-  activity    Activity         @relation(fields: [activity_id], references: [id])
-  event       Event            @relation(fields: [event_id], references: [id])
-  author      User             @relation(fields: [author_id], references: [email])
-  assets      FeedbackAssets[]
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
 
-  @@index([event_id])
-  @@index([activity_id])
-  @@index([author_id])
+  @@id([identifier, token])
 }
 
-model FeedbackAssets {
-  id         String   @id @default(cuid())
-  assetId    String
-  feedbackId String
-  Asset      Asset    @relation(fields: [assetId], references: [id])
-  Feedback   Feedback @relation(fields: [feedbackId], references: [id])
+model Event {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String
+  startTime   DateTime
+  endTime     DateTime
+  timezone    String   @default("Asia/Calcutta")
 
-  @@index([assetId])
-  @@index([feedbackId])
+  isPublic        Boolean @default(true)
+  isActive        Boolean @default(true)
+  image           String
+  maxParticipants Int     @default(0)
+
+  addressId String
+  Address   Address @relation(fields: [addressId], references: [id])
+
+  locationId String
+  Location   Location @relation(fields: [locationId], references: [id])
+
+  createdById String
+  User        User   @relation(fields: [createdById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  EventParticipant EventParticipant[]
 }
 
-enum ActivityState {
-  OPEN
-  DRAFT
-  CLOSED
+model Location {
+  id        String  @id @default(cuid())
+  address   String
+  latitude  Float
+  longitude Float
+  Event     Event[]
 }
 
-enum City {
-  Chennai
-  Bangalore
-  North_America
-  Bellevue
-  San_Mateo
-  Denver
-  New_York
+model Address {
+  id      String  @id @default(cuid())
+  street  String
+  city    String
+  state   String
+  country String
+  zipcode String
+  Event   Event[]
 }
 
-enum Role {
-  ADMIN
-  USER
+model EventParticipant {
+  eventId   String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Event     Event    @relation(fields: [eventId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@unique([eventId, userId])
 }

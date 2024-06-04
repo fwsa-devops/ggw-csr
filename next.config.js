@@ -1,25 +1,31 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+/**
+ * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
+ * for Docker builds.
+ */
+await import("./src/env.js");
+
+/** @type {import("next").NextConfig} */
+const config = {
+
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'iili.io',
+        hostname: 'images.unsplash.com',
         port: '',
-        pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'utfs.io',
+        hostname: 'files.edgestore.dev',
         port: '',
-        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: '',
       },
     ],
   },
-  experimental: {
-    // serverActions: true,
-  },
 };
 
-// eslint-disable-next-line no-undef
-module.exports = nextConfig;
+export default config;

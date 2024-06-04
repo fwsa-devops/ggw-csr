@@ -292,10 +292,10 @@ export default function NewEventForm() {
                               mode="single"
                               selected={new Date(field.value)} // Change the type of the selected prop to accept a Date object
                               onSelect={field.onChange}
-                              disabled={(date) =>
-                                date <= new Date() ||
-                                date > new Date("2024-12-30")
-                              }
+                              // disabled={(date) =>
+                              //   date <= new Date() ||
+                              //   date > new Date("2024-12-30")
+                              // }
                               initialFocus
                             />
                           </PopoverContent>
@@ -365,11 +365,10 @@ export default function NewEventForm() {
                               mode="single"
                               selected={new Date(field.value)} // Change the type of the selected prop to accept a Date object
                               onSelect={field.onChange}
-                              disabled={(date) =>
-                                date <= new Date() ||
-                                date > new Date("2024-12-30")
-                              }
-                              initialFocus
+                              // disabled={(date) =>
+                              //   date <= new Date() ||
+                              //   date > new Date("2024-12-30")
+                              // }
                             />
                           </PopoverContent>
                         </Popover>

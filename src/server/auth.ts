@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import {
   getServerSession,
@@ -38,6 +42,13 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
+    async signIn({ account, profile }) {
+      if (account && account.provider === "google") {
+        const isVerified = (profile as any)?.email_verified;
+        const isDomainAllowed = profile?.email?.endsWith("freshworks.com");
+        return isVerified && isDomainAllowed;
+      }
+    },
     session: ({ session, user }) => ({
       ...session,
       user: {

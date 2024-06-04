@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -18,10 +19,12 @@ import { findMany } from "@/server/service/participant.service";
 import { type User } from "@prisma/client";
 import UserAvatar from "@/components/ui/user-avatar";
 import { createGoogleCalendarLink } from "@/lib/utils";
-import EventSEO from "./components/event-seo";
 import { DateTime } from "luxon";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { CalendarCheck } from "lucide-react";
+import { getAllEventSlugs } from "@/server/service/explore.service";
+import EventParticipants from "./components/event-participants";
+import { type Metadata, type ResolvingMetadata } from "next";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const response = await EventService.findBySlug(params.slug);
@@ -50,15 +53,16 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <>
-      {/* <EventSEO event={event as any} /> */}
       <div className="ga-8 mx-auto grid w-full max-w-6xl lg:grid-cols-7 lg:gap-14">
         <div className="col-span-4">
           <div className="aspect-h-1 aspect-w-1 col-span-4 mb-6 w-full overflow-hidden rounded-lg bg-gray-200 md:aspect-h-2 md:aspect-w-3 xl:aspect-h-3 xl:aspect-w-4">
             <NextImage
               src={event.image}
               alt={event.title ? `Image for ${event.title}` : "Image for event"}
-              width={"3000"}
-              height={"3000"}
+              width={"634"}
+              height={"634"}
+              priority={true}
+              // sizes="(min-width: 1024px) 300px, (min-width: 640px) 200px, 100px"
               className="object-cover object-center group-hover:opacity-75"
             />
           </div>
@@ -73,25 +77,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                 </p>
               </div>
             </div>
-
-            <div className="mb-10">
-              <h2 className="mb-1"> Participants </h2>
-              <Separator />
-              <div className="mt-4 text-muted-foreground">
-                <div className="isolate flex space-x-2">
-                  {participants.map((participant) => (
-                    <UserAvatar
-                      key={participant.User.id}
-                      user={participant.User}
-                    />
-                  ))}
-
-                  {participants.length === 0 && (
-                    <p>Be the first to register for this event!</p>
-                  )}
-                </div>
-              </div>
-            </div>
+            <EventParticipants participants={participants} eventId={event.id} />
           </div>
         </div>
 
@@ -163,24 +149,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           />
 
           <div className="block lg:hidden">
-            <div className="mb-10">
-              <h2 className="mb-1"> Participants </h2>
-              <Separator />
-              <div className="mt-4 text-muted-foreground">
-                <div className="isolate flex space-x-2">
-                  {participants.map((participant) => (
-                    <UserAvatar
-                      key={participant.User.id}
-                      user={participant.User}
-                    />
-                  ))}
-
-                  {participants.length === 0 && (
-                    <p>Be the first to register for this event!</p>
-                  )}
-                </div>
-              </div>
-            </div>
+            <EventParticipants participants={participants} eventId={event.id} />
           </div>
         </div>
       </div>
@@ -188,4 +157,62 @@ export default async function Page({ params }: { params: { slug: string } }) {
   );
 }
 
-export const revalidate = 60 * 60; // 1 hour
+export async function generateStaticParams() {
+  const response = await getAllEventSlugs();
+  if (!response || response.status !== StatusCodes.OK) {
+    return [];
+  }
+  const { data: slugs } = response;
+  if (!slugs) {
+    return [];
+  }
+  const paths = slugs.map((slug) => ({ params: { slug } }));
+  return paths;
+}
+
+type Props = {
+  params: { slug: string };
+  searchParams: Record<string, string | string[] | undefined>;
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  // read route params
+  const id = params.slug;
+  const response = await EventService.findBySlug(id);
+
+  if (!response || response.status !== StatusCodes.OK) {
+    return {};
+  }
+  const { data: event } = response;
+
+  if (!event) {
+    return {};
+  }
+
+  const meta: Metadata = {
+    title: event.title,
+    description: event.description,
+    openGraph: {
+      url: `https://globalgiving.freshworks.com/${event.slug}`,
+      siteName: "Freshworks Project Giving",
+      title: event.title,
+      description: event.description,
+      images: [
+        {
+          url: event.image,
+          width: 600,
+          height: 600,
+          alt: `Image for ${event.title}`,
+        },
+      ],
+    },
+  };
+
+  return meta;
+}
+
+
+export const revalidate = 60 * 30;

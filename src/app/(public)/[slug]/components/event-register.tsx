@@ -3,6 +3,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Hand } from "lucide-react";
 import { cn } from "../../../../lib/utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { signIn, useSession } from "next-auth/react";
 import {
@@ -15,24 +26,37 @@ import { toast } from "sonner";
 import wait from "wait";
 import { useRouter } from "next/navigation";
 
+// "Are you sure you want to cancel?",
+// "Are you absolutely sure?",
+
+const promptMessages = [
+  "Did you put our feelings into consideration?",
+  "Have you thought this through?",
+  "Are you certain you want to cancel?",
+  "We hope you reconsider",
+  "We hope to see you soon",
+  "We hope you change your mind",
+  "Think, think, think",
+  "Are you sure about leaving us?",
+  "What if we told you there’s more to come?",
+];
+
 export default function EventRegister(props: { eventId: string }) {
   const { status, data } = useSession();
-  const [fetching, setFetching] = useState<boolean>(false);
+  const [fetched, setFetched] = useState<boolean>(false);
   const [updatingStatus, setUpdatingStatus] = useState<boolean>(false);
   const [isParticipant, setIsParticipant] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (data?.user && !fetching) {
-      setFetching(true);
+    if (data?.user && !fetched) {
       void isEventParticipant(props.eventId)
         .then(async (res) => {
           setIsParticipant(!!res.data);
-          setFetching(false);
+          setFetched(true);
         })
         .catch((err) => {
-          console.error(err);
-          setFetching(false);
+          setFetched(true);
         });
     }
   }, [data?.user, props.eventId]);
@@ -61,7 +85,7 @@ export default function EventRegister(props: { eventId: string }) {
     }
   };
 
-  if (status === "loading" ?? fetching) return;
+  if (status === "loading" ?? !fetched) return;
 
   if (status === "unauthenticated" ?? !data?.user)
     return (
@@ -82,38 +106,70 @@ export default function EventRegister(props: { eventId: string }) {
       </div>
     );
 
-  return (
-    <>
-      <div
-        className={cn(
-          "mt-10 flex flex-row items-center gap-6 text-muted-foreground",
-        )}
-      >
-        {!isParticipant ? (
-          <Button
-            variant={"default"}
-            size={"lg"}
-            type="button"
-            className="group w-full py-6"
-            onClick={handleChange}
-            disabled={updatingStatus}
-          >
-            <Hand size={24} className="mr-3 group-hover:animate-shake" />
-            Register
-          </Button>
-        ) : (
-          <Button
-            variant={"outline"}
-            size={"lg"}
-            type="button"
-            className="group w-full py-6"
-            onClick={handleChange}
-            disabled={updatingStatus}
-          >
-            Cancel Registration
-          </Button>
-        )}
-      </div>
-    </>
-  );
+  if (fetched)
+    return (
+      <>
+        <div
+          className={cn(
+            "mt-10 flex flex-row items-center gap-6 text-muted-foreground",
+          )}
+        >
+          {!isParticipant ? (
+            <Button
+              variant={"default"}
+              size={"lg"}
+              type="button"
+              className="group w-full py-6"
+              onClick={handleChange}
+              disabled={updatingStatus}
+            >
+              <Hand size={24} className="mr-3 group-hover:animate-shake" />
+              Register
+            </Button>
+          ) : (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                {/* <Button variant="outline">Show Dialog</Button> */}
+                <Button
+                  variant={"outline"}
+                  size={"lg"}
+                  type="button"
+                  className="group w-full py-6"
+                >
+                  Cancel Registration
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    {
+                      promptMessages[
+                        Math.floor(Math.random() * promptMessages.length)
+                      ]
+                    }
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure you want to cancel your registration?
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel className="w-full" autoFocus>
+                    No
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    className="w-full"
+                    onClick={handleChange}
+                    disabled={updatingStatus}
+                  >
+                    Yes
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
+        </div>
+      </>
+    );
+
+  return null;
 }

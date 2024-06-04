@@ -42,10 +42,14 @@ export default async function Page({
 
         <div>
           <div className="mx-auto max-w-6xl lg:max-w-6xl">
-            <h2 className="sr-only">Products</h2>
+            <h2 className="mb-10 text-xl font-semibold">Upcoming Events</h2>
             <div className="grid grid-cols-1 gap-x-10 gap-y-20 p-4 sm:grid-cols-2 md:p-0 lg:grid-cols-3">
               {products?.map((product) => (
-                <Link key={product.id} href={`/${product.slug}`} className="group">
+                <Link
+                  key={product.id}
+                  href={`/${product.slug}`}
+                  className="group"
+                >
                   <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-4 xl:aspect-w-4">
                     <Image
                       width={"500"}
@@ -59,11 +63,11 @@ export default async function Page({
                     {product.title}
                   </h3>
 
-                  <p className="flex text-sm text-gray-900 dark:text-gray-300 mb-2">
+                  <p className="mb-2 flex text-sm text-gray-900 dark:text-gray-300">
                     <Calendar className="mr-2 h-5 w-5 text-gray-400" />
-                    {
-                      DateTime.fromJSDate(product.startTime).setZone(product.timezone).toFormat("EEEE, LLLL d")
-                    }
+                    {DateTime.fromJSDate(product.startTime)
+                      .setZone(product.timezone)
+                      .toFormat("EEEE, LLLL d")}
                   </p>
 
                   <p className="flex text-sm text-gray-900 dark:text-gray-300 ">
@@ -84,7 +88,7 @@ export default async function Page({
                 </Link>
               ))}
 
-              {(!products ?? products?.length === 0) && (
+              {products?.length === 0 && (
                 <div className="col-span-3 flex items-center justify-center">
                   <p className="text-lg text-gray-600 dark:text-gray-300">
                     No events found

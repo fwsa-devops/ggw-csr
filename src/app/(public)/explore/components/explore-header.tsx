@@ -42,10 +42,10 @@ export default function ExploreHeader(props: { cityList: string[] }) {
   };
 
   return (
-    <div className="mx-auto mb-20 grid w-full max-w-6xl gap-2">
+    <div className="mx-auto mb-10 grid w-full max-w-6xl gap-2">
       <h1 className="text-3xl font-semibold">Explore</h1>
       <p className="text-lg text-muted-foreground">
-        Discover new products and services from our community
+        Discover new events and activities from our community
       </p>
 
       <Form {...form}>
@@ -59,7 +59,7 @@ export default function ExploreHeader(props: { cityList: string[] }) {
                   <FormLabel />
                   <FormControl>
                     <Input
-                      className="text-md p-6 lg:text-lg"
+                      className=""
                       placeholder="Search events"
                       {...field}
                     />
@@ -81,8 +81,8 @@ export default function ExploreHeader(props: { cityList: string[] }) {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="text-md p-6 text-muted-foreground lg:text-lg">
-                          <SelectValue placeholder="Select city" />
+                        <SelectTrigger className="text-muted-foreground">
+                          <SelectValue placeholder="Select City" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -99,11 +99,12 @@ export default function ExploreHeader(props: { cityList: string[] }) {
               )}
             />
 
-            <div className="mt-4 w-full lg:w-1/12">
+            <div className="mt-2 w-full lg:w-1/12">
               <Button
                 type="reset"
                 variant={"default"}
-                className="text-md w-full lg:p-6 lg:text-lg"
+                className="w-full"
+                size={"sm"}
                 onClick={handleReset}
               >
                 Reset

@@ -92,3 +92,19 @@ export async function cityList() {
     return IResponse.toJSON(500, "Internal server error", null);
   }
 }
+
+export async function getAllEventSlugs() {
+  try {
+    logger.info("EventService.eventSlugs");
+    const slugs = await db.event.findMany({
+      select: {
+        slug: true,
+      },
+    });
+    const response = slugs.map((slug) => slug.slug);
+    return IResponse.toJSON(200, "Slugs found", response);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    return IResponse.toJSON(500, "Internal server error", null);
+  }
+}

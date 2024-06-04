@@ -35,12 +35,10 @@ export default function ExploreHeader(props: { cityList: string[] }) {
 
   const handleSubmit = () => {
     const { search, city } = form.getValues();
-
     router.push(`?search=${search}&city=${city}`, { scroll: false });
   };
 
   const handleReset = () => {
-    form.reset();
     router.push("/", { scroll: false });
   };
 

@@ -39,10 +39,12 @@ export default function EventParticipants(props: {
 
   return (
     <div className="mb-10">
-      <h2 className="mb-1"> Participants </h2>
+      <h2 className="mb-1"> Participants 
+      {participants.length > 0 && ` (${participants.length})`}
+      </h2>
       <Separator />
       <div className="mt-4 text-muted-foreground">
-        <div className="isolate flex space-x-2">
+        <div className="isolate flex flex-wrap gap-2">
           {participants.map((participant) => (
             <UserAvatar key={participant.User.id} user={participant.User} />
           ))}

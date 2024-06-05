@@ -8,9 +8,9 @@ import { DateTime } from "luxon";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { db } from "@/server/db";
-import  {
+import {
   userCreatedEvent,
-  userRegisteredEvent
+  userRegisteredEvent,
 } from "@/server/service/profile.service";
 import UserEventItem from "@/components/shared/user-event-item";
 
@@ -39,17 +39,34 @@ export default async function Page({ params }: { params: { userId: string } }) {
       DateTime.now(),
   );
 
+  if (session.image) {
+    session.image = session.image?.replace("s96-c", "s600-c");
+  }
+
   return (
     <>
       <div className="ga-8 mx-auto w-full max-w-2xl lg:gap-14">
         <div className="mb-10 flex w-full flex-row justify-center gap-10">
-          <Image
-            src={session?.image ?? ""}
-            alt="Profile Picture"
-            width={1000}
-            height={1000}
-            className="h-28 w-28 rounded-full"
-          />
+          {session.image && (
+            <Image
+              src={session?.image?.replace("s96-c", "s200-c") ?? ""}
+              alt={`Profile picture of ${session?.name}`}
+              width={200}
+              height={200}
+              priority={false}
+              className="h-28 w-28 rounded-full"
+            />
+          )}
+
+          {!session.image && (
+            <div className="h-28 w-28 rounded-full bg-gray-200">
+              <div className="flex h-full items-center justify-center">
+                <p className="text-2xl text-gray-500">
+                  {session.name?.split(" ").map((_a) => _a[0])}
+                </p>
+              </div>
+            </div>
+          )}
 
           <div className="">
             <h1 className="mb-2 text-lg">{session?.name}</h1>
@@ -79,7 +96,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
           </div>
         </div>
 
-        <Separator className="w-full my-10" />
+        <Separator className="my-10 w-full" />
 
         <div className="mx-auto mt-10 max-w-[440px]">
           <h2 className="text=lg mb-6 font-medium">Hosting</h2>
@@ -95,7 +112,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
           )}
         </div>
 
-       <Separator className="w-3/5 mx-auto my-10" />
+        <Separator className="mx-auto my-10 w-3/5" />
 
         <div className="mx-auto max-w-[440px]">
           <h2 className="text=lg mb-6 font-medium">Past events</h2>

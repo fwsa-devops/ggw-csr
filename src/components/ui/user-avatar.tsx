@@ -12,7 +12,7 @@ export default function UserAvatar({
   className?: string;
 }) {
   return (
-    <Link href={`/user/${user.id}`}>
+    // <Link href={`/user/${user.id}`}>
       <Avatar className={cn(className)}>
         <AvatarImage src={user.image!} alt={user.name!} />
         <AvatarFallback>
@@ -22,6 +22,6 @@ export default function UserAvatar({
             .join("")}
         </AvatarFallback>
       </Avatar>
-    </Link>
+    // </Link>
   );
 }

@@ -72,7 +72,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
               <h2 className="mb-1"> Hosted by </h2>
               <Separator />
               <div className="mt-4">
-                <Link href={`/user/${event.User.id}`} className="w-fit flex flex-row items-center text-muted-foreground">
+                <Link
+                  href={`/user/${event.User.id}`}
+                  className="flex w-fit flex-row items-center text-muted-foreground"
+                >
                   <UserAvatar user={event.User} className="mr-2 h-8 w-8" />
                   <p className="font-medium text-black dark:text-white">
                     {event.User.name}

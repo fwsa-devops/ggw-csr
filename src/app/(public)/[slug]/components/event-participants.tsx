@@ -39,8 +39,8 @@ export default function EventParticipants(props: {
 
   return (
     <div className="mb-10">
-      <h2 className="mb-1"> Participants 
-      {participants.length > 0 && ` (${participants.length})`}
+      <h2 className="mb-1">
+        Participants
       </h2>
       <Separator />
       <div className="mt-4 text-muted-foreground">

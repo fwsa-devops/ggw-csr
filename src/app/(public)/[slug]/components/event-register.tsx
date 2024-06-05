@@ -14,6 +14,18 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+
+import {
+  Credenza,
+  CredenzaClose,
+  CredenzaContent,
+  CredenzaDescription,
+  CredenzaFooter,
+  CredenzaHeader,
+  CredenzaTitle,
+  CredenzaTrigger,
+} from "@/components/ui/credenza";
+
 import { Button } from "@/components/ui/button";
 import { signIn, useSession } from "next-auth/react";
 import {
@@ -25,9 +37,6 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import wait from "wait";
 import { useRouter } from "next/navigation";
-
-// "Are you sure you want to cancel?",
-// "Are you absolutely sure?",
 
 const promptMessages = [
   "Did you put our feelings into consideration?",
@@ -47,6 +56,7 @@ export default function EventRegister(props: { eventId: string }) {
   const [updatingStatus, setUpdatingStatus] = useState<boolean>(false);
   const [isParticipant, setIsParticipant] = useState<boolean>(false);
   const router = useRouter();
+  const [prompt, setPrompt] = useState<number>(0);
 
   useEffect(() => {
     if (data?.user && !fetched) {
@@ -127,45 +137,52 @@ export default function EventRegister(props: { eventId: string }) {
               Register
             </Button>
           ) : (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
+            <Credenza>
+              <CredenzaTrigger asChild>
                 {/* <Button variant="outline">Show Dialog</Button> */}
                 <Button
                   variant={"outline"}
                   size={"lg"}
                   type="button"
                   className="group w-full py-6"
+                  onClick={() =>
+                    setPrompt(Math.floor(Math.random() * promptMessages.length))
+                  }
                 >
                   Cancel Registration
                 </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>
-                    {
-                      promptMessages[
-                        Math.floor(Math.random() * promptMessages.length)
-                      ]
-                    }
-                  </AlertDialogTitle>
-                  <AlertDialogDescription>
+              </CredenzaTrigger>
+              <CredenzaContent>
+                <CredenzaHeader>
+                  <CredenzaTitle>{promptMessages[prompt]}</CredenzaTitle>
+                  <CredenzaDescription>
                     Are you sure you want to cancel your registration?
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel className="w-full" autoFocus>
-                    No
-                  </AlertDialogCancel>
-                  <AlertDialogAction
-                    className="w-full"
-                    onClick={handleChange}
-                    disabled={updatingStatus}
-                  >
-                    Yes
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+                  </CredenzaDescription>
+                </CredenzaHeader>
+                <CredenzaFooter>
+                  <CredenzaClose asChild>
+                    <Button
+                      size={"lg"}
+                      variant={"outline"}
+                      className="w-full"
+                      autoFocus
+                    >
+                      No
+                    </Button>
+                  </CredenzaClose>
+                  <CredenzaClose asChild>
+                    <Button
+                      className="w-full"
+                      size={"lg"}
+                      onClick={handleChange}
+                      disabled={updatingStatus}
+                    >
+                      Yes
+                    </Button>
+                  </CredenzaClose>
+                </CredenzaFooter>
+              </CredenzaContent>
+            </Credenza>
           )}
         </div>
       </>

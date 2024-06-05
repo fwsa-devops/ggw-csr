@@ -25,6 +25,7 @@ import { CalendarCheck } from "lucide-react";
 import { getAllEventSlugs } from "@/server/service/explore.service";
 import EventParticipants from "./components/event-participants";
 import { type Metadata, type ResolvingMetadata } from "next";
+import Link from "next/link";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const response = await EventService.findBySlug(params.slug);
@@ -70,11 +71,13 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <div className="mb-6">
               <h2 className="mb-1"> Hosted by </h2>
               <Separator />
-              <div className="mt-4 flex flex-row items-center text-muted-foreground">
-                <UserAvatar user={event.User} className="mr-2 h-8 w-8" />
-                <p className="font-medium text-black dark:text-white">
-                  {event.User.name}
-                </p>
+              <div className="mt-4">
+                <Link href={`/user/${event.User.id}`} className="w-fit flex flex-row items-center text-muted-foreground">
+                  <UserAvatar user={event.User} className="mr-2 h-8 w-8" />
+                  <p className="font-medium text-black dark:text-white">
+                    {event.User.name}
+                  </p>
+                </Link>
               </div>
             </div>
             <EventParticipants participants={participants} eventId={event.id} />
@@ -213,6 +216,5 @@ export async function generateMetadata(
 
   return meta;
 }
-
 
 export const revalidate = 60 * 30;

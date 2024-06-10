@@ -36,21 +36,23 @@ export default function EventLocation(props: EventLocationProps) {
         >
           <div
             className={cn(
-              "grid grid-cols-6 gap-3 text-muted-foreground md:grid-cols-10 lg:grid-cols-6",
+              "flex flex-row items-center gap-3 text-muted-foreground group",
             )}
           >
-            <div className="col-span-1 flex h-14 w-16 flex-grow-0 flex-col items-center justify-center overflow-hidden rounded-md border px-0 text-center shadow-sm">
-              <MapPin className="text-white-400 h-8 w-8" />
+            <div className="flex h-16 min-w-[64px] flex-col items-center justify-center overflow-hidden rounded-md border px-0 text-center shadow-sm">
+              <MapPin className="text-white-400 h-7 w-7" />
             </div>
 
-            <div className="group col-span-4 md:col-span-8 lg:col-span-5">
+            <div className="group">
               <h3 className="mb-1 flex items-center text-[1rem] font-semibold">
-                <span className="overflow-hidden line-clamp-1 truncate text-wrap">
-                  {address.name ?? address.street}
+                <span className="text-wrap truncate line-clamp-1 overflow-auto">
+                {address.street}
                 </span>
-                <ArrowUpRight className="ml-1 min-h-4 min-w-4 cursor-pointer text-black group-hover:animate-shake dark:text-white" />
+                <ArrowUpRight className="ml-2 min-h-[16px] min-w-[16px] cursor-pointer text-black group-hover:animate-shake dark:text-white" />
               </h3>
-              <p className="text-sm">{`${address.city}, ${address.state}`}</p>
+              <p className="text-sm">
+                {address.city}, {address.state}
+              </p>
             </div>
           </div>
         </Link>

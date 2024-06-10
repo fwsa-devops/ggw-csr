@@ -62,8 +62,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <NextImage
               src={event.image}
               alt={event.title ? `Image for ${event.title}` : "Image for event"}
-              width={"634"}
-              height={"634"}
+              width={"720"}
+              height={"720"}
               priority={true}
               // sizes="(min-width: 1024px) 300px, (min-width: 640px) 200px, 100px"
               className="object-cover object-center group-hover:opacity-75"

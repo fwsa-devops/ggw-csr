@@ -13,12 +13,14 @@ export default async function Page({
 }: {
   searchParams?: Record<string, string | undefined>;
 }) {
-  const search = searchParams?.search;
-  const city = searchParams?.city;
+  const valueParams = {
+    search: searchParams?.search ?? "",
+    city: searchParams?.city ?? "",
+  };
 
   const response = await eventFilter({
-    search: search ?? "",
-    city: city ?? "",
+    search: valueParams.search ?? "",
+    city: valueParams.city ?? "",
   });
   const { status, data } = response;
   let products = data;
@@ -38,7 +40,10 @@ export default async function Page({
   return (
     <>
       <div>
-        <ExploreHeader cityList={_cityList.data ?? []} />
+        <ExploreHeader
+          searchParams={valueParams}
+          cityList={_cityList.data ?? []}
+        />
 
         <div>
           <div className="mx-auto max-w-6xl lg:max-w-6xl">

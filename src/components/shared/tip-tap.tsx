@@ -1,11 +1,11 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, type Content } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import React from "react";
 
 type TiptapProps = {
-  value: string;
+  value: Content;
   onChange: (value: { html: string; text: string }) => void;
 };
 

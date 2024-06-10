@@ -11,6 +11,7 @@ import logger from "@/lib/logger";
 import React, { useState } from "react";
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -52,6 +53,7 @@ function extractAddress(
   addressComponents: google.maps.GeocoderAddressComponent[],
 ) {
   const address = {
+    name: "",
     street: "",
     city: "",
     state: "",
@@ -61,7 +63,7 @@ function extractAddress(
 
   addressComponents.forEach((component) => {
     if (component.types.includes("premise")) {
-      address.street += ` ${component.long_name}`;
+      address.name += ` ${component.long_name}`;
     }
 
     if (component.types.includes("street_number")) {
@@ -92,6 +94,8 @@ function extractAddress(
       address.zip = component.long_name;
     }
   });
+
+  console.log("extractAddress", { address });
 
   return address;
 }
@@ -137,6 +141,7 @@ export default function EventFormLocation(props: EventFormLocationProps) {
       form.setValue("location.lat", lat);
       form.setValue("location.lng", lng);
       // form.setValue("address.street", results[0].formatted_address);
+      form.setValue("address.name", extractedAddress.name);
       form.setValue("address.street", extractedAddress.street);
       form.setValue("address.city", extractedAddress.city);
       form.setValue("address.state", extractedAddress.state);
@@ -274,14 +279,30 @@ export default function EventFormLocation(props: EventFormLocationProps) {
             )}
 
             {form.watch("location.full_address") && (
-              <div className="mt-4 flex flex-col gap-4">
-                {/* <FormLabel className="text-lg mb-4">Address</FormLabel> */}
+              <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="address.name"
+                  render={({ field }) => (
+                    <FormItem className="col-span-1 md:col-span-2">
+                      <FormLabel>Address</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Door number, Floor, building name, etc."
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <FormField
                   control={form.control}
                   name="address.street"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Street</FormLabel>
+                    <FormItem className="col-span-1 md:col-span-2">
+                      {/* <FormLabel>Street</FormLabel> */}
                       <FormControl>
                         <Input {...field} placeholder="Street" />
                       </FormControl>
@@ -323,7 +344,7 @@ export default function EventFormLocation(props: EventFormLocationProps) {
                   name="address.country"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>State</FormLabel>
+                      <FormLabel>Country</FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="Country" />
                       </FormControl>

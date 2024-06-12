@@ -41,6 +41,7 @@ export default function EventParticipants(props: {
     <div className="mb-10">
       <h2 className="mb-1">
         Participants
+        <span className="ml-2">({participants.length})</span>
       </h2>
       <Separator />
       <div className="mt-4 text-muted-foreground">

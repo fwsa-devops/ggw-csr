@@ -6,7 +6,7 @@ import { SessionValidator } from "./../validators/session.validator";
 import * as EventDAO from "./../dao/event.dao";
 import * as ParticipantService from "./participant.service";
 import { IResponse } from "../types";
-import { Exception } from "../exceptions/exception";
+import { isException } from "../exceptions/exception";
 import { type INewEvent } from "../model";
 import { CommonValidator } from "../validators/core-validator";
 import { type Event } from "@prisma/client";
@@ -21,7 +21,7 @@ export async function findMany() {
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
 
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON<null>(error.code, error.message, null);
     }
 
@@ -61,7 +61,7 @@ export async function create(formDate: INewEvent) {
     );
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON<null>(error.code, error.message, null);
     }
     return IResponse.toJSON<null>(500, "Internal server error", null);
@@ -78,7 +78,7 @@ export async function findBySlug(slug: string) {
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
 
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON<null>(error.code, error.message, null);
     }
 
@@ -112,7 +112,7 @@ export async function eventDetails(slug: string) {
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
 
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON<null>(error.code, error.message, null);
     }
 
@@ -143,7 +143,7 @@ export async function hasAccess(slug: string) {
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
 
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON<null>(error.code, error.message, null);
     }
 

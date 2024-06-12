@@ -16,7 +16,7 @@ abstract class CoreException extends Error implements IException {
     this.name = "CoreException";
     this.code = code ?? StatusCodes.INTERNAL_SERVER_ERROR;
     this.description = description;
-    Object.setPrototypeOf(this, CoreException.prototype);
+    Object.setPrototypeOf(this, new.target.prototype);
   }
 }
 
@@ -33,11 +33,20 @@ export enum ExceptionMessages {
 export class Exception extends CoreException {
   public name = "Exception";
 
+  constructor(
+    message: ExceptionMessages,
+    description: string,
+    code?: StatusCodes,
+  ) {
+    super(message, description, code);
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+
   public static INVALID_INPUT(error: string) {
     return new Exception(
       ExceptionMessages.INVALID_INPUT,
       error,
-      StatusCodes.BAD_REQUEST
+      StatusCodes.BAD_REQUEST,
     );
   }
 
@@ -45,7 +54,7 @@ export class Exception extends CoreException {
     return new Exception(
       ExceptionMessages.INVALID_STRING,
       error,
-      StatusCodes.BAD_REQUEST
+      StatusCodes.BAD_REQUEST,
     );
   }
 
@@ -53,7 +62,7 @@ export class Exception extends CoreException {
     return new Exception(
       ExceptionMessages.INVALID_NUMBER,
       error,
-      StatusCodes.BAD_REQUEST
+      StatusCodes.BAD_REQUEST,
     );
   }
 
@@ -61,7 +70,7 @@ export class Exception extends CoreException {
     return new Exception(
       ExceptionMessages.INVALID_DATE,
       error,
-      StatusCodes.BAD_REQUEST
+      StatusCodes.BAD_REQUEST,
     );
   }
 
@@ -69,7 +78,7 @@ export class Exception extends CoreException {
     return new Exception(
       ExceptionMessages.INVALID_EMAIL,
       error,
-      StatusCodes.BAD_REQUEST
+      StatusCodes.BAD_REQUEST,
     );
   }
 
@@ -77,7 +86,7 @@ export class Exception extends CoreException {
     return new Exception(
       ExceptionMessages.NOT_AUTHENTICATED,
       error,
-      StatusCodes.UNAUTHORIZED
+      StatusCodes.UNAUTHORIZED,
     );
   }
 
@@ -85,8 +94,11 @@ export class Exception extends CoreException {
     return new Exception(
       ExceptionMessages.USER_NOT_FOUND,
       error,
-      StatusCodes.NOT_FOUND
+      StatusCodes.NOT_FOUND,
     );
   }
+}
 
+export function isException(error: unknown): error is Exception {
+  return error instanceof Exception;
 }

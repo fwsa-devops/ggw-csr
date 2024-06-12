@@ -1,12 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Progress } from "@/components/ui/progress";
 import { type User, type Event } from "@prisma/client";
 import { findMany } from "@/server/service/participant.service";
 import logger from "@/lib/logger";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
 import UserAvatar from "@/components/ui/user-avatar";
+import ExportParticipants from "./export-participants";
 
 type Props = {
   event: Event;
@@ -53,9 +53,10 @@ export default async function ManageParticipants(props: Props) {
           <div className="mb-4 flex flex-row items-end justify-between">
             <h2 className="text-2xl"> Guest List </h2>
             <div>
-              <Button variant={"secondary"} size={"icon"}>
-                <Download className="h-5 w-5" />
-              </Button>
+              <ExportParticipants
+                event={props.event}
+                participants={participants}
+              />
             </div>
           </div>
           <div>

@@ -2,13 +2,16 @@ import { Button } from "@/components/ui/button";
 import * as EventService from "@/server/service/event.service";
 import { StatusCodes } from "http-status-codes";
 import { ArrowUpRight } from "lucide-react";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ManageOverview from "./components/manage-overview";
 import ManageParticipants from "./components/manage-participants";
 import { type Event } from "@prisma/client";
 import EventNameDialog from "./components/event-name-dialog";
+import PageNotFound from "@/components/shared/page/not-found";
+import PageNotAuthorized from "@/components/shared/page/not-authorized";
+import PageForbidden from "@/components/shared/page/forbidden";
+import PageInternalServerError from "@/components/shared/page/internal-server-error";
 
 export default async function ManageLayout({
   params,
@@ -17,17 +20,19 @@ export default async function ManageLayout({
 }) {
   const response = await EventService.hasAccess(params.slug);
 
+  console.log(response);
+
   switch (response.status) {
     case StatusCodes.OK:
       break;
     case StatusCodes.UNAUTHORIZED:
-      return signIn("google");
-    case StatusCodes.FORBIDDEN:
-      return <div>Forbidden</div>;
+      return <PageNotAuthorized />;
     case StatusCodes.NOT_FOUND:
-      return <div>Not Found</div>;
+      return <PageNotFound />;
+    case StatusCodes.FORBIDDEN:
+      return <PageForbidden />;
     default:
-      return <div>Internal Server Error</div>;
+      return <PageInternalServerError />;
   }
 
   const eventResponse = await EventService.findBySlug(params.slug);

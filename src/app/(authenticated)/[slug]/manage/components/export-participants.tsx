@@ -31,7 +31,7 @@ export default function ExportParticipants(props: Props) {
       type: "application/octet-stream",
     });
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    void saveAs(blob, "participants.xlsx");
+    void saveAs(blob, `${props.event.title} - participants.xlsx`);
   };
 
   return (

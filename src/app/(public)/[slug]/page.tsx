@@ -27,6 +27,8 @@ import EventParticipants from "./components/event-participants";
 import { type Metadata, type ResolvingMetadata } from "next";
 import Link from "next/link";
 
+import { stripHtml } from "string-strip-html";
+
 export default async function Page({ params }: { params: { slug: string } }) {
   const response = await EventService.findBySlug(params.slug);
 
@@ -60,8 +62,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <NextImage
               src={event.image}
               alt={event.title ? `Image for ${event.title}` : "Image for event"}
-              width={"634"}
-              height={"634"}
+              width={"720"}
+              height={"720"}
               priority={true}
               // sizes="(min-width: 1024px) 300px, (min-width: 640px) 200px, 100px"
               className="object-cover object-center group-hover:opacity-75"
@@ -205,7 +207,7 @@ export async function generateMetadata(
       url: `https://globalgiving.freshworks.com/${event.slug}`,
       siteName: "Freshworks Project Giving",
       title: event.title,
-      description: event.description,
+      description: stripHtml(event.description).result.substring(0, 200),
       images: [
         {
           url: event.image,

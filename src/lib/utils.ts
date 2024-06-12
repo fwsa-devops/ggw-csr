@@ -11,6 +11,7 @@ import { twMerge } from "tailwind-merge";
 import shortId from "short-unique-id";
 import { format } from "date-fns";
 import { type Address, type Location, type Event } from "@prisma/client";
+import logger from "./logger";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -64,4 +65,57 @@ Location: ${event.Address.street} ${event.Address.city}, ${event.Address.state},
   url.searchParams.append("ctz", event.timezone);
 
   return url.toString();
+}
+
+
+
+export function extractAddress(
+  addressComponents: google.maps.GeocoderAddressComponent[],
+) {
+  const address = {
+    name: "",
+    street: "",
+    city: "",
+    state: "",
+    country: "",
+    zip: "",
+  };
+
+  addressComponents.forEach((component) => {
+    if (component.types.includes("premise")) {
+      address.name += ` ${component.long_name}`;
+    }
+
+    if (component.types.includes("street_number")) {
+      address.street += ` ${component.long_name}`;
+    }
+
+    if (component.types.includes("sublocality")) {
+      address.street += `, ${component.long_name}`;
+    }
+
+    if (component.types.includes("route")) {
+      address.street += ` ${component.long_name}`;
+    }
+
+    if (component.types.includes("locality")) {
+      address.city = component.long_name;
+    }
+
+    if (component.types.includes("administrative_area_level_1")) {
+      address.state = component.long_name;
+    }
+
+    if (component.types.includes("country")) {
+      address.country = component.long_name;
+    }
+
+    if (component.types.includes("postal_code")) {
+      address.zip = component.long_name;
+    }
+  });
+
+  console.log("extractAddress", { address });
+
+  return address;
 }

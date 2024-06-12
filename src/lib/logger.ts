@@ -18,7 +18,7 @@ const logger = (() => {
     return false;
   };
   
-  const isDev = process.env.NODE_ENV !== "production";
+  const isDev = process.env.NODE_ENV === "development";
 
   const print = (type: any, ...messages: any[]) => {
     if (typeof (global as any).areLogsEnabled === "undefined") {

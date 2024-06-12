@@ -4,18 +4,6 @@
 import { Hand } from "lucide-react";
 import { cn } from "../../../../lib/utils";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-
-import {
   Credenza,
   CredenzaClose,
   CredenzaContent,

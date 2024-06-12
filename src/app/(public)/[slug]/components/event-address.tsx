@@ -14,6 +14,7 @@ type EventAddressProps = {
   };
   address: {
     id: string;
+    name?: string | null;
     street: string;
     city: string;
     state: string;
@@ -43,7 +44,7 @@ export default function EventAddress(props: EventAddressProps) {
               className="text-muted-foreground no-underline"
               href={`https://www.google.com/maps/search/?api=1&query=${location.address}`}
             >
-              {`${address.street}, ${address.city}, ${address.state}, ${address.country}, ${address.zipcode}`}
+              {`${address.name ?? ''}  ${address.street}, ${address.city}, ${address.state}, ${address.country}, ${address.zipcode}`}
             </Link>
           </div>
         </div>

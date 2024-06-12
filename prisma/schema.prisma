@@ -101,6 +101,7 @@ model Location {
 
 model Address {
   id      String  @id @default(cuid())
+  name    String?
   street  String
   city    String
   state   String

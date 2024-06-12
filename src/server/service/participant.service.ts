@@ -8,7 +8,7 @@ import logger from "@/lib/logger";
 import * as ParticipantDAO from "@/server/dao/participant.dao";
 import { CommonValidator } from "../validators/core-validator";
 import { IResponse } from "../types";
-import { Exception } from "../exceptions/exception";
+import { isException } from "../exceptions/exception";
 import { SessionValidator } from "../validators/session.validator";
 
 export async function findMany(eventId: string) {
@@ -20,7 +20,7 @@ export async function findMany(eventId: string) {
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
 
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON(error.code, error.message, error.description);
     }
 
@@ -38,7 +38,7 @@ export async function findOne(eventId: string, userId: string) {
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
 
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON(error.code, error.message, error.description);
     }
 
@@ -62,7 +62,7 @@ export async function create(eventId: string, userId: string) {
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
 
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON(error.code, error.message, error.description);
     }
 
@@ -86,7 +86,7 @@ export async function remove(eventId: string, userId: string) {
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
 
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON(error.code, error.message, error.description);
     }
 
@@ -105,10 +105,25 @@ export async function isParticipant(eventId: string) {
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
 
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON(error.code, error.message, error.description);
     }
 
+    return IResponse.toJSON(500, "Internal server error", null);
+  }
+}
+
+export async function exportParticipants(eventId: string) {
+  try {
+    logger.info("ParticipantsService.exportParticipants");
+    CommonValidator.INPUT("Event Id", eventId);
+    const response = await ParticipantDAO.findMany(eventId);
+    return IResponse.toJSON(200, "Participants exported", response);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON(error.code, error.message, error.description);
+    }
     return IResponse.toJSON(500, "Internal server error", null);
   }
 }

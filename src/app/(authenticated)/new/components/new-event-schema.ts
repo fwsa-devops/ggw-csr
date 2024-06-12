@@ -14,11 +14,15 @@ export const newEventSchema = z.object({
     })
     .min(10, "Description must be at least 10 characters"),
   start: z.object({
-    date: z.date().refine((val) => !isNaN(Date.parse(val.toISOString())), { message: "Invalid date" }),
+    date: z.date().refine((val) => !isNaN(Date.parse(val.toISOString())), {
+      message: "Invalid date",
+    }),
     time: z.string(),
   }),
   end: z.object({
-    date: z.date().refine((val) => !isNaN(Date.parse(val.toISOString())), { message: "Invalid date" }),
+    date: z.date().refine((val) => !isNaN(Date.parse(val.toISOString())), {
+      message: "Invalid date",
+    }),
     time: z.string(),
   }),
   timezone: z.string(),
@@ -29,6 +33,7 @@ export const newEventSchema = z.object({
     lng: z.number(),
   }),
   address: z.object({
+    name: z.string().optional(),
     street: z.string(),
     city: z.string(),
     state: z.string(),

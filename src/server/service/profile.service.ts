@@ -3,8 +3,8 @@
 import logger from "@/lib/logger";
 import { IResponse } from "../types";
 import { CommonValidator } from "../validators/core-validator";
-import { Exception } from "../exceptions/exception";
 import { db } from "../db";
+import { isException } from "../exceptions/exception";
 
 export async function userCreatedEvent(userId: string) {
   try {
@@ -44,7 +44,7 @@ export async function userCreatedEvent(userId: string) {
     return IResponse.toJSON(200, "Events found", response);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON<null>(error.code, error.message, null);
     }
     return IResponse.toJSON<null>(500, "Internal server error", null);
@@ -90,7 +90,7 @@ export async function userRegisteredEvent(userId: string) {
     return IResponse.toJSON(200, "Events found", response);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON<null>(error.code, error.message, null);
     }
     return IResponse.toJSON<null>(500, "Internal server error", null);

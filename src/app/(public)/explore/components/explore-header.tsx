@@ -16,19 +16,26 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 
-export default function ExploreHeader(props: { cityList: string[] }) {
-  const searchParams = useSearchParams();
+type ExploreHeaderProps = {
+  cityList: string[];
+  searchParams: {
+    search: string;
+    city: string;
+  };
+};
+
+export default function ExploreHeader(props: ExploreHeaderProps) {
   const router = useRouter();
 
   const form = useForm({
     mode: "onChange",
     defaultValues: {
-      search: searchParams.get("search") ?? "",
-      city: searchParams.get("city") ?? "",
+      search: props.searchParams.search ?? "",
+      city: props.searchParams.city ?? "",
     },
   });
 

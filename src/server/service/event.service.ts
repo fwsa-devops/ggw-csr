@@ -6,7 +6,7 @@ import { SessionValidator } from "./../validators/session.validator";
 import * as EventDAO from "./../dao/event.dao";
 import * as ParticipantService from "./participant.service";
 import { IResponse } from "../types";
-import { Exception } from "../exceptions/exception";
+import { isException } from "../exceptions/exception";
 import { type INewEvent } from "../model";
 import { CommonValidator } from "../validators/core-validator";
 import { type Event } from "@prisma/client";
@@ -17,15 +17,11 @@ export async function findMany() {
     // await SessionValidator.validateSession();
     const response = await EventDAO.findMany();
 
-    return IResponse.toJSON(
-      200,
-      "Events found",
-      response
-    );
+    return IResponse.toJSON(200, "Events found", response);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
 
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON<null>(error.code, error.message, null);
     }
 
@@ -65,7 +61,7 @@ export async function create(formDate: INewEvent) {
     );
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON<null>(error.code, error.message, null);
     }
     return IResponse.toJSON<null>(500, "Internal server error", null);
@@ -82,7 +78,7 @@ export async function findBySlug(slug: string) {
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
 
-    if (error instanceof Exception) {
+    if (isException(error)) {
       return IResponse.toJSON<null>(error.code, error.message, null);
     }
 
@@ -95,7 +91,7 @@ export async function eventDetails(slug: string) {
     logger.info("EventService.eventDetails");
     CommonValidator.INPUT("Event Slug", slug);
 
-    const {data: event} = await findBySlug(slug);
+    const { data: event } = await findBySlug(slug);
     if (!event) {
       return IResponse.toJSON<null>(404, "Event not found", null);
     }
@@ -116,7 +112,38 @@ export async function eventDetails(slug: string) {
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
 
-    if (error instanceof Exception) {
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
+
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}
+
+export async function hasAccess(slug: string) {
+  try {
+    logger.info("EventService.hasAccess");
+    const session = await SessionValidator.validateSession();
+
+    if (!session) {
+      return IResponse.toJSON<null>(401, "User not authenticated", null);
+    }
+
+    const { data: event } = await findBySlug(slug);
+
+    if (!event) {
+      return IResponse.toJSON<null>(404, "Event not found", null);
+    }
+
+    if (event.User.id !== session.id) {
+      return IResponse.toJSON<null>(403, "User does not have access", null);
+    }
+
+    return IResponse.toJSON(200, "User has access", null);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+
+    if (isException(error)) {
       return IResponse.toJSON<null>(error.code, error.message, null);
     }
 

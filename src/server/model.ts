@@ -1,3 +1,5 @@
+import { type Address, type Location, type User } from "@prisma/client";
+
 export type INewEvent = {
   title: string;
   description: string;
@@ -11,6 +13,7 @@ export type INewEvent = {
     longitude: number;
   };
   address: {
+    name?: string;
     street: string;
     city: string;
     state: string;
@@ -19,3 +22,19 @@ export type INewEvent = {
   };
   maxParticipants?: number;
 };
+
+
+export type IEvent = {
+  id: string;
+  title: string;
+  slug: string;
+  description: string;
+  startTime: Date;
+  endTime: Date;
+  timezone: string;
+  image: string;
+  maxParticipants: number;
+  Location: Location;
+  Address:Address;
+  User: User;
+}

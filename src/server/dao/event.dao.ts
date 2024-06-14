@@ -144,6 +144,7 @@ export async function create(email: string, data: INewEvent) {
         },
         Address: {
           create: {
+            name: data.address.name,
             street: data.address.street,
             city: data.address.city,
             state: data.address.state,

@@ -200,6 +200,8 @@ export async function generateMetadata(
     return {};
   }
 
+  const _description = stripHtml(event.description).result.substring(0, 200);
+
   const meta: Metadata = {
     title: event.title,
     description: event.description,
@@ -207,15 +209,26 @@ export async function generateMetadata(
       url: `https://globalgiving.freshworks.com/${event.slug}`,
       siteName: "Freshworks Project Giving",
       title: event.title,
-      description: stripHtml(event.description).result.substring(0, 200),
-      images: [
-        {
-          url: event.image,
-          width: 600,
-          height: 600,
-          alt: `Image for ${event.title}`,
-        },
-      ],
+      description: _description,
+      images: {
+        url: event.image,
+        width: 600,
+        height: 600,
+        alt: `Image for ${event.title}`,
+      },
+    },
+    twitter: {
+      images: {
+        url: event.image,
+        width: 600,
+        height: 600,
+        alt: `Image for ${event.title}`,
+      },
+      title: event.title,
+      description: _description,
+      creator: event.User.name!,
+      site: "globalgiving.freshworks.com",
+      card: "summary_large_image",
     },
   };
 

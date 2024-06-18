@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Button } from "@/components/ui/button";
 import * as EventService from "@/server/service/event.service";
 import { StatusCodes } from "http-status-codes";
@@ -7,11 +8,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ManageOverview from "./components/manage-overview";
 import ManageParticipants from "./components/manage-participants";
 import { type Event } from "@prisma/client";
-import EventNameDialog from "./components/event-name-dialog";
+import EventNameDialog from "./components/overview/event-name-dialog";
 import PageNotFound from "@/components/shared/page/not-found";
 import PageNotAuthorized from "@/components/shared/page/not-authorized";
 import PageForbidden from "@/components/shared/page/forbidden";
 import PageInternalServerError from "@/components/shared/page/internal-server-error";
+import ManageRegistration from "./components/manage-registration";
 
 export default async function ManageLayout({
   params,
@@ -37,13 +39,15 @@ export default async function ManageLayout({
 
   const eventResponse = await EventService.findBySlug(params.slug);
 
+  if (eventResponse.status !== StatusCodes.OK || !eventResponse.data) return <PageNotFound />;
+
   return (
     <Tabs defaultValue="overview">
       <div className="mx-auto max-w-4xl border-b-[1px]">
         <div className="mb-3 text-muted-foreground">
           Hosted by
           <span className="ml-2 text-black dark:text-white">
-            {eventResponse.data?.User.name}
+            {eventResponse.data?.User.map((user) => user.name).join(", ")}
           </span>
         </div>
         <div className="mb-6 flex flex-col md:flex-row md:items-end md:justify-between">
@@ -73,7 +77,13 @@ export default async function ManageLayout({
             value="participants"
             className="data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
           >
-            Participants
+            Guests
+          </TabsTrigger>
+          <TabsTrigger
+            value="registration"
+            className="data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
+          >
+            Registration
           </TabsTrigger>
           <TabsTrigger
             value="settings"
@@ -85,10 +95,13 @@ export default async function ManageLayout({
       </div>
       <div className="mx-auto max-w-4xl">
         <TabsContent value="overview">
-          <ManageOverview event={eventResponse.data as unknown as Event} />
+          <ManageOverview event={eventResponse.data} />
         </TabsContent>
         <TabsContent value="participants">
-          <ManageParticipants event={eventResponse.data as unknown as Event} />
+          <ManageParticipants event={eventResponse.data} />
+        </TabsContent>
+        <TabsContent value="registration">
+          <ManageRegistration event={eventResponse.data} />
         </TabsContent>
       </div>
     </Tabs>

@@ -34,7 +34,8 @@ export type IEvent = {
   timezone: string;
   image: string;
   maxParticipants: number;
+  isParticipationOpen: boolean;
   Location: Location;
   Address:Address;
-  User: User;
+  User: User[];
 }

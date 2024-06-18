@@ -31,10 +31,11 @@ import Dropzone from "react-dropzone";
 import { useEdgeStore } from "@/components/layout/providers";
 import { LoaderCircle } from "lucide-react";
 import Image from "next/image";
+import { type IEvent } from "@/server/model";
 
 type Props = {
   children: React.ReactNode;
-  event: Event;
+  event: IEvent;
 };
 
 export default function EventImageDialog(props: Props) {

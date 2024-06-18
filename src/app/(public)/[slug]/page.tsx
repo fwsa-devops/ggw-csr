@@ -28,6 +28,7 @@ import { type Metadata, type ResolvingMetadata } from "next";
 import Link from "next/link";
 
 import { stripHtml } from "string-strip-html";
+import { IEvent } from "@/server/model";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const response = await EventService.findBySlug(params.slug);
@@ -52,7 +53,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     }[];
   }
 
-  const url = createGoogleCalendarLink(event as any);
+  const url = createGoogleCalendarLink(event);
 
   return (
     <>
@@ -73,16 +74,24 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <div className="mb-6">
               <h2 className="mb-1"> Hosted by </h2>
               <Separator />
-              <div className="mt-4">
-                <Link
-                  href={`/user/${event.User.id}`}
-                  className="flex w-fit flex-row items-center text-muted-foreground"
-                >
-                  <UserAvatar user={event.User} className="mr-2 h-8 w-8" />
-                  <p className="font-medium text-black dark:text-white">
-                    {event.User.name}
-                  </p>
-                </Link>
+              <div className="">
+                {event.User.map((_user: User) => (
+                  <>
+                    <div className="mt-4 flex w-full flex-row justify-between text-muted-foreground">
+                      <Link
+                        href={`/user/${_user.id}`}
+                        className="flex w-fit flex-row items-center text-muted-foreground"
+                      >
+                        <UserAvatar user={_user} className="mr-2 h-8 w-8" />
+                        <p className="font-medium text-black dark:text-white">
+                          {_user.name}
+                        </p>
+                      </Link>
+
+                      {/* <EventManageLink event={event} user={_user} /> */}
+                    </div>
+                  </>
+                ))}
               </div>
             </div>
             <EventParticipants participants={participants} eventId={event.id} />
@@ -131,11 +140,24 @@ export default async function Page({ params }: { params: { slug: string } }) {
               <div className="mb-6">
                 <h2 className="mb-1 "> Hosted by </h2>
                 <Separator />
-                <div className="mt-4 flex flex-row items-center text-muted-foreground">
-                  <UserAvatar user={event.User} className="mr-2 h-8 w-8" />
-                  <p className="font-medium text-black dark:text-white">
-                    {event.User.name}
-                  </p>
+                <div className="mt-4 flex flex-row items-center justify-between">
+                  <div className="flex w-full flex-row justify-between text-muted-foreground">
+                    {event.User.map((_user: User) => (
+                      <>
+                        <Link
+                          href={`/user/${_user.id}`}
+                          className="flex w-fit flex-row items-center text-muted-foreground"
+                        >
+                          <UserAvatar user={_user} className="mr-2 h-8 w-8" />
+                          <p className="font-medium text-black dark:text-white">
+                            {_user.name}
+                          </p>
+                        </Link>
+
+                        {/* <EventManageLink event={event} user={_user} /> */}
+                      </>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -226,7 +248,6 @@ export async function generateMetadata(
       },
       title: event.title,
       description: _description,
-      creator: event.User.name!,
       site: "globalgiving.freshworks.com",
       card: "summary_large_image",
     },

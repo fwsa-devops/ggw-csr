@@ -5,11 +5,12 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import logger from "@/lib/logger";
 import { Button } from "@/components/ui/button";
-import { type Event, type User } from "@prisma/client";
+import { type User } from "@prisma/client";
 import { Download } from "lucide-react";
+import { type IEvent } from "@/server/model";
 
 type Props = {
-  event: Event;
+  event: IEvent;
   participants: { User: User }[];
 };
 

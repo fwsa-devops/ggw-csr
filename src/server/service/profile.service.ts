@@ -12,8 +12,10 @@ export async function userCreatedEvent(userId: string) {
     CommonValidator.INPUT("User Id", userId);
 
     const whereQuery = {
-      User: {
-        id: userId,
+      EventHost: {
+        every: {
+          userId: userId,
+        },
       },
       isActive: true,
     };
@@ -30,7 +32,11 @@ export async function userCreatedEvent(userId: string) {
       timezone: true,
       Address: true,
       Location: true,
-      User: true,
+      EventHost: {
+        select: {
+          User: true,
+        },
+      },
       _count: true,
     };
 
@@ -76,7 +82,11 @@ export async function userRegisteredEvent(userId: string) {
       timezone: true,
       Address: true,
       Location: true,
-      User: true,
+      EventHost: {
+        select: {
+          User: true,
+        },
+      },
       _count: true,
     };
 

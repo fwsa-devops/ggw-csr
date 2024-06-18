@@ -57,7 +57,6 @@ export async function eventFilter(filter: { search: string; city: string }) {
         timezone: true,
         Address: true,
         Location: true,
-        User: true,
       },
       orderBy: {
         startTime: "asc",

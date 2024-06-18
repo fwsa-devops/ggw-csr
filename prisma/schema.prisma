@@ -9,18 +9,17 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-
+  id               String             @id @default(cuid())
+  name             String?
+  email            String             @unique
+  emailVerified    DateTime?
+  image            String?
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
-  Event            Event[]
+  accounts         Account[]
+  EventHost        EventHost[]
   EventParticipant EventParticipant[]
+  sessions         Session[]
 }
 
 model Account {
@@ -35,11 +34,9 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
 }
@@ -48,10 +45,9 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {
@@ -63,32 +59,26 @@ model VerificationToken {
 }
 
 model Event {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  title       String
-  description String
-  startTime   DateTime
-  endTime     DateTime
-  timezone    String   @default("Asia/Calcutta")
-
-  isPublic        Boolean @default(true)
-  isActive        Boolean @default(true)
-  image           String
-  maxParticipants Int     @default(0)
-
-  addressId String
-  Address   Address @relation(fields: [addressId], references: [id])
-
-  locationId String
-  Location   Location @relation(fields: [locationId], references: [id])
-
-  createdById String
-  User        User   @relation(fields: [createdById], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  EventParticipant EventParticipant[]
+  id                  String             @id @default(cuid())
+  title               String
+  description         String
+  startTime           DateTime
+  endTime             DateTime
+  timezone            String             @default("Asia/Calcutta")
+  addressId           String
+  locationId          String
+  isPublic            Boolean            @default(true)
+  maxParticipants     Int                @default(0)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  image               String
+  slug                String             @unique
+  isActive            Boolean            @default(true)
+  isParticipationOpen Boolean            @default(true)
+  Address             Address            @relation(fields: [addressId], references: [id])
+  Location            Location           @relation(fields: [locationId], references: [id])
+  EventHost           EventHost[]
+  EventParticipant    EventParticipant[]
 }
 
 model Location {
@@ -101,12 +91,12 @@ model Location {
 
 model Address {
   id      String  @id @default(cuid())
-  name    String?
-  street  String
   city    String
   state   String
   country String
   zipcode String
+  street  String
+  name    String?
   Event   Event[]
 }
 
@@ -115,8 +105,20 @@ model EventParticipant {
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  checkedIn Boolean  @default(false)
   Event     Event    @relation(fields: [eventId], references: [id])
   User      User     @relation(fields: [userId], references: [id])
 
   @@unique([eventId, userId])
+}
+
+model EventHost {
+  eventId   String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  Event     Event    @relation(fields: [eventId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@id([eventId, userId], name: "hostId")
 }

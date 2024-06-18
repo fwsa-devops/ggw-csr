@@ -7,9 +7,10 @@ import * as EventDAO from "./../dao/event.dao";
 import * as ParticipantService from "./participant.service";
 import { IResponse } from "../types";
 import { isException } from "../exceptions/exception";
-import { type INewEvent } from "../model";
+import { type IEvent, type INewEvent } from "../model";
 import { CommonValidator } from "../validators/core-validator";
-import { type Event } from "@prisma/client";
+import { type User, type Event } from "@prisma/client";
+import { db } from "../db";
 
 export async function findMany() {
   try {
@@ -72,8 +73,8 @@ export async function findBySlug(slug: string) {
   try {
     logger.info("EventService.findBySlug");
     CommonValidator.INPUT("Slug", slug);
-
     const response = await EventDAO.findBySlug(slug);
+    if (!response) return IResponse.toJSON<null>(404, "Event not found", null);
     return IResponse.toJSON(200, "Events found", response);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
@@ -135,7 +136,8 @@ export async function hasAccess(slug: string) {
       return IResponse.toJSON<null>(404, "Event not found", null);
     }
 
-    if (event.User.id !== session.id) {
+    const isHost = event.User.some((user: User) => user.id === session.id);
+    if (!isHost) {
       return IResponse.toJSON<null>(403, "User does not have access", null);
     }
 
@@ -147,6 +149,50 @@ export async function hasAccess(slug: string) {
       return IResponse.toJSON<null>(error.code, error.message, null);
     }
 
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}
+
+export async function addHost(eventId: string, newHostEmail: string) {
+  try {
+    logger.info("EventService.addHost");
+    const session = await SessionValidator.validateSession();
+    if (!session)
+      return IResponse.toJSON<null>(401, "User not authenticated", null);
+
+    const { data: event } = await findBySlug(eventId);
+    if (!event) return IResponse.toJSON<null>(404, "Event not found", null);
+
+    const newUser = await db.user.findUnique({
+      where: {
+        email: newHostEmail,
+      },
+    });
+
+    if (!newUser) return IResponse.toJSON<null>(404, "User not found", null);
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    const isHost = await db.eventHost.findUnique({
+      where: {
+        hostId: {
+          eventId: event.id,
+          userId: newUser.id,
+        },
+      },
+    });
+
+    if (isHost)
+      return IResponse.toJSON<null>(403, "User is already a host", null);
+
+    logger.debug("addHost", { eventId, newHostEmail, newUser });
+
+    await EventDAO.addHost(event.id, newUser.id);
+    return IResponse.toJSON(200, "Host added", null);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
     return IResponse.toJSON<null>(500, "Internal server error", null);
   }
 }

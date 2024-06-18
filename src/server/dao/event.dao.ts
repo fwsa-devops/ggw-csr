@@ -6,7 +6,7 @@
 
 import logger from "@/lib/logger";
 import { db } from "../db";
-import { type INewEvent } from "../model";
+import { type IEvent, type INewEvent } from "../model";
 import { generateId } from "@/lib/utils";
 
 export async function findMany() {
@@ -43,6 +43,7 @@ export async function findMany() {
         Address: true,
         Location: true,
         User: true,
+        isParticipationOpen: true,
       },
       orderBy: {
         startTime: "asc",
@@ -112,11 +113,16 @@ export async function findBySlug(slug: string) {
         timezone: true,
         Location: true,
         Address: true,
+        isParticipationOpen: true,
         User: true,
       },
     });
 
-    return event;
+    if (!event) {
+      return null;
+    }
+
+    return event satisfies IEvent;
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     throw error;

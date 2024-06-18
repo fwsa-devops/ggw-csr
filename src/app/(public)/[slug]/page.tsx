@@ -20,14 +20,15 @@ import { type User } from "@prisma/client";
 import UserAvatar from "@/components/ui/user-avatar";
 import { createGoogleCalendarLink } from "@/lib/utils";
 import { DateTime } from "luxon";
-import { Alert, AlertTitle } from "@/components/ui/alert";
-import { CalendarCheck } from "lucide-react";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { ArrowUpRight, CalendarCheck, MinusCircle } from "lucide-react";
 import { getAllEventSlugs } from "@/server/service/explore.service";
 import EventParticipants from "./components/event-participants";
 import { type Metadata, type ResolvingMetadata } from "next";
 import Link from "next/link";
 
 import { stripHtml } from "string-strip-html";
+import { Badge } from "@/components/ui/badge";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const response = await EventService.findBySlug(params.slug);
@@ -73,15 +74,24 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <div className="mb-6">
               <h2 className="mb-1"> Hosted by </h2>
               <Separator />
-              <div className="mt-4">
-                <Link
-                  href={`/user/${event.User.id}`}
-                  className="flex w-fit flex-row items-center text-muted-foreground"
-                >
-                  <UserAvatar user={event.User} className="mr-2 h-8 w-8" />
-                  <p className="font-medium text-black dark:text-white">
-                    {event.User.name}
-                  </p>
+              <div className="mt-4 flex flex-row items-center justify-between">
+                <div className="flex flex-row items-center text-muted-foreground">
+                  <Link
+                    href={`/user/${event.User.id}`}
+                    className="flex w-fit flex-row items-center text-muted-foreground"
+                  >
+                    <UserAvatar user={event.User} className="mr-2 h-8 w-8" />
+                    <p className="font-medium text-black dark:text-white">
+                      {event.User.name}
+                    </p>
+                  </Link>
+                </div>
+
+                <Link href={[event.slug, "manage"].join("/")}>
+                  <Badge variant={"default"}>
+                    Manage
+                    <ArrowUpRight className="ml-2 h-4 w-4" />
+                  </Badge>
                 </Link>
               </div>
             </div>
@@ -106,36 +116,67 @@ export default async function Page({ params }: { params: { slug: string } }) {
               address={event.Address}
             />
 
-            {DateTime.fromJSDate(event.startTime).toMillis() >=
-              DateTime.now().toMillis() && <EventRegister eventId={event.id} />}
+            {!event.isParticipationOpen && (
+              <Alert className="mt-6 bg-gray-50">
+                <MinusCircle className="h-4 w-4" />
+                <AlertTitle className="mb-2">Registration Closed</AlertTitle>
+                <AlertDescription className="mb-0 font-normal">
+                  This event is not currently accepting registrations. You may
+                  contact the event host for more information.
+                </AlertDescription>
+              </Alert>
+            )}
 
-            {DateTime.fromJSDate(event.startTime).toMillis() <
-              DateTime.now().toMillis() && (
-              // Event has already ended
-              <>
-                <div className="mt-6">
-                  {/* <h2 className="mb-1"> Event </h2>
+            {event.isParticipationOpen &&
+              DateTime.fromJSDate(event.startTime).toMillis() >=
+                DateTime.now().toMillis() && (
+                <EventRegister eventId={event.id} />
+              )}
+
+            {event.isParticipationOpen &&
+              DateTime.fromJSDate(event.startTime).toMillis() <
+                DateTime.now().toMillis() && (
+                // Event has already ended
+                <>
+                  <div className="mt-6">
+                    {/* <h2 className="mb-1"> Event </h2>
                   <Separator /> */}
 
-                  <Alert className="mt-6 text-muted-foreground">
-                    <CalendarCheck className="h-4 w-4" />
-                    <AlertTitle className="text-sm font-normal">
-                      This event has already ended.
-                    </AlertTitle>
-                  </Alert>
-                </div>
-              </>
-            )}
+                    <Alert className="mt-6 bg-gray-50">
+                      <CalendarCheck className="h-4 w-4" />
+                      <AlertTitle className="mb-2">Event has ended</AlertTitle>
+                      <AlertDescription className="mb-0 font-normal">
+                        This event ended{" "}
+                        {DateTime.fromJSDate(event.endTime).toRelative()}.
+                      </AlertDescription>
+                    </Alert>
+                  </div>
+                </>
+              )}
 
             <div className="mt-6 block lg:hidden">
               <div className="mb-6">
                 <h2 className="mb-1 "> Hosted by </h2>
                 <Separator />
-                <div className="mt-4 flex flex-row items-center text-muted-foreground">
-                  <UserAvatar user={event.User} className="mr-2 h-8 w-8" />
-                  <p className="font-medium text-black dark:text-white">
-                    {event.User.name}
-                  </p>
+                <div className="mt-4 flex flex-row items-center justify-between">
+                  <div className="flex flex-row items-center text-muted-foreground">
+                    <Link
+                      href={`/user/${event.User.id}`}
+                      className="flex w-fit flex-row items-center text-muted-foreground"
+                    >
+                      <UserAvatar user={event.User} className="mr-2 h-8 w-8" />
+                      <p className="font-medium text-black dark:text-white">
+                        {event.User.name}
+                      </p>
+                    </Link>
+                  </div>
+
+                  <Link href={[event.slug, "manage"].join("/")}>
+                    <Badge variant={"default"}>
+                      Manage
+                      <ArrowUpRight className="ml-2 h-4 w-4" />
+                    </Badge>
+                  </Link>
                 </div>
               </div>
             </div>

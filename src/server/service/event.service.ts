@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use server";
 
@@ -7,7 +8,7 @@ import * as EventDAO from "./../dao/event.dao";
 import * as ParticipantService from "./participant.service";
 import { IResponse } from "../types";
 import { isException } from "../exceptions/exception";
-import { type INewEvent } from "../model";
+import { IEvent, type INewEvent } from "../model";
 import { CommonValidator } from "../validators/core-validator";
 import { type Event } from "@prisma/client";
 

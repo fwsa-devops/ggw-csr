@@ -29,8 +29,10 @@ import Link from "next/link";
 
 import { stripHtml } from "string-strip-html";
 import { Badge } from "@/components/ui/badge";
+import { SessionValidator } from "@/server/validators/session.validator";
 
 export default async function Page({ params }: { params: { slug: string } }) {
+  const session = await SessionValidator.validateSession();
   const response = await EventService.findBySlug(params.slug);
 
   if (!response || response.status !== StatusCodes.OK) {
@@ -87,12 +89,14 @@ export default async function Page({ params }: { params: { slug: string } }) {
                   </Link>
                 </div>
 
-                <Link href={[event.slug, "manage"].join("/")}>
-                  <Badge variant={"default"}>
-                    Manage
-                    <ArrowUpRight className="ml-2 h-4 w-4" />
-                  </Badge>
-                </Link>
+                {session.id === event.User.id && (
+                  <Link href={[event.slug, "manage"].join("/")}>
+                    <Badge variant={"default"}>
+                      Manage
+                      <ArrowUpRight className="ml-2 h-4 w-4" />
+                    </Badge>
+                  </Link>
+                )}
               </div>
             </div>
             <EventParticipants participants={participants} eventId={event.id} />
@@ -171,12 +175,14 @@ export default async function Page({ params }: { params: { slug: string } }) {
                     </Link>
                   </div>
 
-                  <Link href={[event.slug, "manage"].join("/")}>
-                    <Badge variant={"default"}>
-                      Manage
-                      <ArrowUpRight className="ml-2 h-4 w-4" />
-                    </Badge>
-                  </Link>
+                  {session.id === event.User.id && (
+                    <Link href={[event.slug, "manage"].join("/")}>
+                      <Badge variant={"default"}>
+                        Manage
+                        <ArrowUpRight className="ml-2 h-4 w-4" />
+                      </Badge>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

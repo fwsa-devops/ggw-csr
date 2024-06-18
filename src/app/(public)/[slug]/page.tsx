@@ -117,7 +117,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             />
 
             {!event.isParticipationOpen && (
-              <Alert className="mt-6 bg-gray-50">
+              <Alert className="mt-6 ">
                 <MinusCircle className="h-4 w-4" />
                 <AlertTitle className="mb-2">Registration Closed</AlertTitle>
                 <AlertDescription className="mb-0 font-normal">
@@ -142,7 +142,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                     {/* <h2 className="mb-1"> Event </h2>
                   <Separator /> */}
 
-                    <Alert className="mt-6 bg-gray-50">
+                    <Alert className="mt-6 ">
                       <CalendarCheck className="h-4 w-4" />
                       <AlertTitle className="mb-2">Event has ended</AlertTitle>
                       <AlertDescription className="mb-0 font-normal">

@@ -39,10 +39,10 @@ export default function UserEventItem(props: UserEventItemProps) {
           </div>
           <div className="text-xs">
             <h3 className="mb-3 text-base font-medium">{event.title}</h3>
-            <p className="mb-2 flex flex-row items-center">
+            {/* <p className="mb-2 flex flex-row items-center">
               <UserAvatar user={event.User} className="mr-2 h-5 w-5" />
               <span>{event.User.name}</span>
-            </p>
+            </p> */}
             <div className="mb-2 flex flex-row items-center">
               <CalendarDays className="mr-2 h-4 w-4" />
               {DateTime.fromJSDate(event.startTime).toFormat(

@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Progress } from "@/components/ui/progress";
-import { type User, type Event } from "@prisma/client";
+import { type User } from "@prisma/client";
 import { findMany } from "@/server/service/participant.service";
 import logger from "@/lib/logger";
 import { Separator } from "@/components/ui/separator";
 import UserAvatar from "@/components/ui/user-avatar";
-import ExportParticipants from "./export-participants";
+import ExportParticipants from "./participants/export-participants";
+import { type IEvent } from "@/server/model";
 
 type Props = {
-  event: Event;
+  event: IEvent;
 };
 
 export default async function ManageParticipants(props: Props) {
@@ -41,7 +42,7 @@ export default async function ManageParticipants(props: Props) {
           <div>
             <p className="mb-2">
               <span className="mr-2">{participants.length}</span>
-              participants
+              Guests
             </p>
             <Progress value={participants.length > 0 ? percentage : 0} />
           </div>

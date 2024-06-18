@@ -54,7 +54,9 @@ const logger = (() => {
           break;
       }
 
-      console.log(`${colorCode}[${logType}]`, ...messages, resetColorCode);
+    const datetime = new Date().toISOString();
+
+      console.log(`\x1b[31m[${datetime}] ${colorCode}[${logType}]`, ...messages, resetColorCode);
     }
   };
 

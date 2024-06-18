@@ -37,5 +37,5 @@ export type IEvent = {
   isParticipationOpen: boolean;
   Location: Location;
   Address:Address;
-  User: User;
+  User: User[];
 }

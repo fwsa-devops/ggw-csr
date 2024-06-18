@@ -7,6 +7,7 @@
 import logger from "@/lib/logger";
 import { db } from "../db";
 import { type IEvent, type INewEvent } from "../model";
+import { type IEvent, type INewEvent } from "../model";
 import { generateId } from "@/lib/utils";
 
 export async function findMany() {
@@ -42,7 +43,11 @@ export async function findMany() {
         timezone: true,
         Address: true,
         Location: true,
-        User: true,
+        EventHost: {
+          select: {
+            User: true,
+          },
+        },
         isParticipationOpen: true,
       },
       orderBy: {
@@ -50,7 +55,12 @@ export async function findMany() {
       },
     });
 
-    return events;
+    const transformedEvent: IEvent[] = events.map((event) => ({
+      ...event,
+      User: event.EventHost.map((host) => host.User),
+    }));
+
+    return transformedEvent;
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     throw error;
@@ -79,11 +89,26 @@ export async function findOne(id: string) {
         timezone: true,
         Address: true,
         Location: true,
-        User: true,
+        EventHost: {
+          select: {
+            User: true,
+          },
+        },
       },
     });
 
-    return event;
+    if (!event) {
+      return null;
+    }
+
+    const transformedEvent: IEvent = {
+      ...event,
+      User: event?.EventHost.map((host) => host.User),
+      slug: "",
+      isParticipationOpen: false,
+    };
+
+    return transformedEvent;
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     throw error;
@@ -114,7 +139,11 @@ export async function findBySlug(slug: string) {
         Location: true,
         Address: true,
         isParticipationOpen: true,
-        User: true,
+        EventHost: {
+          select: {
+            User: true,
+          },
+        },
       },
     });
 
@@ -122,7 +151,12 @@ export async function findBySlug(slug: string) {
       return null;
     }
 
-    return event satisfies IEvent;
+    const transformedEvent: IEvent = {
+      ...event,
+      User: event?.EventHost.map((host) => host.User),
+    };
+
+    return transformedEvent;
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     throw error;
@@ -158,12 +192,32 @@ export async function create(email: string, data: INewEvent) {
             zipcode: data.address.zip,
           },
         },
-        maxParticipants: data.maxParticipants,
-        User: {
-          connect: {
-            email,
+        EventHost: {
+          create: {
+            User: {
+              connect: {
+                email,
+              },
+            },
           },
         },
+        maxParticipants: data.maxParticipants,
+      },
+    });
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function addHost(eventId: string, userId: string) {
+  try {
+    logger.info("EventDAO.addHost");
+    const response = await db.eventHost.create({
+      data: {
+        eventId: eventId,
+        userId: userId,
       },
     });
     return response;

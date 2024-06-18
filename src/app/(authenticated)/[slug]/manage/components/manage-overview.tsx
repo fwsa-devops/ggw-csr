@@ -1,18 +1,14 @@
-import { type Event } from "@prisma/client";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import EventImageDialog from "./event-image-dialog";
+import EventImageDialog from "./overview/event-image-dialog";
+import { type IEvent } from "@/server/model";
+import { Button } from "@/components/ui/button";
+import { PlusIcon } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import EventAddHost from "./overview/event-add-host";
 
 type Props = {
-  event: Event;
+  event: IEvent;
 };
 
 export default function ManageOverview(props: Props) {
@@ -44,6 +40,22 @@ export default function ManageOverview(props: Props) {
             </CardFooter> */}
           </Card>
         </div>
+
+        <Separator className="my-4" />
+
+        <section>
+          <div className="mb-2 flex-row items-end justify-between md:flex">
+            <div className="mb-4 md:mb-0">
+              <h2 className="text-lg"> Host </h2>
+              <p className="text-sm text-muted-foreground">
+                Add hosts, special guests and speakers to your event.
+              </p>
+            </div>
+            <div>
+              <EventAddHost eventSlug={props.event.slug} />
+            </div>
+          </div>
+        </section>
       </div>
     </>
   );

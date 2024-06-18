@@ -12,6 +12,7 @@ import shortId from "short-unique-id";
 import { format } from "date-fns";
 import { type Address, type Location, type Event } from "@prisma/client";
 import logger from "./logger";
+import { type IEvent } from "@/server/model";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -39,7 +40,7 @@ export function generateId() {
 }
 
 export function createGoogleCalendarLink(
-  event: Event & { Address: Address; Location: Location },
+  event: IEvent
 ) {
   const extractContent = (s: string, space: boolean) => {
     return s.replace(/<[^>]*(>|$)| |‌|»|«|>/g, " ").replace(/ +/g, " ");

@@ -8,7 +8,7 @@ import * as EventDAO from "./../dao/event.dao";
 import * as ParticipantService from "./participant.service";
 import { IResponse } from "../types";
 import { isException } from "../exceptions/exception";
-import { type IEvent, type INewEvent } from "../model";
+import { IEvent, type INewEvent } from "../model";
 import { CommonValidator } from "../validators/core-validator";
 import { type User, type Event } from "@prisma/client";
 import { db } from "../db";

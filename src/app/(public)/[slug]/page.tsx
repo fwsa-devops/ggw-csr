@@ -22,13 +22,15 @@ import { createGoogleCalendarLink } from "@/lib/utils";
 import { DateTime } from "luxon";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { ArrowUpRight, CalendarCheck, MinusCircle } from "lucide-react";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { ArrowUpRight, CalendarCheck, MinusCircle } from "lucide-react";
 import { getAllEventSlugs } from "@/server/service/explore.service";
 import EventParticipants from "./components/event-participants";
 import { type Metadata, type ResolvingMetadata } from "next";
 import Link from "next/link";
 
 import { stripHtml } from "string-strip-html";
-import { IEvent } from "@/server/model";
+import { Badge } from "@/components/ui/badge";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const response = await EventService.findBySlug(params.slug);
@@ -74,24 +76,25 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <div className="mb-6">
               <h2 className="mb-1"> Hosted by </h2>
               <Separator />
-              <div className="">
-                {event.User.map((_user: User) => (
-                  <>
-                    <div className="mt-4 flex w-full flex-row justify-between text-muted-foreground">
-                      <Link
-                        href={`/user/${_user.id}`}
-                        className="flex w-fit flex-row items-center text-muted-foreground"
-                      >
-                        <UserAvatar user={_user} className="mr-2 h-8 w-8" />
-                        <p className="font-medium text-black dark:text-white">
-                          {_user.name}
-                        </p>
-                      </Link>
+              <div className="mt-4 flex flex-row items-center justify-between">
+                <div className="flex flex-row items-center text-muted-foreground">
+                  <Link
+                    href={`/user/${event.User.id}`}
+                    className="flex w-fit flex-row items-center text-muted-foreground"
+                  >
+                    <UserAvatar user={event.User} className="mr-2 h-8 w-8" />
+                    <p className="font-medium text-black dark:text-white">
+                      {event.User.name}
+                    </p>
+                  </Link>
+                </div>
 
-                      {/* <EventManageLink event={event} user={_user} /> */}
-                    </div>
-                  </>
-                ))}
+                <Link href={[event.slug, "manage"].join("/")}>
+                  <Badge variant={"default"}>
+                    Manage
+                    <ArrowUpRight className="ml-2 h-4 w-4" />
+                  </Badge>
+                </Link>
               </div>
             </div>
             <EventParticipants participants={participants} eventId={event.id} />
@@ -116,7 +119,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             />
 
             {!event.isParticipationOpen && (
-              <Alert className="mt-6 ">
+              <Alert className="mt-6 bg-gray-50">
                 <MinusCircle className="h-4 w-4" />
                 <AlertTitle className="mb-2">Registration Closed</AlertTitle>
                 <AlertDescription className="mb-0 font-normal">
@@ -141,7 +144,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                     {/* <h2 className="mb-1"> Event </h2>
                   <Separator /> */}
 
-                    <Alert className="mt-6 ">
+                    <Alert className="mt-6 bg-gray-50">
                       <CalendarCheck className="h-4 w-4" />
                       <AlertTitle className="mb-2">Event has ended</AlertTitle>
                       <AlertDescription className="mb-0 font-normal">
@@ -158,23 +161,24 @@ export default async function Page({ params }: { params: { slug: string } }) {
                 <h2 className="mb-1 "> Hosted by </h2>
                 <Separator />
                 <div className="mt-4 flex flex-row items-center justify-between">
-                  <div className="flex w-full flex-row justify-between text-muted-foreground">
-                    {event.User.map((_user: User) => (
-                      <>
-                        <Link
-                          href={`/user/${_user.id}`}
-                          className="flex w-fit flex-row items-center text-muted-foreground"
-                        >
-                          <UserAvatar user={_user} className="mr-2 h-8 w-8" />
-                          <p className="font-medium text-black dark:text-white">
-                            {_user.name}
-                          </p>
-                        </Link>
-
-                        {/* <EventManageLink event={event} user={_user} /> */}
-                      </>
-                    ))}
+                  <div className="flex flex-row items-center text-muted-foreground">
+                    <Link
+                      href={`/user/${event.User.id}`}
+                      className="flex w-fit flex-row items-center text-muted-foreground"
+                    >
+                      <UserAvatar user={event.User} className="mr-2 h-8 w-8" />
+                      <p className="font-medium text-black dark:text-white">
+                        {event.User.name}
+                      </p>
+                    </Link>
                   </div>
+
+                  <Link href={[event.slug, "manage"].join("/")}>
+                    <Badge variant={"default"}>
+                      Manage
+                      <ArrowUpRight className="ml-2 h-4 w-4" />
+                    </Badge>
+                  </Link>
                 </div>
               </div>
             </div>

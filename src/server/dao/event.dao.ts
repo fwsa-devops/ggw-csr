@@ -43,11 +43,7 @@ export async function findMany() {
         timezone: true,
         Address: true,
         Location: true,
-        EventHost: {
-          select: {
-            User: true,
-          },
-        },
+        User: true,
         isParticipationOpen: true,
       },
       orderBy: {
@@ -139,11 +135,7 @@ export async function findBySlug(slug: string) {
         Location: true,
         Address: true,
         isParticipationOpen: true,
-        EventHost: {
-          select: {
-            User: true,
-          },
-        },
+        User: true,
       },
     });
 
@@ -151,12 +143,7 @@ export async function findBySlug(slug: string) {
       return null;
     }
 
-    const transformedEvent: IEvent = {
-      ...event,
-      User: event?.EventHost.map((host) => host.User),
-    };
-
-    return transformedEvent;
+    return event satisfies IEvent;
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     throw error;

@@ -30,7 +30,7 @@ import { type Metadata, type ResolvingMetadata } from "next";
 import Link from "next/link";
 
 import { stripHtml } from "string-strip-html";
-import { Badge } from "@/components/ui/badge";
+import { IEvent } from "@/server/model";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const response = await EventService.findBySlug(params.slug);
@@ -76,25 +76,24 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <div className="mb-6">
               <h2 className="mb-1"> Hosted by </h2>
               <Separator />
-              <div className="mt-4 flex flex-row items-center justify-between">
-                <div className="flex flex-row items-center text-muted-foreground">
-                  <Link
-                    href={`/user/${event.User.id}`}
-                    className="flex w-fit flex-row items-center text-muted-foreground"
-                  >
-                    <UserAvatar user={event.User} className="mr-2 h-8 w-8" />
-                    <p className="font-medium text-black dark:text-white">
-                      {event.User.name}
-                    </p>
-                  </Link>
-                </div>
+              <div className="">
+                {event.User.map((_user: User) => (
+                  <>
+                    <div className="mt-4 flex w-full flex-row justify-between text-muted-foreground">
+                      <Link
+                        href={`/user/${_user.id}`}
+                        className="flex w-fit flex-row items-center text-muted-foreground"
+                      >
+                        <UserAvatar user={_user} className="mr-2 h-8 w-8" />
+                        <p className="font-medium text-black dark:text-white">
+                          {_user.name}
+                        </p>
+                      </Link>
 
-                <Link href={[event.slug, "manage"].join("/")}>
-                  <Badge variant={"default"}>
-                    Manage
-                    <ArrowUpRight className="ml-2 h-4 w-4" />
-                  </Badge>
-                </Link>
+                      {/* <EventManageLink event={event} user={_user} /> */}
+                    </div>
+                  </>
+                ))}
               </div>
             </div>
             <EventParticipants participants={participants} eventId={event.id} />
@@ -161,24 +160,23 @@ export default async function Page({ params }: { params: { slug: string } }) {
                 <h2 className="mb-1 "> Hosted by </h2>
                 <Separator />
                 <div className="mt-4 flex flex-row items-center justify-between">
-                  <div className="flex flex-row items-center text-muted-foreground">
-                    <Link
-                      href={`/user/${event.User.id}`}
-                      className="flex w-fit flex-row items-center text-muted-foreground"
-                    >
-                      <UserAvatar user={event.User} className="mr-2 h-8 w-8" />
-                      <p className="font-medium text-black dark:text-white">
-                        {event.User.name}
-                      </p>
-                    </Link>
-                  </div>
+                  <div className="flex w-full flex-row justify-between text-muted-foreground">
+                    {event.User.map((_user: User) => (
+                      <>
+                        <Link
+                          href={`/user/${_user.id}`}
+                          className="flex w-fit flex-row items-center text-muted-foreground"
+                        >
+                          <UserAvatar user={_user} className="mr-2 h-8 w-8" />
+                          <p className="font-medium text-black dark:text-white">
+                            {_user.name}
+                          </p>
+                        </Link>
 
-                  <Link href={[event.slug, "manage"].join("/")}>
-                    <Badge variant={"default"}>
-                      Manage
-                      <ArrowUpRight className="ml-2 h-4 w-4" />
-                    </Badge>
-                  </Link>
+                        {/* <EventManageLink event={event} user={_user} /> */}
+                      </>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

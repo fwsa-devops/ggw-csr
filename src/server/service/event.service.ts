@@ -8,9 +8,10 @@ import * as EventDAO from "./../dao/event.dao";
 import * as ParticipantService from "./participant.service";
 import { IResponse } from "../types";
 import { isException } from "../exceptions/exception";
-import { IEvent, type INewEvent } from "../model";
+import { type IEvent, type INewEvent } from "../model";
 import { CommonValidator } from "../validators/core-validator";
-import { type User, type Event } from "@prisma/client";
+import { type User, type User, type Event } from "@prisma/client";
+import { db } from "../db";
 import { db } from "../db";
 
 export async function findMany() {

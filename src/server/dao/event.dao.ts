@@ -7,7 +7,6 @@
 import logger from "@/lib/logger";
 import { db } from "../db";
 import { type IEvent, type INewEvent } from "../model";
-import { type IEvent, type INewEvent } from "../model";
 import { generateId } from "@/lib/utils";
 
 export async function findMany() {
@@ -43,7 +42,11 @@ export async function findMany() {
         timezone: true,
         Address: true,
         Location: true,
-        User: true,
+        EventHost: {
+          select: {
+            User: true,
+          },
+        },
         isParticipationOpen: true,
       },
       orderBy: {
@@ -135,7 +138,11 @@ export async function findBySlug(slug: string) {
         Location: true,
         Address: true,
         isParticipationOpen: true,
-        User: true,
+        EventHost: {
+          select: {
+            User: true,
+          },
+        },
       },
     });
 
@@ -143,7 +150,12 @@ export async function findBySlug(slug: string) {
       return null;
     }
 
-    return event satisfies IEvent;
+    const transformedEvent: IEvent = {
+      ...event,
+      User: event?.EventHost.map((host) => host.User),
+    };
+
+    return transformedEvent;
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     throw error;

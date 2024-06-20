@@ -28,6 +28,7 @@ import { type Metadata, type ResolvingMetadata } from "next";
 import Link from "next/link";
 import { stripHtml } from "string-strip-html";
 import { type IEvent } from "@/server/model";
+import EventManageLink from "./components/event-manage-link";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const response = await EventService.findBySlug(params.slug);
@@ -100,7 +101,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                         </p>
                       </Link>
 
-                      {/* <EventManageLink event={event} user={_user} /> */}
+                      <EventManageLink event={event} user={_user} />
                     </div>
                   </>
                 ))}
@@ -135,10 +136,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
               <div className="mb-6">
                 <h2 className="mb-1 "> Hosted by </h2>
                 <Separator />
-                <div className="mt-4 flex flex-row items-center justify-between">
-                  <div className="flex w-full flex-row justify-between text-muted-foreground">
-                    {event.User.map((_user: User) => (
-                      <>
+                <div className="">
+                  {event.User.map((_user: User) => (
+                    <>
+                      <div className="mt-4 flex w-full flex-row justify-between text-muted-foreground">
                         <Link
                           href={`/user/${_user.id}`}
                           className="flex w-fit flex-row items-center text-muted-foreground"
@@ -149,10 +150,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
                           </p>
                         </Link>
 
-                        {/* <EventManageLink event={event} user={_user} /> */}
-                      </>
-                    ))}
-                  </div>
+                        <EventManageLink event={event} user={_user} />
+                      </div>
+                    </>
+                  ))}
                 </div>
               </div>
             </div>
@@ -195,8 +196,8 @@ const EventEndedAlert = ({ event }: { event: IEvent }) => (
 const RegistrationClosedAlert = () => (
   <Alert className="mt-6 bg-muted">
     <MinusCircle className="h-4 w-4" />
-    <AlertTitle className="mb-2">Registration Closed</AlertTitle>
-    <AlertDescription className="mb-0 font-normal">
+    <AlertTitle className="mb-3 font-normal">Registration Closed</AlertTitle>
+    <AlertDescription className="mb-0 font-normal text-muted-foreground leading-6">
       This event is not currently accepting registrations. You may contact the
       event host for more information.
     </AlertDescription>
@@ -211,32 +212,18 @@ const isEventEnded = (event: IEvent) => {
   return DateTime.now() > DateTime.fromJSDate(event.endTime);
 };
 
-const isRegistrationOpen = (event: IEvent) => {
-  return event.isParticipationOpen && !isEventEnded(event);
-};
-
 const isRegistrationClosed = (event: IEvent) => {
   return !event.isParticipationOpen && !isEventEnded(event);
 };
 
 const EventStateManager = ({ event }: { event: IEvent }) => {
-
   return (
     <>
-      {
-        isEventEnded(event) && 
-        <EventEndedAlert event={event} />
-      }
+      {isEventEnded(event) && <EventEndedAlert event={event} />}
 
-      {
-        isRegistrationClosed(event) && 
-        <RegistrationClosedAlert />
-      }
+      {isRegistrationClosed(event) && <RegistrationClosedAlert />}
 
-      {
-        <EventRegisterComponent event={event} />
-      }
-
+      {<EventRegisterComponent event={event} />}
     </>
   );
 };

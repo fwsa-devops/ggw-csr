@@ -8,6 +8,8 @@ import { Separator } from "@/components/ui/separator";
 import UserAvatar from "@/components/ui/user-avatar";
 import ExportParticipants from "./participants/export-participants";
 import { type IEvent } from "@/server/model";
+import { db } from "@/server/db";
+import GuestScan from "./participants/guest-scan";
 
 type Props = {
   event: IEvent;
@@ -34,17 +36,27 @@ export default async function ManageParticipants(props: Props) {
 
   logger.info("participants", participants);
 
+  const checkedInList = await db.eventParticipant.findMany({
+    where: {
+      eventId: props.event.id,
+      checkedIn: true,
+    },
+  });
+
   return (
     <>
       <div className="mt-4 p-4">
         <div>
-          <h2 className="mb-4 text-2xl">At a Glance</h2>
+          <div className="flex flex-row justify-between">
+            <h2 className="mb-4 text-2xl">At a Glance</h2>
+            <GuestScan eventId={props.event.id} />
+          </div>
           <div>
             <p className="mb-2">
-              <span className="mr-2">{participants.length}</span>
-              Guests
+              <span className="mr-2">{checkedInList.length}</span>
+              Checked In
             </p>
-            <Progress value={participants.length > 0 ? percentage : 0} />
+            <Progress value={checkedInList.length / participants.length} />
           </div>
         </div>
 
@@ -52,7 +64,7 @@ export default async function ManageParticipants(props: Props) {
 
         <div>
           <div className="mb-4 flex flex-row items-end justify-between">
-            <h2 className="text-2xl"> Guest List </h2>
+            <h2 className="text-2xl">Guest List ({participants.length})</h2>
             <div>
               <ExportParticipants
                 event={props.event}

@@ -77,14 +77,14 @@ export default async function ManageLayout({
             value="participants"
             className="data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
           >
-            Guests
+            Registrations
           </TabsTrigger>
-          <TabsTrigger
+          {/* <TabsTrigger
             value="registration"
             className="data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
           >
             Registration
-          </TabsTrigger>
+          </TabsTrigger> */}
           <TabsTrigger
             value="settings"
             className="data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"

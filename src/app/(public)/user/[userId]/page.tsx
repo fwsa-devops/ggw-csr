@@ -6,13 +6,13 @@ import { Separator } from "@/components/ui/separator";
 import { CalendarDays, MapPin, MicVocal, Ticket } from "lucide-react";
 import { DateTime } from "luxon";
 import { signIn } from "next-auth/react";
-import Image from "next/image";
 import { db } from "@/server/db";
 import {
   userCreatedEvent,
   userRegisteredEvent,
 } from "@/server/service/profile.service";
 import UserEventItem from "@/components/shared/user-event-item";
+import UserAvatar from "@/components/ui/user-avatar";
 
 export default async function Page({ params }: { params: { userId: string } }) {
   const session = await db.user.findUnique({
@@ -46,34 +46,14 @@ export default async function Page({ params }: { params: { userId: string } }) {
   return (
     <>
       <div className="ga-8 mx-auto w-full max-w-2xl lg:gap-14">
-        <div className="mb-10 flex w-full flex-row justify-center gap-10">
-          {session.image && (
-            <Image
-              src={session?.image?.replace("s96-c", "s200-c") ?? ""}
-              alt={`Profile picture of ${session?.name}`}
-              width={200}
-              height={200}
-              priority={false}
-              className="h-28 w-28 rounded-full"
-            />
-          )}
-
-          {!session.image && (
-            <div className="h-28 w-28 rounded-full bg-gray-200">
-              <div className="flex h-full items-center justify-center">
-                <p className="text-2xl text-gray-500">
-                  {session.name?.split(" ").map((_a) => _a[0])}
-                </p>
-              </div>
-            </div>
-          )}
-
+        <div className="mb-10 flex w-full flex-col items-center justify-center gap-4 sm:flex-row md:gap-10">
+          <UserAvatar user={session} className="h-32 w-32 rounded-full" />
           <div className="">
-            <h1 className="mb-2 text-lg">{session?.name}</h1>
+            <h1 className="mb-2 text-lg">{session.name}</h1>
             <p className="my-2 flex flex-row items-center text-sm">
               <CalendarDays className="mr-2 h-4 w-4" />
               Joined{" "}
-              {DateTime.fromJSDate(session?.createdAt).toFormat("LLLL yyyy")}
+              {DateTime.fromJSDate(session.createdAt).toFormat("LLLL yyyy")}
             </p>
             <p className="my-2 flex flex-row items-center text-sm">
               <MicVocal className="mr-2 h-4 w-4" />
@@ -99,7 +79,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
         <Separator className="my-10 w-full" />
 
         <div className="mx-auto mt-10 max-w-[440px]">
-          <h2 className="text=lg mb-6 font-medium">Hosting</h2>
+          <h2 className="text=lg mb-6 font-medium">Upcoming Events</h2>
 
           {upcomingEvents?.map((event) => (
             <>

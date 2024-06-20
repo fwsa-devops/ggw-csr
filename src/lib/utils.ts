@@ -9,10 +9,9 @@ import { type ClassValue, clsx } from "clsx";
 import { DateTime } from "luxon";
 import { twMerge } from "tailwind-merge";
 import shortId from "short-unique-id";
-import { format } from "date-fns";
-import { type Address, type Location, type Event } from "@prisma/client";
-import logger from "./logger";
 import { type IEvent } from "@/server/model";
+import Cryptr from "cryptr";
+import { env } from "@/env";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -39,9 +38,7 @@ export function generateId() {
   return randomUUID();
 }
 
-export function createGoogleCalendarLink(
-  event: IEvent
-) {
+export function createGoogleCalendarLink(event: IEvent) {
   const extractContent = (s: string, space: boolean) => {
     return s.replace(/<[^>]*(>|$)| |‌|»|«|>/g, " ").replace(/ +/g, " ");
   };
@@ -67,8 +64,6 @@ Location: ${event.Address.street} ${event.Address.city}, ${event.Address.state},
 
   return url.toString();
 }
-
-
 
 export function extractAddress(
   addressComponents: google.maps.GeocoderAddressComponent[],
@@ -119,4 +114,17 @@ export function extractAddress(
   console.log("extractAddress", { address });
 
   return address;
+}
+
+const CRYPTR = new Cryptr(env.NEXT_PUBLIC_ENCRYPTION_KEY, {
+  pbkdf2Iterations: 1000,
+  saltLength: 10,
+});
+
+export function encrypt(text: string) {
+  return CRYPTR.encrypt(text);
+}
+
+export function decrypt(text: string) {
+  return CRYPTR.decrypt(text);
 }

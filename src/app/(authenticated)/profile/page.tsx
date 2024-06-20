@@ -3,17 +3,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Separator } from "@/components/ui/separator";
 import { SessionValidator } from "@/server/validators/session.validator";
-import { AtSign, CalendarDays, MapPin, MicVocal, Ticket } from "lucide-react";
+import { AtSign, CalendarDays, MicVocal, Ticket } from "lucide-react";
 import { DateTime } from "luxon";
 import { signIn } from "next-auth/react";
-import Image from "next/image";
 import UserAvatar from "@/components/ui/user-avatar";
-import Link from "next/link";
 import {
   userCreatedEvent,
   userRegisteredEvent,
 } from "@/server/service/profile.service";
-import UserEventItem from "@/components/shared/user-event-item";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import EventsHosted from "./components/events-hosted";
+import EventsRegistered from "./components/events-registered";
 
 export default async function Page() {
   const session = await SessionValidator.validateSession();
@@ -26,30 +26,11 @@ export default async function Page() {
   const { data: events } = await userCreatedEvent(session.id);
   const { data: registeredEvents } = await userRegisteredEvent(session.id);
 
-  const upcomingEvents = events?.filter(
-    (event) =>
-      DateTime.fromJSDate(event.startTime).setZone(event.timezone) >
-      DateTime.now(),
-  );
-
-  const pastEvents = events?.filter(
-    (event) =>
-      DateTime.fromJSDate(event.startTime).setZone(event.timezone) <
-      DateTime.now(),
-  );
-
   return (
     <>
       <div className="ga-8 mx-auto w-full max-w-2xl lg:gap-14">
-        <div className="mb-10 flex w-full flex-row justify-center gap-10">
-          <Image
-            src={session.image ?? ""}
-            alt="Profile Picture"
-            width={1000}
-            height={1000}
-            className="h-28 w-28 rounded-full"
-          />
-
+        <div className="mb-10 flex w-full flex-col items-center justify-center gap-4 sm:flex-row md:gap-10">
+          <UserAvatar user={session} className="h-32 w-32 rounded-full" />
           <div className="">
             <h1 className="mb-2 text-lg">{session.name}</h1>
             <p className="my-2 flex flex-row items-center text-sm">
@@ -83,68 +64,19 @@ export default async function Page() {
           </div>
         </div>
 
-        <Separator className="w-full" />
-
-        <div className="mx-auto mt-10 max-w-[440px]">
-          <h2 className="text=lg mb-6 font-medium">Hosting</h2>
-
-          {upcomingEvents?.map((event) => (
-            <>
-              <Link href={`/${event.slug}`}>
-                <div className="mb-6 flex flex-row gap-6">
-                  <div className="flex w-fit flex-row">
-                    <Image
-                      src={event.image}
-                      alt={event.title}
-                      width={1000}
-                      height={1000}
-                      className="h-28 w-28 rounded-lg object-cover object-center"
-                    />
-                  </div>
-                  <div className="text-xs">
-                    <h3 className="mb-3 text-base font-medium">
-                      {event.title}
-                    </h3>
-                    <div className="mb-2 flex flex-row items-center">
-                      <CalendarDays className="mr-2 h-4 w-4" />
-                      {DateTime.fromJSDate(event.startTime).toFormat(
-                        "LLLL d, yyyy, hh:mm a ZZZZ",
-                      )}
-                    </div>
-                    <div className="mb-2 flex flex-row items-center">
-                      <MapPin className="mr-2 h-4 w-4" />
-                      <span>
-                        {event.Address.street +
-                          ", " +
-                          event.Address.city +
-                          ", " +
-                          event.Address.state}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </>
-          ))}
-
-          {upcomingEvents?.length === 0 && (
-            <p className="text-sm font-light">No upcoming events</p>
-          )}
-        </div>
-
-        <div className="mx-auto mt-10 max-w-[440px]">
-          <h2 className="text=lg mb-6 font-medium">Past Events</h2>
-
-          {pastEvents?.map((event) => (
-            <>
-              <UserEventItem event={event as any} />
-            </>
-          ))}
-
-          {pastEvents?.length === 0 && (
-            <p className="text-sm font-light">No past events</p>
-          )}
-        </div>
+        <Tabs defaultValue="registered" className="w-full ">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="registered">Registered</TabsTrigger>
+            <TabsTrigger value="hosted">Hosted</TabsTrigger>
+          </TabsList>
+          <Separator className="w-full" />
+          <TabsContent value="registered">
+            <EventsRegistered />
+          </TabsContent>
+          <TabsContent value="hosted">
+            <EventsHosted />
+          </TabsContent>
+        </Tabs>
       </div>
     </>
   );

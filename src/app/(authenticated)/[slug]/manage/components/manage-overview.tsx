@@ -2,10 +2,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import EventImageDialog from "./overview/event-image-dialog";
 import { type IEvent } from "@/server/model";
-import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import EventAddHost from "./overview/event-add-host";
+import Link from "next/link";
+import UserAvatar from "@/components/ui/user-avatar";
 
 type Props = {
   event: IEvent;
@@ -54,6 +54,25 @@ export default function ManageOverview(props: Props) {
             <div>
               <EventAddHost eventSlug={props.event.slug} />
             </div>
+          </div>
+          <div>
+            {
+                props.event.User.map((host) => (
+                    <>
+                    <div className="mt-4 flex w-full flex-row justify-between text-muted-foreground">
+                      <Link
+                        href={`/user/${host.id}`}
+                        className="flex w-fit flex-row items-center text-muted-foreground"
+                      >
+                        <UserAvatar user={host} className="mr-2 h-8 w-8" />
+                        <p className="font-medium text-black dark:text-white">
+                          {host.name}
+                        </p>
+                      </Link>
+                    </div>
+                  </>
+                ))
+            }
           </div>
         </section>
       </div>

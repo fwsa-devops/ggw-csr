@@ -1,23 +1,13 @@
 "use client";
 
-import {
-  type Event,
-  type Address,
-  type Location,
-  type User,
-} from "@prisma/client";
 import Image from "next/image";
-import UserAvatar from "../ui/user-avatar";
 import { CalendarDays, MapPin } from "lucide-react";
 import { DateTime } from "luxon";
 import Link from "next/link";
+import { type IEvent } from "@/server/model";
 
 type UserEventItemProps = {
-  event: Event & {
-    Address: Address;
-    Location: Location;
-    User: User;
-  };
+  event: IEvent;
 };
 
 export default function UserEventItem(props: UserEventItemProps) {

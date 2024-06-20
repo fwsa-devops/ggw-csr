@@ -19,11 +19,9 @@ export async function findMany(eventId: string) {
     return IResponse.toJSON(200, "Participants found", response);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
-
     if (isException(error)) {
       return IResponse.toJSON(error.code, error.message, error.description);
     }
-
     return IResponse.toJSON(500, "Internal server error", null);
   }
 }
@@ -119,6 +117,30 @@ export async function exportParticipants(eventId: string) {
     CommonValidator.INPUT("Event Id", eventId);
     const response = await ParticipantDAO.findMany(eventId);
     return IResponse.toJSON(200, "Participants exported", response);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON(error.code, error.message, error.description);
+    }
+    return IResponse.toJSON(500, "Internal server error", null);
+  }
+}
+
+export async function checkInParticipant(eventId: string, userId: string) {
+  try {
+    logger.info("ParticipantsService.checkInParticipant");
+    CommonValidator.INPUT("User Id", userId);
+
+    const isRegistered = await ParticipantDAO.findOne(eventId, userId);
+    if (!isRegistered)
+      return IResponse.toJSON(400, "Participant not registered", null);
+
+    const isAlreadyCheckedIn = await ParticipantDAO.findOne(eventId, userId);
+    if (isAlreadyCheckedIn?.checkedIn)
+      return IResponse.toJSON(400, "Participant already checked in", null);
+
+    const response = await ParticipantDAO.checkIn(eventId, userId);
+    return IResponse.toJSON(200, "Participant checked in", response);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     if (isException(error)) {

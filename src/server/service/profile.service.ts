@@ -13,7 +13,7 @@ export async function userCreatedEvent(userId: string) {
 
     const whereQuery = {
       EventHost: {
-        every: {
+        some: {
           userId: userId,
         },
       },

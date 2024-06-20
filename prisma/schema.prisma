@@ -14,19 +14,11 @@ model User {
   email            String             @unique
   emailVerified    DateTime?
   image            String?
-  id               String             @id @default(cuid())
-  name             String?
-  email            String             @unique
-  emailVerified    DateTime?
-  image            String?
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   accounts         Account[]
   EventHost        EventHost[]
-  accounts         Account[]
-  EventHost        EventHost[]
   EventParticipant EventParticipant[]
-  sessions         Session[]
   sessions         Session[]
 }
 
@@ -67,33 +59,26 @@ model VerificationToken {
 }
 
 model Event {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  title       String
-  description String
-  startTime   DateTime
-  endTime     DateTime
-  timezone    String   @default("Asia/Calcutta")
-
-  isPublic            Boolean @default(true)
-  isActive            Boolean @default(true)
+  id                  String             @id @default(cuid())
+  title               String
+  description         String
+  startTime           DateTime
+  endTime             DateTime
+  timezone            String             @default("Asia/Calcutta")
+  addressId           String
+  locationId          String
+  isPublic            Boolean            @default(true)
+  maxParticipants     Int                @default(0)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
   image               String
-  maxParticipants     Int     @default(0)
-  isParticipationOpen Boolean @default(true)
-
-  addressId String
-  Address   Address @relation(fields: [addressId], references: [id])
-
-  locationId String
-  Location   Location @relation(fields: [locationId], references: [id])
-
-  createdById String
-  User        User   @relation(fields: [createdById], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  EventParticipant EventParticipant[]
+  slug                String             @unique
+  isActive            Boolean            @default(true)
+  isParticipationOpen Boolean            @default(true)
+  Address             Address            @relation(fields: [addressId], references: [id])
+  Location            Location           @relation(fields: [locationId], references: [id])
+  EventHost           EventHost[]
+  EventParticipant    EventParticipant[]
 }
 
 model Location {
@@ -118,8 +103,6 @@ model Address {
 model EventParticipant {
   eventId   String
   userId    String
-  checkedIn Boolean @default(false)
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   checkedIn Boolean  @default(false)

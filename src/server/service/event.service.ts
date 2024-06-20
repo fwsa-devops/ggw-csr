@@ -8,16 +8,14 @@ import * as EventDAO from "./../dao/event.dao";
 import * as ParticipantService from "./participant.service";
 import { IResponse } from "../types";
 import { isException } from "../exceptions/exception";
-import { type IEvent, type INewEvent } from "../model";
+import { type INewEvent } from "../model";
 import { CommonValidator } from "../validators/core-validator";
-import { type User, type User, type Event } from "@prisma/client";
-import { db } from "../db";
+import { type User, type Event } from "@prisma/client";
 import { db } from "../db";
 
 export async function findMany() {
   try {
     logger.info("EventService.findMany");
-    // await SessionValidator.validateSession();
     const response = await EventDAO.findMany();
 
     return IResponse.toJSON(200, "Events found", response);

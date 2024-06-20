@@ -22,15 +22,12 @@ import { createGoogleCalendarLink } from "@/lib/utils";
 import { DateTime } from "luxon";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { ArrowUpRight, CalendarCheck, MinusCircle } from "lucide-react";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { ArrowUpRight, CalendarCheck, MinusCircle } from "lucide-react";
 import { getAllEventSlugs } from "@/server/service/explore.service";
 import EventParticipants from "./components/event-participants";
 import { type Metadata, type ResolvingMetadata } from "next";
 import Link from "next/link";
-
 import { stripHtml } from "string-strip-html";
-import { IEvent } from "@/server/model";
+import { type IEvent } from "@/server/model";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const response = await EventService.findBySlug(params.slug);
@@ -54,6 +51,19 @@ export default async function Page({ params }: { params: { slug: string } }) {
       User: User;
     }[];
   }
+
+  const hasEventEnded = () => {
+    return (
+      DateTime.fromJSDate(event.endTime).toMillis() < DateTime.now().toMillis()
+    );
+  };
+
+  const hasEventStarted = () => {
+    return (
+      DateTime.fromJSDate(event.startTime).toMillis() <
+      DateTime.now().toMillis()
+    );
+  };
 
   const url = createGoogleCalendarLink(event);
 
@@ -101,9 +111,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
         </div>
 
         <div className="col-span-3">
-          <h1 className="mb-8 mt-4 text-[2.5rem] font-extrabold leading-tight md:text-[2.75rem] lg:leading-snug">
-            {event.title}
-          </h1>
+          <div className="mb-8">
+            <h1 className="mt-4 text-[2.5rem] font-extrabold leading-tight md:text-[2.75rem] lg:leading-snug">
+              {event.title}
+            </h1>
+          </div>
 
           <div className="mb-10">
             <EventDate
@@ -117,43 +129,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
               address={event.Address}
             />
 
-            {!event.isParticipationOpen && (
-              <Alert className="mt-6 bg-gray-50">
-                <MinusCircle className="h-4 w-4" />
-                <AlertTitle className="mb-2">Registration Closed</AlertTitle>
-                <AlertDescription className="mb-0 font-normal">
-                  This event is not currently accepting registrations. You may
-                  contact the event host for more information.
-                </AlertDescription>
-              </Alert>
-            )}
-
-            {event.isParticipationOpen &&
-              DateTime.fromJSDate(event.startTime).toMillis() >=
-                DateTime.now().toMillis() && (
-                <EventRegister eventId={event.id} />
-              )}
-
-            {event.isParticipationOpen &&
-              DateTime.fromJSDate(event.startTime).toMillis() <
-                DateTime.now().toMillis() && (
-                // Event has already ended
-                <>
-                  <div className="mt-6">
-                    {/* <h2 className="mb-1"> Event </h2>
-                  <Separator /> */}
-
-                    <Alert className="mt-6 bg-gray-50">
-                      <CalendarCheck className="h-4 w-4" />
-                      <AlertTitle className="mb-2">Event has ended</AlertTitle>
-                      <AlertDescription className="mb-0 font-normal">
-                        This event ended{" "}
-                        {DateTime.fromJSDate(event.endTime).toRelative()}.
-                      </AlertDescription>
-                    </Alert>
-                  </div>
-                </>
-              )}
+            <EventStateManager event={event} />
 
             <div className="mt-6 block lg:hidden">
               <div className="mb-6">
@@ -205,6 +181,65 @@ export default async function Page({ params }: { params: { slug: string } }) {
     </>
   );
 }
+
+const EventEndedAlert = ({ event }: { event: IEvent }) => (
+  <Alert className="mt-6">
+    <CalendarCheck className="h-4 w-4" />
+    <AlertTitle className="mb-2">Event has ended</AlertTitle>
+    <AlertDescription className="mb-0 font-normal">
+      This event ended {DateTime.fromJSDate(event.endTime).toRelative()}.
+    </AlertDescription>
+  </Alert>
+);
+
+const RegistrationClosedAlert = () => (
+  <Alert className="mt-6 bg-muted">
+    <MinusCircle className="h-4 w-4" />
+    <AlertTitle className="mb-2">Registration Closed</AlertTitle>
+    <AlertDescription className="mb-0 font-normal">
+      This event is not currently accepting registrations. You may contact the
+      event host for more information.
+    </AlertDescription>
+  </Alert>
+);
+
+const EventRegisterComponent = ({ event }: { event: IEvent }) => (
+  <EventRegister event={event} />
+);
+
+const isEventEnded = (event: IEvent) => {
+  return DateTime.now() > DateTime.fromJSDate(event.endTime);
+};
+
+const isRegistrationOpen = (event: IEvent) => {
+  return event.isParticipationOpen && !isEventEnded(event);
+};
+
+const isRegistrationClosed = (event: IEvent) => {
+  return !event.isParticipationOpen && !isEventEnded(event);
+};
+
+const EventStateManager = ({ event }: { event: IEvent }) => {
+
+  return (
+    <>
+      {
+        isEventEnded(event) && 
+        <EventEndedAlert event={event} />
+      }
+
+      {
+        isRegistrationClosed(event) && 
+        <RegistrationClosedAlert />
+      }
+
+      {
+        <EventRegisterComponent event={event} />
+      }
+
+    </>
+  );
+};
 
 export async function generateStaticParams() {
   const response = await getAllEventSlugs();

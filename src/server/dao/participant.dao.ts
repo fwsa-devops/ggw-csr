@@ -17,6 +17,7 @@ export async function findMany(eventId: string) {
         eventId: true,
         userId: true,
         User: true,
+        checkedIn: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -44,7 +45,8 @@ export async function findOne(eventId: string, userId: string) {
         eventId: true,
         userId: true,
         User: true,
-      }
+        checkedIn: true,
+      },
     });
 
     return participant;
@@ -80,6 +82,28 @@ export async function remove(eventId: string, userId: string) {
           eventId: eventId,
           userId: userId,
         },
+      },
+    });
+
+    return participant;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function checkIn(eventId: string, userId: string) {
+  try {
+    logger.info("ParticipantsDAO.checkIn");
+    const participant = await db.eventParticipant.update({
+      where: {
+        eventId_userId: {
+          eventId: eventId,
+          userId: userId,
+        },
+      },
+      data: {
+        checkedIn: true,
       },
     });
 

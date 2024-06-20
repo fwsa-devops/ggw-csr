@@ -19,7 +19,8 @@ export default function EventManageLink(props: Props) {
 
   const { event } = props;
 
-  if (event.User.email !== data.user.email) return null;
+  const isHost = event.User.find((host) => host.id === data.user?.id);
+  if (isHost) return null;
 
   return (
     <>

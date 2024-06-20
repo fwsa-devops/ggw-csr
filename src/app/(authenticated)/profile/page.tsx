@@ -32,8 +32,8 @@ export default async function Page() {
   return (
     <>
       <div className="ga-8 mx-auto w-full max-w-2xl lg:gap-14">
-        <div className="mb-10 flex w-full flex-row justify-center gap-10">
-          <UserAvatar user={session} className="h-28 w-28 rounded-full" />
+        <div className="mb-10 flex w-full flex-col sm:flex-row justify-center items-center gap-4 md:gap-10">
+          <UserAvatar user={session} className="h-32 w-32 rounded-full" />
           <div className="">
             <h1 className="mb-2 text-lg">{session.name}</h1>
             <p className="my-2 flex flex-row items-center text-sm">

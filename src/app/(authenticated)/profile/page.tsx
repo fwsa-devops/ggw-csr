@@ -3,17 +3,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Separator } from "@/components/ui/separator";
 import { SessionValidator } from "@/server/validators/session.validator";
-import { AtSign, CalendarDays, MapPin, MicVocal, Ticket } from "lucide-react";
+import { AtSign, CalendarDays, MicVocal, Ticket } from "lucide-react";
 import { DateTime } from "luxon";
 import { signIn } from "next-auth/react";
-import Image from "next/image";
 import UserAvatar from "@/components/ui/user-avatar";
-import Link from "next/link";
 import {
   userCreatedEvent,
   userRegisteredEvent,
 } from "@/server/service/profile.service";
-import UserEventItem from "@/components/shared/user-event-item";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EventsHosted from "./components/events-hosted";
 import EventsRegistered from "./components/events-registered";
@@ -32,7 +29,7 @@ export default async function Page() {
   return (
     <>
       <div className="ga-8 mx-auto w-full max-w-2xl lg:gap-14">
-        <div className="mb-10 flex w-full flex-col sm:flex-row justify-center items-center gap-4 md:gap-10">
+        <div className="mb-10 flex w-full flex-col items-center justify-center gap-4 sm:flex-row md:gap-10">
           <UserAvatar user={session} className="h-32 w-32 rounded-full" />
           <div className="">
             <h1 className="mb-2 text-lg">{session.name}</h1>

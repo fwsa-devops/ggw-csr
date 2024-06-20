@@ -17,20 +17,26 @@ export default function CustomProvider({
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <>
       <SessionProvider>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
           <EdgeStoreProvider>{children}</EdgeStoreProvider>
           <ProgressBar
             height="2px"
-            color="#000"
-            options={{ showSpinner: false, minimum: 0.1, easing: "ease", speed: 200}}
+            color={"#7f7f7f"}
+            options={{
+              showSpinner: false,
+              minimum: 0.1,
+              easing: "ease",
+              speed: 200,
+            }}
           />
         </ThemeProvider>
       </SessionProvider>

@@ -69,6 +69,24 @@ export async function create(formDate: INewEvent) {
   }
 }
 
+export async function findById(id: string) {
+  try {
+    logger.info("EventService.findBySlug");
+    CommonValidator.INPUT("ID", id);
+    const response = await EventDAO.findOne(id);
+    if (!response) return IResponse.toJSON<null>(404, "Event not found", null);
+    return IResponse.toJSON(200, "Events found", response);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
+
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}
+
 export async function findBySlug(slug: string) {
   try {
     logger.info("EventService.findBySlug");

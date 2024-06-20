@@ -10,6 +10,7 @@ import { CommonValidator } from "../validators/core-validator";
 import { IResponse } from "../types";
 import { isException } from "../exceptions/exception";
 import { SessionValidator } from "../validators/session.validator";
+import { findById } from "./event.service";
 
 export async function findMany(eventId: string) {
   try {
@@ -49,6 +50,16 @@ export async function create(eventId: string, userId: string) {
     logger.info("ParticipantsService.create");
     CommonValidator.INPUT("Event Id", eventId);
     CommonValidator.INPUT("User Id", userId);
+    const eventResponse = await findById(eventId);
+    if (!eventResponse.data) {
+      return IResponse.toJSON(404, "Event not found", null);
+    }
+
+    const isParticipationOpen = eventResponse.data.isParticipationOpen;
+    if (!isParticipationOpen) {
+      return IResponse.toJSON(400, "Participation is closed", null);
+    }
+
     const isAlreadyParticipant = await isParticipant(eventId);
 
     if (isAlreadyParticipant.data) {

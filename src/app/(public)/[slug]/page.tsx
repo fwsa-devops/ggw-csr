@@ -297,4 +297,5 @@ export async function generateMetadata(
   return meta;
 }
 
-export const revalidate = 60 * 30;
+// 10 minutes
+export const revalidate = 60 * 10;

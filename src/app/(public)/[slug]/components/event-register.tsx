@@ -134,8 +134,8 @@ export default function EventRegister(props: Props) {
           )}
 
           {isParticipant && (
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <EventPass value={JSON.stringify(data.user.email)} />
+            <div className="grid grid-cols-1 gap-3">
+              {/* <EventPass value={JSON.stringify(data.user.email)} /> */}
               <EventCancelRegistration
                 status={updatingStatus}
                 handleChange={handleChange}

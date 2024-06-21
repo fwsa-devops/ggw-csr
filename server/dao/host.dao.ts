@@ -1,15 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-"use server";
-
 import logger from "@/lib/logger";
 import { db } from "../db";
 
 export async function findMany(eventId: string) {
   try {
-    logger.info("ParticipantsDAO.findMany");
-    const participants = await db.eventParticipant.findMany({
+    logger.info("HostDAO.findMany");
+    const hosts = await db.eventHost.findMany({
       where: {
         eventId: eventId,
       },
@@ -17,14 +12,13 @@ export async function findMany(eventId: string) {
         eventId: true,
         userId: true,
         User: true,
-        checkedIn: true,
       },
       orderBy: {
         createdAt: "asc",
       },
     });
 
-    return participants;
+    return hosts;
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     throw error;
@@ -33,10 +27,10 @@ export async function findMany(eventId: string) {
 
 export async function findOne(eventId: string, userId: string) {
   try {
-    logger.info("ParticipantsDAO.findOne");
-    const participant = await db.eventParticipant.findUnique({
+    logger.info("HostDAO.findOne");
+    const host = await db.eventHost.findUnique({
       where: {
-        eventId_userId: {
+        hostId: {
           eventId: eventId,
           userId: userId,
         },
@@ -45,11 +39,10 @@ export async function findOne(eventId: string, userId: string) {
         eventId: true,
         userId: true,
         User: true,
-        checkedIn: true,
       },
     });
 
-    return participant;
+    return host;
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     throw error;
@@ -58,15 +51,14 @@ export async function findOne(eventId: string, userId: string) {
 
 export async function create(eventId: string, userId: string) {
   try {
-    logger.info("ParticipantsDAO.create");
-    const participant = await db.eventParticipant.create({
+    logger.info("EventDAO.addHost");
+    const response = await db.eventHost.create({
       data: {
         eventId: eventId,
         userId: userId,
       },
     });
-
-    return participant;
+    return response;
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     throw error;
@@ -75,41 +67,20 @@ export async function create(eventId: string, userId: string) {
 
 export async function remove(eventId: string, userId: string) {
   try {
-    logger.info("ParticipantsDAO.remove");
-    const participant = await db.eventParticipant.delete({
+    logger.info("EventDAO.removeHost");
+    const response = await db.eventHost.delete({
       where: {
-        eventId_userId: {
+        hostId: {
           eventId: eventId,
           userId: userId,
         },
       },
     });
-
-    return participant;
+    return response;
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     throw error;
   }
 }
 
-export async function checkIn(eventId: string, userId: string) {
-  try {
-    logger.info("ParticipantsDAO.checkIn");
-    const participant = await db.eventParticipant.update({
-      where: {
-        eventId_userId: {
-          eventId: eventId,
-          userId: userId,
-        },
-      },
-      data: {
-        checkedIn: true,
-      },
-    });
-
-    return participant;
-  } catch (error) {
-    logger.error(JSON.stringify(error, null, 2));
-    throw error;
-  }
-}
+// TODO: Implement update function in future

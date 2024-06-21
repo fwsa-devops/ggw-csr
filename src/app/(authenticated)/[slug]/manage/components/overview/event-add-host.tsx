@@ -24,7 +24,6 @@ import logger from "@/lib/logger";
 import { addHost } from "@/server/service/event.service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon, UserPlus2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -38,7 +37,6 @@ type Props = {
 };
 
 export default function EventAddHost(props: Props) {
-  const router = useRouter();
 
   const form = useForm({
     defaultValues: {

@@ -24,7 +24,7 @@ import { findByEmail } from "@/server/service/user.service";
 import { decrypt } from "@/lib/utils";
 import { StatusCodes } from "http-status-codes";
 import UserAvatar from "@/components/ui/user-avatar";
-import { checkInParticipant } from "@/server/service/participant.service";
+import { participantCheckIn } from "@/server/service/participant.service";
 import { useRouter } from "next/navigation";
 
 type Props = {
@@ -61,7 +61,7 @@ export default function GuestScan(props: Props) {
   const onSubmit = async () => {
     try {
       logger.debug(participants);
-      const response = await checkInParticipant(props.eventId, participants!.id);
+      const response = await participantCheckIn(props.eventId, participants!.id);
 
       if (response.status !== StatusCodes.OK) {
         toast.error(response.message || "Failed to check in");

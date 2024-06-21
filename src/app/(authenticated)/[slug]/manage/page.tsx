@@ -13,7 +13,7 @@ import PageNotFound from "@/components/shared/page/not-found";
 import PageNotAuthorized from "@/components/shared/page/not-authorized";
 import PageForbidden from "@/components/shared/page/forbidden";
 import PageInternalServerError from "@/components/shared/page/internal-server-error";
-import ManageRegistration from "./components/manage-registration";
+
 
 export default async function ManageLayout({
   params,
@@ -100,9 +100,9 @@ export default async function ManageLayout({
         <TabsContent value="participants">
           <ManageParticipants event={eventResponse.data} />
         </TabsContent>
-        <TabsContent value="registration">
+        {/* <TabsContent value="registration">
           <ManageRegistration event={eventResponse.data} />
-        </TabsContent>
+        </TabsContent> */}
       </div>
     </Tabs>
   );

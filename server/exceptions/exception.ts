@@ -21,13 +21,22 @@ abstract class CoreException extends Error implements IException {
 }
 
 export enum ExceptionMessages {
+  INVALID_ID = "Invalid id",
   INVALID_INPUT = "Invalid input",
   INVALID_STRING = "Invalid string",
   INVALID_NUMBER = "Invalid number",
   INVALID_EMAIL = "Invalid email address",
   INVALID_DATE = "Invalid date",
+
+  // AUTH EXCEPTIONS
+  UNAUTHORIZED = "Unauthorized",
+
+  // USER EXCEPTIONS
   NOT_AUTHENTICATED = "User not authenticated",
   USER_NOT_FOUND = "User not found",
+
+  // EVENT EXCEPTIONS
+  EVENT_NOT_FOUND = "Event not found",
 }
 
 export class Exception extends CoreException {
@@ -40,6 +49,14 @@ export class Exception extends CoreException {
   ) {
     super(message, description, code);
     Object.setPrototypeOf(this, new.target.prototype);
+  }
+
+  public static INVALID_ID(error: string) {
+    return new Exception(
+      ExceptionMessages.INVALID_ID,
+      error,
+      StatusCodes.BAD_REQUEST,
+    );
   }
 
   public static INVALID_INPUT(error: string) {
@@ -82,6 +99,14 @@ export class Exception extends CoreException {
     );
   }
 
+  public static UNAUTHORIZED(error: string) {
+    return new Exception(
+      ExceptionMessages.UNAUTHORIZED,
+      error,
+      StatusCodes.UNAUTHORIZED,
+    );
+  }
+
   public static NOT_AUTHENTICATED(error: string) {
     return new Exception(
       ExceptionMessages.NOT_AUTHENTICATED,
@@ -93,6 +118,14 @@ export class Exception extends CoreException {
   public static USER_NOT_FOUND(error: string) {
     return new Exception(
       ExceptionMessages.USER_NOT_FOUND,
+      error,
+      StatusCodes.NOT_FOUND,
+    );
+  }
+
+  public static EVENT_NOT_FOUND(error: string) {
+    return new Exception(
+      ExceptionMessages.EVENT_NOT_FOUND,
       error,
       StatusCodes.NOT_FOUND,
     );

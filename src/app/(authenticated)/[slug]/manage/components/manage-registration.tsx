@@ -1,11 +1,10 @@
-import { type IEvent } from "@/server/model";
 import RegistrationStatus from "./registration/registration-status";
 
-type Props = {
-  event: IEvent;
-};
+// type Props = {
+//   event: IEvent;
+// };
 
-export default async function ManageRegistration(props: Props) {
+export default async function ManageRegistration() {
   return (
     <>
       <div className="mt-6">

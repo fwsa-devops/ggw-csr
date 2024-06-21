@@ -88,6 +88,8 @@ export async function findOne(id: string) {
         timezone: true,
         Address: true,
         Location: true,
+        isActive: true,
+        slug: true,
         EventHost: {
           select: {
             User: true,
@@ -138,6 +140,7 @@ export async function findBySlug(slug: string) {
         Location: true,
         Address: true,
         isParticipationOpen: true,
+        isActive: true,
         EventHost: {
           select: {
             User: true,
@@ -201,22 +204,6 @@ export async function create(email: string, data: INewEvent) {
           },
         },
         maxParticipants: data.maxParticipants,
-      },
-    });
-    return response;
-  } catch (error) {
-    logger.error(JSON.stringify(error, null, 2));
-    throw error;
-  }
-}
-
-export async function addHost(eventId: string, userId: string) {
-  try {
-    logger.info("EventDAO.addHost");
-    const response = await db.eventHost.create({
-      data: {
-        eventId: eventId,
-        userId: userId,
       },
     });
     return response;

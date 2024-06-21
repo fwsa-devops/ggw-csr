@@ -2,16 +2,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use server";
 
-import logger from "./../../lib/logger";
 import { SessionValidator } from "./../validators/session.validator";
-import * as EventDAO from "./../dao/event.dao";
+import * as UserService from "./user.service";
+import * as UserDAO from "@/server/dao/user.dao";
 import * as ParticipantService from "./participant.service";
+import * as EventDAO from "./../dao/event.dao";
+import * as HostDAO from "@/server/dao/host.dao";
 import { IResponse } from "../types";
 import { isException } from "../exceptions/exception";
 import { type INewEvent } from "../model";
+import { type Event } from "@prisma/client";
+import logger from "@/lib/logger";
+import { EventValidator } from "../validators/event.validator";
 import { CommonValidator } from "../validators/core-validator";
-import { type User, type Event } from "@prisma/client";
-import { db } from "../db";
+import { UserValidator } from "../validators/user.validator";
 
 export async function findMany() {
   try {
@@ -72,7 +76,7 @@ export async function create(formDate: INewEvent) {
 export async function findById(id: string) {
   try {
     logger.info("EventService.findBySlug");
-    CommonValidator.INPUT("ID", id);
+    await EventValidator.isValidId(id);
     const response = await EventDAO.findOne(id);
     if (!response) return IResponse.toJSON<null>(404, "Event not found", null);
     return IResponse.toJSON(200, "Events found", response);
@@ -90,7 +94,7 @@ export async function findById(id: string) {
 export async function findBySlug(slug: string) {
   try {
     logger.info("EventService.findBySlug");
-    CommonValidator.INPUT("Slug", slug);
+    await EventValidator.isValidSlug(slug);
     const response = await EventDAO.findBySlug(slug);
     if (!response) return IResponse.toJSON<null>(404, "Event not found", null);
     return IResponse.toJSON(200, "Events found", response);
@@ -108,7 +112,7 @@ export async function findBySlug(slug: string) {
 export async function eventDetails(slug: string) {
   try {
     logger.info("EventService.eventDetails");
-    CommonValidator.INPUT("Event Slug", slug);
+    await EventValidator.isValidSlug(slug);
 
     const { data: event } = await findBySlug(slug);
     if (!event) {
@@ -143,30 +147,17 @@ export async function hasAccess(slug: string) {
   try {
     logger.info("EventService.hasAccess");
     const session = await SessionValidator.validateSession();
-
-    if (!session) {
-      return IResponse.toJSON<null>(401, "User not authenticated", null);
-    }
-
-    const { data: event } = await findBySlug(slug);
-
-    if (!event) {
-      return IResponse.toJSON<null>(404, "Event not found", null);
-    }
-
-    const isHost = event.User.some((user: User) => user.id === session.id);
+    await EventValidator.isValidSlug(slug);
+    const isHost = await EventValidator.hasAccess(slug, session.id);
     if (!isHost) {
       return IResponse.toJSON<null>(403, "User does not have access", null);
     }
-
     return IResponse.toJSON(200, "User has access", null);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
-
     if (isException(error)) {
       return IResponse.toJSON<null>(error.code, error.message, null);
     }
-
     return IResponse.toJSON<null>(500, "Internal server error", null);
   }
 }
@@ -174,38 +165,37 @@ export async function hasAccess(slug: string) {
 export async function addHost(eventId: string, newHostEmail: string) {
   try {
     logger.info("EventService.addHost");
-    const session = await SessionValidator.validateSession();
-    if (!session)
-      return IResponse.toJSON<null>(401, "User not authenticated", null);
+    await SessionValidator.validateSession();
+    const event = await EventValidator.isValidSlug(eventId);
+    const user = await UserValidator.isValidEmail(newHostEmail);
 
-    const { data: event } = await findBySlug(eventId);
-    if (!event) return IResponse.toJSON<null>(404, "Event not found", null);
-
-    const newUser = await db.user.findUnique({
-      where: {
-        email: newHostEmail,
-      },
-    });
-
-    if (!newUser) return IResponse.toJSON<null>(404, "User not found", null);
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    const isHost = await db.eventHost.findUnique({
-      where: {
-        hostId: {
-          eventId: event.id,
-          userId: newUser.id,
-        },
-      },
-    });
-
+    const isHost = await EventValidator.hasAccess(eventId, newHostEmail);
     if (isHost)
       return IResponse.toJSON<null>(403, "User is already a host", null);
 
-    logger.debug("addHost", { eventId, newHostEmail, newUser });
-
-    await EventDAO.addHost(event.id, newUser.id);
+    await HostDAO.create(event.id, user.id);
     return IResponse.toJSON(200, "Host added", null);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}
+
+export async function removeHost(eventId: string, hostId: string) {
+  try {
+    logger.info("EventService.removeHost");
+    await SessionValidator.validateSession();
+    const event = await EventValidator.isValidSlug(eventId);
+    const user = await UserValidator.isValidId(hostId);
+
+    const isHost = await EventValidator.hasAccess(eventId, hostId);
+    if (!isHost) return IResponse.toJSON<null>(403, "User is not a host", null);
+
+    await HostDAO.remove(event.id, user.id);
+    return IResponse.toJSON(200, "Host removed", null);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     if (isException(error)) {

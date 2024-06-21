@@ -1,8 +1,7 @@
-import UserEventItem from "@/components/shared/user-event-item";
 import { type IEvent } from "@/server/model";
 import { userRegisteredEvent } from "@/server/service/profile.service";
 import { SessionValidator } from "@/server/validators/session.validator";
-import { CalendarDays, MapPin, Ticket } from "lucide-react";
+import { CalendarDays, MapPin } from "lucide-react";
 import { DateTime } from "luxon";
 import { signIn } from "next-auth/react";
 import Image from "next/image";

@@ -2,6 +2,22 @@ import logger from "@/lib/logger";
 import { Exception } from "../exceptions/exception";
 
 export class CommonValidator {
+  public static ID(_value: string | null | undefined): void {
+    if (!_value) {
+      throw Exception.INVALID_ID("Invalid id");
+    }
+    const value = _value.trim();
+    if (!value || value.length === 0) {
+      throw Exception.INVALID_ID("Invalid id");
+    }
+
+    // CUID validation
+    const pattern = /^[cC][a-zA-Z0-9]{24}$/;
+    if (!pattern.test(value)) {
+      throw Exception.INVALID_ID("Invalid id");
+    }
+  }
+
   public static STRING(_value: string | null | undefined): void {
     if (!_value) {
       throw Exception.INVALID_STRING("Invalid string");

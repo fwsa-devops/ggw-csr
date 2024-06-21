@@ -29,7 +29,7 @@
       "@/*": ["./src/*"],
       "@/lib/*": ["./src/lib/*"],
       "@/components/*": ["./src/components/*"],
-      "@/server/*": ["./src/server/*"],
+      "@/server/*": ["./server/*"],
     }
   },
   "include": [

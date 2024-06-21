@@ -11,7 +11,6 @@ import logger from "@/lib/logger";
 import React, { useState } from "react";
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -100,11 +99,11 @@ function extractAddress(
   return address;
 }
 
-type EventFormLocationProps = {
-  // onChange: (data: Partial<NewEventSchema>) => void;
-};
+// type EventFormLocationProps = {
+//   // onChange: (data: Partial<NewEventSchema>) => void;
+// };
 
-export default function EventFormLocation(props: EventFormLocationProps) {
+export default function EventFormLocation() {
   const form = useFormContext();
 
   const {
@@ -115,7 +114,7 @@ export default function EventFormLocation(props: EventFormLocationProps) {
     clearSuggestions,
   } = usePlacesAutocomplete();
 
-  const [coordinates, setCoordinates] = useState<{
+  const [, setCoordinates] = useState<{
     lat: number;
     lng: number;
   } | null>(null);

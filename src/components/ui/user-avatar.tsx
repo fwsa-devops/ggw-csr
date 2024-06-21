@@ -2,7 +2,6 @@
 import { type User } from "@prisma/client";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 
 export default function UserAvatar({
   user,

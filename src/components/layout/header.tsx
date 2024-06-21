@@ -6,11 +6,9 @@ import Link from "next/link";
 import { DateTime } from "luxon";
 import {
   Compass,
-  Globe,
   LogOut,
   Menu,
   Moon,
-  Package2,
   Sun,
   User2,
 } from "lucide-react";

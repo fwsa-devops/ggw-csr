@@ -25,8 +25,8 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import wait from "wait";
 import { useRouter } from "next/navigation";
-import EventPass from "./event-pass";
 import { type IEvent } from "@/server/model";
+import logger from "@/lib/logger";
 
 const promptMessages = [
   "Did you put our feelings into consideration?",
@@ -55,11 +55,12 @@ export default function EventRegister(props: Props) {
     if (data?.user && !fetched) {
       void isEventParticipant(props.event.id)
         .then(async (res) => {
-          console.log(res);
+          logger.debug("isEventParticipant", res);
           setIsParticipant(!!res.data);
           setFetched(true);
         })
         .catch((err) => {
+          logger.error("isEventParticipant", err);
           setFetched(true);
         });
     }

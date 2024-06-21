@@ -3,16 +3,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Separator } from "@/components/ui/separator";
-import { CalendarDays, MapPin, MicVocal, Ticket } from "lucide-react";
+import { CalendarDays, MicVocal, Ticket } from "lucide-react";
 import { DateTime } from "luxon";
 import { signIn } from "next-auth/react";
 import { db } from "@/server/db";
+import UserEventItem from "@/components/shared/user-event-item";
+import UserAvatar from "@/components/ui/user-avatar";
 import {
   userCreatedEvent,
   userRegisteredEvent,
 } from "@/server/service/profile.service";
-import UserEventItem from "@/components/shared/user-event-item";
-import UserAvatar from "@/components/ui/user-avatar";
+import { type IEvent } from "@/server/model";
 
 export default async function Page({ params }: { params: { userId: string } }) {
   const session = await db.user.findUnique({
@@ -83,7 +84,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
 
           {upcomingEvents?.map((event) => (
             <>
-              <UserEventItem event={event as any} />
+              <UserEventItem event={event as unknown as IEvent} />
             </>
           ))}
 
@@ -99,7 +100,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
 
           {pastEvents?.map((event) => (
             <>
-              <UserEventItem event={event as any} />
+              <UserEventItem event={event as unknown as IEvent} />
             </>
           ))}
 

@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/form";
 
 import { useForm } from "react-hook-form";
-import { type Event } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

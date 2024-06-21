@@ -39,7 +39,7 @@ export function generateId() {
 }
 
 export function createGoogleCalendarLink(event: IEvent) {
-  const extractContent = (s: string, space: boolean) => {
+  const extractContent = (s: string) => {
     return s.replace(/<[^>]*(>|$)| |‌|»|«|>/g, " ").replace(/ +/g, " ");
   };
 
@@ -50,7 +50,7 @@ export function createGoogleCalendarLink(event: IEvent) {
     .setZone(event.timezone)
     .toFormat("yyyyMMdd'T'HHmmss");
 
-  const description = `${extractContent(event.description, true)}
+  const description = `${extractContent(event.description)}
   
 Location: ${event.Address.street} ${event.Address.city}, ${event.Address.state}, ${event.Address.country} ${event.Address.zipcode}
   `;

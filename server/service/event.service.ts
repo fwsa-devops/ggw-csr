@@ -147,8 +147,8 @@ export async function hasAccess(slug: string) {
   try {
     logger.info("EventService.hasAccess");
     const session = await SessionValidator.validateSession();
-    await EventValidator.isValidSlug(slug);
-    const isHost = await EventValidator.hasAccess(slug, session.id);
+    const event = await EventValidator.isValidSlug(slug);
+    const isHost = await EventValidator.hasAccess(event.id, session.id);
     if (!isHost) {
       return IResponse.toJSON<null>(403, "User does not have access", null);
     }

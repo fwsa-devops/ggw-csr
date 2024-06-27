@@ -47,8 +47,8 @@ export async function create(formDate: INewEvent) {
     CommonValidator.INPUT("Image", formDate.image);
 
     CommonValidator.INPUT("Location", formDate.location.address);
-    CommonValidator.INPUT("Latitude", formDate.location.latitude);
-    CommonValidator.INPUT("Longitude", formDate.location.longitude);
+    // CommonValidator.INPUT("Latitude", formDate.location.latitude);
+    // CommonValidator.INPUT("Longitude", formDate.location.longitude);
 
     CommonValidator.INPUT("Address", formDate.address.street);
     CommonValidator.INPUT("City", formDate.address.city);

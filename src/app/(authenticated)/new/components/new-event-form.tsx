@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, UseFormReturn, useForm } from "react-hook-form";
 import { type NewEventSchema, newEventSchema } from "./new-event-schema";
 import React, { type ChangeEvent } from "react";
 import NextImage from "next/image";
@@ -63,7 +63,8 @@ import { DevTool } from "@hookform/devtools";
 import { type INewEvent } from "@/server/model";
 import * as EventService from "@/server/service/event.service";
 import { toast } from "sonner";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { StatusCodes } from "http-status-codes";
 
 function getGMTOffsetWithTimezoneString(timezone: string) {
   const dateTime = DateTime.now().setZone(timezone);
@@ -89,6 +90,7 @@ function calculateEndTimeDiff(start: string, end: string) {
 }
 
 export default function NewEventForm() {
+  const router = useRouter();
   const { edgestore } = useEdgeStore();
   const [uploading, setUploading] = useState<boolean>(false);
 
@@ -139,10 +141,15 @@ export default function NewEventForm() {
       };
       logger.debug(formData);
 
-      const response = await EventService.create(formData);
-      logger.debug(response);
-      toast.success("Event created successfully");
-      redirect(`/event/${response.data?.slug}`);
+      // const response = await EventService.create(formData);
+      // logger.debug(response);
+
+      // if (response.status !== StatusCodes.CREATED) {
+      //   toast.success("Event created successfully");
+      //   router.push(`/event/${response.data?.slug}`);
+      // }
+
+      // toast.error("Error creating event");
     } catch (error) {
       logger.error(error);
       toast.error("Error creating event");
@@ -187,7 +194,7 @@ export default function NewEventForm() {
                 name="image"
                 render={({ field }) => (
                   <div className="col-span-4 mb-6">
-                    <div className="aspect-h-1 aspect-w-1 mb-2 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-3 xl:aspect-w-4">
+                    <div className="aspect-h-1 aspect-w-1 mb-2 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-4 xl:aspect-w-4">
                       <NextImage
                         loading="lazy"
                         src={
@@ -524,7 +531,11 @@ export default function NewEventForm() {
               </div>
 
               <div className="grid grid-cols-1 gap-3">
-                <Button type="submit" className="col-span-1">
+                <Button 
+                type="submit"
+                 className="col-span-1"
+                disabled={form.formState.isSubmitting}
+                 >
                   Create Event
                 </Button>
               </div>

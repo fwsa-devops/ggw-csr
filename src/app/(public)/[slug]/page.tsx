@@ -72,7 +72,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <>
       <div className="ga-8 mx-auto grid w-full max-w-6xl lg:grid-cols-7 lg:gap-14">
         <div className="col-span-4">
-          <div className="aspect-h-1 aspect-w-1 col-span-4 mb-6 w-full overflow-hidden rounded-lg bg-gray-200 md:aspect-h-2 md:aspect-w-3 xl:aspect-h-3 xl:aspect-w-4">
+          <div className="aspect-h-1 aspect-w-1 col-span-4 mb-6 w-full overflow-hidden rounded-lg bg-gray-200 md:aspect-h-3 md:aspect-w-3 xl:aspect-h-4 xl:aspect-w-4">
             <NextImage
               src={event.image}
               alt={event.title ? `Image for ${event.title}` : "Image for event"}

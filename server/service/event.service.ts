@@ -3,8 +3,6 @@
 "use server";
 
 import { SessionValidator } from "./../validators/session.validator";
-import * as UserService from "./user.service";
-import * as UserDAO from "@/server/dao/user.dao";
 import * as ParticipantService from "./participant.service";
 import * as EventDAO from "./../dao/event.dao";
 import * as HostDAO from "@/server/dao/host.dao";
@@ -148,10 +146,8 @@ export async function hasAccess(slug: string) {
     logger.info("EventService.hasAccess");
     const session = await SessionValidator.validateSession();
     const event = await EventValidator.isValidSlug(slug);
-    const isHost = await EventValidator.hasAccess(event.id, session.id);
-    if (!isHost) {
-      return IResponse.toJSON<null>(403, "User does not have access", null);
-    }
+    await EventValidator.hasAccess(event.id, session.id);
+
     return IResponse.toJSON(200, "User has access", null);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
@@ -168,11 +164,7 @@ export async function addHost(eventId: string, newHostEmail: string) {
     await SessionValidator.validateSession();
     const event = await EventValidator.isValidSlug(eventId);
     const user = await UserValidator.isValidEmail(newHostEmail);
-
-    const isHost = await EventValidator.hasAccess(eventId, newHostEmail);
-    if (isHost)
-      return IResponse.toJSON<null>(403, "User is already a host", null);
-
+    await EventValidator.hasAccess(eventId, newHostEmail);
     await HostDAO.create(event.id, user.id);
     return IResponse.toJSON(200, "Host added", null);
   } catch (error) {
@@ -190,12 +182,74 @@ export async function removeHost(eventId: string, hostId: string) {
     await SessionValidator.validateSession();
     const event = await EventValidator.isValidSlug(eventId);
     const user = await UserValidator.isValidId(hostId);
-
-    const isHost = await EventValidator.hasAccess(eventId, hostId);
-    if (!isHost) return IResponse.toJSON<null>(403, "User is not a host", null);
-
+    await EventValidator.hasAccess(eventId, hostId);
     await HostDAO.remove(event.id, user.id);
     return IResponse.toJSON(200, "Host removed", null);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}
+
+export async function updateBasic(
+  eventId: string,
+  formData: {
+    title: string;
+    description: string;
+    startTime: Date;
+    endTime: Date;
+    timezone: string;
+  },
+) {
+  try {
+    logger.info("EventService.updateBasic");
+    const user = await SessionValidator.validateSession();
+    await EventValidator.isValidId(eventId);
+    await EventValidator.hasAccess(eventId, user.id);
+    const response = await EventDAO.updateBasic(eventId, formData);
+    return IResponse.toJSON<Event>(200, "Event updated", response);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}
+
+export async function updateLocation(
+  eventId: string,
+  formData: {
+    location: {
+      id: string;
+      address: string;
+      latitude: number;
+      longitude: number;
+    };
+    address: {
+      id: string;
+      name: string;
+      street: string;
+      city: string;
+      state: string;
+      country: string;
+      zipcode: string;
+    };
+  },
+) {
+  try {
+    logger.info("EventService.updateLocation");
+    const user = await SessionValidator.validateSession();
+    await EventValidator.isValidId(eventId);
+    await EventValidator.hasAccess(eventId, user.id);
+    await EventValidator.isValidLocationId(formData.location.id);
+    await EventValidator.isValidAddressId(formData.address.id);
+    await EventDAO.updateLocation(formData.location.id, formData.location);
+    await EventDAO.updateAddress(formData.address.id, formData.address);
+    return IResponse.toJSON(200, "Event updated", null);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     if (isException(error)) {

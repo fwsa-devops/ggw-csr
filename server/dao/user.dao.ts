@@ -69,3 +69,40 @@ export async function create(data: {
     throw error;
   }
 }
+
+export async function search(query: string) {
+  try {
+    logger.info("UserDAO.search");
+    const users = await db.user.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            email: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+      take: 10,
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        image: true,
+        createdAt: true,
+      },
+    });
+
+    return users;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}

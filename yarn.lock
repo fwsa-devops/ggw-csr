@@ -3700,7 +3700,7 @@
 
 "@tiptap/extension-link@^2.4.0":
   version "2.4.0"
-  resolved "https://registry.npmjs.org/@tiptap/extension-link/-/extension-link-2.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-link/-/extension-link-2.4.0.tgz#e44edfe2f8d878959bd3ad64fda1b9e232f1f011"
   integrity sha512-r3PjT0bjSKAorHAEBPA0icSMOlqALbxVlWU9vAc+Q3ndzt7ht0CTPNewzFF9kjzARABVt1cblXP/2+c0qGzcsg==
   dependencies:
     linkifyjs "^4.1.0"

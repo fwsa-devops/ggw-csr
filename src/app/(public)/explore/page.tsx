@@ -55,7 +55,7 @@ export default async function Page({
                   href={`/${product.slug}`}
                   className="group"
                 >
-                  <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-4 xl:aspect-w-4">
+                  <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-transparent xl:aspect-h-4 xl:aspect-w-4">
                     <Image
                       width={"500"}
                       height={"500"}

@@ -3,6 +3,7 @@ import { CommonValidator } from "./core-validator";
 import * as EventDAO from "@/server/dao/event.dao";
 import { Exception } from "../exceptions/exception";
 import { UserValidator } from "./user.validator";
+import * as HostDAO from "../dao/host.dao";
 
 export class EventValidator {
   public static async isValidId(eventId: string) {
@@ -55,15 +56,47 @@ export class EventValidator {
       logger.info("UserValidator.existById");
       CommonValidator.ID(eventId);
       CommonValidator.ID(userId);
-      const user = await UserValidator.isValidId(userId);
-      const event = await EventValidator.isValidId(eventId);
-      const isHost = event.User.some((host) => host.id === user.id);
-      return isHost;
+      await UserValidator.isValidId(userId);
+      await EventValidator.isValidId(eventId);
+      const isHost = await HostDAO.findOne(eventId, userId);
+      if (!isHost) {
+        throw Exception.UNAUTHORIZED("User does not have access");
+      }
     } catch (error) {
       logger.error(JSON.stringify(error, null, 2));
       throw error;
     }
   }
-  
 
+  public static async isValidLocationId(locationId: string) {
+    try {
+      logger.info("UserValidator.existById");
+      CommonValidator.ID(locationId);
+      const Location = await EventDAO.findLocation(locationId);
+
+      if (!Location) {
+        throw Exception.LOCATION_NOT_FOUND("Location not found");
+      }
+      return Location;
+    } catch (error) {
+      logger.error(JSON.stringify(error, null, 2));
+      throw error;
+    }
+  }
+
+  public static async isValidAddressId(addressId: string) {
+    try {
+      logger.info("UserValidator.existById");
+      CommonValidator.ID(addressId);
+      const Address = await EventDAO.findAddress(addressId);
+
+      if (!Address) {
+        throw Exception.ADDRESS_NOT_FOUND("Address not found");
+      }
+      return Address;
+    } catch (error) {
+      logger.error(JSON.stringify(error, null, 2));
+      throw error;
+    }
+  }
 }

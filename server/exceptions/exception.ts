@@ -37,6 +37,15 @@ export enum ExceptionMessages {
 
   // EVENT EXCEPTIONS
   EVENT_NOT_FOUND = "Event not found",
+
+
+  // Location EXCEPTIONS
+  LOCATION_NOT_FOUND = "Location not found",
+
+
+  // Address EXCEPTIONS
+  ADDRESS_NOT_FOUND = "Address not found",
+
 }
 
 export class Exception extends CoreException {
@@ -126,6 +135,22 @@ export class Exception extends CoreException {
   public static EVENT_NOT_FOUND(error: string) {
     return new Exception(
       ExceptionMessages.EVENT_NOT_FOUND,
+      error,
+      StatusCodes.NOT_FOUND,
+    );
+  }
+
+  public static LOCATION_NOT_FOUND(error: string) {
+    return new Exception(
+      ExceptionMessages.LOCATION_NOT_FOUND,
+      error,
+      StatusCodes.NOT_FOUND,
+    );
+  }
+
+  public static ADDRESS_NOT_FOUND(error: string) {
+    return new Exception(
+      ExceptionMessages.ADDRESS_NOT_FOUND,
       error,
       StatusCodes.NOT_FOUND,
     );

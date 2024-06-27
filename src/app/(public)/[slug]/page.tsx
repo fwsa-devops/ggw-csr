@@ -72,7 +72,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <>
       <div className="ga-8 mx-auto grid w-full max-w-6xl lg:grid-cols-7 lg:gap-14">
         <div className="col-span-4">
-          <div className="aspect-h-1 aspect-w-1 col-span-4 mb-6 w-full overflow-hidden rounded-lg bg-gray-200 md:aspect-h-3 md:aspect-w-3 xl:aspect-h-4 xl:aspect-w-4">
+          <div className="aspect-h-1 aspect-w-1 col-span-4 mb-6 w-full overflow-hidden rounded-lg bg-transparent md:aspect-h-3 md:aspect-w-3 xl:aspect-h-4 xl:aspect-w-4">
             <NextImage
               src={event.image}
               alt={event.title ? `Image for ${event.title}` : "Image for event"}
@@ -197,7 +197,7 @@ const RegistrationClosedAlert = () => (
   <Alert className="mt-6 bg-muted">
     <MinusCircle className="h-4 w-4" />
     <AlertTitle className="mb-3 font-normal">Registration Closed</AlertTitle>
-    <AlertDescription className="mb-0 font-normal text-muted-foreground leading-6">
+    <AlertDescription className="mb-0 font-normal leading-6 text-muted-foreground">
       This event is not currently accepting registrations. You may contact the
       event host for more information.
     </AlertDescription>
@@ -223,7 +223,9 @@ const EventStateManager = ({ event }: { event: IEvent }) => {
 
       {isRegistrationClosed(event) && <RegistrationClosedAlert />}
 
-      {<EventRegisterComponent event={event} />}
+      {!(isEventEnded(event) || isRegistrationClosed(event)) && (
+        <EventRegisterComponent event={event} />
+      )}
     </>
   );
 };
@@ -235,7 +237,7 @@ export async function generateStaticParams() {
   }
   const { data: slugs } = response;
   if (!slugs) {
-    return [];
+    return [];  
   }
   const paths = slugs.map((slug) => ({ params: { slug } }));
   return paths;

@@ -1,5 +1,5 @@
 import logger from "@/lib/logger";
-import { Exception } from "../exceptions/exception";
+import { Exception, isException } from "../exceptions/exception";
 
 export class CommonValidator {
   public static ID(_value: string | null | undefined): void {
@@ -70,7 +70,7 @@ export class CommonValidator {
     } catch (error: unknown) {
       logger.error(JSON.stringify(error, null, 2));
 
-      if (error instanceof Error) {
+      if (isException(error)) {
         throw Exception.INVALID_INPUT(error.message);
       }
 

@@ -14,7 +14,6 @@ import PageNotAuthorized from "@/components/shared/page/not-authorized";
 import PageForbidden from "@/components/shared/page/forbidden";
 import PageInternalServerError from "@/components/shared/page/internal-server-error";
 
-
 export default async function ManageLayout({
   params,
 }: {
@@ -39,7 +38,8 @@ export default async function ManageLayout({
 
   const eventResponse = await EventService.findBySlug(params.slug);
 
-  if (eventResponse.status !== StatusCodes.OK || !eventResponse.data) return <PageNotFound />;
+  if (eventResponse.status !== StatusCodes.OK || !eventResponse.data)
+    return <PageNotFound />;
 
   return (
     <Tabs defaultValue="overview">
@@ -52,11 +52,9 @@ export default async function ManageLayout({
         </div>
         <div className="mb-6 flex flex-col md:flex-row md:items-end md:justify-between">
           <div className="mb-4 md:mb-0">
-            <EventNameDialog event={eventResponse.data as unknown as Event}>
-              <h1 className="cursor-pointer rounded-xl bg-zinc-100 px-3 py-2 text-left text-5xl font-bold shadow-sm dark:bg-zinc-950 md:mb-0">
-                {eventResponse.data?.title}
-              </h1>
-            </EventNameDialog>
+            <h1 className="cursor-pointer rounded-xl px-3 py-2 text-left text-5xl font-bold md:mb-0">
+              {eventResponse.data?.title}
+            </h1>
           </div>
 
           <Link href={`/${eventResponse.data?.slug}`} className="group">

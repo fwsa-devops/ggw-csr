@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 
 import { useEditor, EditorContent, type Content } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Link from "@tiptap/extension-link";
 import React from "react";
 
 type TiptapProps = {
@@ -18,7 +20,18 @@ const Tiptap = (props: TiptapProps) => {
         class: "prose prose-md dark:prose-invert",
       },
     },
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit.configure({
+        heading: {
+          levels: [1, 2, 3, 4],
+        },
+      }),
+      Link.configure({
+        autolink: true,
+        protocols: ["http", "https", "mailto", "tel"],
+        linkOnPaste: true,
+      }),
+    ],
     content: props.value,
     onUpdate: ({ editor }) => {
       props.onChange({

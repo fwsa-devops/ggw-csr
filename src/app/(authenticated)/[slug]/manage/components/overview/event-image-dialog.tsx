@@ -89,7 +89,7 @@ export default function EventImageDialog(props: Props) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger>{props.children}</DialogTrigger>
+            <DialogTrigger asChild>{props.children}</DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Upload Event Image</DialogTitle>

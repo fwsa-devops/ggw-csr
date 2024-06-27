@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, UseFormReturn, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { type NewEventSchema, newEventSchema } from "./new-event-schema";
 import React, { type ChangeEvent } from "react";
 import NextImage from "next/image";
@@ -141,15 +141,17 @@ export default function NewEventForm() {
       };
       logger.debug(formData);
 
-      // const response = await EventService.create(formData);
-      // logger.debug(response);
+      const response = await EventService.create(formData);
+      logger.debug(response);
 
-      // if (response.status !== StatusCodes.CREATED) {
-      //   toast.success("Event created successfully");
-      //   router.push(`/event/${response.data?.slug}`);
-      // }
+      if (response.status === StatusCodes.BAD_REQUEST) {
+        toast.error("Error creating event");
+      }
 
-      // toast.error("Error creating event");
+      if (response.status === StatusCodes.CREATED) {
+        toast.success("Event created successfully");
+        router.push(`/${response.data?.slug}`);
+      }
     } catch (error) {
       logger.error(error);
       toast.error("Error creating event");
@@ -194,7 +196,7 @@ export default function NewEventForm() {
                 name="image"
                 render={({ field }) => (
                   <div className="col-span-4 mb-6">
-                    <div className="aspect-h-1 aspect-w-1 mb-2 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-4 xl:aspect-w-4">
+                    <div className="aspect-h-1 aspect-w-1 mb-2 w-full overflow-hidden rounded-lg bg-transparent xl:aspect-h-4 xl:aspect-w-4">
                       <NextImage
                         loading="lazy"
                         src={
@@ -531,11 +533,11 @@ export default function NewEventForm() {
               </div>
 
               <div className="grid grid-cols-1 gap-3">
-                <Button 
-                type="submit"
-                 className="col-span-1"
-                disabled={form.formState.isSubmitting}
-                 >
+                <Button
+                  type="submit"
+                  className="col-span-1"
+                  disabled={form.formState.isSubmitting}
+                >
                   Create Event
                 </Button>
               </div>

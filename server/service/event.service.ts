@@ -265,3 +265,21 @@ export async function updateLocation(
     return IResponse.toJSON<null>(500, "Internal server error", null);
   }
 }
+
+export async function updateImage(eventId: string, url: string) {
+  try {
+    logger.info("EventService.updateImage");
+    CommonValidator.URL(url);
+    const user = await SessionValidator.validateSession();
+    await EventValidator.isValidId(eventId);
+    await EventValidator.hasAccess(eventId, user.id);
+    await EventDAO.updateImage(eventId, url);
+    return IResponse.toJSON(200, "Event Image Updated", null);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}

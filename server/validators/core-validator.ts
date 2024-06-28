@@ -1,5 +1,6 @@
 import logger from "@/lib/logger";
 import { Exception, isException } from "../exceptions/exception";
+import { z } from "zod";
 
 export class CommonValidator {
   public static ID(_value: string | null | undefined): void {
@@ -49,6 +50,15 @@ export class CommonValidator {
   public static DATE(date: Date | null | undefined) {
     if (!date) {
       throw Exception.INVALID_DATE("Invalid date");
+    }
+  }
+
+  public static URL(url: string | null | undefined) {
+    CommonValidator.STRING(url);
+    const schema = z.string().url();
+    const response = schema.safeParse(url);
+    if (!response.success) {
+      throw Exception.INVALID_INPUT(response.error.message);
     }
   }
 

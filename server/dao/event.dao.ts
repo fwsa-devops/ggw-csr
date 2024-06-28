@@ -329,3 +329,21 @@ export async function updateAddress(
     throw error;
   }
 }
+
+export async function updateImage(eventId: string, url: string) {
+  try {
+    logger.info("EventDAO.updateImage");
+    const response = await db.event.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        image: url,
+      },
+    });
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}

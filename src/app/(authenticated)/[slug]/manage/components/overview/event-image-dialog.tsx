@@ -31,6 +31,9 @@ import { useEdgeStore } from "@/components/layout/providers";
 import { LoaderCircle } from "lucide-react";
 import Image from "next/image";
 import { type IEvent } from "@/server/model";
+import { updateImage } from "@/server/service/event.service";
+import { StatusCodes } from "http-status-codes";
+import { useRouter } from "next/navigation";
 
 type Props = {
   children: React.ReactNode;
@@ -38,6 +41,7 @@ type Props = {
 };
 
 export default function EventImageDialog(props: Props) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const { edgestore } = useEdgeStore();
   const [uploading, setUploading] = useState<boolean>(false);
@@ -67,14 +71,22 @@ export default function EventImageDialog(props: Props) {
     form.setValue("image", res.url);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     logger.info("Event Name Dialog submitted");
     logger.debug(form.getValues());
     try {
+      const url = form.getValues("image");
+      const response = await updateImage(props.event.id, url);
+
+      if (response.status !== StatusCodes.OK) {
+        throw new Error(response.message);
+      }
+      setOpen(false);
       toast.success("Event name updated successfully", {
         duration: 5000,
         dismissible: true,
       });
+      router.refresh();
     } catch (error) {
       logger.error("Event Name Dialog error", error);
       toast.error("An error occurred. Please try again later.", {
@@ -190,7 +202,13 @@ export default function EventImageDialog(props: Props) {
                     Close
                   </Button>
                 </DialogClose>
-                <Button type="submit" disabled={uploading} onClick={handleSubmit}>Save changes</Button>
+                <Button
+                  type="submit"
+                  disabled={uploading}
+                  onClick={handleSubmit}
+                >
+                  Save changes
+                </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>

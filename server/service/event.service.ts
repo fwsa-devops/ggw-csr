@@ -158,13 +158,20 @@ export async function hasAccess(slug: string) {
   }
 }
 
-export async function addHost(eventId: string, newHostEmail: string) {
+export async function addHost(eventSlug: string, newHostEmail: string) {
   try {
     logger.info("EventService.addHost");
-    await SessionValidator.validateSession();
-    const event = await EventValidator.isValidSlug(eventId);
+    logger.info("eventSlug", eventSlug);
+    logger.info("newHostEmail", newHostEmail);
+    const session = await SessionValidator.validateSession();
+    const event = await EventValidator.isValidSlug(eventSlug);
     const user = await UserValidator.isValidEmail(newHostEmail);
-    await EventValidator.hasAccess(eventId, newHostEmail);
+    await EventValidator.hasAccess(event.id, session.id);
+    const alreadyExists = await EventValidator.hasAccessBoolean(
+      event.id,
+      user.id,
+    );
+    if (alreadyExists) IResponse.toJSON<null>(409, "Already Exists", null);
     await HostDAO.create(event.id, user.id);
     return IResponse.toJSON(200, "Host added", null);
   } catch (error) {

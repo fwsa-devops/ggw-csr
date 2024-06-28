@@ -26,12 +26,13 @@ export async function findById(userId: string) {
   }
 }
 
-export async function findByEmail(userId: string) {
+export async function findByEmail(email: string) {
   try {
     logger.info("EventService.findMany");
+    logger.debug("Email", email);
     const events = await db.user.findFirst({
       where: {
-        email: userId,
+        email:email
       },
       select: {
         id: true,

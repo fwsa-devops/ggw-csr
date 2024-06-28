@@ -119,15 +119,14 @@ export default function NewEventForm() {
       const startTime = DateTime.fromFormat(
         `${startDate}T${data.start.time}`,
         "yyyy-MM-dd'T'hh:mm a",
-      )
-        .setZone(data.timezone)
-        .toJSDate();
+        { zone: data.timezone },
+      ).toJSDate();
+
       const endTime = DateTime.fromFormat(
         `${endDate}T${data.end.time}`,
         "yyyy-MM-dd'T'hh:mm a",
-      )
-        .setZone(data.timezone)
-        .toJSDate();
+        { zone: data.timezone },
+      ).toJSDate();
 
       const formData: INewEvent = {
         ...data,

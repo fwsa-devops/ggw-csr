@@ -68,6 +68,21 @@ export class EventValidator {
     }
   }
 
+  public static async hasAccessBoolean(eventId: string, userId: string) {
+    try {
+      logger.info("UserValidator.existById");
+      CommonValidator.ID(eventId);
+      CommonValidator.ID(userId);
+      await UserValidator.isValidId(userId);
+      await EventValidator.isValidId(eventId);
+      const isHost = await HostDAO.findOne(eventId, userId);
+      return !!isHost;
+    } catch (error) {
+      logger.error(JSON.stringify(error, null, 2));
+      throw error;
+    }
+  }
+
   public static async isValidLocationId(locationId: string) {
     try {
       logger.info("UserValidator.existById");

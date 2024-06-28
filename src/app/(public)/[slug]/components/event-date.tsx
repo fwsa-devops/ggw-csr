@@ -8,6 +8,7 @@ import { ArrowUpRight } from "lucide-react";
 export default function EventDate(props: {
   startTime: Date;
   endTime: Date;
+  timezone: string;
   calender: string;
 }) {
   const MONTH = DateTime.fromJSDate(props.startTime).toFormat("LLL");

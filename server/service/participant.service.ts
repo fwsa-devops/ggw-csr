@@ -47,6 +47,7 @@ export async function create(eventId: string, userId: string) {
     logger.info("ParticipantsService.create");
     await SessionValidator.validateSession();
     await EventValidator.isValidId(eventId);
+    await EventValidator.isActive(eventId);
     await UserValidator.isValidId(userId);
     const isAlreadyParticipant = await ParticipantValidator.isParticipant(
       eventId,
@@ -69,8 +70,8 @@ export async function remove(eventId: string, userId: string) {
     logger.info("ParticipantsService.remove");
     await SessionValidator.validateSession();
     await EventValidator.isValidId(eventId);
+    await EventValidator.isActive(eventId);
     await UserValidator.isValidId(userId);
-
     const isAlreadyParticipant = await ParticipantValidator.isParticipant(
       eventId,
       userId,
@@ -134,11 +135,17 @@ export async function participantCheckIn(eventId: string, userId: string) {
     await EventValidator.isValidId(eventId);
     await UserValidator.isValidId(userId);
 
-    const isParticipant = await ParticipantValidator.isParticipant(eventId, userId);
+    const isParticipant = await ParticipantValidator.isParticipant(
+      eventId,
+      userId,
+    );
     if (!isParticipant)
       return IResponse.toJSON(400, "Participant not registered", null);
 
-    const isAlreadyCheckedIn = await ParticipantValidator.hasCheckedIn(eventId, userId);
+    const isAlreadyCheckedIn = await ParticipantValidator.hasCheckedIn(
+      eventId,
+      userId,
+    );
     if (isAlreadyCheckedIn)
       return IResponse.toJSON(400, "Participant already checked in", null);
 
@@ -152,4 +159,3 @@ export async function participantCheckIn(eventId: string, userId: string) {
     return IResponse.toJSON(500, "Internal server error", null);
   }
 }
-

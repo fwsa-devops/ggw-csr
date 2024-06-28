@@ -21,6 +21,7 @@ export default async function Page({
   const response = await eventFilter({
     search: valueParams.search ?? "",
     city: valueParams.city ?? "",
+    date: DateTime.local().toJSDate(),
   });
   const { status, data } = response;
   let products = data;

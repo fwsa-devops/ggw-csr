@@ -128,3 +128,29 @@ export function encrypt(text: string) {
 export function decrypt(text: string) {
   return CRYPTR.decrypt(text);
 }
+
+export function calculateEndTimeDiff(start: string, end: string) {
+  const startTime = DateTime.fromFormat(start, "hh:mm a");
+  const endTime = DateTime.fromFormat(end, "hh:mm a");
+  const diff = endTime.diff(startTime, ["hours", "minutes"]);
+  const formattedDiff = `${Math.floor(diff.hours)}h ${diff.minutes}m`;
+  return formattedDiff.replace(" 0m", "").replace(" 0h", "");
+}
+
+export function getGMTOffsetWithTimezoneString(timezone: string) {
+  const dateTime = DateTime.now().setZone(timezone);
+  const offsetInMinutes = dateTime.offset;
+  const offsetHours = Math.floor(Math.abs(offsetInMinutes) / 60);
+  const offsetMinutes = Math.abs(offsetInMinutes) % 60;
+  const sign = offsetInMinutes >= 0 ? "+" : "-";
+  const formattedOffset = `GMT${sign}${String(offsetHours).padStart(2, "0")}:${String(offsetMinutes).padStart(2, "0")}`;
+  return `${timezone} (${formattedOffset})`;
+}
+
+export function convertToLocalTimeZone(datetime: Date, timezone?: string) {
+  const _dateTime = DateTime.fromJSDate(datetime, {
+    zone: timezone ?? DateTime.local().zone,
+  });
+
+  return _dateTime;
+}

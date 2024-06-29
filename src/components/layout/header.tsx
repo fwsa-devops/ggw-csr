@@ -3,15 +3,7 @@
 "use client";
 
 import Link from "next/link";
-import { DateTime } from "luxon";
-import {
-  Compass,
-  LogOut,
-  Menu,
-  Moon,
-  Sun,
-  User2,
-} from "lucide-react";
+import { Compass, LogOut, Menu, Moon, Sun, User2 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import {
@@ -28,21 +20,24 @@ import LocalDateTime from "./datetime";
 import UserAvatar from "../ui/user-avatar";
 import FwIcon from "../shared/fw-icon";
 import FwIconFull from "../shared/fw-full";
+import useDateTimeStore from "../hooks/use-date-time-store";
+import { TimeZoneSwitcher } from "../shared/local-timezone-switcher";
 
 export default function Header() {
   const { status, data } = useSession();
   const { setTheme } = useTheme();
+  const { dateTime } = useDateTimeStore();
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+      <header className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 justify-between md:justify-around">
+        
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Link
             href="#"
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
             <FwIcon className="max-h-10 max-w-10" />
-            {/* <FwIconFull className="w-fit max-h-14" /> */}
             <span className="sr-only">Freshworks Global Giving</span>
           </Link>
           <Link
@@ -51,15 +46,8 @@ export default function Header() {
           >
             Explore
           </Link>
-          {/* {status === "authenticated" && (
-            <Link
-              href="/profile"
-              className="text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Profile
-            </Link>
-          )} */}
         </nav>
+        
         <Sheet>
           <SheetTrigger asChild>
             <Button
@@ -120,12 +108,13 @@ export default function Header() {
           </SheetContent>
         </Sheet>
 
-        <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <div className="ml-auto"></div>
+        <div className="flex w-fit items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
           <p className="hidden items-center gap-1 text-sm lg:flex">
-            <LocalDateTime value={DateTime.now().toISO()} format="hh:mm a" />
-            GMT
-            <LocalDateTime value={DateTime.now().toISO()} format="ZZ" />
+            <TimeZoneSwitcher>
+              <span className="font-normal">
+                <LocalDateTime value={dateTime} format="hh:mm a ZZZZ" />
+              </span>
+            </TimeZoneSwitcher>
           </p>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

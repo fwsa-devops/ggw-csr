@@ -5,11 +5,19 @@ import { db } from "../db";
 import { type Prisma } from "@prisma/client";
 import { IResponse } from "../types";
 
-export async function eventFilter(filter: { search: string; city: string }) {
+export async function eventFilter(filter: {
+  search: string;
+  city: string;
+  date: Date;
+}) {
   try {
     logger.info("EventService.filter");
 
-    const filterQuery: Prisma.EventWhereInput = {};
+    const filterQuery: Prisma.EventWhereInput = {
+      endTime: {
+        gte: filter.date
+      }
+    };
 
     if (filter.search?.trim() !== "") {
       filterQuery.title = {
@@ -34,12 +42,7 @@ export async function eventFilter(filter: { search: string; city: string }) {
         OR: [
           {
             endTime: {
-              gte: new Date(),
-            },
-          },
-          {
-            startTime: {
-              lte: new Date(),
+              gte: filter.date,
             },
           },
         ],

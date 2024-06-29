@@ -23,10 +23,11 @@ import { useState } from "react";
 import logger from "@/lib/logger";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { type IEvent } from "@/server/model";
 
 type Props = {
   children: React.ReactNode;
-  event: Event;
+  event: IEvent;
 };
 
 export default function EventNameDialog(props: Props) {

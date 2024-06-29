@@ -212,3 +212,138 @@ export async function create(email: string, data: INewEvent) {
     throw error;
   }
 }
+
+export async function updateBasic(
+  eventId: string,
+  data: {
+    title: string;
+    description: string;
+    startTime: Date;
+    endTime: Date;
+    timezone: string;
+  },
+) {
+  try {
+    logger.info("EventDAO.updateBasic");
+    const response = await db.event.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        title: data.title,
+        description: data.description,
+        startTime: data.startTime,
+        endTime: data.endTime,
+        timezone: data.timezone,
+      },
+    });
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function findLocation(locationId: string) {
+  try {
+    logger.info("EventDAO.findLocation");
+    const response = await db.location.findUnique({
+      where: {
+        id: locationId,
+      },
+    });
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function updateLocation(
+  locationId: string,
+  data: { id: string; address: string; latitude: number; longitude: number },
+) {
+  try {
+    logger.info("EventDAO.updateLocation");
+    const response = await db.location.update({
+      where: {
+        id: locationId,
+      },
+      data: {
+        address: data.address,
+        latitude: data.latitude,
+        longitude: data.longitude,
+      },
+    });
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function findAddress(addressId: string) {
+  try {
+    logger.info("EventDAO.findAddress");
+    const response = await db.address.findUnique({
+      where: {
+        id: addressId,
+      },
+    });
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function updateAddress(
+  addressId: string,
+  data: {
+    name: string;
+    street: string;
+    city: string;
+    state: string;
+    country: string;
+    zipcode: string;
+  },
+) {
+  try {
+    logger.info("EventDAO.updateAddress");
+    const response = await db.address.update({
+      where: {
+        id: addressId,
+      },
+      data: {
+        name: data.name,
+        street: data.street,
+        city: data.city,
+        state: data.state,
+        country: data.country,
+        zipcode: data.zipcode,
+      },
+    });
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function updateImage(eventId: string, url: string) {
+  try {
+    logger.info("EventDAO.updateImage");
+    const response = await db.event.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        image: url,
+      },
+    });
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}

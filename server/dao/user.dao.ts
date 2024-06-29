@@ -26,12 +26,13 @@ export async function findById(userId: string) {
   }
 }
 
-export async function findByEmail(userId: string) {
+export async function findByEmail(email: string) {
   try {
     logger.info("EventService.findMany");
+    logger.debug("Email", email);
     const events = await db.user.findFirst({
       where: {
-        email: userId,
+        email:email
       },
       select: {
         id: true,
@@ -64,6 +65,43 @@ export async function create(data: {
       },
     });
     return user;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function search(query: string) {
+  try {
+    logger.info("UserDAO.search");
+    const users = await db.user.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            email: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+      take: 10,
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        image: true,
+        createdAt: true,
+      },
+    });
+
+    return users;
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     throw error;

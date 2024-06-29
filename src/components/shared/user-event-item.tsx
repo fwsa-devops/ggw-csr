@@ -5,6 +5,7 @@ import { CalendarDays, MapPin } from "lucide-react";
 import { DateTime } from "luxon";
 import Link from "next/link";
 import { type IEvent } from "@/server/model";
+import LocalDateTime from "../layout/datetime";
 
 type UserEventItemProps = {
   event: IEvent;
@@ -29,15 +30,12 @@ export default function UserEventItem(props: UserEventItemProps) {
           </div>
           <div className="text-xs">
             <h3 className="mb-3 text-base font-medium">{event.title}</h3>
-            {/* <p className="mb-2 flex flex-row items-center">
-              <UserAvatar user={event.User} className="mr-2 h-5 w-5" />
-              <span>{event.User.name}</span>
-            </p> */}
             <div className="mb-2 flex flex-row items-center">
               <CalendarDays className="mr-2 h-4 w-4" />
-              {DateTime.fromJSDate(event.startTime).toFormat(
-                "LLLL d, yyyy, hh:mm a",
-              )}
+              <LocalDateTime
+                value={event.startTime}
+                format={"LLLL d, yyyy, hh:mm a"}
+              />
             </div>
             <div className="mb-2 flex flex-row items-center">
               <MapPin className="mr-2 h-4 w-4" />

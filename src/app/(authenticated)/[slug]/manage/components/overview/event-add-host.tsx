@@ -23,7 +23,10 @@ import { Input } from "@/components/ui/input";
 import logger from "@/lib/logger";
 import { addHost } from "@/server/service/event.service";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { StatusCodes } from "http-status-codes";
 import { PlusIcon, UserPlus2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -37,6 +40,8 @@ type Props = {
 };
 
 export default function EventAddHost(props: Props) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
 
   const form = useForm({
     defaultValues: {
@@ -48,11 +53,18 @@ export default function EventAddHost(props: Props) {
   const onSubmit = async () => {
     try {
       logger.debug("handleSubmit", form.getValues());
-      logger.debug("handleSubmit", props.eventSlug);  
+      logger.debug("handleSubmit", props.eventSlug);
       const response = await addHost(props.eventSlug, form.getValues().email);
       logger.debug("handleSubmit", response);
-      toast.success("Host added");
-      // router.refresh();
+
+      if (response.status === StatusCodes.OK) {
+        setOpen(false);
+        toast.success("Host added");
+        router.refresh();
+        return;
+      }
+
+      toast.error("Failed to add host");
     } catch (error) {
       logger.error("handleSubmit", error);
       toast.error("Failed to add host");
@@ -61,8 +73,8 @@ export default function EventAddHost(props: Props) {
 
   return (
     <>
-      <Dialog>
-        <DialogTrigger asChild>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger onClick={() => setOpen(true)} asChild>
           <Button
             type="button"
             variant={"secondary"}

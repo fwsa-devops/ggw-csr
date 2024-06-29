@@ -102,7 +102,7 @@
     "winston": "^3.13.0",
     "xlsx": "^0.18.5",
     "zod": "^3.23.8",
-    "zustand": "^4.5.2"
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",

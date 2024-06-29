@@ -129,7 +129,6 @@ export function decrypt(text: string) {
   return CRYPTR.decrypt(text);
 }
 
-
 export function calculateEndTimeDiff(start: string, end: string) {
   const startTime = DateTime.fromFormat(start, "hh:mm a");
   const endTime = DateTime.fromFormat(end, "hh:mm a");
@@ -146,4 +145,12 @@ export function getGMTOffsetWithTimezoneString(timezone: string) {
   const sign = offsetInMinutes >= 0 ? "+" : "-";
   const formattedOffset = `GMT${sign}${String(offsetHours).padStart(2, "0")}:${String(offsetMinutes).padStart(2, "0")}`;
   return `${timezone} (${formattedOffset})`;
+}
+
+export function convertToLocalTimeZone(datetime: Date, timezone?: string) {
+  const _dateTime = DateTime.fromJSDate(datetime, {
+    zone: timezone ?? DateTime.local().zone,
+  });
+
+  return _dateTime;
 }

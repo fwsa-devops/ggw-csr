@@ -1,12 +1,11 @@
-import Image from "next/image";
 import logger from "@/lib/logger";
-import { Calendar, MapPin, MoveRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { StatusCodes } from "http-status-codes";
 import ExploreHeader from "./components/explore-header";
 import { cityList, eventFilter } from "@/server/service/explore.service";
 import { DateTime } from "luxon";
 import Link from "next/link";
+import EventCard from "./components/event-card";
+import { type IEvent } from "@/server/model";
 
 export default async function Page({
   searchParams,
@@ -56,41 +55,7 @@ export default async function Page({
                   href={`/${product.slug}`}
                   className="group"
                 >
-                  <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-transparent xl:aspect-h-4 xl:aspect-w-4">
-                    <Image
-                      width={"500"}
-                      height={"500"}
-                      src={product.image}
-                      alt={`Image of ` + product.title}
-                      className="h-full w-full object-cover object-center group-hover:opacity-75"
-                    />
-                  </div>
-                  <h3 className="text-md mb-3 mt-4 font-medium text-gray-700 dark:text-gray-100">
-                    {product.title}
-                  </h3>
-
-                  <p className="mb-2 flex text-sm text-gray-900 dark:text-gray-300">
-                    <Calendar className="mr-2 h-5 w-5 text-gray-400" />
-                    {DateTime.fromJSDate(product.startTime)
-                      .setZone(product.timezone)
-                      .toFormat("EEEE, LLLL d")}
-                  </p>
-
-                  <p className="flex text-sm text-gray-900 dark:text-gray-300 ">
-                    <MapPin className="mr-2 h-5 w-5 text-gray-400" />
-                    {product.Address.city}, {product.Address.state}
-                  </p>
-
-                  <div className="mt-3">
-                    <Button
-                      size={"sm"}
-                      variant={"secondary"}
-                      className="w-full"
-                    >
-                      know more
-                      <MoveRight className="ml-2 h-5 w-5 text-gray-400" />
-                    </Button>
-                  </div>
+                  <EventCard event={product as unknown as IEvent} />
                 </Link>
               ))}
 

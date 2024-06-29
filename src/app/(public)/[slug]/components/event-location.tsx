@@ -44,7 +44,7 @@ export default function EventLocation(props: EventLocationProps) {
             </div>
 
             <div className="group">
-              <h3 className="mb-1 flex items-center text-[1rem] font-semibold">
+              <h3 className="mb-1 flex items-center text-[1rem] font-semibold  text-gray-600 dark:text-gray-200">
                 <span className="text-wrap truncate line-clamp-1 overflow-auto">
                 {`${address.name?? ""} ${address.street}`}
                 </span>

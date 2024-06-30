@@ -20,18 +20,25 @@ import LocalDateTime from "./datetime";
 import UserAvatar from "../ui/user-avatar";
 import FwIcon from "../shared/fw-icon";
 import FwIconFull from "../shared/fw-full";
-import useDateTimeStore from "../hooks/use-date-time-store";
 import { TimeZoneSwitcher } from "../shared/local-timezone-switcher";
+import { useEffect, useState } from "react";
 
 export default function Header() {
+  const [dateTime, setDateTime] = useState(new Date());
+
   const { status, data } = useSession();
   const { setTheme } = useTheme();
-  const { dateTime } = useDateTimeStore();
+
+  useEffect(() => {
+    const id = setInterval(() => setDateTime(new Date()), 1000);
+    return () => {
+      clearInterval(id);
+    };
+  }, []);
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 justify-between md:justify-around">
-        
+      <header className="sticky top-0 z-50 flex h-16 items-center justify-between gap-4 border-b bg-background px-4 md:justify-around md:px-6">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Link
             href="#"
@@ -47,7 +54,7 @@ export default function Header() {
             Explore
           </Link>
         </nav>
-        
+
         <Sheet>
           <SheetTrigger asChild>
             <Button

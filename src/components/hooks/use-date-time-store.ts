@@ -7,7 +7,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 // Define the interface for the store state and actions
 type DateTimeStoreState = {
   timezone: string;
-  dateTime: Date;
+  // dateTime: Date;
   setTimeZone: (timeZone: string) => void;
 };
 
@@ -16,12 +16,12 @@ const useDateTimeStore = create<DateTimeStoreState>()(
   persist(
     (set) => ({
       timezone: DateTime.local().zoneName,
-      dateTime: DateTime.local().toJSDate(),
+      // dateTime: DateTime.local().toJSDate(),
       setTimeZone: (timeZone: string) => {
         localStorage.setItem("timezone", timeZone);
         set({
           timezone: timeZone,
-          dateTime: DateTime.local({ zone: timeZone }).toJSDate(),
+          // dateTime: DateTime.local({ zone: timeZone }).toJSDate(),
         });
       },
     }),

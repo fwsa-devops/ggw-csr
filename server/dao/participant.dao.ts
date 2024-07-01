@@ -135,3 +135,19 @@ export async function checkOut(eventId: string, userId: string) {
     throw error;
   }
 }
+
+export async function count(eventId: string) {
+  try {
+    logger.info("ParticipantsDAO.count");
+    const participantsCount = await db.eventParticipant.count({
+      where: {
+        eventId: eventId,
+      },
+    });
+
+    return participantsCount;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}

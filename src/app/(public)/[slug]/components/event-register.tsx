@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Hand } from "lucide-react";
+import { Hand, Users } from "lucide-react";
 import { cn } from "../../../../lib/utils";
 import {
   Credenza,
@@ -13,6 +13,7 @@ import {
   CredenzaTitle,
   CredenzaTrigger,
 } from "@/components/ui/credenza";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 import { Button } from "@/components/ui/button";
 import { signIn, useSession } from "next-auth/react";
@@ -21,12 +22,15 @@ import {
   create,
   remove,
 } from "@/server/service/participant.service";
+import { seatsAvailable as areSeatsAvailable } from "@/server/service/participant.service";
+
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import wait from "wait";
 import { useRouter } from "next/navigation";
 import { type IEvent } from "@/server/model";
 import logger from "@/lib/logger";
+import { StatusCodes } from "http-status-codes";
 
 const promptMessages = [
   "Did you put our feelings into consideration?",
@@ -49,10 +53,23 @@ export default function EventRegister(props: Props) {
   const [fetched, setFetched] = useState<boolean>(false);
   const [updatingStatus, setUpdatingStatus] = useState<boolean>(false);
   const [isParticipant, setIsParticipant] = useState<boolean>(false);
+  const [seatsAvailable, setSeatsAvailable] = useState<boolean | undefined>(
+    undefined,
+  );
   const router = useRouter();
 
   useEffect(() => {
     if (data?.user && !fetched) {
+      void areSeatsAvailable(props.event.id)
+        .then((res) => {
+          logger.debug("areSeatsAvailable", res);
+          setIsParticipant(!!res.data);
+        })
+        .catch((err) => {
+          logger.error("isEventParticipant", err);
+          setFetched(true);
+        });
+
       void isEventParticipant(props.event.id)
         .then(async (res) => {
           logger.debug("isEventParticipant", res);
@@ -77,10 +94,16 @@ export default function EventRegister(props: Props) {
         setIsParticipant(false);
         toast.success("Registration cancelled");
       } else {
-        await create(props.event.id, data.user?.id);
+        const response = await create(props.event.id, data.user?.id);
         await wait(1000);
-        setIsParticipant(true);
-        toast.success("Registered successfully");
+        if (response.status === StatusCodes.OK) {
+          setIsParticipant(true);
+          toast.success("Registered successfully");
+        } else {
+          toast.error("Registration Failed", {
+            description: response.message,
+          });
+        }
       }
       setUpdatingStatus(false);
       router.refresh();
@@ -120,19 +143,31 @@ export default function EventRegister(props: Props) {
     return (
       <>
         <div className={cn("mt-10")}>
-          {!isParticipant && props.event.isParticipationOpen && (
-            <Button
-              variant={"default"}
-              size={"lg"}
-              type="button"
-              className="group w-full py-6"
-              onClick={handleChange}
-              disabled={updatingStatus}
-            >
-              <Hand size={24} className="mr-3 group-hover:animate-shake" />
-              Register
-            </Button>
+          {!seatsAvailable && (
+            <Alert className="mt-6">
+              <Users className="h-4 w-4" />
+              <AlertTitle className="mb-2">No More Spots Available</AlertTitle>
+              <AlertDescription className="mb-0 font-normal">
+               The maximum number of participants has been reached.
+              </AlertDescription>
+            </Alert>
           )}
+
+          {seatsAvailable &&
+            !isParticipant &&
+            props.event.isParticipationOpen && (
+              <Button
+                variant={"default"}
+                size={"lg"}
+                type="button"
+                className="group w-full py-6"
+                onClick={handleChange}
+                disabled={updatingStatus}
+              >
+                <Hand size={24} className="mr-3 group-hover:animate-shake" />
+                Register
+              </Button>
+            )}
 
           {isParticipant && (
             <div className="grid grid-cols-1 gap-3">

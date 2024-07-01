@@ -55,6 +55,12 @@ export async function create(eventId: string, userId: string) {
     );
     if (isAlreadyParticipant)
       return IResponse.toJSON(400, "Participant already exists", null);
+    const areSeatsAvailable =
+      await ParticipantValidator.areSeatsAvailable(eventId);
+
+    if (!areSeatsAvailable)
+      return IResponse.toJSON(400, "Seats are full", null);
+
     const response = await ParticipantDAO.create(eventId, userId);
     return IResponse.toJSON(201, "Participant created", response);
   } catch (error) {
@@ -151,6 +157,36 @@ export async function participantCheckIn(eventId: string, userId: string) {
 
     const response = await ParticipantDAO.checkIn(eventId, userId);
     return IResponse.toJSON(200, "Participant checked in", response);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON(error.code, error.message, error.description);
+    }
+    return IResponse.toJSON(500, "Internal server error", null);
+  }
+}
+
+export async function participantCount(eventId: string) {
+  try {
+    logger.info("ParticipantsService.checkInParticipant");
+    await EventValidator.isValidId(eventId);
+    const response = await ParticipantDAO.count(eventId);
+    return IResponse.toJSON(200, "Participant checked in", response);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON(error.code, error.message, error.description);
+    }
+    return IResponse.toJSON(500, "Internal server error", null);
+  }
+}
+
+export async function seatsAvailable(eventId: string) {
+  try {
+    logger.info("ParticipantValidator.areSeatsAvailable");
+    await EventValidator.isValidId(eventId);
+    const response = await ParticipantValidator.areSeatsAvailable(eventId);
+    return IResponse.toJSON(200, "Participation is Available", response);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     if (isException(error)) {

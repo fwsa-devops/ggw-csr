@@ -1,7 +1,7 @@
 import logger from "@/lib/logger";
 import { CommonValidator } from "./core-validator";
 import { EventValidator } from "./event.validator";
-import { findOne } from "@/server/dao/participant.dao";
+import { findOne, count } from "@/server/dao/participant.dao";
 
 export class ParticipantValidator {
   public static async isParticipant(eventId: string, userId: string) {
@@ -32,4 +32,20 @@ export class ParticipantValidator {
     }
   }
 
+  public static async areSeatsAvailable(eventId: string) {
+    try {
+      logger.info("ParticipantValidator.areSeatsAvailable");
+      CommonValidator.ID(eventId);
+      const event = await EventValidator.isValidId(eventId);
+      const { maxParticipants } = event;
+      const participantCount = await count(eventId);
+      if (maxParticipants === 0) return true;
+      if (maxParticipants > participantCount) return true;
+      if (maxParticipants <= participantCount) return false;
+      return false;
+    } catch (error) {
+      logger.error(JSON.stringify(error, null, 2));
+      throw error;
+    }
+  }
 }

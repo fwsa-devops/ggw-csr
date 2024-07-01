@@ -63,7 +63,7 @@ export default function EventRegister(props: Props) {
       void areSeatsAvailable(props.event.id)
         .then((res) => {
           logger.debug("areSeatsAvailable", res);
-          setIsParticipant(!!res.data);
+          setSeatsAvailable(!!res.data);
         })
         .catch((err) => {
           logger.error("isEventParticipant", err);
@@ -71,7 +71,7 @@ export default function EventRegister(props: Props) {
         });
 
       void isEventParticipant(props.event.id)
-        .then(async (res) => {
+        .then((res) => {
           logger.debug("isEventParticipant", res);
           setIsParticipant(!!res.data);
           setFetched(true);
@@ -90,13 +90,14 @@ export default function EventRegister(props: Props) {
       if (!data?.user) throw new Error("User not found");
       if (isParticipant) {
         await remove(props.event.id, data.user?.id);
-        await wait(1000);
+        await wait(500);
         setIsParticipant(false);
         toast.success("Registration cancelled");
       } else {
         const response = await create(props.event.id, data.user?.id);
-        await wait(1000);
-        if (response.status === StatusCodes.OK) {
+        await wait(500);
+        logger.debug(response);
+        if (response.status === StatusCodes.OK || response.status === StatusCodes.CREATED) {
           setIsParticipant(true);
           toast.success("Registered successfully");
         } else {
@@ -143,12 +144,12 @@ export default function EventRegister(props: Props) {
     return (
       <>
         <div className={cn("mt-10")}>
-          {!seatsAvailable && (
-            <Alert className="mt-6">
+          {seatsAvailable === false && (
+            <Alert className="my-6">
               <Users className="h-4 w-4" />
               <AlertTitle className="mb-2">No More Spots Available</AlertTitle>
               <AlertDescription className="mb-0 font-normal">
-               The maximum number of participants has been reached.
+                The maximum number of participants has been reached.
               </AlertDescription>
             </Alert>
           )}

@@ -55,6 +55,7 @@ import { updateLocation } from "@/server/service/event.service";
 import { StatusCodes } from "http-status-codes";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 function extractAddress(
   addressComponents: google.maps.GeocoderAddressComponent[],
@@ -212,6 +213,7 @@ export default function EventUpdateLocation(props: Props) {
 
       logger.debug("updateLocation", { response });
       toast.success("Location updated successfully");
+      revalidatePath(`/${props.event.slug}`, 'page');
       setOpen(false);
       router.refresh();
     } catch (error) {

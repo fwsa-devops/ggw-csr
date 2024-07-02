@@ -30,6 +30,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -60,6 +61,7 @@ export default function EventAddHost(props: Props) {
       if (response.status === StatusCodes.OK) {
         setOpen(false);
         toast.success("Host added");
+        revalidatePath(`/${props.eventSlug}`, 'page');
         router.refresh();
         return;
       }

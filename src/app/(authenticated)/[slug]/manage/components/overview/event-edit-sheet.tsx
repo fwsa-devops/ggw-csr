@@ -63,6 +63,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { StatusCodes } from "http-status-codes";
 import { useRouter } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 type Props = {
   children: React.ReactNode;
@@ -155,6 +156,7 @@ export function EventEditSheet(props: Props) {
       if (response.status === StatusCodes.OK) {
         toast.success("Event updated successfully");
         setOpen(false);
+      revalidatePath(`/${props.event.slug}`, 'page');
         router.refresh();
         return;
       }

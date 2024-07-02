@@ -9,7 +9,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { type Event } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,6 +23,7 @@ import logger from "@/lib/logger";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { type IEvent } from "@/server/model";
+import { revalidatePath } from "next/cache";
 
 type Props = {
   children: React.ReactNode;
@@ -47,6 +47,7 @@ export default function EventNameDialog(props: Props) {
         duration: 5000,
         dismissible: true,
       });
+      revalidatePath(`/${props.event.slug}`, 'page');
     } catch (error) {
       logger.error("Event Name Dialog error", error);
       toast.error("An error occurred. Please try again later.", {

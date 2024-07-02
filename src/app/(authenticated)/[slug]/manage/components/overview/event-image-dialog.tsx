@@ -34,6 +34,7 @@ import { type IEvent } from "@/server/model";
 import { updateImage } from "@/server/service/event.service";
 import { StatusCodes } from "http-status-codes";
 import { useRouter } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 type Props = {
   children: React.ReactNode;
@@ -86,6 +87,7 @@ export default function EventImageDialog(props: Props) {
         duration: 5000,
         dismissible: true,
       });
+      revalidatePath(`/${props.event.slug}`, 'page');
       router.refresh();
     } catch (error) {
       logger.error("Event Name Dialog error", error);

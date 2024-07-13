@@ -1,6 +1,7 @@
 import AppLayout from "@/components/layout/app-layout";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
+import { ViewTransitions } from "next-view-transitions";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,10 +18,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <AppLayout>{children}</AppLayout>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang="en">
+        <body className={inter.className}>
+          <AppLayout>{children}</AppLayout>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

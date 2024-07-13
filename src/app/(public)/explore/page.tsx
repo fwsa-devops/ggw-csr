@@ -3,9 +3,10 @@ import { StatusCodes } from "http-status-codes";
 import ExploreHeader from "./components/explore-header";
 import { cityList, eventFilter } from "@/server/service/explore.service";
 import { DateTime } from "luxon";
-import Link from "next/link";
+// import Link from "next/link";
 import EventCard from "./components/event-card";
 import { type IEvent } from "@/server/model";
+import { Link } from 'next-view-transitions'
 
 export default async function Page({
   searchParams,

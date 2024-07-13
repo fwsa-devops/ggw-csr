@@ -156,7 +156,6 @@ export function EventEditSheet(props: Props) {
       if (response.status === StatusCodes.OK) {
         toast.success("Event updated successfully");
         setOpen(false);
-      revalidatePath(`/${props.event.slug}`, 'page');
         router.refresh();
         return;
       }

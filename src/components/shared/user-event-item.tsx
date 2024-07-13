@@ -19,13 +19,13 @@ export default function UserEventItem(props: UserEventItemProps) {
     <>
       <Link href={`/${event.slug}`}>
         <div className="mb-6 flex flex-row gap-6">
-          <div className="flex w-fit flex-row">
+          <div className="flex-0">
             <Image
               src={event.image}
               alt={event.title}
-              width={1000}
-              height={1000}
-              className="h-28 w-28 rounded-lg object-cover object-center"
+              width={300}
+              height={300}
+              className=" min-w-[100px] max-w-[100px] h-full rounded-lg object-cover object-center"
             />
           </div>
           <div className="text-xs">

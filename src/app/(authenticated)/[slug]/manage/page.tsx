@@ -7,8 +7,6 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ManageOverview from "./components/manage-overview";
 import ManageParticipants from "./components/manage-participants";
-import { type Event } from "@prisma/client";
-import EventNameDialog from "./components/overview/event-name-dialog";
 import PageNotFound from "@/components/shared/page/not-found";
 import PageNotAuthorized from "@/components/shared/page/not-authorized";
 import PageForbidden from "@/components/shared/page/forbidden";

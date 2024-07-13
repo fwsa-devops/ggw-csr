@@ -29,6 +29,7 @@ import Link from "next/link";
 import { stripHtml } from "string-strip-html";
 import { type IEvent } from "@/server/model";
 import EventManageLink from "./components/event-manage-link";
+import EventParticipants2 from "./components/event-participants-2";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const response = await EventService.findBySlug(params.slug);
@@ -70,9 +71,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <>
-      <div className="ga-8 mx-auto grid w-full max-w-6xl lg:grid-cols-7 lg:gap-14">
-        <div className="col-span-4">
-          <div className="col-span-4 mb-6 w-full overflow-hidden rounded-lg max-h-[700px]">
+      <div className="ga-8 mx-auto grid w-full max-w-5xl lg:grid-cols-5 lg:gap-14">
+        <div className="col-span-1 lg:col-span-2">
+          <div className="col-span-4 mb-6 max-h-[700px] w-full overflow-hidden rounded-lg">
             <NextImage
               src={event.image}
               alt={event.title ? `Image for ${event.title}` : "Image for event"}
@@ -107,11 +108,14 @@ export default async function Page({ params }: { params: { slug: string } }) {
                 ))}
               </div>
             </div>
-            <EventParticipants participants={participants} eventId={event.id} />
+            <EventParticipants2
+              participants={participants}
+              eventId={event.id}
+            />
           </div>
         </div>
 
-        <div className="col-span-3">
+        <div className="col-span-1 lg:col-span-3">
           <div className="mb-8">
             <h1 className="mt-4 text-[2.5rem] font-extrabold leading-tight md:text-[2.75rem] lg:leading-snug">
               {event.title}
@@ -238,7 +242,7 @@ export async function generateStaticParams() {
   }
   const { data: slugs } = response;
   if (!slugs) {
-    return [];  
+    return [];
   }
   const paths = slugs.map((slug) => ({ params: { slug } }));
   return paths;

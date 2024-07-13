@@ -47,9 +47,9 @@ export default async function Page({
         />
 
         <div>
-          <div className="mx-auto max-w-6xl lg:max-w-6xl">
+          <div className="mx-auto max-w-5xl lg:max-w-5xl">
             <h2 className="mb-10 text-xl font-semibold">Upcoming Events</h2>
-            <div className="grid grid-cols-1 gap-x-10 gap-y-20 p-4 sm:grid-cols-2 md:p-0 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-x-12 gap-y-20 p-4 sm:grid-cols-2 md:p-0 lg:grid-cols-3">
               {products?.map((product) => (
                 <Link
                   key={product.id}

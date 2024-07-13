@@ -73,14 +73,8 @@ export default async function ManageLayout({
             value="participants"
             className="data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
           >
-            Registrations
+            Participants
           </TabsTrigger>
-          {/* <TabsTrigger
-            value="registration"
-            className="data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
-          >
-            Registration
-          </TabsTrigger> */}
           <TabsTrigger
             value="settings"
             className="data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
@@ -96,9 +90,6 @@ export default async function ManageLayout({
         <TabsContent value="participants">
           <ManageParticipants event={eventResponse.data} />
         </TabsContent>
-        {/* <TabsContent value="registration">
-          <ManageRegistration event={eventResponse.data} />
-        </TabsContent> */}
       </div>
     </Tabs>
   );

@@ -49,7 +49,7 @@ export default function ExploreHeader(props: ExploreHeaderProps) {
   };
 
   return (
-    <div className="mx-auto mb-10 grid w-full max-w-6xl gap-2">
+    <div className="mx-auto mb-10 grid w-full max-w-5xl gap-2">
       <h1 className="text-3xl font-semibold">Explore</h1>
       <p className="text-lg text-muted-foreground">
         Discover new events and activities from our community
@@ -62,7 +62,7 @@ export default function ExploreHeader(props: ExploreHeaderProps) {
               control={form.control}
               name="search"
               render={({ field }) => (
-                <FormItem className="w-full lg:w-7/12">
+                <FormItem className="w-full">
                   <FormLabel />
                   <FormControl>
                     <Input
@@ -80,7 +80,7 @@ export default function ExploreHeader(props: ExploreHeaderProps) {
               control={form.control}
               name="city"
               render={({ field }) => (
-                <FormItem className="w-full lg:w-3/12">
+                <FormItem className="w-full lg:w-4/12">
                   <FormLabel />
                   <FormControl>
                     <Select

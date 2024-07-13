@@ -188,7 +188,7 @@ export default function NewEventForm() {
     <>
       <FormProvider {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <div className="ga-8 mx-auto grid w-full max-w-6xl lg:grid-cols-8 lg:gap-14">
+          <div className="ga-8 mx-auto grid w-full max-w-5xl lg:grid-cols-8 lg:gap-14">
             <div className="col-span-4">
               <FormField
                 control={form.control}

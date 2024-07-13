@@ -14,6 +14,7 @@ import logger from "@/lib/logger";
 import { EventValidator } from "../validators/event.validator";
 import { CommonValidator } from "../validators/core-validator";
 import { UserValidator } from "../validators/user.validator";
+import { revalidatePath } from "next/cache";
 
 export async function findMany() {
   try {
@@ -217,6 +218,7 @@ export async function updateBasic(
     await EventValidator.isValidId(eventId);
     await EventValidator.hasAccess(eventId, user.id);
     const response = await EventDAO.updateBasic(eventId, formData);
+    revalidatePath(`/${eventId}`, "page");
     return IResponse.toJSON<Event>(200, "Event updated", response);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));

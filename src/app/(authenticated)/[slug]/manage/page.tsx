@@ -11,13 +11,17 @@ import PageNotFound from "@/components/shared/page/not-found";
 import PageNotAuthorized from "@/components/shared/page/not-authorized";
 import PageForbidden from "@/components/shared/page/forbidden";
 import PageInternalServerError from "@/components/shared/page/internal-server-error";
+import ManageSettings from "./components/manage-settings";
 
 export default async function ManageLayout({
   params,
 }: {
   params: { slug: string };
 }) {
-  const response = await EventService.hasAccess(params.slug);
+  const response = await EventService.hasAccess(params.slug, {
+    includeInActive: true,
+    includePrivate: true,
+  });
 
   console.log(response);
 
@@ -34,7 +38,10 @@ export default async function ManageLayout({
       return <PageInternalServerError />;
   }
 
-  const eventResponse = await EventService.findBySlug(params.slug);
+  const eventResponse = await EventService.findBySlug(params.slug, {
+    includeInActive: true,
+    includePrivate: true,
+  });
 
   if (eventResponse.status !== StatusCodes.OK || !eventResponse.data)
     return <PageNotFound />;
@@ -89,6 +96,9 @@ export default async function ManageLayout({
         </TabsContent>
         <TabsContent value="participants">
           <ManageParticipants event={eventResponse.data} />
+        </TabsContent>
+        <TabsContent value="settings">
+          <ManageSettings event={eventResponse.data} />
         </TabsContent>
       </div>
     </Tabs>

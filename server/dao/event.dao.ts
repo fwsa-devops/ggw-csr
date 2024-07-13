@@ -9,12 +9,31 @@ import { db } from "../db";
 import { type IEvent, type INewEvent } from "../model";
 import { generateId } from "@/lib/utils";
 
-export async function findMany() {
+export async function findMany(options?: {
+  includeInActive?: boolean;
+  includePrivate?: boolean;
+}) {
   try {
     logger.info("EventService.findMany");
+
+    const WHERE_QUERY: {
+      isActive?: boolean;
+      isPublic?: boolean;
+    } = {
+      isActive: true,
+      isPublic: true,
+    };
+
+    if (options?.includeInActive) {
+      delete WHERE_QUERY.isActive;
+    }
+
+    if (options?.includePrivate) {
+      delete WHERE_QUERY.isPublic;
+    }
+
     const events = await db.event.findMany({
-      where: {
-        isPublic: true,
+      where: Object.assign(WHERE_QUERY, {
         OR: [
           {
             endTime: {
@@ -27,8 +46,7 @@ export async function findMany() {
             },
           },
         ],
-        isActive: true,
-      },
+      }),
       select: {
         id: true,
         slug: true,
@@ -66,16 +84,34 @@ export async function findMany() {
   }
 }
 
-export async function findOne(id: string) {
+export async function findOne(
+  id: string,
+  options?: { includeInActive?: boolean; includePrivate?: boolean },
+) {
   try {
     logger.info("EventService.findOne");
     logger.debug(`Event Id: ${id}`);
+
+    const WHERE_QUERY: {
+      id: string;
+      isActive?: boolean;
+      isPublic?: boolean;
+    } = {
+      id: id,
+      isActive: true,
+      isPublic: true,
+    };
+
+    if (options?.includeInActive) {
+      delete WHERE_QUERY.isActive;
+    }
+
+    if (options?.includePrivate) {
+      delete WHERE_QUERY.isPublic;
+    }
+
     const event = await db.event.findUnique({
-      where: {
-        id: id,
-        isActive: true,
-        isPublic: true,
-      },
+      where: WHERE_QUERY,
       select: {
         id: true,
         image: true,
@@ -116,16 +152,34 @@ export async function findOne(id: string) {
   }
 }
 
-export async function findBySlug(slug: string) {
+export async function findBySlug(
+  slug: string,
+  options?: { includeInActive?: boolean; includePrivate?: boolean },
+) {
   try {
     logger.info("EventService.findOne");
     logger.debug(`Event Id: ${slug}`);
+
+    const WHERE_QUERY: {
+      slug: string;
+      isActive?: boolean;
+      isPublic?: boolean;
+    } = {
+      slug: slug,
+      isActive: true,
+      isPublic: true,
+    };
+
+    if (options?.includeInActive) {
+      delete WHERE_QUERY.isActive;
+    }
+
+    if (options?.includePrivate) {
+      delete WHERE_QUERY.isPublic;
+    }
+
     const event = await db.event.findUnique({
-      where: {
-        slug: slug,
-        isActive: true,
-        isPublic: true,
-      },
+      where: WHERE_QUERY,
       select: {
         id: true,
         slug: true,
@@ -341,6 +395,141 @@ export async function updateImage(eventId: string, url: string) {
         image: url,
       },
     });
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function openRegistration(eventId: string) {
+  try {
+    logger.info("EventDAO.openRegistration");
+    const response = await db.event.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        isParticipationOpen: true,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function closeRegistration(eventId: string) {
+  try {
+    logger.info("EventDAO.closeRegistration");
+    const response = await db.event.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        isParticipationOpen: false,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function setRegistrationLimit(eventId: string, limit: number) {
+  try {
+    logger.info("EventDAO.setRegistrationLimit");
+    const response = await db.event.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        maxParticipants: limit,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function setVisibilityPublic(eventId: string) {
+  try {
+    logger.info("EventDAO.setVisibilityPublic");
+    const response = await db.event.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        isPublic: true,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function setVisibilityPrivate(eventId: string) {
+  try {
+    logger.info("EventDAO.setVisibilityPrivate");
+    const response = await db.event.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        isPublic: false,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function openEvent(eventId: string) {
+  try {
+    logger.info("EventDAO.openEvent");
+    const response = await db.event.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        isActive: true,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function closeEvent(eventId: string) {
+  try {
+    logger.info("EventDAO.closeEvent");
+    const response = await db.event.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        isActive: false,
+        isParticipationOpen: false,
+        isPublic: false,
+      },
+    });
+
     return response;
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));

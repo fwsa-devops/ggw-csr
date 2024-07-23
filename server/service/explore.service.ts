@@ -9,15 +9,12 @@ export async function eventFilter(filter: {
   search: string;
   city: string;
   date: Date;
+  past: boolean;
 }) {
   try {
     logger.info("EventService.filter");
 
-    const filterQuery: Prisma.EventWhereInput = {
-      endTime: {
-        gte: filter.date
-      }
-    };
+    const filterQuery: Prisma.EventWhereInput = {};
 
     if (filter.search?.trim() !== "") {
       filterQuery.title = {
@@ -37,13 +34,17 @@ export async function eventFilter(filter: {
 
     const events = await db.event.findMany({
       where: {
-        AND: [filterQuery],
         isPublic: true,
+        AND: [filterQuery],
         OR: [
           {
-            endTime: {
-              gte: filter.date,
-            },
+            endTime: !filter.past
+              ? {
+                  gte: filter.date,
+                }
+              : {
+                  lte: filter.date,
+                },
           },
         ],
       },
@@ -62,7 +63,7 @@ export async function eventFilter(filter: {
         Location: true,
       },
       orderBy: {
-        startTime: "asc",
+        startTime: !!filter.past ? "desc" : "asc",
       },
     });
 
@@ -104,6 +105,28 @@ export async function getAllEventSlugs() {
       },
     });
     const response = slugs.map((slug) => slug.slug);
+    return IResponse.toJSON(200, "Slugs found", response);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    return IResponse.toJSON(500, "Internal server error", null);
+  }
+}
+
+export async function eventsByCity(city: string) {
+  try {
+    logger.info("EventService.eventsByCity");
+    const address = await db.address.findMany({
+      where: {
+        city: city,
+      },
+      include: {
+        _count: true,
+      },
+    });
+
+    logger.info(address);
+
+    const response = { location: city, count: (address ?? []).length };
     return IResponse.toJSON(200, "Slugs found", response);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));

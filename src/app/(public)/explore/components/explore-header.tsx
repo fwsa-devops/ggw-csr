@@ -25,6 +25,7 @@ type ExploreHeaderProps = {
   searchParams: {
     search: string;
     city: string;
+    past: string;
   };
 };
 
@@ -41,7 +42,17 @@ export default function ExploreHeader(props: ExploreHeaderProps) {
 
   const handleSubmit = () => {
     const { search, city } = form.getValues();
-    router.push(`?search=${search}&city=${city}`, { scroll: false });
+
+    let URI = "/explore?";
+    if (search) URI += `search=${search}&`;
+    if (city) URI += `city=${city}&`;
+    if (props.searchParams.past) URI += `past=${props.searchParams.past}`;
+    router.push(URI);
+
+    // router.push(
+    //   `?search=${encodeURIComponent(search)}&city=${encodeURIComponent(city)}&past=${encodeURIComponent(props.searchParams.past)}`,
+    //   { scroll: false },
+    // );
   };
 
   const handleReset = () => {

@@ -1,3 +1,4 @@
+import Footer from "./footer";
 import Header from "./header";
 import CustomProvider from "./providers";
 import { Toaster } from 'sonner'
@@ -12,6 +13,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
         <Toaster richColors/>
+        <Footer />
       </div>
     </CustomProvider>
   );

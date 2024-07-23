@@ -9,6 +9,7 @@ export default async function Loading({
   const valueParams = {
     search: searchParams?.search ?? "",
     city: searchParams?.city ?? "",
+    past: searchParams?.past ?? "false",
   };
 
   return (

@@ -62,7 +62,7 @@ export default function EventParticipants2(props: {
           )}
 
           <ParticipantListDialog participants={participants}>
-            <div className="isolate mb-3 flex flex-wrap -space-x-2">
+            <div className="isolate mb-3 flex flex-wrap -space-x-1">
               {participants.slice(0, 10).map((participant) => (
                 <UserAvatar key={participant.User.id} user={participant.User} />
               ))}
@@ -75,7 +75,7 @@ export default function EventParticipants2(props: {
                   .map((_u) => _u.User.name?.split(" ")[0])
                   .join(", ")
                   .concat(" and ")}
-                <span >+{participants.length - 4}</span>
+                <span className="font-bold">+{participants.length - 4}</span>
               </div>
             )}
           </ParticipantListDialog>

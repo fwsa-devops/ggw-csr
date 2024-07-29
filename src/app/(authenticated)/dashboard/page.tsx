@@ -2,6 +2,7 @@ import LocationBasedBarChart from "./components/bar-chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import RadarChart from "./components/radar-chart";
 import LineChartComponent from "./components/line-chart";
+import LeaderBoard from "./components/leader-board";
 
 export default async function Page() {
 
@@ -56,6 +57,10 @@ export default async function Page() {
             </div>
             <div className="col-span-4">
               <LineChartComponent />
+            </div>
+
+              <div className="col-span-4">
+              <LeaderBoard />
             </div>
           </div>
         </div>

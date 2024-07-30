@@ -2,7 +2,7 @@ import Footer from "./footer";
 import Header from "./header";
 import CustomProvider from "./providers";
 import { Toaster } from 'sonner'
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,6 +13,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
         <Toaster richColors/>
+        <SpeedInsights />
         <Footer />
       </div>
     </CustomProvider>

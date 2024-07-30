@@ -10,11 +10,11 @@ import Link from "next/link";
 import UserAvatar from "@/components/ui/user-avatar";
 import { Button } from "@/components/ui/button";
 import { EventEditSheet } from "./overview/event-edit-sheet";
-import { cn } from "@/lib/utils";
-import { MapPin } from "lucide-react";
-import { DateTime } from "luxon";
+import { createGoogleCalendarLink } from "@/lib/utils";
 import EventUpdateLocation from "./overview/event-update-location";
 import { useLoadScript } from "@react-google-maps/api";
+import EventDate from "@/app/(public)/[slug]/components/event-date";
+import EventLocation from "@/app/(public)/[slug]/components/event-location";
 
 type Props = {
   event: IEvent;
@@ -29,12 +29,7 @@ export default function ManageOverview(props: Props) {
     language: "en",
   });
 
-  const MONTH = DateTime.fromJSDate(event.startTime).toFormat("LLL");
-  const DAY = DateTime.fromJSDate(event.startTime).toFormat("dd");
-
-  const DATE = DateTime.fromJSDate(event.startTime).toFormat("EEEE, LLLL d");
-  const START_TIME = DateTime.fromJSDate(event.startTime).toFormat("h:mm a");
-  const END_TIME = DateTime.fromJSDate(event.endTime).toFormat("h:mm a ZZZZ");
+  const url = createGoogleCalendarLink(event);
 
   return (
     <>
@@ -70,55 +65,20 @@ export default function ManageOverview(props: Props) {
 
                   <div className="mb-auto">
                     <div className="my-3">
-                      <div className="group flex flex-row items-center gap-3 text-muted-foreground">
-                        <div className="flex h-16 min-w-[64px] flex-col items-center overflow-hidden rounded-md border px-0 text-center shadow-sm">
-                          <small className="w-full bg-gray-300 text-sm font-medium dark:bg-gray-800">
-                            {MONTH}
-                          </small>
-                          <p className="text-md m-0 py-1"> {DAY} </p>
-                        </div>
-
-                        <div className="">
-                          <h3 className="mb-1 flex items-center text-[1rem] font-semibold">
-                            {DATE}
-                          </h3>
-                          <p className="text-sm">
-                            <time
-                              dateTime={props.event.startTime.toISOString()}
-                            >
-                              {START_TIME}
-                            </time>{" "}
-                            -{" "}
-                            <time dateTime={props.event.endTime.toISOString()}>
-                              {END_TIME}
-                            </time>
-                          </p>
-                        </div>
-                      </div>
+                      <EventDate
+                        startTime={event.startTime}
+                        endTime={event.endTime}
+                        timezone={event.timezone}
+                        calender={url}
+                      />
                     </div>
 
                     <div className="my-3">
-                      <div
-                        className={cn(
-                          "group flex flex-row items-center gap-3 text-muted-foreground",
-                        )}
-                      >
-                        <div className="flex h-16 min-w-[64px] flex-col items-center justify-center overflow-hidden rounded-md border px-0 text-center shadow-sm">
-                          <MapPin className="text-white-400 h-7 w-7" />
-                        </div>
-
-                        <div className="group">
-                          <h3 className="mb-1 flex items-center text-[1rem] font-semibold">
-                            <span className="line-clamp-1 overflow-auto truncate text-wrap">
-                              {`${props.event.Address.name ?? ""} ${props.event.Address.street}`}
-                            </span>
-                          </h3>
-                          <p className="text-sm">
-                            {props.event.Address.city},{" "}
-                            {props.event.Address.state}
-                          </p>
-                        </div>
-                      </div>
+                      <EventLocation
+                        className="my-4"
+                        location={event.Location}
+                        address={event.Address}
+                      />
                     </div>
                   </div>
 

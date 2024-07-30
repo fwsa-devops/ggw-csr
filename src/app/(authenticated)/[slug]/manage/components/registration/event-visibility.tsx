@@ -11,46 +11,47 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import logger from "@/lib/logger";
 import { type IEvent } from "@/server/model";
-import { Ticket } from "lucide-react";
+import { Settings, Ticket } from "lucide-react";
 import * as EventService from "@/server/service/event.service";
 import { StatusCodes } from "http-status-codes";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import logger from "@/lib/logger";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 type Props = {
   event: IEvent;
 };
 
-export default function RegistrationStatus(props: Props) {
+export default function EventVisibility(props: Props) {
   const router = useRouter();
 
-  const openRegistration = async () => {
+  const setVisibilityPublic = async () => {
     try {
-      logger.error("openRegistration");
-      const response = await EventService.openRegistration(props.event.id);
+      logger.error("Event PUBLIC");
+      const response = await EventService.setVisibilityPublic(props.event.id);
       if (response?.status !== StatusCodes.OK) {
         throw new Error(response?.message);
       }
-      toast.success("Registration is Now open");
+      toast.success("Registration is Now public");
       router.refresh();
     } catch (error) {
       logger.error("Error openRegistration", error);
-      toast.error("Failed to open registration");
+      toast.error("Failed to update event Visibility");
     }
   };
 
-  const closeRegistration = async () => {
+  const setVisibilityPrivate = async () => {
     try {
-      logger.error("openRegistration");
-      const response = await EventService.closeRegistration(props.event.id);
+      logger.error("Event PRIVATE");
+      const response = await EventService.setVisibilityPrivate(props.event.id);
       logger.debug(response);
       if (response?.status !== StatusCodes.OK) {
         throw new Error(response?.message);
       }
-      toast.success("Registration is Now closed");
+      toast.success("Registration is Now Private");
       router.refresh();
     } catch (error) {
       logger.error("Error openRegistration", error);
@@ -63,14 +64,14 @@ export default function RegistrationStatus(props: Props) {
       <AlertDialog>
         <AlertDialogTrigger>
           <div className="flex flex-row items-center gap-3 rounded-md border px-3 py-2">
-            <Ticket className="h-full w-fit rounded-md bg-blue-500 p-2 text-primary-foreground" />
+            <Settings className="h-full w-fit rounded-md bg-yellow-500 p-2 text-primary-foreground" />
             <div className="flex w-full flex-row items-center justify-between text-left">
-              <h2 className="text-xl font-medium">Registration</h2>
+              <h2 className="text-xl font-medium">Visibility</h2>
               <p className="text-sm text-muted-foreground">
-                {props.event.isParticipationOpen ? (
-                  <Badge variant={"default"}>Open</Badge>
+                {props.event.isPublic ? (
+                  <Badge variant={"default"}>Public</Badge>
                 ) : (
-                  <Badge variant={"destructive"}>Closed</Badge>
+                  <Badge variant={"destructive"}>Private</Badge>
                 )}
               </p>
             </div>
@@ -78,7 +79,7 @@ export default function RegistrationStatus(props: Props) {
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Registration</AlertDialogTitle>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete your
               account and remove your data from our servers.
@@ -86,14 +87,14 @@ export default function RegistrationStatus(props: Props) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel> Cancel </AlertDialogCancel>
-            {!props.event.isParticipationOpen && (
-              <AlertDialogAction onClick={openRegistration}>
-                Open
+            {!props.event.isPublic && (
+              <AlertDialogAction asChild onClick={setVisibilityPublic}>
+                <Button variant={"default"}>Public</Button>
               </AlertDialogAction>
             )}
-            {props.event.isParticipationOpen && (
-              <AlertDialogAction onClick={closeRegistration}>
-                Close
+            {props.event.isPublic && (
+              <AlertDialogAction asChild onClick={setVisibilityPrivate}>
+                <Button variant={"destructive"}>Private</Button>
               </AlertDialogAction>
             )}
           </AlertDialogFooter>

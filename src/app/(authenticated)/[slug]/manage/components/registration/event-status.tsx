@@ -11,50 +11,51 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import logger from "@/lib/logger";
 import { type IEvent } from "@/server/model";
-import { Ticket } from "lucide-react";
+import { Settings, Ticket } from "lucide-react";
 import * as EventService from "@/server/service/event.service";
 import { StatusCodes } from "http-status-codes";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import logger from "@/lib/logger";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 type Props = {
   event: IEvent;
 };
 
-export default function RegistrationStatus(props: Props) {
+export default function EventStatus(props: Props) {
   const router = useRouter();
 
-  const openRegistration = async () => {
+  const openEvent = async () => {
     try {
-      logger.error("openRegistration");
-      const response = await EventService.openRegistration(props.event.id);
+      logger.error("openEvent");
+      const response = await EventService.openEvent(props.event.id);
       if (response?.status !== StatusCodes.OK) {
         throw new Error(response?.message);
       }
       toast.success("Registration is Now open");
       router.refresh();
     } catch (error) {
-      logger.error("Error openRegistration", error);
-      toast.error("Failed to open registration");
+      logger.error("Error openEvent", error);
+      toast.error("Failed to update event status");
     }
   };
 
-  const closeRegistration = async () => {
+  const closeEvent = async () => {
     try {
-      logger.error("openRegistration");
-      const response = await EventService.closeRegistration(props.event.id);
+      logger.error("closeEvent");
+      const response = await EventService.closeEvent(props.event.id);
       logger.debug(response);
       if (response?.status !== StatusCodes.OK) {
         throw new Error(response?.message);
       }
-      toast.success("Registration is Now closed");
+      toast.success("Event in now InActive");
       router.refresh();
     } catch (error) {
-      logger.error("Error openRegistration", error);
-      toast.error("Failed to Close registration");
+      logger.error("Error closeEvent", error);
+      toast.error("Failed to update event status");
     }
   };
 
@@ -63,14 +64,14 @@ export default function RegistrationStatus(props: Props) {
       <AlertDialog>
         <AlertDialogTrigger>
           <div className="flex flex-row items-center gap-3 rounded-md border px-3 py-2">
-            <Ticket className="h-full w-fit rounded-md bg-blue-500 p-2 text-primary-foreground" />
-            <div className="flex w-full flex-row items-center justify-between text-left">
-              <h2 className="text-xl font-medium">Registration</h2>
+            <Settings className="h-full w-fit rounded-md bg-red-500 p-2 text-primary-foreground" />
+            <div className="text-left w-full flex flex-row justify-between items-center">
+              <h2 className="text-xl font-medium">Event</h2>
               <p className="text-sm text-muted-foreground">
-                {props.event.isParticipationOpen ? (
-                  <Badge variant={"default"}>Open</Badge>
+                {props.event.isActive ? (
+                  <Badge variant={'default'}>Active</Badge>
                 ) : (
-                  <Badge variant={"destructive"}>Closed</Badge>
+                  <Badge variant={'destructive'}>In-Active</Badge>
                 )}
               </p>
             </div>
@@ -78,7 +79,7 @@ export default function RegistrationStatus(props: Props) {
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Registration</AlertDialogTitle>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete your
               account and remove your data from our servers.
@@ -86,14 +87,14 @@ export default function RegistrationStatus(props: Props) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel> Cancel </AlertDialogCancel>
-            {!props.event.isParticipationOpen && (
-              <AlertDialogAction onClick={openRegistration}>
-                Open
+            {!props.event.isActive && (
+              <AlertDialogAction asChild onClick={openEvent}>
+                <Button variant={"default"}>Open</Button>
               </AlertDialogAction>
             )}
-            {props.event.isParticipationOpen && (
-              <AlertDialogAction onClick={closeRegistration}>
-                Close
+            {props.event.isActive && (
+              <AlertDialogAction asChild onClick={closeEvent}>
+                <Button variant={"destructive"}>Archive</Button>
               </AlertDialogAction>
             )}
           </AlertDialogFooter>

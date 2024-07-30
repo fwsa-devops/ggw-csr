@@ -3,9 +3,10 @@ import { StatusCodes } from "http-status-codes";
 import ExploreHeader from "./components/explore-header";
 import { cityList, eventFilter } from "@/server/service/explore.service";
 import { DateTime } from "luxon";
-import Link from "next/link";
 import EventCard from "./components/event-card";
 import { type IEvent } from "@/server/model";
+import { Link } from "next-view-transitions";
+import EventTimelineToggler from "./components/event-timeline-toggler";
 
 export default async function Page({
   searchParams,
@@ -15,13 +16,16 @@ export default async function Page({
   const valueParams = {
     search: searchParams?.search ?? "",
     city: searchParams?.city ?? "",
+    past: searchParams?.past === "true" ? "true" : "false",
   };
 
   const response = await eventFilter({
     search: valueParams.search ?? "",
     city: valueParams.city ?? "",
     date: DateTime.local().toJSDate(),
+    past: valueParams.past === "true",
   });
+
   const { status, data } = response;
   let products = data;
 
@@ -46,9 +50,14 @@ export default async function Page({
         />
 
         <div>
-          <div className="mx-auto max-w-6xl lg:max-w-6xl">
-            <h2 className="mb-10 text-xl font-semibold">Upcoming Events</h2>
-            <div className="grid grid-cols-1 gap-x-10 gap-y-20 p-4 sm:grid-cols-2 md:p-0 lg:grid-cols-3">
+          <div className="mx-auto max-w-5xl lg:max-w-5xl">
+            <div className="mb-10 flex items-center justify-between">
+              <h2 className="text-2xl font-semibold">Events</h2>
+              <div>
+                <EventTimelineToggler searchParams={valueParams} />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-x-12 gap-y-20 p-4 sm:grid-cols-2 md:p-0 lg:grid-cols-3">
               {products?.map((product) => (
                 <Link
                   key={product.id}

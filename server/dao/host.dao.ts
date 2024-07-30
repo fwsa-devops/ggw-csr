@@ -25,7 +25,11 @@ export async function findMany(eventId: string) {
   }
 }
 
-export async function findOne(eventId: string, userId: string) {
+export async function findOne(
+  eventId: string,
+  userId: string,
+  options?: { includeInActive?: boolean, includePrivate?: boolean },
+) {
   try {
     logger.info("HostDAO.findOne");
     const host = await db.eventHost.findUnique({

@@ -7,11 +7,14 @@ import * as HostDAO from "../dao/host.dao";
 import { DateTime } from "luxon";
 
 export class EventValidator {
-  public static async isValidId(eventId: string) {
+  public static async isValidId(
+    eventId: string,
+    options?: { includeInActive?: boolean; includePrivate?: boolean },
+  ) {
     try {
       logger.info("UserValidator.existById");
       CommonValidator.ID(eventId);
-      const user = await EventDAO.findOne(eventId);
+      const user = await EventDAO.findOne(eventId, options);
       if (!user) {
         throw Exception.EVENT_NOT_FOUND("Event not found");
       }
@@ -22,11 +25,14 @@ export class EventValidator {
     }
   }
 
-  public static async isValidSlug(slug: string) {
+  public static async isValidSlug(
+    slug: string,
+    options?: { includeInActive?: boolean; includePrivate?: boolean },
+  ) {
     try {
       logger.info("UserValidator.existById");
       CommonValidator.INPUT("Slug", slug);
-      const user = await EventDAO.findBySlug(slug);
+      const user = await EventDAO.findBySlug(slug, options);
       if (!user) {
         throw Exception.EVENT_NOT_FOUND("Event not found");
       }
@@ -45,9 +51,9 @@ export class EventValidator {
       if (!event) {
         throw Exception.EVENT_NOT_FOUND("Event not found");
       }
-      const dateTime = DateTime.local().toJSDate()
-      if( event.endTime < dateTime ){
-        throw Exception.THROW("Event has expired")
+      const dateTime = DateTime.local().toJSDate();
+      if (event.endTime < dateTime) {
+        throw Exception.THROW("Event has expired");
       }
       return !!event?.isActive;
     } catch (error) {
@@ -56,14 +62,20 @@ export class EventValidator {
     }
   }
 
-  public static async hasAccess(eventId: string, userId: string) {
+  public static async hasAccess(
+    eventId: string,
+    userId: string,
+    options?: { includeInActive?: boolean; includePrivate?: boolean },
+  ) {
     try {
       logger.info("UserValidator.existById");
       CommonValidator.ID(eventId);
       CommonValidator.ID(userId);
       await UserValidator.isValidId(userId);
-      await EventValidator.isValidId(eventId);
-      const isHost = await HostDAO.findOne(eventId, userId);
+      await EventValidator.isValidId(eventId, options);
+      const isHost = await HostDAO.findOne(eventId, userId, {
+        includeInActive: true,
+      });
       if (!isHost) {
         throw Exception.UNAUTHORIZED("User does not have access");
       }

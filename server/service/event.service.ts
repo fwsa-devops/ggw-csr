@@ -14,6 +14,7 @@ import logger from "@/lib/logger";
 import { EventValidator } from "../validators/event.validator";
 import { CommonValidator } from "../validators/core-validator";
 import { UserValidator } from "../validators/user.validator";
+import { revalidatePath } from "next/cache";
 
 export async function findMany() {
   try {
@@ -89,11 +90,14 @@ export async function findById(id: string) {
   }
 }
 
-export async function findBySlug(slug: string) {
+export async function findBySlug(
+  slug: string,
+  options?: { includeInActive?: boolean; includePrivate?: boolean },
+) {
   try {
     logger.info("EventService.findBySlug");
-    await EventValidator.isValidSlug(slug);
-    const response = await EventDAO.findBySlug(slug);
+    await EventValidator.isValidSlug(slug, options);
+    const response = await EventDAO.findBySlug(slug, options);
     if (!response) return IResponse.toJSON<null>(404, "Event not found", null);
     return IResponse.toJSON(200, "Events found", response);
   } catch (error) {
@@ -112,7 +116,10 @@ export async function eventDetails(slug: string) {
     logger.info("EventService.eventDetails");
     await EventValidator.isValidSlug(slug);
 
-    const { data: event } = await findBySlug(slug);
+    const { data: event } = await findBySlug(slug, {
+      includeInActive: true,
+      includePrivate: true,
+    });
     if (!event) {
       return IResponse.toJSON<null>(404, "Event not found", null);
     }
@@ -141,13 +148,15 @@ export async function eventDetails(slug: string) {
   }
 }
 
-export async function hasAccess(slug: string) {
+export async function hasAccess(
+  slug: string,
+  options?: { includeInActive?: boolean; includePrivate?: boolean },
+) {
   try {
     logger.info("EventService.hasAccess");
     const session = await SessionValidator.validateSession();
-    const event = await EventValidator.isValidSlug(slug);
-    await EventValidator.hasAccess(event.id, session.id);
-
+    const event = await EventValidator.isValidSlug(slug, options);
+    await EventValidator.hasAccess(event.id, session.id, options);
     return IResponse.toJSON(200, "User has access", null);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
@@ -164,9 +173,16 @@ export async function addHost(eventSlug: string, newHostEmail: string) {
     logger.info("eventSlug", eventSlug);
     logger.info("newHostEmail", newHostEmail);
     const session = await SessionValidator.validateSession();
-    const event = await EventValidator.isValidSlug(eventSlug);
     const user = await UserValidator.isValidEmail(newHostEmail);
-    await EventValidator.hasAccess(event.id, session.id);
+
+    const event = await EventValidator.isValidSlug(eventSlug, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventValidator.hasAccess(event.id, session.id, {
+      includeInActive: true,
+      includePrivate: true,
+    });
     const alreadyExists = await EventValidator.hasAccessBoolean(
       event.id,
       user.id,
@@ -187,9 +203,15 @@ export async function removeHost(eventId: string, hostId: string) {
   try {
     logger.info("EventService.removeHost");
     await SessionValidator.validateSession();
-    const event = await EventValidator.isValidSlug(eventId);
     const user = await UserValidator.isValidId(hostId);
-    await EventValidator.hasAccess(eventId, hostId);
+    const event = await EventValidator.isValidSlug(eventId, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventValidator.hasAccess(eventId, hostId, {
+      includeInActive: true,
+      includePrivate: true,
+    });
     await HostDAO.remove(event.id, user.id);
     return IResponse.toJSON(200, "Host removed", null);
   } catch (error) {
@@ -214,9 +236,17 @@ export async function updateBasic(
   try {
     logger.info("EventService.updateBasic");
     const user = await SessionValidator.validateSession();
-    await EventValidator.isValidId(eventId);
-    await EventValidator.hasAccess(eventId, user.id);
+    await EventValidator.isValidId(eventId, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventValidator.hasAccess(eventId, user.id, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+
     const response = await EventDAO.updateBasic(eventId, formData);
+    revalidatePath(`/${eventId}`, "page");
     return IResponse.toJSON<Event>(200, "Event updated", response);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
@@ -250,8 +280,14 @@ export async function updateLocation(
   try {
     logger.info("EventService.updateLocation");
     const user = await SessionValidator.validateSession();
-    await EventValidator.isValidId(eventId);
-    await EventValidator.hasAccess(eventId, user.id);
+    await EventValidator.isValidId(eventId, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventValidator.hasAccess(eventId, user.id, {
+      includeInActive: true,
+      includePrivate: true,
+    });
     await EventValidator.isValidLocationId(formData.location.id);
     await EventValidator.isValidAddressId(formData.address.id);
     await EventDAO.updateLocation(formData.location.id, formData.location);
@@ -271,10 +307,185 @@ export async function updateImage(eventId: string, url: string) {
     logger.info("EventService.updateImage");
     CommonValidator.URL(url);
     const user = await SessionValidator.validateSession();
-    await EventValidator.isValidId(eventId);
-    await EventValidator.hasAccess(eventId, user.id);
+    await EventValidator.isValidId(eventId, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventValidator.hasAccess(eventId, user.id, {
+      includeInActive: true,
+      includePrivate: true,
+    });
     await EventDAO.updateImage(eventId, url);
     return IResponse.toJSON(200, "Event Image Updated", null);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}
+
+export async function openRegistration(eventId: string) {
+  try {
+    logger.info("EventService.openRegistration");
+    CommonValidator.ID(eventId);
+    const user = await SessionValidator.validateSession();
+    await EventValidator.isValidId(eventId, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventValidator.hasAccess(eventId, user.id, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventDAO.openRegistration(eventId);
+    return IResponse.toJSON(200, "Registration open", null);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}
+
+export async function closeRegistration(eventId: string) {
+  try {
+    logger.info("EventService.closeRegistration");
+    CommonValidator.ID(eventId);
+    const user = await SessionValidator.validateSession();
+    await EventValidator.isValidId(eventId, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventValidator.hasAccess(eventId, user.id, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventDAO.closeRegistration(eventId);
+    return IResponse.toJSON(200, "Registration Closed", null);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}
+
+export async function setRegistrationLimit(eventId: string, limit: number) {
+  try {
+    logger.info("EventService.closeRegistration");
+    CommonValidator.ID(eventId);
+    CommonValidator.NUMBER(limit);
+    const user = await SessionValidator.validateSession();
+    await EventValidator.isValidId(eventId, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventValidator.hasAccess(eventId, user.id, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventDAO.setRegistrationLimit(eventId, limit);
+    return IResponse.toJSON(200, "Registration Limit Updated", null);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}
+
+export async function setVisibilityPublic(eventId: string) {
+  try {
+    logger.info("EventService.setVisibilityPublic");
+    CommonValidator.ID(eventId);
+    const user = await SessionValidator.validateSession();
+    await EventValidator.isValidId(eventId, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventValidator.hasAccess(eventId, user.id, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventDAO.setVisibilityPublic(eventId);
+    return IResponse.toJSON(200, "Event Visibility Updated", null);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}
+
+export async function setVisibilityPrivate(eventId: string) {
+  try {
+    logger.info("EventService.setVisibilityPrivate");
+    CommonValidator.ID(eventId);
+    const user = await SessionValidator.validateSession();
+    await EventValidator.isValidId(eventId, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventValidator.hasAccess(eventId, user.id, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventDAO.setVisibilityPrivate(eventId);
+    return IResponse.toJSON(200, "Event Visibility Updated", null);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}
+
+export async function openEvent(eventId: string) {
+  try {
+    logger.info("EventService.openEvent");
+    CommonValidator.ID(eventId);
+    const user = await SessionValidator.validateSession();
+    await EventValidator.isValidId(eventId, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventValidator.hasAccess(eventId, user.id, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventDAO.openEvent(eventId);
+    return IResponse.toJSON(200, "Event is Active", null);
+  } catch (error) {
+    logger.error(JSON.stringify(error, null, 2));
+    if (isException(error)) {
+      return IResponse.toJSON<null>(error.code, error.message, null);
+    }
+    return IResponse.toJSON<null>(500, "Internal server error", null);
+  }
+}
+
+export async function closeEvent(eventId: string) {
+  try {
+    logger.info("EventService.closeEvent");
+    CommonValidator.ID(eventId);
+    const user = await SessionValidator.validateSession();
+    await EventValidator.isValidId(eventId, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventValidator.hasAccess(eventId, user.id, {
+      includeInActive: true,
+      includePrivate: true,
+    });
+    await EventDAO.closeEvent(eventId);
+    return IResponse.toJSON(200, "Event is In-Active", null);
   } catch (error) {
     logger.error(JSON.stringify(error, null, 2));
     if (isException(error)) {

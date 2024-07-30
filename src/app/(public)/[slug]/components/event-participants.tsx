@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import UserAvatar from "@/components/ui/user-avatar";
 import { findMany } from "@/server/service/participant.service";
@@ -45,15 +46,17 @@ export default function EventParticipants(props: {
       </h2>
       <Separator />
       <div className="mt-4 text-muted-foreground">
-        <div className="isolate flex flex-wrap gap-2">
-          {participants.map((participant) => (
-            <UserAvatar key={participant.User.id} user={participant.User} />
-          ))}
+        {/* <ScrollArea className="max-h-[500px] overflow-auto"> */}
+          <div className="isolate flex flex-wrap gap-2">
+            {participants.map((participant) => (
+              <UserAvatar key={participant.User.id} user={participant.User} />
+            ))}
 
-          {participants.length === 0 && (
-            <p>Be the first to register for this event!</p>
-          )}
-        </div>
+            {participants.length === 0 && (
+              <p>Be the first to register for this event!</p>
+            )}
+          </div>
+        {/* </ScrollArea> */}
       </div>
     </div>
   );

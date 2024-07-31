@@ -5,7 +5,6 @@ import LineChartComponent from "./components/line-chart";
 import LeaderBoard from "./components/leader-board";
 
 export default async function Page() {
-
   return (
     <>
       <div className="mx-auto mb-10 grid w-full max-w-5xl gap-2">
@@ -59,7 +58,7 @@ export default async function Page() {
               <LineChartComponent />
             </div>
 
-              <div className="col-span-4">
+            <div className="col-span-4">
               <LeaderBoard />
             </div>
           </div>

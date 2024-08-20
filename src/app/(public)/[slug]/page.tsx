@@ -13,23 +13,22 @@ import { Separator } from "@/components/ui/separator";
 import * as EventService from "@/server/service/event.service";
 import { StatusCodes } from "http-status-codes";
 import EventAddress from "./components/event-address";
-import EventRegister from "./components/event-register";
+
 
 import { findMany } from "@/server/service/participant.service";
 import { type User } from "@prisma/client";
 import UserAvatar from "@/components/ui/user-avatar";
 import { createGoogleCalendarLink } from "@/lib/utils";
-import { DateTime } from "luxon";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { ArrowUpRight, CalendarCheck, MinusCircle } from "lucide-react";
+
 import { getAllEventSlugs } from "@/server/service/explore.service";
 import EventParticipants from "./components/event-participants";
 import { type Metadata, type ResolvingMetadata } from "next";
 import Link from "next/link";
 import { stripHtml } from "string-strip-html";
-import { type IEvent } from "@/server/model";
+
 import EventManageLink from "./components/event-manage-link";
 import EventParticipants2 from "./components/event-participants-2";
+import { EventStateManager } from "./components/event-state";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const response = await EventService.findBySlug(params.slug);
@@ -53,19 +52,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
       User: User;
     }[];
   }
-
-  const hasEventEnded = () => {
-    return (
-      DateTime.fromJSDate(event.endTime).toMillis() < DateTime.now().toMillis()
-    );
-  };
-
-  const hasEventStarted = () => {
-    return (
-      DateTime.fromJSDate(event.startTime).toMillis() <
-      DateTime.now().toMillis()
-    );
-  };
 
   const url = createGoogleCalendarLink(event);
 
@@ -135,7 +121,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
               address={event.Address}
             />
 
-            <EventStateManager event={event} />
+            <EventStateManager id={event.slug} />
 
             <div className="mt-6 block lg:hidden">
               <div className="mb-6">
@@ -187,53 +173,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
     </>
   );
 }
-
-const EventEndedAlert = ({ event }: { event: IEvent }) => (
-  <Alert className="mt-6">
-    <CalendarCheck className="h-4 w-4" />
-    <AlertTitle className="mb-2">Event has ended</AlertTitle>
-    <AlertDescription className="mb-0 font-normal">
-      This event ended {DateTime.fromJSDate(event.endTime).toRelative()}.
-    </AlertDescription>
-  </Alert>
-);
-
-const RegistrationClosedAlert = () => (
-  <Alert className="mt-6 bg-muted">
-    <MinusCircle className="h-4 w-4" />
-    <AlertTitle className="mb-3 font-normal">Registration Closed</AlertTitle>
-    <AlertDescription className="mb-0 font-normal leading-6 text-muted-foreground">
-      This event is not currently accepting registrations. You may contact the
-      event host for more information.
-    </AlertDescription>
-  </Alert>
-);
-
-const EventRegisterComponent = ({ event }: { event: IEvent }) => (
-  <EventRegister event={event} />
-);
-
-const isEventEnded = (event: IEvent) => {
-  return DateTime.now() > DateTime.fromJSDate(event.endTime);
-};
-
-const isRegistrationClosed = (event: IEvent) => {
-  return !event.isParticipationOpen && !isEventEnded(event);
-};
-
-const EventStateManager = ({ event }: { event: IEvent }) => {
-  return (
-    <>
-      {isEventEnded(event) && <EventEndedAlert event={event} />}
-
-      {isRegistrationClosed(event) && <RegistrationClosedAlert />}
-
-      {!(isEventEnded(event) || isRegistrationClosed(event)) && (
-        <EventRegisterComponent event={event} />
-      )}
-    </>
-  );
-};
 
 export async function generateStaticParams() {
   const response = await getAllEventSlugs();

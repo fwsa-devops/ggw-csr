@@ -1,5 +1,15 @@
-import type { CollectionConfig } from 'payload'
-
+import { admin } from '@/access/admin'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+import { CollectionConfig } from 'payload'
+import { Categories } from '../Categories'
+import { slugField } from '@/fields/slug'
+import {
+  MetaDescriptionField,
+  MetaImageField,
+  MetaTitleField,
+  OverviewField,
+  PreviewField,
+} from '@payloadcms/plugin-seo/fields'
 import {
   BlocksFeature,
   FixedToolbarFeature,
@@ -8,37 +18,16 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+import { revalidateEvent } from './hooks/revalidateEvent'
 
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { Banner } from '../../blocks/Banner/config'
-import { Code } from '../../blocks/Code/config'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-import { populateAuthors } from './hooks/populateAuthors'
-import { revalidatePost } from './hooks/revalidatePost'
-
-import {
-  MetaDescriptionField,
-  MetaImageField,
-  MetaTitleField,
-  OverviewField,
-  PreviewField,
-} from '@payloadcms/plugin-seo/fields'
-import { slugField } from '@/fields/slug'
-import { getServerSideURL } from '@/utilities/getURL'
-import { admin } from '@/access/admin'
-
-export const Posts: CollectionConfig<'posts'> = {
-  slug: 'posts',
+export const Events: CollectionConfig<'events'> = {
+  slug: 'events',
   access: {
     create: admin,
     delete: admin,
     read: authenticatedOrPublished,
     update: admin,
   },
-  // This config controls what's populated by default when a post is referenced
-  // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
-  // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'posts'>
   defaultPopulate: {
     title: true,
     slug: true,
@@ -48,27 +37,27 @@ export const Posts: CollectionConfig<'posts'> = {
       description: true,
     },
   },
+
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
-    livePreview: {
-      url: ({ data }) => {
-        const path = generatePreviewPath({
-          slug: typeof data?.slug === 'string' ? data.slug : '',
-          collection: 'posts',
-        })
+    useAsTitle: 'title',
 
-        return `${getServerSideURL()}${path}`
+    // TODO: Implement the live preview
+    // livePreview: {},
+    // preview: {}
+  },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100, // We set this interval for optimal live preview
       },
     },
-    preview: (data) => {
-      const path = generatePreviewPath({
-        slug: typeof data?.slug === 'string' ? data.slug : '',
-        collection: 'posts',
-      })
-
-      return `${getServerSideURL()}${path}`
-    },
-    useAsTitle: 'title',
+    maxPerDoc: 50,
+  },
+  hooks: {
+    // TODO: Implement hooks for Event
+    afterChange: [revalidateEvent],
+    afterRead: [],
   },
   fields: [
     {
@@ -89,7 +78,7 @@ export const Posts: CollectionConfig<'posts'> = {
                   return [
                     ...rootFeatures,
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
+                    BlocksFeature({ blocks: [] }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
@@ -147,7 +136,6 @@ export const Posts: CollectionConfig<'posts'> = {
             MetaImageField({
               relationTo: 'media',
             }),
-
             MetaDescriptionField({}),
             PreviewField({
               // if the `generateUrl` function is configured
@@ -161,6 +149,7 @@ export const Posts: CollectionConfig<'posts'> = {
         },
       ],
     },
+
     {
       name: 'publishedAt',
       type: 'date',
@@ -181,6 +170,7 @@ export const Posts: CollectionConfig<'posts'> = {
         ],
       },
     },
+
     {
       name: 'authors',
       type: 'relationship',
@@ -190,9 +180,6 @@ export const Posts: CollectionConfig<'posts'> = {
       hasMany: true,
       relationTo: 'users',
     },
-    // This field is only used to populate the user data via the `populateAuthors` hook
-    // This is because the `user` collection has access control locked to protect user privacy
-    // GraphQL will also not return mutated user data that differs from the underlying schema
     {
       name: 'populatedAuthors',
       type: 'array',
@@ -216,16 +203,4 @@ export const Posts: CollectionConfig<'posts'> = {
     },
     ...slugField(),
   ],
-  hooks: {
-    afterChange: [revalidatePost],
-    afterRead: [populateAuthors],
-  },
-  versions: {
-    drafts: {
-      autosave: {
-        interval: 100, // We set this interval for optimal live preview
-      },
-    },
-    maxPerDoc: 50,
-  },
 }

@@ -37,7 +37,6 @@ export const Events: CollectionConfig<'events'> = {
       description: true,
     },
   },
-
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     useAsTitle: 'title',
@@ -88,13 +87,19 @@ export const Events: CollectionConfig<'events'> = {
               label: false,
               required: true,
             },
+            {
+              name: 'poster',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+            },
           ],
           label: 'Content',
         },
         {
           fields: [
             {
-              name: 'relatedPosts',
+              name: 'relatedEvents',
               type: 'relationship',
               admin: {
                 position: 'sidebar',
@@ -107,7 +112,7 @@ export const Events: CollectionConfig<'events'> = {
                 }
               },
               hasMany: true,
-              relationTo: 'posts',
+              relationTo: 'events',
             },
             {
               name: 'categories',
@@ -170,15 +175,16 @@ export const Events: CollectionConfig<'events'> = {
         ],
       },
     },
-
     {
       name: 'authors',
+      label: 'Host',
       type: 'relationship',
       admin: {
         position: 'sidebar',
       },
       hasMany: true,
       relationTo: 'users',
+      required: true
     },
     {
       name: 'populatedAuthors',

@@ -654,7 +654,8 @@ export interface Event {
     };
     [k: string]: unknown;
   };
-  relatedPosts?: (number | Post)[] | null;
+  poster: number | Media;
+  relatedEvents?: (number | Event)[] | null;
   categories?: (number | Category)[] | null;
   meta?: {
     title?: string | null;
@@ -662,7 +663,7 @@ export interface Event {
     description?: string | null;
   };
   publishedAt?: string | null;
-  authors?: (string | User)[] | null;
+  authors: (string | User)[];
   populatedAuthors?:
     | {
         id?: string | null;
@@ -959,7 +960,8 @@ export interface PagesSelect<T extends boolean = true> {
 export interface EventsSelect<T extends boolean = true> {
   title?: T;
   content?: T;
-  relatedPosts?: T;
+  poster?: T;
+  relatedEvents?: T;
   categories?: T;
   meta?:
     | T

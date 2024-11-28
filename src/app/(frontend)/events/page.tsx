@@ -1,21 +1,16 @@
-import type { Metadata } from 'next/types'
-
-import { CollectionArchivePost } from '@/components/CollectionArchive/post'
+import { CollectionArchiveEvent } from '@/components/CollectionArchive/event'
 import { PageRange } from '@/components/PageRange'
-import { Pagination } from '@/components/Pagination'
 import configPromise from '@payload-config'
+import { Pagination } from '@payloadcms/ui'
+import { Metadata } from 'next'
 import { getPayload } from 'payload'
-import React from 'react'
 import PageClient from './page.client'
-
-export const dynamic = 'force-static'
-export const revalidate = 600
 
 export default async function Page() {
   const payload = await getPayload({ config: configPromise })
 
-  const posts = await payload.find({
-    collection: 'posts',
+  const events = await payload.find({
+    collection: 'events',
     depth: 1,
     limit: 12,
     overrideAccess: false,
@@ -30,26 +25,26 @@ export default async function Page() {
   return (
     <div className="pt-24 pb-24">
       <PageClient />
-      <div className="container mb-16">
+      <div className="container mb-18">
         <div className="prose dark:prose-invert max-w-none">
-          <h1>Posts</h1>
+          <h1>Events</h1>
         </div>
       </div>
 
       <div className="container mb-8">
         <PageRange
-          collection="posts"
-          currentPage={posts.page}
+          collection="events"
+          currentPage={events.page}
           limit={12}
-          totalDocs={posts.totalDocs}
+          totalDocs={events.totalDocs}
         />
       </div>
 
-      <CollectionArchivePost posts={posts.docs} />
+      <CollectionArchiveEvent events={events.docs} />
 
       <div className="container">
-        {posts.totalPages > 1 && posts.page && (
-          <Pagination page={posts.page} totalPages={posts.totalPages} />
+        {events.totalPages > 1 && events.page && (
+          <Pagination page={events.page} totalPages={events.totalPages} />
         )}
       </div>
     </div>
@@ -58,6 +53,6 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Project Giving Freshworks | Posts`,
+    title: `Project Giving Freshworks | Events`,
   }
 }

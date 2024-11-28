@@ -1,32 +1,30 @@
 'use client'
+import { Media } from '@/components/Media'
+import { Event } from '@/payload-types'
 import { cn } from '@/utilities/cn'
 import useClickableCard from '@/utilities/useClickableCard'
 import Link from 'next/link'
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
 
-import type { Post } from '@/payload-types'
+export type CardEventData = Pick<Event, 'slug' | 'categories' | 'meta' | 'title'>
 
-import { Media } from '@/components/Media'
-
-export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'>
-
-export const Card: React.FC<{
+export const EventCard: React.FC<{
   alignItems?: 'center'
   className?: string
-  doc?: CardPostData
-  relationTo?: 'posts'
-  showCategories?: boolean
+  doc?: CardEventData
+  relationTo?: 'events'
+  showCategories: boolean
   title?: string
 }> = (props) => {
   const { card, link } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
-  const { slug, categories, meta, title } = doc || {}
+  const { slug, title, categories, meta } = doc || {}
   const { description, image: metaImage } = meta || {}
 
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
   const titleToUse = titleFromProps || title
-  const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
+  const sanitizedDescription = description?.replace(/\s/g, ' ')
   const href = `/${relationTo}/${slug}`
 
   return (

@@ -19,6 +19,7 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import { revalidateEvent } from './hooks/revalidateEvent'
+import { populateAuthors } from './hooks/populateAuthors'
 
 export const Events: CollectionConfig<'events'> = {
   slug: 'events',
@@ -56,7 +57,7 @@ export const Events: CollectionConfig<'events'> = {
   hooks: {
     // TODO: Implement hooks for Event
     afterChange: [revalidateEvent],
-    afterRead: [],
+    afterRead: [populateAuthors],
   },
   fields: [
     {
@@ -154,27 +155,37 @@ export const Events: CollectionConfig<'events'> = {
         },
       ],
     },
-
     {
-      name: 'publishedAt',
-      type: 'date',
+      type: 'number',
+      name: 'capacity',
+      min: 0,
+      defaultValue: 0,
       admin: {
-        date: {
-          pickerAppearance: 'dayAndTime',
+        position: 'sidebar',
+        description: `Note: User '0' for Unlimited capacity`,
+      },
+      required: true,
+    },
+    {
+      type: 'select',
+      name: 'registration',
+      defaultValue: 'OPEN',
+      options: [
+        {
+          label: 'Open',
+          value: 'OPEN',
         },
+        {
+          label: 'Closed',
+          value: 'CLOSE',
+        },
+      ],
+      admin: {
         position: 'sidebar',
       },
-      hooks: {
-        beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData._status === 'published' && !value) {
-              return new Date()
-            }
-            return value
-          },
-        ],
-      },
+      required: true,
     },
+
     {
       name: 'authors',
       label: 'Host',
@@ -184,7 +195,7 @@ export const Events: CollectionConfig<'events'> = {
       },
       hasMany: true,
       relationTo: 'users',
-      required: true
+      required: true,
     },
     {
       name: 'populatedAuthors',
@@ -208,5 +219,25 @@ export const Events: CollectionConfig<'events'> = {
       ],
     },
     ...slugField(),
+    {
+      name: 'publishedAt',
+      type: 'date',
+      admin: {
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
+        position: 'sidebar',
+      },
+      hooks: {
+        beforeChange: [
+          ({ siblingData, value }) => {
+            if (siblingData._status === 'published' && !value) {
+              return new Date()
+            }
+            return value
+          },
+        ],
+      },
+    },
   ],
 }

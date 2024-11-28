@@ -662,7 +662,8 @@ export interface Event {
     image?: (number | null) | Media;
     description?: string | null;
   };
-  publishedAt?: string | null;
+  capacity: number;
+  registration: 'OPEN' | 'CLOSE';
   authors: (string | User)[];
   populatedAuthors?:
     | {
@@ -672,6 +673,7 @@ export interface Event {
     | null;
   slug?: string | null;
   slugLock?: boolean | null;
+  publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -970,7 +972,8 @@ export interface EventsSelect<T extends boolean = true> {
         image?: T;
         description?: T;
       };
-  publishedAt?: T;
+  capacity?: T;
+  registration?: T;
   authors?: T;
   populatedAuthors?:
     | T
@@ -980,6 +983,7 @@ export interface EventsSelect<T extends boolean = true> {
       };
   slug?: T;
   slugLock?: T;
+  publishedAt?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

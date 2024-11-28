@@ -68,10 +68,10 @@ export default buildConfig({
   // }),
   db: sqliteAdapter({
     client: {
-      url: process.env.DATABASE_URI
-    }
+      url: process.env.DATABASE_URI,
+    },
   }),
-  collections: [Pages,Events, Posts, Media, Categories, Users],
+  collections: [Pages, Events, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [

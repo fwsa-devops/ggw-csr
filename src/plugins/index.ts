@@ -17,7 +17,7 @@ import { authjsPlugin } from 'payload-authjs'
 import { authConfig } from '@/auth/config'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? `${doc.title} | Project Giving Freshworks` : 'Project Giving Freshworks'
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
@@ -86,7 +86,7 @@ export const plugins: Plugin[] = [
     },
   }),
   searchPlugin({
-    collections: ['posts'],
+    collections: ['posts', 'events'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
       fields: ({ defaultFields }) => {

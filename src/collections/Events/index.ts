@@ -20,6 +20,8 @@ import {
 } from '@payloadcms/richtext-lexical'
 import { revalidateEvent } from './hooks/revalidateEvent'
 import { populateAuthors } from './hooks/populateAuthors'
+import { DateTimeField } from '@/fields/dateTime'
+import { updateEventTime } from '@/fields/dateTime/hooks/updateEventTime'
 
 export const Events: CollectionConfig<'events'> = {
   slug: 'events',
@@ -58,6 +60,7 @@ export const Events: CollectionConfig<'events'> = {
     // TODO: Implement hooks for Event
     afterChange: [revalidateEvent],
     afterRead: [populateAuthors],
+    beforeChange: [updateEventTime],
   },
   fields: [
     {
@@ -94,6 +97,7 @@ export const Events: CollectionConfig<'events'> = {
               relationTo: 'media',
               required: true,
             },
+            DateTimeField(),
           ],
           label: 'Content',
         },
@@ -185,7 +189,6 @@ export const Events: CollectionConfig<'events'> = {
       },
       required: true,
     },
-
     {
       name: 'authors',
       label: 'Host',

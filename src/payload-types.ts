@@ -1080,6 +1080,21 @@ export interface Event {
       | 'Pacific/Wallis';
     allDay?: boolean | null;
   };
+  location: {
+    search?: string | null;
+    address: string;
+    latitude: number;
+    longitude: number;
+    locationJson:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+  };
   relatedEvents?: (number | Event)[] | null;
   categories?: (number | Category)[] | null;
   meta?: {
@@ -1402,6 +1417,15 @@ export interface EventsSelect<T extends boolean = true> {
         toTime?: T;
         timezone?: T;
         allDay?: T;
+      };
+  location?:
+    | T
+    | {
+        search?: T;
+        address?: T;
+        latitude?: T;
+        longitude?: T;
+        locationJson?: T;
       };
   relatedEvents?: T;
   categories?: T;

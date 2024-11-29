@@ -8,6 +8,7 @@ import React from 'react'
 
 import { importMap } from './admin/importMap.js'
 import './custom.scss'
+import LoadPlacesAPI from '@/fields/location/loadPlacesAPI'
 
 type Args = {
   children: React.ReactNode
@@ -25,6 +26,7 @@ const serverFunction: ServerFunctionClient = async function (args) {
 const Layout = ({ children }: Args) => (
   <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
     {children}
+    <LoadPlacesAPI />
   </RootLayout>
 )
 

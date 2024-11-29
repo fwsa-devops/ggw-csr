@@ -22,6 +22,9 @@ import { revalidateEvent } from './hooks/revalidateEvent'
 import { populateAuthors } from './hooks/populateAuthors'
 import { DateTimeField } from '@/fields/dateTime'
 import { updateEventTime } from '@/fields/dateTime/hooks/updateEventTime'
+import { LocationField } from '@/fields/location'
+import { generatePreviewPath } from '@/utilities/generatePreviewPath'
+import { getServerSideURL } from '@/utilities/getURL'
 
 export const Events: CollectionConfig<'events'> = {
   slug: 'events',
@@ -45,8 +48,24 @@ export const Events: CollectionConfig<'events'> = {
     useAsTitle: 'title',
 
     // TODO: Implement the live preview
-    // livePreview: {},
-    // preview: {}
+    livePreview: {
+      url: ({ data }) => {
+        const path = generatePreviewPath({
+          slug: typeof data?.slug === 'string' ? data.slug : '',
+          collection: 'events',
+        })
+
+        return `${getServerSideURL()}${path}`
+      },
+    },
+    preview: (data) => {
+      const path = generatePreviewPath({
+        slug: typeof data?.slug === 'string' ? data.slug : '',
+        collection: 'events',
+      })
+
+      return `${getServerSideURL()}${path}`
+    },
   },
   versions: {
     drafts: {
@@ -98,6 +117,7 @@ export const Events: CollectionConfig<'events'> = {
               required: true,
             },
             DateTimeField(),
+            LocationField(),
           ],
           label: 'Content',
         },

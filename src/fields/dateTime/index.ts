@@ -1,18 +1,9 @@
 import { DateField, SelectField, CheckboxField, RowField, GroupField } from 'payload'
-import { updateEventTime } from './hooks/updateEventTime'
 import { timezones } from './utils'
 
-type Overrides = {
-  //   slugOverrides?: Partial<TextField>
-  checkboxOverrides?: Partial<CheckboxField>
-}
+type DateTime = () => GroupField
 
-// TODO: add date and select field overriders
-type DateTime = (overrides?: Overrides) => [RowField, RowField, SelectField, CheckboxField]
-
-export const DateTimeField = (overrides = {}) => {
-  //   const { checkboxOverrides } = overrides
-
+export const DateTimeField: DateTime = () => {
   const checkBoxField: CheckboxField = {
     name: 'allDay',
     type: 'checkbox',
@@ -61,7 +52,7 @@ export const DateTimeField = (overrides = {}) => {
     name: 'to',
     type: 'date',
     index: false,
-    label: 'To',
+    label: 'Date',
     required: true,
     hooks: {
       beforeValidate: [],
@@ -98,14 +89,7 @@ export const DateTimeField = (overrides = {}) => {
     index: false,
     label: 'Timezone',
     required: true,
-    //   TODO: implement 'timezone' overrider
-    //   ...(slugOverrides || {}),
-
     hooks: {},
-    admin: {
-      // TODO: implement 'timezone' admin overriders
-      // ...(slugOverriders?.admin || {})
-    },
   }
 
   const finalField: GroupField = {

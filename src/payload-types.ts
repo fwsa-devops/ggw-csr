@@ -121,7 +121,7 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | EventBlock)[];
   meta?: {
     title?: string | null;
     image?: (number | null) | Media;
@@ -631,6 +631,40 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EventBlock".
+ */
+export interface EventBlock {
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  populateBy?: ('collection' | 'selection') | null;
+  relationTo?: 'events' | null;
+  categories?: (number | Category)[] | null;
+  limit?: number | null;
+  selectedDocs?:
+    | {
+        relationTo: 'events';
+        value: number | Event;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'eventArchive';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1382,6 +1416,18 @@ export interface PagesSelect<T extends boolean = true> {
               form?: T;
               enableIntro?: T;
               introContent?: T;
+              id?: T;
+              blockName?: T;
+            };
+        eventArchive?:
+          | T
+          | {
+              introContent?: T;
+              populateBy?: T;
+              relationTo?: T;
+              categories?: T;
+              limit?: T;
+              selectedDocs?: T;
               id?: T;
               blockName?: T;
             };

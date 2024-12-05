@@ -55,13 +55,14 @@ export default async function Event({ params: paramsPromise }: Args) {
 
       <EventHero event={event} />
 
+
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
-          <RichText
+          {/* <RichText
             className="max-w-[48rem] mx-auto"
             content={event.content}
             enableGutter={false}
-          />
+          /> */}
           {event.relatedEvents && event.relatedEvents.length > 0 && (
             <RelatedEvents
               className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"

@@ -1,9 +1,6 @@
 import { FieldHook } from 'payload'
 
-export const populateAddress: FieldHook = async ({
-  req: { payload },
-  originalDoc: doc,
-}) => {
+export const populateAddress: FieldHook = async ({ req: { payload }, originalDoc: doc }) => {
   const { locationJson } = doc.location
 
   if (locationJson) {
@@ -62,11 +59,5 @@ export function extractAddress(addressComponents: google.maps.GeocoderAddressCom
     }
   })
 
-  const _add: string[] = []
-
-  for (const [, value] of Object.entries(address)) {
-    _add.push(value)
-  }
-
-  return _add.join(' ')
+  return address
 }

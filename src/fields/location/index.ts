@@ -12,10 +12,36 @@ export const LocationField: Location = () => {
     },
   }
 
-  const addressField: TextField = {
-    type: 'text',
+  const addressField: GroupField = {
+    type: 'group',
     name: 'address',
-    required: true,
+    fields: [
+      {
+        type: 'text',
+        name: 'name',
+        label: 'Premises'
+      },
+      {
+        type: 'text',
+        name: 'street',
+      },
+      {
+        type: 'text',
+        name: 'city',
+      },
+      {
+        type: 'text',
+        name: 'state',
+      },
+      {
+        type: 'text',
+        name: 'country',
+      },
+      {
+        type: 'text',
+        name: 'zip',
+      },
+    ],
   }
 
   const latitudeField: NumberField = {

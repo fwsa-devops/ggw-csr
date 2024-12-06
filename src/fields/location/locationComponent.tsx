@@ -1,12 +1,11 @@
 'use client'
 
-import { FieldLabel, useField, useForm, useFormFields } from '@payloadcms/ui'
+import { FieldLabel, useAllFormFields, useField } from '@payloadcms/ui'
 import { TextFieldClientProps } from 'payload'
 import React, { useCallback, useEffect } from 'react'
 import AsyncSelect from 'react-select/async'
 import usePlacesAutocomplete, { getGeocode, getLatLng, getDetails } from 'use-places-autocomplete'
-import { extractAddress, populateAddress } from './hooks/populateAddress'
-// import { GoogleMap, Marker } from '@react-google-maps/api'
+import { extractAddress } from './hooks/populateAddress'
 
 type LocationComponentProps = {
   addressFieldPath: string
@@ -32,7 +31,9 @@ export const LocationComponent: React.FC<LocationComponentProps> = (props) => {
   const longitudeFieldPath = `${'location'}.${longitudeFieldPathFromProps}`
   const locationJsonFieldPath = `${'location'}.${locationJsonFieldPathFromProps}`
 
-  const addressField = useField<string>({ path: addressFieldPath })
+  const [fields, dispatchFields] = useAllFormFields()
+
+  const addressField = useField<JSON>({ path: addressFieldPath })
   const latitudeField = useField<number>({ path: latitudeFieldPath })
   const longitudeField = useField<number>({ path: longitudeFieldPath })
   const locationJsonField = useField<JSON>({ path: locationJsonFieldPath })
@@ -55,8 +56,6 @@ export const LocationComponent: React.FC<LocationComponentProps> = (props) => {
       const value = e?.value
       const details = (await getDetails({ placeId: value })) as google.maps.places.PlaceResult
 
-      debugger
-
       const locationJson = {
         placeId: value,
         name: details.name,
@@ -68,17 +67,21 @@ export const LocationComponent: React.FC<LocationComponentProps> = (props) => {
         },
       }
 
-      addressField.setValue(locationJson.formatted_address)
+      const extracted_address = extractAddress(details.address_components!)
+
+      for (const key in extracted_address) {
+        if (Object.prototype.hasOwnProperty.call(extracted_address, key)) {
+          fields[`location.address.${key}`].value = extracted_address[key]
+        }
+      }
+
+      addressField.setValue(extracted_address)
       latitudeField.setValue(locationJson.coordinates.lat)
       longitudeField.setValue(locationJson.coordinates.lng)
       locationJsonField.setValue(locationJson)
     },
-    [addressField, latitudeField, longitudeField, locationJsonField],
+    [addressField, latitudeField, longitudeField, locationJsonField, fields],
   )
-
-  useEffect(() => {
-    console.log(ready)
-  }, [addressField, latitudeField, longitudeField, locationJsonField])
 
   return (
     <>

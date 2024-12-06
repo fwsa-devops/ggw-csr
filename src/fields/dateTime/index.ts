@@ -7,7 +7,7 @@ export const DateTimeField: DateTime = () => {
   const checkBoxField: CheckboxField = {
     name: 'allDay',
     type: 'checkbox',
-    label: 'Add Day Event',
+    label: 'All Day Event',
     defaultValue: false,
     // ...checkboxOverrides,
   }

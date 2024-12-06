@@ -1116,7 +1116,14 @@ export interface Event {
   };
   location: {
     search?: string | null;
-    address: string;
+    address?: {
+      name?: string | null;
+      street?: string | null;
+      city?: string | null;
+      state?: string | null;
+      country?: string | null;
+      zip?: string | null;
+    };
     latitude: number;
     longitude: number;
     locationJson:
@@ -1468,7 +1475,16 @@ export interface EventsSelect<T extends boolean = true> {
     | T
     | {
         search?: T;
-        address?: T;
+        address?:
+          | T
+          | {
+              name?: T;
+              street?: T;
+              city?: T;
+              state?: T;
+              country?: T;
+              zip?: T;
+            };
         latitude?: T;
         longitude?: T;
         locationJson?: T;

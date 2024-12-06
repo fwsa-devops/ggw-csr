@@ -1,4 +1,4 @@
-import type { Post, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
+import type { ArchiveBlock as ArchiveBlockProps, Event } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -6,6 +6,7 @@ import React from 'react'
 import RichText from '@/components/RichText'
 
 import { CollectionArchivePost } from '@/components/CollectionArchive/post'
+import { CollectionArchiveEvent } from '@/components/CollectionArchive/event'
 
 export const EventBlock: React.FC<
   ArchiveBlockProps & {
@@ -16,7 +17,7 @@ export const EventBlock: React.FC<
 
   const limit = limitFromProps || 3
 
-  let posts: Post[] = []
+  let posts: Event[] = []
 
   if (populateBy === 'collection') {
     const payload = await getPayload({ config: configPromise })
@@ -27,7 +28,7 @@ export const EventBlock: React.FC<
     })
 
     const fetchedPosts = await payload.find({
-      collection: 'posts',
+      collection: 'events',
       depth: 1,
       limit,
       ...(flattenedCategories && flattenedCategories.length > 0
@@ -46,7 +47,7 @@ export const EventBlock: React.FC<
     if (selectedDocs?.length) {
       const filteredSelectedPosts = selectedDocs.map((post) => {
         if (typeof post.value === 'object') return post.value
-      }) as Post[]
+      }) as Event[]
 
       posts = filteredSelectedPosts
     }
@@ -59,7 +60,7 @@ export const EventBlock: React.FC<
           <RichText className="ml-0 max-w-[48rem]" content={introContent} enableGutter={false} />
         </div>
       )}
-      <CollectionArchivePost posts={posts} />
+      <CollectionArchiveEvent events={posts} />
     </div>
   )
 }

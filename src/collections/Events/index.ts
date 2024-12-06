@@ -79,7 +79,7 @@ export const Events: CollectionConfig<'events'> = {
     // TODO: Implement hooks for Event
     afterChange: [revalidateEvent],
     afterRead: [populateAuthors],
-    beforeChange: [updateEventTime],
+    beforeChange: [],
   },
   fields: [
     {
